@@ -1,0 +1,97 @@
+/* **Fond de la modal - Clic en dehors pour fermer** */
+.modalBackground {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    z-index: 2000; /* S'assure qu'elle est au-dessus */
+}
+
+/* **Contenu de la modal** */
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url("../../images/backround.png");
+    width: 45%;
+    padding: 45px;
+    border-radius: 30px;
+    border: 4px solid #D0BF67;
+    box-shadow: 2px 8px 10px rgb(62, 61, 61);
+    color: #D0BF67;
+    position: relative;
+}
+
+/* **Titre de la modal** */
+.modalContent h2 {
+    margin-top: 0;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+/* **Labels et inputs** */
+.modalContent label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: #e8d8a0;
+}
+
+.modalContent input {
+    height: 42px;
+    width: 56%;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    border-color: #D0BF67;
+    padding-inline: 2%;
+}
+
+/* **Boutons** */
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.cancelButton, .confirmButton {
+    display: flex;
+    justify-content: center;
+    background-color: #e8d8a0;
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    border: none;
+    color: black;
+    padding: 10px ;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 32px;
+    font-family: 'Itim', serif;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 11rem;
+    align-items: center;
+    box-shadow: 
+        4px 4px 8px rgba(0, 0, 0, 0.6),  /* Drop shadow */
+        inset -4px -4px 8px rgba(0, 0, 0, 0.6); /* Inner shadow */
+}
+
+.cancelButton {
+    background: radial-gradient(circle, #737373 0%, #959595 40%, #A8A8A8 59%, #B9B9B9 78%, #D9D9D9 100%);
+}
+
+.confirmButton:hover {
+    background-color: #e8d8a0;
+}

@@ -1,0 +1,117 @@
+.Forum {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centre le contenu verticalement si nécessaire */
+    align-items: center;
+    min-height: 100vh; /* Assure que .Home occupe au moins la hauteur de la fenêtre */
+    padding-top: 360px; /* Hauteur du header */
+    padding-bottom: 60px; /* Hauteur du footer */
+    position: relative;
+}
+
+.banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+
+.main {
+    width: 90%;
+    max-width: 1320px;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    border: 4px solid #e8d8a0;
+    margin: auto;
+    box-shadow: 
+        inset 0 0 20px 10px rgba(98, 98, 98, 0.8),
+        inset 0 0 40px 30px #D9D9D9;
+    overflow: hidden;
+    flex: 1; /* Fait que `.main` occupe l'espace restant */
+    display: flex;
+    flex-direction: column;
+}
+
+.head {
+    min-height: 125px ;
+    padding-inline: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url("../../images/wood-brown.jpg");
+}
+
+.bookList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+.searchBar {
+    display: flex;
+    flex-direction: column;
+    background-color: #CBCBCB;
+    border-radius: 32px;
+    border: 2px solid #e8d8a0;
+    height: 2.4rem;
+    width: 20rem;
+    box-shadow: 4px 4px 8px black;
+  }
+  
+  .searchBar button {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--primary-color);
+    border: none;
+    padding: 15px;
+    box-shadow: 
+        4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset 1px 1px 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  .searchBar .inputSearch {
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    border-radius: 32px;
+  }
+  
+  .inputSearch input {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    border: none;
+    background-color: #CBCBCB;
+    display: flex;
+    padding: 1rem;
+    width: 25rem;
+    box-shadow: 
+    inset 2px 2px 15px rgba(0, 0, 0, 0.6);
+  }
+
+ .Notice, .Subject {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 3.5rem;
+  background-image: url("../../images/wood.jpg");
+  background-position: center;
+}
+.Notice h2, .Subject h2 {
+  width: 18%;
+  height: 1rem;
+  font-size: 18px;
+  color: #e8d8a0;
+  text-shadow: 2px 2px 4px #000000;
+  background-image: url("../../images/wood-brown.jpg");
+  padding: 10px;
+  border: 2px solid #B9B9B9;
+}

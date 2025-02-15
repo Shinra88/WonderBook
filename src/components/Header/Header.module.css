@@ -1,0 +1,130 @@
+
+.Header{
+    font-family: 'Itim', serif;
+    background-image: url("../../images/backround.png");
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    width: 100%;
+    height: 300px;
+    border-bottom: 4px solid #e8d8a0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+    width: 100%;
+    margin-right: 3rem;
+    height: 18rem;
+}
+
+.logo {
+    width: 300px;
+    padding-top: 12px;
+}
+
+.Header button img {
+    width: 24px;
+    padding-left: 8px;
+}
+
+.Header p {
+    font-size: 20px;
+}
+
+.Header ul {
+    display: flex;
+    align-items: center;
+}
+
+.Header ul li {
+    margin-inline: 16px;
+    list-style-type: none;
+}
+
+.Header ul li a {
+    color: #e8d8a0;
+    font-size: 18px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.Button {
+    display: flex;
+    justify-content: center;
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    border: none;
+    color: black;
+    padding: 10px ;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 32px;
+    font-family: 'Itim', serif;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    width: 11rem;
+    align-items: center;
+    box-shadow: 
+        4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.navBar{
+display: flex;
+flex-direction: row;
+width: 100%;
+margin-top: 12rem;
+}
+
+.searchBar {
+    display: flex;
+    flex-direction: column;
+    background-color: #CBCBCB;
+    border-radius: 32px;
+    border: 2px solid #D0BF67;
+    height: 2.4rem;
+    width: 25rem;
+    
+  }
+  
+  .searchBar button {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--primary-color);    
+    border: none;
+    padding: 15px;box-shadow: 
+    inset -1px 1px 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  .searchBar .inputSearch {
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    border-radius: 32px;
+  }
+  
+  .inputSearch input {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    border: none;
+    background-color: #CBCBCB;
+    display: flex;
+    padding: 1rem;
+    width: 25rem;
+    box-shadow: 
+    inset 2px 2px 15px rgba(0, 0, 0, 0.6);
+  }
