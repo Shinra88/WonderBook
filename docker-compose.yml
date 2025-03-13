@@ -8,8 +8,8 @@ services:
     volumes:
       - .:/app
     command: npm start
-    # depends_on: # à décommenter quand le backend sera prêt.
-    #   - backend # à décommenter quand le backend sera prêt.
+    depends_on:
+      - backend
 
   bdd:
     image: mariadb:11.7.2
@@ -21,13 +21,19 @@ services:
     volumes:
       - "C:/wonderbdd:/var/lib/mysql"  # Volume persistant pour les données MariaDB
 
-## ------------------BACKEND------------ à décommenter quand le code backend sera prêt
-  # backend:
-  #   build: ./rep_vers_code_API
-  #   ports:
-  #     - "5000:5000"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: rootpwd
-  #     MYSQL_DATABASE: wonderbook
-  #   depends_on:
-  #     - bdd
+  backend:
+    build: ../WonderBookBack
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: bdd
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: wonderbook
+    depends_on:
+      - bdd
+    volumes:
+      - "../WonderBookBack:/app"
+      - "/app/node_modules"
+    command: >
+      sh -c "npx prisma db pull && npx prisma generate && node server.js"
