@@ -27,12 +27,20 @@ function DropdownMenu({ categories, backgroundClass, onFilterChange }) {
   }, [isOpen]);
 
   const handleCategorySelect = (category) => {
-    const updatedCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category];
-    setSelectedCategories(updatedCategories);
-    onFilterChange(updatedCategories); // Envoi vers `App.jsx`
-  };
+    if (selectedCategories.includes(category)) {
+      // Si la catégorie est déjà sélectionnée, la retirer
+      const updatedCategories = selectedCategories.filter((c) => c !== category);
+      setSelectedCategories(updatedCategories);
+      onFilterChange(updatedCategories);
+    } else {
+      // Vérifier si la limite de 2 catégories est atteinte
+      if (selectedCategories.length < 2) {
+        const updatedCategories = [...selectedCategories, category];
+        setSelectedCategories(updatedCategories);
+        onFilterChange(updatedCategories);
+      }
+    }
+  };  
 
   return (
     <div className={styles.dropdownContainer} ref={dropdownRef}>
