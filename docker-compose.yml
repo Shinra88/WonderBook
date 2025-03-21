@@ -53,13 +53,10 @@ services:
 
   bdd:
     image: mariadb:11.7.2
-    container_name: wonderbook-bdd
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpwd
-      MYSQL_DATABASE: wonderbook  # Correction du nom de la BDD
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpwd
+      MYSQL_DATABASE: WonderSql
     depends_on:
       - mongodb
     ports:
@@ -87,7 +84,7 @@ services:
       MYSQL_HOST: bdd
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: rootpwd
-      MYSQL_DATABASE: wonderbook
+      MYSQL_DATABASE: WonderSql
       MONGO_URI: "mongodb://root:rootpwd@mongodb:27017/admin"
     depends_on:
       - bdd
@@ -96,4 +93,10 @@ services:
       - "../WonderBookBack:/app"
       - "/app/node_modules"
     command: >
-      sh -c "npx prisma db pull && npx prisma generate && node server.js"
+      sh -c "
+        echo '⏳ Attente de MariaDB...' && 
+        sleep 10 && 
+        npx prisma db pull && 
+        npx prisma generate && 
+        node server.js"
+
