@@ -1,3 +1,43 @@
+# version: "3.8"
+
+# services:
+#   frontend:
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - .:/app
+#     command: npm start
+#     depends_on:
+#       - backend
+
+#   bdd:
+#     image: mariadb:11.7.2
+#     environment:
+#       MYSQL_ROOT_PASSWORD: rootpwd
+#       MYSQL_DATABASE: wonderbook
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - "C:/wonderbdd:/var/lib/mysql"  # Volume persistant pour les données MariaDB
+
+#   backend:
+#     build: ../WonderBookBack
+#     ports:
+#       - "5000:5000"
+#     environment:
+#       MYSQL_HOST: bdd
+#       MYSQL_USER: root
+#       MYSQL_ROOT_PASSWORD: rootpwd
+#       MYSQL_DATABASE: wonderbook
+#     depends_on:
+#       - bdd
+#     volumes:
+#       - "../WonderBookBack:/app"
+#       - "/app/node_modules"
+#     command: >
+#       sh -c "npx prisma db pull && npx prisma generate && node server.js"
+
 version: "3.8"
 
 services:
@@ -13,13 +53,31 @@ services:
 
   bdd:
     image: mariadb:11.7.2
+    container_name: wonderbook-bdd
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpwd
-      MYSQL_DATABASE: wonderbook
+      MYSQL_DATABASE: wonderbook  # Correction du nom de la BDD
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpwd
+    depends_on:
+      - mongodb
     ports:
       - "3306:3306"
     volumes:
-      - "C:/wonderbdd:/var/lib/mysql"  # Volume persistant pour les données MariaDB
+      - "C:/wonderbdd:/var/lib/mysql"
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpwd
+    ports:
+      - "27017:27017"
+    volumes:
+      - "C:/mongodata:/data/db"
 
   backend:
     build: ../WonderBookBack
@@ -30,8 +88,10 @@ services:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: rootpwd
       MYSQL_DATABASE: wonderbook
+      MONGO_URI: "mongodb://root:rootpwd@mongodb:27017/admin"
     depends_on:
       - bdd
+      - mongodb
     volumes:
       - "../WonderBookBack:/app"
       - "/app/node_modules"
