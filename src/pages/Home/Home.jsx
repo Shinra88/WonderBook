@@ -69,8 +69,8 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
         </header>
         {/* Section des Filtres sélectionnés */}
         <section className={styles.filters_container}>
-          {/* <h3>Filtres appliqués :</h3> */}
-          <h3>🔥 TEST HOT RELOAD 🔥</h3>
+          <h3>Filtres appliqués :</h3>
+          {/* <h3>🔥 TEST HOT RELOAD 🔥</h3> */}
           <div className={styles.filters}>
             <p>
               <strong>Catégories :</strong>

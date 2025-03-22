@@ -1,18 +1,18 @@
 {
   "name": "wonderbook",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.jsx",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint src --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@vitejs/plugin-react-swc": "^3.8.1",
     "axios": "^1.7.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,6 +29,7 @@
     "@svgr/webpack": "^8.1.0",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
+    "@vitejs/plugin-react": "^4.0.3",
     "babel-plugin-macros": "^3.1.0",
     "css-select": "^5.1.0",
     "eslint": "^8.57.1",
@@ -39,9 +40,9 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "postcss": "^8.5.3",
     "prettier": "^3.5.1",
-    "react-scripts": "^5.0.1",
     "resolve-url-loader": "^5.0.0",
-    "svgo": "^3.3.2"
+    "svgo": "^3.3.2",
+    "vite": "^6.2.2"
   },
   "browserslist": {
     "production": [
