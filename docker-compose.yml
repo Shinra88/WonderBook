@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: sh -c "npm run dev"
+    command: sh -c "CHOKIDAR_USEPOLLING=true npm run dev"  
     stdin_open: true
     tty: true
     depends_on:
@@ -49,6 +49,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpwd
       MYSQL_DATABASE: WonderSql
       MONGO_URI: "mongodb://root:rootpwd@mongodb:27017/admin"
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - bdd
       - mongodb
@@ -61,5 +62,5 @@ services:
         sleep 10 && 
         npx prisma db pull && 
         npx prisma generate && 
-        node server.js"
+        npx nodemon server.js"
 
