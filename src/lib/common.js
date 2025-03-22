@@ -1,15 +1,23 @@
 import axios from 'axios';
 import { API_ROUTES } from '../utils/constants';
 
+/** ✅ Formate les livres correctement */
 function formatBooks(bookArray) {
-  return bookArray.map((book) => {
-    const newBook = { ...book };
-    // eslint-disable-next-line no-underscore-dangle
-    newBook.id = newBook._id;
-    return newBook;
-  });
+  return bookArray.map((book) => ({
+    bookId: book.bookId, // ✅ Correction ici
+    title: book.title,
+    author: book.author,
+    year: book.date ? new Date(book.date).getFullYear() : "Année inconnue",
+    editor: book.editor,
+    cover_url: book.cover_url || "", // ✅ Ajout d'une valeur par défaut
+    averageRating: book.ratings?.length
+      ? book.ratings.reduce((acc, r) => acc + r.score, 0) / book.ratings.length
+      : 0,
+    ratings: book.ratings || [],
+  }));
 }
 
+/** ✅ Stockage local */
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem('token', token);
   localStorage.setItem('userId', userId);
@@ -19,100 +27,81 @@ export function getFromLocalStorage(item) {
   return localStorage.getItem(item);
 }
 
+/** ✅ Récupération de l'utilisateur authentifié */
 export async function getAuthenticatedUser() {
-  const defaultReturnObject = { authenticated: false, user: null };
   try {
     const token = getFromLocalStorage('token');
     const userId = getFromLocalStorage('userId');
-    if (!token) {
-      return defaultReturnObject;
-    }
+    if (!token) return { authenticated: false, user: null };
     return { authenticated: true, user: { userId, token } };
   } catch (err) {
-    console.error('getAuthenticatedUser, Something Went Wrong', err);
-    return defaultReturnObject;
+    console.error("getAuthenticatedUser: Erreur", err);
+    return { authenticated: false, user: null };
   }
 }
 
+/** ✅ Récupère tous les livres */
 export async function getBooks() {
   try {
-    const response = await axios({
-      method: 'GET',
-      url: `${API_ROUTES.BOOKS}`,
-    });
-    // eslint-disable-next-line array-callback-return
-    const books = formatBooks(response.data);
-    return books;
+    const response = await axios.get(`${API_ROUTES.BOOKS}`);
+    return formatBooks(response.data);
   } catch (err) {
-    console.error(err);
+    console.error("Erreur lors de la récupération des livres :", err);
     return [];
   }
 }
 
+/** ✅ Récupère un livre spécifique */
 export async function getBook(id) {
   try {
-    const response = await axios({
-      method: 'GET',
-      url: `${API_ROUTES.BOOKS}/${id}`,
-    });
-    const book = response.data;
-    // eslint-disable-next-line no-underscore-dangle
-    book.id = book._id;
-    return book;
+    const response = await axios.get(`${API_ROUTES.BOOKS}/${id}`);
+    return formatBooks([response.data])[0]; // ✅ Utilisation de `formatBooks` pour uniformiser
   } catch (err) {
-    console.error(err);
+    console.error("Erreur lors de la récupération du livre :", err);
     return null;
   }
 }
 
+/** ✅ Récupère les livres les mieux notés */
 export async function getBestRatedBooks() {
   try {
-    const response = await axios({
-      method: 'GET',
-      url: `${API_ROUTES.BEST_RATED}`,
-    });
+    const response = await axios.get(`${API_ROUTES.BEST_RATED}`);
     return formatBooks(response.data);
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error("Erreur lors de la récupération des meilleurs livres :", err);
     return [];
   }
 }
+
+/** ✅ Supprime un livre */
 export async function deleteBook(id) {
   try {
     await axios.delete(`${API_ROUTES.BOOKS}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     return true;
   } catch (err) {
-    console.error(err);
+    console.error("Erreur lors de la suppression du livre :", err);
     return false;
   }
 }
 
-export async function rateBook(id, userId, rating) {
-  const data = {
-    userId,
-    rating: parseInt(rating, 10),
-  };
+/** ✅ Évalue un livre */
+export async function rateBook(bookId, userId, rating) {
+  const data = { userId, rating: parseInt(rating, 10) };
 
   try {
-    const response = await axios.post(`${API_ROUTES.BOOKS}/${id}/rating`, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    const response = await axios.post(`${API_ROUTES.BOOKS}/${bookId}/rating`, data, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
-    const book = response.data;
-    // eslint-disable-next-line no-underscore-dangle
-    book.id = book._id;
-    return book;
-  } catch (e) {
-    console.error(e);
-    return e.message;
+    return formatBooks([response.data])[0]; // ✅ Uniformisation avec `formatBooks`
+  } catch (err) {
+    console.error("Erreur lors de la notation du livre :", err);
+    return err.message;
   }
 }
 
+/** ✅ Ajoute un livre */
 export async function addBook(data) {
   const userId = localStorage.getItem('userId');
   const book = {
@@ -120,64 +109,70 @@ export async function addBook(data) {
     title: data.title,
     author: data.author,
     year: data.year,
-    genre: data.genre,
-    ratings: [{
-      userId,
-      grade: data.rating ? parseInt(data.rating, 10) : 0,
-    }],
-    averageRating: parseInt(data.rating, 10),
+    editor: data.editor,
+    ratings: [{ userId, score: data.rating ? parseInt(data.rating, 10) : 0 }],
+    averageRating: parseInt(data.rating, 10) || 0,
   };
+
   const bodyFormData = new FormData();
   bodyFormData.append('book', JSON.stringify(book));
-  bodyFormData.append('image', data.file[0]);
+  bodyFormData.append('image', data.file?.[0]);
 
   try {
-    return await axios({
-      method: 'post',
-      url: `${API_ROUTES.BOOKS}`,
-      data: bodyFormData,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    return await axios.post(`${API_ROUTES.BOOKS}`, bodyFormData, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   } catch (err) {
-    console.error(err);
+    console.error("Erreur lors de l'ajout du livre :", err);
     return { error: true, message: err.message };
   }
 }
 
+/** ✅ Met à jour un livre */
 export async function updateBook(data, id) {
   const userId = localStorage.getItem('userId');
 
-  let newData;
   const book = {
     userId,
     title: data.title,
     author: data.author,
     year: data.year,
-    genre: data.genre,
+    editor: data.editor,
   };
-  console.log(data.file[0]);
-  if (data.file[0]) {
+
+  let newData;
+  if (data.file?.[0]) {
     newData = new FormData();
     newData.append('book', JSON.stringify(book));
     newData.append('image', data.file[0]);
   } else {
-    newData = { ...book };
+    newData = book;
   }
 
   try {
-    const newBook = await axios({
-      method: 'put',
-      url: `${API_ROUTES.BOOKS}/${id}`,
-      data: newData,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    const response = await axios.put(`${API_ROUTES.BOOKS}/${id}`, newData, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
-    return newBook;
+    return response.data;
   } catch (err) {
-    console.error(err);
+    console.error("Erreur lors de la mise à jour du livre :", err);
     return { error: true, message: err.message };
+  }
+}
+
+/** ✅ Upload d'image vers S3 */
+export async function uploadImageToS3(file) {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await axios.post(`${API_ROUTES.UPLOAD_IMAGE}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response.data.imageUrl; // ✅ Assurez-vous que le backend renvoie `imageUrl`
+  } catch (error) {
+    console.error("❌ Erreur lors de l'upload de l'image sur S3 :", error);
+    return null;
   }
 }
