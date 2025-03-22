@@ -5,6 +5,8 @@ import { displayStars } from '../../../lib/functions';
 import styles from './BookItem.module.css';
 
 function BookItem({ book, size }) {
+  console.log("📌 BookItem reçoit :", book);
+
   let title;
   switch (size) {
     case 2:
@@ -17,18 +19,19 @@ function BookItem({ book, size }) {
       title = <h2>{book.title}</h2>;
       break;
   }
+
   return (
-    <Link to={`/livre/${book.id}`} className={styles.BookItem}>
+    <Link to={`/livre/${book.bookId}`} className={styles.BookItem}>
       <article>
-        <img className={styles.BookImage} src={book.imageUrl} alt={`${book.title}, ${book.author} - ${book.year}`} />
+        <img className={styles.BookImage} src={book.cover_url} alt={`${book.title}, ${book.author} - ${book.date ? new Date(book.date).getFullYear() : 'Année inconnue'}`} />
         <div className={styles.BookInfo}>
           <div className={styles.Rating}>
             {displayStars(book.averageRating)}
           </div>
           {title}
           <p>{book.author}</p>
-          <p>{book.year}</p>
-          <p>{book.genre}</p>
+          <p>{book.date ? (typeof book.date === 'string' ? book.date.split('-')[0] : new Date(book.date).getFullYear()) : 'Année inconnue'}</p>
+          <p>{book.editor}</p>
         </div>
       </article>
     </Link>
@@ -38,18 +41,18 @@ function BookItem({ book, size }) {
 BookItem.propTypes = {
   size: PropTypes.number.isRequired,
   book: PropTypes.shape({
-    id: PropTypes.string,
-    userId: PropTypes.string,
-    title: PropTypes.string,
-    author: PropTypes.string,
-    year: PropTypes.number,
-    imageUrl: PropTypes.string,
-    genre: PropTypes.string,
+    bookId: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    date: PropTypes.string, 
+    cover_url: PropTypes.string,
+    editor: PropTypes.string,
     ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
-      grade: PropTypes.number,
+      userId: PropTypes.number, 
+      score: PropTypes.number, 
     })),
     averageRating: PropTypes.number,
   }).isRequired,
 };
+
 export default BookItem;

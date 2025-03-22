@@ -7,7 +7,7 @@ import Banner from '../../images/library.png';
 import styles from './Home.module.css';
 import { getBooks } from '../../lib/common';
 
-function Home({ selectedCategories, selectedYear }) {
+function Home({ selectedCategories = [], selectedYear = '' }) {
   const [books, setBooks] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('LastBook');
@@ -31,11 +31,17 @@ function Home({ selectedCategories, selectedYear }) {
     if (!books) {
       return <h1>Vide</h1>;
     }
-    return books.map((book) => <BookItem size={2} book={book} key={book.id} />);
-  };
+    return books.map((book, index) => (
+      <BookItem
+        size={2}
+        book={book}
+        key={`book-${book.bookId || `fallback-${index}`}`}
+      />
+    ));
+      };
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
-
+  console.log("📌 Vérification des livres avant rendu :", books);
   return (
     <div className={styles.Home}>
       <div className={styles.banner} style={backgroundImageStyle} />
@@ -63,7 +69,8 @@ function Home({ selectedCategories, selectedYear }) {
         </header>
         {/* Section des Filtres sélectionnés */}
         <section className={styles.filters_container}>
-          <h3>Filtres appliqués :</h3>
+          {/* <h3>Filtres appliqués :</h3> */}
+          <h3>🔥 TEST HOT RELOAD 🔥</h3>
           <div className={styles.filters}>
             <p>
               <strong>Catégories :</strong>
@@ -94,11 +101,6 @@ Home.propTypes = {
       end: PropTypes.string,
     }),
   ]),
-};
-
-Home.defaultProps = {
-  selectedCategories: [],
-  selectedYear: '',
 };
 
 export default Home;

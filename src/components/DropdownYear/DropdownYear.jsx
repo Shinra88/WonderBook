@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './DropdownYear.module.css';
 
-function DropdownYear({ onFilterChange }) {
+function DropdownYear({ onFilterChange = () => {} }) {
   const [isOpen, setIsOpen] = useState(false);
   const [filterType, setFilterType] = useState('unique');
   const [year, setYear] = useState('');
@@ -116,10 +116,6 @@ function DropdownYear({ onFilterChange }) {
 
 DropdownYear.propTypes = {
   onFilterChange: PropTypes.func,
-};
-
-DropdownYear.defaultProps = {
-  onFilterChange: () => {},
 };
 
 export default DropdownYear;
