@@ -62,5 +62,5 @@ services:
         sleep 10 && 
         npx prisma db pull && 
         npx prisma generate && 
-        npx nodemon server.js"
+        npm run dev"
 

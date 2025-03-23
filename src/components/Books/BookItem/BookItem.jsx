@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { displayStars } from '../../../lib/functions';
+import { formatDate, displayStars } from '../../../lib/functions';
 import styles from './BookItem.module.css';
 
 function BookItem({ book, size }) {
-  console.log("📌 BookItem reçoit :", book);
-
   let title;
   switch (size) {
     case 2:
@@ -23,14 +21,18 @@ function BookItem({ book, size }) {
   return (
     <Link to={`/livre/${book.bookId}`} className={styles.BookItem}>
       <article>
-        <img className={styles.BookImage} src={book.cover_url} alt={`${book.title}, ${book.author} - ${book.date ? new Date(book.date).getFullYear() : 'Année inconnue'}`} />
+        <img
+          className={styles.BookImage}
+          src={book.cover_url}
+          alt={`${book.title}, ${book.author} - ${book.date || 'Date inconnue'}`}
+        />
         <div className={styles.BookInfo}>
           <div className={styles.Rating}>
             {displayStars(book.averageRating)}
           </div>
           {title}
           <p>{book.author}</p>
-          <p>{book.date ? (typeof book.date === 'string' ? book.date.split('-')[0] : new Date(book.date).getFullYear()) : 'Année inconnue'}</p>
+          <p>{formatDate(book.date)}</p>
           <p>{book.editor}</p>
         </div>
       </article>
@@ -44,14 +46,14 @@ BookItem.propTypes = {
     bookId: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
-    date: PropTypes.string, 
+    date: PropTypes.string, // ← bien "date", plus "year"
     cover_url: PropTypes.string,
     editor: PropTypes.string,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.number, 
-      score: PropTypes.number, 
-    })),
     averageRating: PropTypes.number,
+    ratings: PropTypes.arrayOf(PropTypes.shape({
+      userId: PropTypes.number,
+      score: PropTypes.number,
+    })),
   }).isRequired,
 };
 

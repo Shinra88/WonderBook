@@ -38,5 +38,11 @@ export function generateStarsInputs(rating, register, readOnly = false) {
       ));
     }
   }
+  
   return stars;
+  
+}
+
+export function formatDate(dateStr) {
+  return dateStr?.slice(0, 10) || 'Date inconnue';
 }
