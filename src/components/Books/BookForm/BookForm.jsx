@@ -9,8 +9,7 @@ import styles from './BookForm.module.css';
 import { updateBook, addBook, uploadImageToS3 } from '../../../lib/common';
 
 export function BookForm({ book = null, validate = () => {} }) {
-  const userRating = book ? book.ratings.find((elt) => elt.userId === localStorage.getItem('userId'))?.grade : 0;
-
+  const userRating = book?.ratings?.find((elt) => elt.userId === localStorage.getItem('userId'))?.grade || 0;
   const [rating, setRating] = useState(userRating);
   const navigate = useNavigate();
 
@@ -20,17 +19,16 @@ export function BookForm({ book = null, validate = () => {} }) {
     defaultValues: {
       title: book?.title || '',
       author: book?.author || '',
-      year: book?.year || '',
+      date: book?.date || '',
       genre: book?.genre || '',
     },
   });
 
-  /** 🔄 Mise à jour des valeurs par défaut en cas de changement de `book` */
   useEffect(() => {
     reset({
       title: book?.title || '',
       author: book?.author || '',
-      year: book?.year || '',
+      date: book?.date || '',
       genre: book?.genre || '',
     });
   }, [book, reset]);
@@ -42,10 +40,9 @@ export function BookForm({ book = null, validate = () => {} }) {
     setRating(userRating);
   }, [userRating]);
 
-  /** ✅ Fonction pour uploader l'image sur S3 */
   const handleImageUpload = async (file) => {
-    if (!file) return null; // Pas de fichier fourni
-    if (file.size > 5 * 1024 * 1024) { // 5MB max
+    if (!file) return null;
+    if (file.size > 5 * 1024 * 1024) {
       alert("❌ L'image est trop volumineuse (max 5MB)");
       return null;
     }
@@ -57,19 +54,20 @@ export function BookForm({ book = null, validate = () => {} }) {
     }
   };
 
-  /** 📌 Soumission du formulaire */
   const onSubmit = async (data) => {
-    let imageUrl = book?.cover_url || ''; // Conserver l'image actuelle
-
-    if (data.file[0]) {
-      imageUrl = await handleImageUpload(data.file[0]); // Upload nouvelle image
+    let imageUrl = book?.cover_url || '';
+    if (data.file?.[0]) {
+      imageUrl = await handleImageUpload(data.file[0]);
       if (!imageUrl) {
         alert("❌ Erreur lors de l'upload de l'image.");
         return;
       }
     }
 
-    const bookData = { ...data, cover_url: imageUrl };
+    const bookData = {
+      ...data,
+      cover_url: imageUrl,
+    };
 
     if (!book) {
       const newBook = await addBook(bookData);
@@ -79,7 +77,7 @@ export function BookForm({ book = null, validate = () => {} }) {
         alert(newBook.message);
       }
     } else {
-      const updatedBook = await updateBook(bookData, book.id);
+      const updatedBook = await updateBook(bookData, book.bookId);
       if (!updatedBook.error) {
         navigate('/');
       } else {
@@ -90,8 +88,6 @@ export function BookForm({ book = null, validate = () => {} }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.Form}>
-      <input type="hidden" id="id" {...register('id')} />
-
       <label htmlFor="title">
         <p>Titre du livre</p>
         <input type="text" id="title" {...register('title')} required />
@@ -102,9 +98,9 @@ export function BookForm({ book = null, validate = () => {} }) {
         <input type="text" id="author" {...register('author')} required />
       </label>
 
-      <label htmlFor="year">
-        <p>Année de publication</p>
-        <input type="number" id="year" {...register('year')} required min="1800" max={new Date().getFullYear()} />
+      <label htmlFor="date">
+        <p>Date de publication</p>
+        <input type="date" id="date" {...register('date')} required />
       </label>
 
       <label htmlFor="genre">
@@ -144,16 +140,15 @@ export function BookForm({ book = null, validate = () => {} }) {
 
 BookForm.propTypes = {
   book: PropTypes.shape({
-    id: PropTypes.string,
-    _id: PropTypes.string,
-    userId: PropTypes.string,
+    bookId: PropTypes.number,
+    userId: PropTypes.number,
     title: PropTypes.string,
     author: PropTypes.string,
-    year: PropTypes.number,
-    cover_url: PropTypes.string,
+    date: PropTypes.string,
     genre: PropTypes.string,
+    cover_url: PropTypes.string,
     ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
+      userId: PropTypes.number,
       grade: PropTypes.number,
     })),
     averageRating: PropTypes.number,

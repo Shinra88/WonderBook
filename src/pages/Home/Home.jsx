@@ -29,7 +29,7 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
 
   const displayBooks = () => {
     if (!books) {
-      return <h1>Vide</h1>;
+      return <h2>Vide</h2>;
     }
     return books.map((book, index) => (
       <BookItem
@@ -41,7 +41,6 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
       };
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
-  console.log("📌 Vérification des livres avant rendu :", books);
   return (
     <div className={styles.Home}>
       <div className={styles.banner} style={backgroundImageStyle} />
@@ -84,7 +83,7 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
 
         {/* Section Tous les livres */}
         <section className={styles.bookList}>
-          {loading ? <h1>Chargement...</h1> : displayBooks()}
+          {loading ? <h2>Chargement...</h2> : displayBooks()}
         </section>
       </main>
     </div>

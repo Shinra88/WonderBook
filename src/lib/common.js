@@ -1,22 +1,6 @@
 import axios from 'axios';
 import { API_ROUTES } from '../utils/constants';
 
-/** ✅ Formate les livres correctement */
-function formatBooks(bookArray) {
-  return bookArray.map((book) => ({
-    bookId: book.bookId, // ✅ Correction ici
-    title: book.title,
-    author: book.author,
-    year: book.date ? new Date(book.date).getFullYear() : "Année inconnue",
-    editor: book.editor,
-    cover_url: book.cover_url || "", // ✅ Ajout d'une valeur par défaut
-    averageRating: book.ratings?.length
-      ? book.ratings.reduce((acc, r) => acc + r.score, 0) / book.ratings.length
-      : 0,
-    ratings: book.ratings || [],
-  }));
-}
-
 /** ✅ Stockage local */
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem('token', token);
@@ -44,7 +28,7 @@ export async function getAuthenticatedUser() {
 export async function getBooks() {
   try {
     const response = await axios.get(`${API_ROUTES.BOOKS}`);
-    return formatBooks(response.data);
+    return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération des livres :", err);
     return [];
@@ -55,7 +39,7 @@ export async function getBooks() {
 export async function getBook(id) {
   try {
     const response = await axios.get(`${API_ROUTES.BOOKS}/${id}`);
-    return formatBooks([response.data])[0]; // ✅ Utilisation de `formatBooks` pour uniformiser
+    return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération du livre :", err);
     return null;
@@ -66,7 +50,7 @@ export async function getBook(id) {
 export async function getBestRatedBooks() {
   try {
     const response = await axios.get(`${API_ROUTES.BEST_RATED}`);
-    return formatBooks(response.data);
+    return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération des meilleurs livres :", err);
     return [];
@@ -94,7 +78,7 @@ export async function rateBook(bookId, userId, rating) {
     const response = await axios.post(`${API_ROUTES.BOOKS}/${bookId}/rating`, data, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
-    return formatBooks([response.data])[0]; // ✅ Uniformisation avec `formatBooks`
+    return response.data;
   } catch (err) {
     console.error("Erreur lors de la notation du livre :", err);
     return err.message;
@@ -108,7 +92,7 @@ export async function addBook(data) {
     userId,
     title: data.title,
     author: data.author,
-    year: data.year,
+    date: data.year, // 🟢 correspondance exacte avec le champ du backend
     editor: data.editor,
     ratings: [{ userId, score: data.rating ? parseInt(data.rating, 10) : 0 }],
     averageRating: parseInt(data.rating, 10) || 0,
@@ -136,7 +120,7 @@ export async function updateBook(data, id) {
     userId,
     title: data.title,
     author: data.author,
-    year: data.year,
+    date: data.year, // 🟢 mise à jour du champ
     editor: data.editor,
   };
 
