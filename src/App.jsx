@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ForgetSend from './Modals/ForgetSend/ForgetSend';
-import RegisterSend from './Modals/RegisterSend/RegisterSend';
+import ForgetSend from './modals/ForgetSend/ForgetSend';
+import RegisterSend from './modals/RegisterSend/RegisterSend';
 import Home from './pages/Home/Home';
 import Book from './pages/Book/Book';
 import { APP_ROUTES } from './utils/constants';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import AddBook from './Modals/AddBook/AddBook';
+import AddBook from './modals/AddBook/AddBook';
 import UpdateBook from './pages/updateBook/UpdateBook';
 import Forum from './pages/Forum/Forum';
 import Account from './pages/Account/Account';
-import ChangePass from './Modals/ChangePass/ChangePass';
+import ChangePass from './modals/ChangePass/ChangePass';
 import Collection from './pages/Collection/Collection';
 
 function App() {

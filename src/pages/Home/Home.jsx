@@ -6,11 +6,14 @@ import LastBook from '../../components/Books/LastBook/LastBook';
 import Banner from '../../images/library.png';
 import styles from './Home.module.css';
 import { getBooks } from '../../lib/common';
+import Pagination from '../../components/Pagination/Pagination';
 
 function Home({ selectedCategories = [], selectedYear = '' }) {
-  const [books, setBooks] = useState(null);
+  const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('LastBook');
+  const [currentPage, setCurrentPage] = useState(1);
+  const booksPerPage = 10;
 
   useEffect(() => {
     async function getBooksList() {
@@ -27,20 +30,29 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
     setSelectedTab(tab);
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const indexOfLastBook = currentPage * booksPerPage;
+  const indexOfFirstBook = indexOfLastBook - booksPerPage;
+  const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
+
   const displayBooks = () => {
-    if (!books) {
-      return <h2>Vide</h2>;
+    if (!currentBooks.length) {
+      return <h2>Aucun livre à afficher.</h2>;
     }
-    return books.map((book, index) => (
+    return currentBooks.map((book, index) => (
       <BookItem
         size={2}
         book={book}
         key={`book-${book.bookId || `fallback-${index}`}`}
       />
     ));
-      };
+  };
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
+
   return (
     <div className={styles.Home}>
       <div className={styles.banner} style={backgroundImageStyle} />
@@ -62,11 +74,11 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
               Mieux noté
             </button>
           </div>
-          <aside className={styles.offer}>
+          <aside className={styles.bestRated}>
             {selectedTab === 'bestRated' ? <BestRateBooks /> : <LastBook />}
           </aside>
         </header>
-        {/* Section des Filtres sélectionnés */}
+
         <section className={styles.filters_container}>
           <h3>Filtres appliqués :</h3>
           <div className={styles.filters}>
@@ -81,10 +93,16 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
           </div>
         </section>
 
-        {/* Section Tous les livres */}
         <section className={styles.bookList}>
           {loading ? <h2>Chargement...</h2> : displayBooks()}
         </section>
+        <div className={styles.paginationContainer}>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(books.length / booksPerPage)}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </main>
     </div>
   );

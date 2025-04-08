@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import api from '../../utils/api';
 import styles from './Login.module.css';
 
 function Login({
@@ -26,15 +26,33 @@ function Login({
   const login = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.post('/api/login', { email, password });
+
+      const response = await api.post('/auth/login', {
+        mail: email,
+        password,
+      });
+
       if (!response?.data?.token) {
         alert('Une erreur est survenue');
-      } else {
-        setUser(response.data);
-        onClose(); // Ferme la modal après connexion réussie
+        return;
       }
+
+      // 🔐 Enregistrement du token et de la date d'expiration (3h)
+      const token = response.data.token;
+      const expiresAt = Date.now() + 3 * 60 * 60 * 1000; // 3h
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('token_expiry', expiresAt.toString());
+
+      setUser({
+        ...response.data.user,
+        token,
+      });
+
+      onClose(); // Ferme la modale
+
     } catch (err) {
-      alert(err.message);
+      alert(err.response?.data?.error || 'Erreur lors de la connexion');
     } finally {
       setIsLoading(false);
     }

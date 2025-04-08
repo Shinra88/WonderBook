@@ -13,6 +13,7 @@ export const API_ROUTES = {
   ACCOUNT: `${API_URL}/api/books`,
   CHANGE_PASS: `${API_URL}/api/pass`,
   COLLECTION: `${API_URL}/api/books`,
+  LAST_ADDED: `${API_URL}/api/books/lastadded`,
 };
 
 export const APP_ROUTES = {
@@ -20,7 +21,8 @@ export const APP_ROUTES = {
   SIGN_IN: '/Register',
   REGISTER_SEND: '/RegisterSend',
   LOGIN: '/Login',
-  FORGET: '/ForgetPassword',
+  FORGET: '/ForgetPassword',LAST_ADDED: `${API_URL}/api/books/lastadded`,
+
   FORGET_SEND: '/ForgetSend',
   FORUM: '/Forum',
   ADD_BOOK: '/AddBook',

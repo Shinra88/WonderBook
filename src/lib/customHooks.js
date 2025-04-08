@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAuthenticatedUser, getBestRatedBooks } from './common';
+import { getAuthenticatedUser, getBestRatedBooks, getLastAddedBooks } from './common';
 
 export function useUser() {
   const [connectedUser, setConnectedUser] = useState(null);
@@ -49,3 +49,18 @@ export function useFilePreview(file) {
 
   return [imgSrc, setImgSrc];
 }
+
+export function useLastAddedBooks() {
+  const [lastAddedBooks, setLastAddedBooks] = useState([]);
+
+  useEffect(() => {
+    async function fetchLastBooks() {
+      const response = await getLastAddedBooks();
+      setLastAddedBooks(response);
+    }
+    fetchLastBooks();
+  }, []);
+
+  return { lastAddedBooks };
+}
+
