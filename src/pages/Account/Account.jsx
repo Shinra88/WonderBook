@@ -3,7 +3,7 @@ import Banner from '../../images/library.png';
 import Avatar from '../../images/avatar.png';
 import FeatherIcon from '../../images/feather.png';
 import styles from './Account.module.css';
-import ChangePass from '../../Modals/ChangePass/ChangePass';
+import ChangePass from '../../modals/ChangePass/ChangePass';
 
 function Account() {
   const [showChangePass, setShowChangePass] = useState(false);

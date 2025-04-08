@@ -8,10 +8,10 @@ import Logo from '../../images/Logo.png';
 import FeatherIcon from '../../images/feather.png';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import DropdownYear from '../DropdownYear/DropdownYear';
-import AddBookModal from '../../Modals/AddBook/AddBook';
-import LoginModal from '../../Modals/Login/Login';
-import RegisterModal from '../../Modals/SignIn/SignIn';
-import ForgetModal from '../../Modals/Forget/Forget';
+import AddBookModal from '../../modals/AddBook/AddBook';
+import LoginModal from '../../modals/Login/Login';
+import RegisterModal from '../../modals/SignIn/SignIn';
+import ForgetModal from '../../modals/Forget/Forget';
 
 function Header({ updateCategories, updateYear }) {
   const [showAddBook, setShowAddBook] = useState(false);

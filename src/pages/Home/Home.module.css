@@ -90,7 +90,7 @@
 }
 
 /* --------- ASIDE (MIEUX NOTÉ) --------- */
-.offer {
+.bestRated {
     background-color: #e8d8a0; /* Même couleur que le bouton actif */
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -118,4 +118,11 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     padding: 20px;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50px;
 }

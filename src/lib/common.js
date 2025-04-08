@@ -1,6 +1,16 @@
 import axios from 'axios';
 import { API_ROUTES } from '../utils/constants';
 
+export async function getLastAddedBooks() {
+  try {
+    const response = await axios.get(API_ROUTES.LAST_ADDED);
+    return response.data;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des derniers livres ajoutés :", err);
+    return [];
+  }
+}
+
 /** ✅ Stockage local */
 export function storeInLocalStorage(token, userId) {
   localStorage.setItem('token', token);

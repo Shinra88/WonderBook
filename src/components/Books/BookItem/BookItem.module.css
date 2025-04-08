@@ -5,11 +5,12 @@
     max-width: 360px;
     width: 80%;
     align-items: center;
-    margin-bottom: 85px;
 }
 .BookItem article {
     display: flex;
     align-items: center;
+    margin-top: 42px;
+    margin-bottom: 42px;
 }
 
 
@@ -46,7 +47,7 @@
     font-size: 23px;
 }
 .empty {
-    color : #F2E3CE;
+    color : rgba(98, 98, 98, 0.8);
     font-size: 23px;
 }
 .BookInfo {
