@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from './BookRatingForm.module.css';
-import { generateStarsInputs, displayStars } from '../../../lib/functions';
+import { generateStarsInputs, displayStars } from '../../../utils/helpers';
 import { APP_ROUTES } from '../../../utils/constants';
-import { useUser } from '../../../lib/customHooks';
-import { rateBook } from '../../../lib/common';
+import { useUser } from '../../../hooks/customHooks';
+import { rateBook } from '../../../services/bookService';
 
 function BookRatingForm({
   rating, setRating, userId, setBook, id, userRated,

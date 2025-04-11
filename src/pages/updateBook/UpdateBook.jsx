@@ -3,9 +3,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styles from './UpdateBook.module.css';
 import BookForm from '../../components/Books/BookForm/BookForm';
 import BackArrow from '../../components/BackArrow/BackArrow';
-import { getBook } from '../../lib/common';
+import { getBook } from '../../services/bookService';
 import { APP_ROUTES } from '../../utils/constants';
-import { useUser } from '../../lib/customHooks';
+import { useUser } from '../../hooks/customHooks';
 import bookAdd from '../../images/book_add.jpg';
 
 function UpdateBook() {
