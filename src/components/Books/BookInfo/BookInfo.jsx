@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from '../../../pages/Book/Book.module.css';
-import { formatDate, displayStars } from '../../../lib/functions';
+import { formatDate, displayStars } from '../../../utils/helpers';
 
 function BookInfo({ book }) {
   return (

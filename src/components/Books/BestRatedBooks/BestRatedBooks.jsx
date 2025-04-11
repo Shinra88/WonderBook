@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useBestRatedBooks } from '../../../lib/customHooks';
+import { useBestRatedBooks } from '../../../hooks/customHooks';
 import BookItem from '../BookItem/BookItem';
 import styles from './BestRatedBooks.module.css';
 

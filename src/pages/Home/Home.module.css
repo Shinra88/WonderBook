@@ -4,7 +4,7 @@
     justify-content: center; /* Centre le contenu verticalement si nécessaire */
     align-items: center;
     min-height: 100vh; /* Assure que .Home occupe au moins la hauteur de la fenêtre */
-    padding-top: 360px; /* Hauteur du header */
+    padding-top: 250px;
     padding-bottom: 60px; /* Hauteur du footer */
     position: relative;
 }

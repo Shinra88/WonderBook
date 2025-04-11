@@ -5,7 +5,7 @@ import BestRateBooks from '../../components/Books/BestRatedBooks/BestRatedBooks'
 import LastBook from '../../components/Books/LastBook/LastBook';
 import Banner from '../../images/library.png';
 import styles from './Home.module.css';
-import { getBooks } from '../../lib/common';
+import { getBooks } from '../../services/bookService';
 import Pagination from '../../components/Pagination/Pagination';
 
 function Home({ selectedCategories = [], selectedYear = '' }) {
@@ -14,12 +14,21 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
   const [selectedTab, setSelectedTab] = useState('LastBook');
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
+  const [lastAddedBooks, setLastAddedBooks] = useState([]); // Added state for last added books
 
   useEffect(() => {
     async function getBooksList() {
-      const data = await getBooks();
-      if (data) {
-        setBooks(data);
+      try {
+        const data = await getBooks();
+        if (Array.isArray(data)) {
+          setBooks(data);
+          // Assuming you want to fetch the last added books separately, 
+          // you could filter or fetch them here if needed
+          const lastAdded = data.slice(0, 5); // Example, get the 5 latest added books
+          setLastAddedBooks(lastAdded);
+        }
+      } catch (err) {
+      } finally {
         setLoading(false);
       }
     }
@@ -75,7 +84,9 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
             </button>
           </div>
           <aside className={styles.bestRated}>
-            {selectedTab === 'bestRated' ? <BestRateBooks /> : <LastBook />}
+            {selectedTab === 'bestRated' ? <BestRateBooks /> : (
+              <LastBook lastAddedBooks={Array.isArray(lastAddedBooks) ? lastAddedBooks : []} /> // Pass the books safely
+            )}
           </aside>
         </header>
 

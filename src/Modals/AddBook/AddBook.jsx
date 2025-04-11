@@ -5,14 +5,21 @@ import { API_ROUTES } from '../../utils/constants';
 import GenreSelector from '../../components/GenreSelector/GenreSelector';
 import styles from './AddBook.module.css';
 import UploadIcon from '../../images/photo.png';
+import ReCAPTCHA from "react-google-recaptcha";
+import { uploadImageToS3 } from '../../services/uploadServices';
 
 function AddBook({ onClose }) {
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
+  const [editor, setEditor] = useState('');
+  const [summary, setSummary] = useState('');
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({ error: false, message: '' });
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState('');
 
   useEffect(() => {
     // Gestion de la fermeture avec Escape
@@ -32,27 +39,61 @@ function AddBook({ onClose }) {
   };
 
   const handleAddBook = async () => {
+    if (!recaptchaToken) {
+      setNotification({ error: true, message: 'Veuillez valider le CAPTCHA.' });
+      return;
+    }
+  
+    if (!title || !author || !editor || !year) {
+      setNotification({ error: true, message: 'Tous les champs obligatoires doivent être remplis.' });
+      return;
+    }
+  
+    setIsLoading(true);
+    let coverUrl = '';
+  
     try {
-      setIsLoading(true);
-      const response = await axios.post(API_ROUTES.ADD_BOOK, {
+      // 1. Upload de l'image (si présente)
+      if (coverFile) {
+        const uploadedUrl = await uploadImageToS3(coverFile);
+        if (!uploadedUrl) {
+          setNotification({ error: true, message: 'Erreur lors de l’upload de l’image.' });
+          setIsLoading(false);
+          return;
+        }
+        setCoverPreviewUrl(uploadedUrl);
+        coverUrl = uploadedUrl;
+      }
+  
+      // 2. Création du livre avec l’URL de l’image
+      const response = await axios.post(API_ROUTES.BOOKS.ADD_BOOK, {
         title,
         author,
+        editor,
         year,
-        genres: selectedGenres,
+        summary,
+        genres: selectedGenres.length > 0 ? selectedGenres : ['Général'],
+        recaptchaToken,
+        cover_url: coverUrl, // nouveau champ
       });
-
-      if (response.status !== 200) {
-        setNotification({ error: true, message: 'Une erreur est survenue.' });
+  
+      if (response.status !== 201) {
+        setNotification({ error: true, message: 'Erreur lors de l’ajout du livre.' });
       } else {
         setNotification({ error: false, message: 'Livre ajouté avec succès !' });
         onClose();
       }
     } catch (err) {
-      setNotification({ error: true, message: err.response?.data?.message || 'Erreur inattendue.' });
+      console.error('❌ Erreur dans handleAddBook:', err);
+      setNotification({
+        error: true,
+        message: err.response?.data?.error || 'Erreur inattendue lors de l’ajout du livre.',
+      });
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   const errorClass = notification.error ? styles.errorMessage : '';
 
@@ -100,6 +141,26 @@ function AddBook({ onClose }) {
               />
             </label>
 
+            <label htmlFor="editor">
+              <p>Éditeur</p>
+              <input
+                type="text"
+                id="editor"
+                value={editor}
+                onChange={(e) => setEditor(e.target.value)}
+              />
+            </label>
+
+            <label htmlFor="summary">
+              <p>Résumé</p>
+              <textarea
+                id="summary"
+                rows="5"
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+              />
+            </label>
+
             <label htmlFor="year">
               <p>Année</p>
               <input
@@ -117,11 +178,36 @@ function AddBook({ onClose }) {
               <p className={styles.formatTypes}>PNG, JPEG, WEBP</p>
               <div className={styles.imageContainer}>
                 <img src={UploadIcon} alt="Upload Icon" className={styles.UploadIcon} />
+                {coverPreviewUrl && (
+                  <img src={coverPreviewUrl} alt="Aperçu couverture" className={styles.coverPreview} />
+                )}
+
               </div>
-              <input type="file" id="attachment" className={styles.fileInput} accept=".png, .jpeg, .jpg, .webp" />
+              <input
+                type="file"
+                id="attachment"
+                className={styles.fileInput}
+                accept=".png, .jpeg, .jpg, .webp"
+                onChange={(e) => setCoverFile(e.target.files[0])}
+              />
             </label>
           </aside>
         </section>
+        
+        <div className={styles.recaptchaWrapper}>
+          <ReCAPTCHA
+            sitekey="6LeySBQrAAAAAP6T4OxTqoVWFOEkBnp7Mfntsnes"
+            onChange={(token) => {
+              console.log('reCAPTCHA token:', token);
+              setRecaptchaToken(token);
+            }}
+          />
+        </div>
+        {!recaptchaToken && (
+          <p style={{ color: '#ff6666', fontWeight: 'bold', textAlign: 'center' }}>
+            Veuillez valider le CAPTCHA avant de soumettre.
+          </p>
+        )}
 
         <div className={styles.buttonContainer}>
           <button type="button" className={styles.cancelButton} onClick={onClose}>

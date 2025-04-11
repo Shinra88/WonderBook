@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './AddBook.module.css';
 import BookForm from '../../components/Books/BookForm/BookForm';
 import BackArrow from '../../components/BackArrow/BackArrow';
-import { useUser } from '../../lib/customHooks';
+import { useUser } from '../../hooks/customHooks';
 import { APP_ROUTES } from '../../utils/constants';
 import bookAdd from '../../images/book_add.jpg';
 

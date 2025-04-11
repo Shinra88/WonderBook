@@ -7,7 +7,7 @@
     left: 0;
     z-index: 1000; 
     width: 100%;
-    height: 300px;
+    height: 200px;
     border-bottom: 4px solid #e8d8a0;
 }
 
@@ -15,6 +15,7 @@
     display: flex;
     align-items: center;
     width: 100%;
+    height: 100%;
 }
 
 .content{
@@ -24,12 +25,10 @@
     align-items: flex-end;
     width: 100%;
     margin-right: 3rem;
-    height: 18rem;
 }
 
 .logo {
-    width: 300px;
-    padding-top: 12px;
+    width: 150px;
 }
 
 .Header button img {
@@ -64,16 +63,15 @@
     background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
     border: none;
     color: black;
-    padding: 10px ;
+    padding: 8px ;
     text-align: center;
     text-decoration: none;
     font-size: 18px;
     cursor: pointer;
     border-radius: 32px;
     font-family: 'Itim', serif;
-    margin-top: 20px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
     width: 11rem;
     align-items: center;
     box-shadow: 
@@ -85,7 +83,7 @@
 display: flex;
 flex-direction: row;
 width: 100%;
-margin-top: 12rem;
+padding-top: 4%;
 }
 
 .searchBar {
@@ -128,3 +126,75 @@ margin-top: 12rem;
     box-shadow: 
     inset 2px 2px 15px rgba(0, 0, 0, 0.6);
   }
+
+  .userMenuWrapper {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 1rem;
+  }
+  
+  .userIcon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .userCircle {
+    width: 60px;              /* taille externe */
+    height: 60px;
+    border-radius: 50%;
+    background: #e8d8a0;        /* ou une autre couleur de fond si tu veux */
+    padding: 5px;             /* marge intérieure pour que l'image soit + petite */
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #c4ab5b; /* Bordure de 2px, de type solide et couleur #c4ab5b */
+  }
+  
+  .icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }  
+  
+  .userName {
+    margin-top: 5px;
+    font-family: 'Itim', serif;
+    font-size: 16px;
+    color: #e8d8a0;
+  }  
+  
+  .userDropdown {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+    z-index: 100;
+  }
+  
+  .userDropdown button {
+    font-family: 'Itim', serif;
+    background: none;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: black;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  .userDropdown button:hover {
+    text-decoration: underline;
+  }
+  

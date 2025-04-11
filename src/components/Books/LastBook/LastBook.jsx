@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { useLastAddedBooks } from '../../../lib/customHooks';
+import { useLastAddedBooks } from '../../../hooks/customHooks';
 import BookItem from '../BookItem/BookItem';
 import styles from './LastBook.module.css';
 
 function LastBooks() {
-  const { lastAddedBooks } = useLastAddedBooks();
+  const { lastAddedBooks, error } = useLastAddedBooks();
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {

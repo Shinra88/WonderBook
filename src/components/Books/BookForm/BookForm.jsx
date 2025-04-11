@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { generateStarsInputs } from '../../../lib/functions';
-import { useFilePreview } from '../../../lib/customHooks';
+import { generateStarsInputs } from '../../../utils/helpers';
+import { useFilePreview } from '../../../hooks/customHooks';
 import addFileIMG from '../../../images/add_file.png';
 import styles from './BookForm.module.css';
-import { updateBook, addBook, uploadImageToS3 } from '../../../lib/common';
-
+import { updateBook, addBook } from '../../../services/bookService';
+import { uploadImageToS3 } from '../../../services/uploadServices';
 export function BookForm({ book = null, validate = () => {} }) {
   const userRating = book?.ratings?.find((elt) => elt.userId === localStorage.getItem('userId'))?.grade || 0;
   const [rating, setRating] = useState(userRating);

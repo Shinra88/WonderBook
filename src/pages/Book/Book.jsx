@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useUser } from '../../lib/customHooks';
+import { useUser } from '../../hooks/customHooks';
 import styles from './Book.module.css';
-import { getBook, deleteBook } from '../../lib/common';
+import { getBook, deleteBook } from '../../services/bookService'; 
 import BookInfo from '../../components/Books/BookInfo/BookInfo';
 import BookRatingForm from '../../components/Books/BookRatingForm/BookRatingForm';
 import BookDeleteImage from '../../images/book_delete.png';

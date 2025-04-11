@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { formatDate, displayStars } from '../../../lib/functions';
+import { formatDate, displayStars } from '../../../utils/helpers';
 import styles from './BookItem.module.css';
 
 function BookItem({ book, size }) {

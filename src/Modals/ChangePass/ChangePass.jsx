@@ -1,56 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import styles from './ChangePass.module.css';
-import { API_ROUTES } from '../../utils/constants';
+import { changePassword } from '../../services/authService';
 
-function ChangePass({ onClose }) {
+function ChangePass({ onClose, onSuccess }) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({ error: false, message: '' });
 
-  // **Fermeture avec la touche "Échap"**
   useEffect(() => {
     const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+      if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
 
-  // **Ferme la modal si on clique en dehors du contenu**
   const handleClickOutside = (event) => {
-    if (event.target.classList.contains(styles.modalBackground)) {
-      onClose();
-    }
+    if (event.target.classList.contains(styles.modalBackground)) onClose();
   };
 
-  // **Validation du changement de mot de passe**
   const handleSubmit = async () => {
     if (newPassword !== confirmPassword) {
       setNotification({ error: true, message: 'Les mots de passe ne correspondent pas.' });
       return;
     }
 
-    try {
-      setIsLoading(true);
-      const response = await axios.post(API_ROUTES.CHANGE_PASS, { oldPassword, newPassword });
+    setIsLoading(true);
+    const result = await changePassword(oldPassword, newPassword);
 
-      if (response.status !== 200) {
-        setNotification({ error: true, message: 'Une erreur est survenue.' });
-      } else {
-        setNotification({ error: false, message: 'Mot de passe changé avec succès !' });
-        onClose(); // Ferme la modal après succès
-      }
-    } catch (err) {
-      setNotification({ error: true, message: err.response?.data?.message || 'Une erreur est survenue.' });
-    } finally {
-      setIsLoading(false);
+    if (result.success) {
+      setNotification({ error: false, message: result.message });
+      setTimeout(() => {
+        onSuccess();
+        onClose();
+      }, 1000);
+    } else {
+      setNotification({ error: true, message: result.message });
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -66,24 +57,44 @@ function ChangePass({ onClose }) {
 
         <label htmlFor="oldPassword">
           Ancien mot de passe
-          <input type="password" id="oldPassword" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+          <input
+            type="password"
+            id="oldPassword"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
         </label>
 
         <label htmlFor="newPassword">
           Nouveau mot de passe
-          <input type="password" id="newPassword" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+          <input
+            type="password"
+            id="newPassword"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
         </label>
 
         <label htmlFor="confirmPassword">
           Confirmer mot de passe
-          <input type="password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          <input
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
         </label>
 
         <div className={styles.buttonContainer}>
           <button type="button" className={styles.cancelButton} onClick={onClose}>
             Annuler
           </button>
-          <button type="submit" className={styles.confirmButton} onClick={handleSubmit} disabled={isLoading}>
+          <button
+            type="submit"
+            className={styles.confirmButton}
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
             {isLoading ? 'Chargement...' : 'Valider'}
           </button>
         </div>
@@ -94,6 +105,7 @@ function ChangePass({ onClose }) {
 
 ChangePass.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
 };
 
 export default ChangePass;

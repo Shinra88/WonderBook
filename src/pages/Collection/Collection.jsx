@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import DropdownMenu from '../../components/DropdownMenu/DropdownMenu';
 import Banner from '../../images/library.png';
-import { getBooks } from '../../lib/common';
+import { getBooks } from '../../services/bookService';
 import BookItem from '../../components/Books/BookItem/BookItem';
 import styles from './Collection.module.css';
 

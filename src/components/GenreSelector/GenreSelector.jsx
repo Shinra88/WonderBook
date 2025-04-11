@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './GenreSelector.module.css';
 
 function GenreSelector({ categories, onGenresSelect }) {
+  
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const dropdownRef = useRef(null);
@@ -19,8 +20,7 @@ function GenreSelector({ categories, onGenresSelect }) {
 
   const handleApplySelection = () => {
     setIsOpen(false);
-    onGenresSelect(selected);
-  };
+    onSelectGenres([...selected]);  };
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
