@@ -1,4 +1,4 @@
-.BookItem{
+.BookDisplay{
     display: flex;
     text-decoration: none;
     color: inherit;
@@ -6,18 +6,19 @@
     width: 80%;
     align-items: center;
 }
-.BookItem article {
+
+.BookDisplay article {
     display: flex;
     align-items: center;
     margin-top: 42px;
     margin-bottom: 42px;
 }
 
-
-.BookItem img {
+.BookDisplay img {
     border-radius: 5px;
 }
-.BookItem h2 {
+
+.BookDisplay h2 {
     font-size: 18px;
     font-weight: 700;
     font-family: "Libre Baskerville", serif;
@@ -27,43 +28,53 @@
 .BookImage {
     width: 206px;
     height: 260px;
-    object-position: center;
     object-fit: contain;
-}
-.BookItem h3 {
+    object-position: center;
+    background-color: transparent; /* ✅ plus de blanc */
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* optionnel, très léger */
+  }  
+
+.BookDisplay h3 {
     font-size: 18px;
     font-weight: 700;
     font-family: "Libre Baskerville", serif;
     margin-bottom: 10px ;
 }
-.BookItem p {
+
+.BookDisplay p {
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
     color: #796157;
     margin-bottom: 10px ;
 }
+
 .full {
     color: #D9A963;
     font-size: 23px;
 }
+
 .empty {
     color : rgba(98, 98, 98, 0.8);
     font-size: 23px;
 }
+
 .BookInfo {
     display: flex;
     flex: 1;
     flex-direction: column;
     margin-left: 18px;
 }
-.Rating{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
 
+.Rating {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* ou 2px si tu veux plus serré */
+    margin-bottom: 10px;
+  }
+  
 @media all and (max-width: 600px) {
-    .BookItem img {
+    .BookDisplay img {
         width: 50%;
     }
 }

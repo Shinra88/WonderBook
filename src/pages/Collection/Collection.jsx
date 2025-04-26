@@ -5,7 +5,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import DropdownMenu from '../../components/DropdownMenu/DropdownMenu';
 import Banner from '../../images/library.png';
 import { getBooks } from '../../services/bookService';
-import BookItem from '../../components/Books/BookItem/BookItem';
+import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import styles from './Collection.module.css';
 
 function Collection() {
@@ -15,7 +15,7 @@ function Collection() {
   const displayBooks = () => (
     books
       ? books.map((book) => (
-        <BookItem
+        <BookDisplay
           size={2}
           book={book}
           key={book.id}

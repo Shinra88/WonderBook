@@ -1,12 +1,16 @@
-// 📁 services/authService.js
-import axios from 'axios';
+// ✓ services/authService.js
+import api from '../services/api/api';
 import { API_ROUTES } from '../utils/constants';
-import { storeInLocalStorage, getFromLocalStorage, removeFromLocalStorage } from '../utils/localStorage';
+import {
+  storeInLocalStorage,
+  getFromLocalStorage,
+  removeFromLocalStorage
+} from '../utils/localStorage';
 
 /** ✅ Connexion */
 export async function login(mail, password) {
   try {
-    const response = await axios.post(API_ROUTES.AUTH.LOGIN, { mail, password });
+    const response = await api.post(API_ROUTES.AUTH.LOGIN, { mail, password });
     const { token, user } = response.data;
     storeInLocalStorage('token', token);
     storeInLocalStorage('user', JSON.stringify(user));
@@ -25,7 +29,13 @@ export function logout() {
 /** ✅ Enregistrement */
 export async function register(name, mail, password, recaptchaToken, website = "") {
   try {
-    const response = await axios.post(API_ROUTES.AUTH.REGISTER, { name, mail, password, recaptchaToken, website });
+    const response = await api.post(API_ROUTES.AUTH.REGISTER, {
+      name,
+      mail,
+      password,
+      recaptchaToken,
+      website
+    });
     const { token, user } = response.data;
     storeInLocalStorage('token', token);
     storeInLocalStorage('user', JSON.stringify(user));
@@ -35,7 +45,7 @@ export async function register(name, mail, password, recaptchaToken, website = "
   }
 }
 
-/** ✅ Récupère l'utilisateur connecté */
+/** ✅ Récupère l'utilisateur connecté (localStorage) */
 export function getCurrentUser() {
   const token = getFromLocalStorage('token');
   const user = JSON.parse(getFromLocalStorage('user'));
@@ -43,18 +53,25 @@ export function getCurrentUser() {
   return { token, ...user };
 }
 
-/** ✅ Vérifie si l'utilisateur est connecté */
+/** ✅ Est connecté ? */
 export function isAuthenticated() {
   return Boolean(getFromLocalStorage('token'));
+}
+
+/** ✅ Récupère le profil utilisateur depuis l'API */
+export async function getAuthenticatedUser() {
+  try {
+    const response = await api.get(API_ROUTES.AUTH.UPDATE_PROFILE);
+    return { authenticated: true, user: response.data };
+  } catch (err) {
+    console.error("Erreur auth user:", err);
+    return { authenticated: false, user: null };
+  }
 }
 
 /** ✅ Met à jour le profil utilisateur */
 export async function updateUserProfile(form) {
   try {
-    const token = getFromLocalStorage('token');
-    console.log("🔐 Token actuel :", getFromLocalStorage('token'));
-
-
     const body = {
       ...form,
       avatar: form.avatar,
@@ -63,39 +80,26 @@ export async function updateUserProfile(form) {
       addBook: form.addBook ? 1 : 0,
       news: form.news ? 1 : 0,
     };
-    console.log("💥 Header Authorization envoyé :", `Bearer ${token}`);
-    console.log("📦 Données envoyées :", body);
-    
-    const response = await axios.put(API_ROUTES.AUTH.UPDATE_PROFILE, body, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
 
+    const response = await api.put(API_ROUTES.AUTH.UPDATE_PROFILE, body);
     const updatedUser = response.data.user;
     storeInLocalStorage('user', JSON.stringify(updatedUser));
-
     return { success: true, user: updatedUser };
   } catch (err) {
-    console.error('Erreur updateUserProfile:', err);
-    return { success: false, error: err.response?.data?.error || 'Erreur mise à jour du profil' };
+    return {
+      success: false,
+      error: err.response?.data?.error || 'Erreur mise à jour du profil'
+    };
   }
 }
 
 /** ✅ Changement de mot de passe */
 export async function changePassword(oldPassword, newPassword) {
   try {
-    const token = getFromLocalStorage('token');
-
-    const response = await axios.post(API_ROUTES.AUTH.CHANGE_PASS, {
+    const response = await api.post(API_ROUTES.AUTH.CHANGE_PASS, {
       oldPassword,
       newPassword,
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
-
     return { success: true, message: response.data.message };
   } catch (err) {
     return {

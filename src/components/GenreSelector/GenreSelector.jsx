@@ -1,26 +1,50 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import styles from './GenreSelector.module.css';
+import { API_ROUTES } from '../../utils/constants';
 
-function GenreSelector({ categories, onGenresSelect }) {
-  
+function GenreSelector({ onGenresSelect }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]); // array of IDs
+  const [categories, setCategories] = useState([]); // { id or categoryId, name }
   const dropdownRef = useRef(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get(API_ROUTES.CATEGORIES.GET_ALL);
+        if (Array.isArray(res.data)) {
+          const cleaned = res.data.map((cat) => ({
+            id: cat.id ?? cat.categoryId, // gestion des deux formats
+            name: cat.name
+          })).filter(cat => cat.id && cat.name); // éviter les cas invalides
+          setCategories(cleaned);
+        }
+      } catch (err) {
+        console.error('Erreur lors de la récupération des catégories :', err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
-  const handleGenreClick = (genre) => {
-    if (selected.includes(genre)) {
-      setSelected(selected.filter((g) => g !== genre));
-    } else if (selected.length < 2) {
-      setSelected([...selected, genre]);
-    }
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  const handleGenreToggle = (id) => {
+    setSelected((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((g) => g !== id);
+      } else if (prev.length < 2) {
+        return [...prev, id];
+      }
+      return prev;
+    });
   };
 
-  const handleApplySelection = () => {
+  const handleApply = () => {
+    onGenresSelect([...selected]); // Renvoie uniquement les IDs
     setIsOpen(false);
-    onSelectGenres([...selected]);  };
+  };
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -31,8 +55,6 @@ function GenreSelector({ categories, onGenresSelect }) {
   useEffect(() => {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -42,22 +64,25 @@ function GenreSelector({ categories, onGenresSelect }) {
   return (
     <div className={styles.genreSelectorContainer} ref={dropdownRef}>
       <button type="button" className={styles.dropdownButton} onClick={toggleDropdown}>
-        {selected.length > 0 ? selected.join(', ') : 'Choisir des genres'}
+        {selected.length > 0
+          ? selected.map((id) => categories.find((c) => c.id === id)?.name).join(', ')
+          : 'Choisir des genres'}
       </button>
 
       {isOpen && (
         <div className={styles.dropdownMenu}>
           <ul className={styles.genreList}>
-            {categories.map((genre) => (
-              <li key={genre} className={styles.genreItem}>
-                <label htmlFor="genre">
+            {categories.map((cat) => (
+              <li key={`genre-${cat.id}`} className={styles.genreItem}>
+                <label htmlFor={`genre-${cat.id}`}>
                   <input
+                    id={`genre-${cat.id}`}
                     type="checkbox"
-                    checked={selected.includes(genre)}
-                    onChange={() => handleGenreClick(genre)}
-                    disabled={!selected.includes(genre) && selected.length >= 2}
+                    checked={selected.includes(cat.id)}
+                    onChange={() => handleGenreToggle(cat.id)}
+                    disabled={!selected.includes(cat.id) && selected.length >= 2}
                   />
-                  {genre}
+                  {cat.name}
                 </label>
               </li>
             ))}
@@ -65,7 +90,7 @@ function GenreSelector({ categories, onGenresSelect }) {
           <button
             type="button"
             className={styles.applyButton}
-            onClick={handleApplySelection}
+            onClick={handleApply}
             disabled={selected.length === 0}
           >
             Valider
@@ -77,7 +102,6 @@ function GenreSelector({ categories, onGenresSelect }) {
 }
 
 GenreSelector.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   onGenresSelect: PropTypes.func.isRequired,
 };
 

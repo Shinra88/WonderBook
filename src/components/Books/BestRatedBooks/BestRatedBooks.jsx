@@ -1,11 +1,23 @@
-import React, { useRef } from 'react';
+// 📁 src/components/Books/BestRatedBooks/BestRatedBooks.jsx
+import React, { useMemo, useRef } from 'react';
 import { useBestRatedBooks } from '../../../hooks/customHooks';
-import BookItem from '../BookItem/BookItem';
+import { useFilters } from '../../../hooks/filterContext';
+import BookDisplay from '../BookDisplay/BookDisplay';
 import styles from './BestRatedBooks.module.css';
 
 function BestRatedBooks() {
-  const { bestRatedBooks } = useBestRatedBooks();
+  const { selectedCategories, selectedYear, selectedType } = useFilters();
   const scrollRef = useRef(null);
+
+  const filters = useMemo(() => ({
+    categories: selectedCategories,
+    year: typeof selectedYear === 'string' ? selectedYear : '',
+    start: selectedYear?.start,
+    end: selectedYear?.end,
+    type: selectedType,
+  }), [selectedCategories, selectedYear, selectedType]);
+
+  const { bestRatedBooks, loading } = useBestRatedBooks(filters);
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
@@ -16,11 +28,13 @@ function BestRatedBooks() {
     });
   };
 
-  const content = bestRatedBooks.length > 0 ? (
-    bestRatedBooks.map((elt, index) => (
-      <BookItem
-        key={`book-${elt.bookId ?? `fallback-${index}`}`}
-        book={elt}
+  const content = loading ? (
+    <h3>Chargement des livres les mieux notés...</h3>
+  ) : bestRatedBooks.length > 0 ? (
+    bestRatedBooks.map((book, index) => (
+      <BookDisplay
+        key={`book-${book.bookId ?? `fallback-${index}`}`}
+        book={book}
         size={3}
       />
     ))

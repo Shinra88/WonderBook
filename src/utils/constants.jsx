@@ -1,3 +1,4 @@
+//constants.js
 const API_URL = 'http://localhost:5000';
 
 export const API_ROUTES = {
@@ -13,6 +14,14 @@ export const API_ROUTES = {
     UPLOAD_IMAGE: `${API_URL}/api/upload/cover`,
   },
 
+  CATEGORIES: {
+    GET_ALL: `${API_URL}/api/categories`, 
+  },
+
+  PUBLISHERS: {
+    GET_ALL: `${API_URL}/api/publishers`,
+  },
+  
   BOOKS: {
     BASE: `${API_URL}/api/books`,
     ADD_BOOK: `${API_URL}/api/books`,
@@ -35,12 +44,12 @@ export const APP_ROUTES = {
   REGISTER_SEND: '/RegisterSend',
   LOGIN: '/Login',
   FORGET: '/ForgetPassword',
-  FORGET_SEND: '/ForgetSend',
   ACCOUNT: '/Account',
   CHANGE_PASS: '/change-password',
   COLLECTION: '/Collection',
   FORUM: '/Forum',
   ADD_BOOK: '/AddBook',
-  BOOK: '/Book/:id',
+  BOOK: '/livre/:title',
   UPDATE_BOOK: '/Book/edit/:id',
+  RESET_PASSWORD: '/reset-password/:token',
 };

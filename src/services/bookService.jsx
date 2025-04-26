@@ -1,11 +1,27 @@
 // 📁 services/bookService.js
-import axios from 'axios';
+import api from '../services/api/api';
 import { API_ROUTES } from '../utils/constants';
 
-// ✅ Récupère tous les livres
-export async function getBooks() {
+// ✅ Fonction utilitaire pour appliquer les filtres à une URL
+function appendFiltersToParams(params, filters = {}) {
+  if (filters.year) params.append('year', filters.year);
+  if (filters.start && filters.end) {
+    params.append('start', filters.start);
+    params.append('end', filters.end);
+  }
+  if (filters.categories?.length) {
+    filters.categories.forEach((cat) => params.append('categories', cat));
+  }
+  if (filters.type) params.append('type', filters.type);
+}
+
+// ✅ Récupère tous les livres (avec ou sans filtres)
+export async function getBooks(filters = {}) {
+  const params = new URLSearchParams();
+  appendFiltersToParams(params, filters);
+
   try {
-    const response = await axios.get(API_ROUTES.BOOKS.BASE);
+    const response = await api.get(`${API_ROUTES.BOOKS.BASE}?${params.toString()}`);
     return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération des livres :", err);
@@ -16,7 +32,7 @@ export async function getBooks() {
 // ✅ Récupère un livre par ID
 export async function getBook(id) {
   try {
-    const response = await axios.get(`${API_ROUTES.BOOKS}/${id}`);
+    const response = await api.get(`${API_ROUTES.BOOKS.BASE}/${id}`);
     return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération du livre :", err);
@@ -24,10 +40,13 @@ export async function getBook(id) {
   }
 }
 
-// ✅ Récupère les livres les mieux notés
-export async function getBestRatedBooks() {
+// ✅ Récupère les livres les mieux notés (avec filtres)
+export async function getBestRatedBooks(filters = {}) {
+  const params = new URLSearchParams();
+  appendFiltersToParams(params, filters);
+
   try {
-    const response = await axios.get(API_ROUTES.BOOKS.BEST_RATED);
+    const response = await api.get(`${API_ROUTES.BOOKS.BEST_RATED}?${params.toString()}`);
     return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération des meilleurs livres :", err);
@@ -35,10 +54,13 @@ export async function getBestRatedBooks() {
   }
 }
 
-// ✅ Récupère les 5 derniers livres ajoutés
-export async function getLastAddedBooks() {
+// ✅ Récupère les 5 derniers livres ajoutés (avec filtres)
+export async function getLastAddedBooks(filters = {}) {
+  const params = new URLSearchParams();
+  appendFiltersToParams(params, filters);
+
   try {
-    const response = await axios.get(API_ROUTES.BOOKS.LAST_ADDED);
+    const response = await api.get(`${API_ROUTES.BOOKS.LAST_ADDED}?${params.toString()}`);
     return response.data;
   } catch (err) {
     console.error("Erreur lors des derniers livres :", err);
@@ -49,9 +71,7 @@ export async function getLastAddedBooks() {
 // ✅ Supprime un livre
 export async function deleteBook(id) {
   try {
-    await axios.delete(`${API_ROUTES.BOOKS}/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+    await api.delete(`${API_ROUTES.BOOKS.BASE}/${id}`);
     return true;
   } catch (err) {
     console.error("Erreur lors de la suppression du livre :", err);
@@ -77,9 +97,7 @@ export async function addBook(data) {
   bodyFormData.append('image', data.file?.[0]);
 
   try {
-    const response = await axios.post(API_ROUTES.BOOKS, bodyFormData, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+    const response = await api.post(API_ROUTES.BOOKS.BASE, bodyFormData);
     return response.data;
   } catch (err) {
     console.error("Erreur ajout livre :", err);
@@ -108,9 +126,7 @@ export async function updateBook(data, id) {
   }
 
   try {
-    const response = await axios.put(`${API_ROUTES.BOOKS}/${id}`, newData, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+    const response = await api.put(`${API_ROUTES.BOOKS.BASE}/${id}`, newData);
     return response.data;
   } catch (err) {
     console.error("Erreur mise à jour livre :", err);
@@ -122,12 +138,21 @@ export async function updateBook(data, id) {
 export async function rateBook(bookId, userId, rating) {
   const data = { userId, rating: parseInt(rating, 10) };
   try {
-    const response = await axios.post(`${API_ROUTES.BOOKS}/${bookId}/rating`, data, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+    const response = await api.post(`${API_ROUTES.BOOKS.BASE}/${bookId}/rating`, data);
     return response.data;
   } catch (err) {
     console.error("Erreur notation livre :", err);
     return err.message;
   }
 }
+
+// ✅ Récupère un livre par son titre
+export const getBookByTitle = async (title) => {
+  try {
+    const response = await api.get(`${API_ROUTES.BOOKS.BASE}/title/${encodeURIComponent(title)}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du livre par titre :", error);
+    return null;
+  }
+};

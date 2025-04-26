@@ -1,6 +1,13 @@
+// 📁 hooks/customHooks.jsx
 import { useState, useEffect } from 'react';
-import { getBestRatedBooks, getLastAddedBooks } from '../services/bookService';
+import { getAuthenticatedUser } from '../services/authService';
+import {
+  getBestRatedBooks,
+  getLastAddedBooks,
+  getBooks,
+} from '../services/bookService';
 
+/** ✅ Récupère l'utilisateur connecté */
 export function useUser() {
   const [connectedUser, setConnectedUser] = useState(null);
   const [auth, setAuth] = useState(false);
@@ -19,84 +26,97 @@ export function useUser() {
   return { connectedUser, auth, userLoading };
 }
 
-// export function useBestRatedBooks() {
-//   const [bestRatedBooks, setBestRatedBooks] = useState({});
-
-//   useEffect(() => {
-//     async function getRatedBooks() {
-//       const books = await getBestRatedBooks();
-//       setBestRatedBooks(books);
-//     }
-//     getRatedBooks();
-//   }, []);
-
-//   return { bestRatedBooks };
-// }
-
-export function useBestRatedBooks() {
+/** ✅ Récupère les meilleurs livres (avec filtres) */
+export function useBestRatedBooks(filters) {
   const [bestRatedBooks, setBestRatedBooks] = useState([]);
-  const [error, setError] = useState(null); // Nouvelle variable d'état pour les erreurs
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchRateBooks() {
+    async function fetchBooks() {
       try {
-        const response = await getBestRatedBooks();
-        if (Array.isArray(response)) {
-          setBestRatedBooks(response);
-        } else {
-          setBestRatedBooks([]); // Si la réponse n'est pas un tableau, utiliser un tableau vide
-          setError("La réponse des livres ajoutés n'est pas un tableau valide.");
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement des meilleurs livres :", error);
-        setError("Erreur lors de la récupération des meilleurs livres.");
+        setLoading(true);
+        const response = await getBestRatedBooks(filters);
+        setBestRatedBooks(Array.isArray(response) ? response : []);
+      } catch (err) {
+        console.error("Erreur meilleurs livres:", err);
+        setError("Erreur chargement des meilleurs livres");
         setBestRatedBooks([]);
+      } finally {
+        setLoading(false);
       }
     }
-    fetchRateBooks();
-  }, []);
+    fetchBooks();
+  }, [filters]);
 
-  return { bestRatedBooks, error };
+  return { bestRatedBooks, loading, error };
 }
 
-export function useLastAddedBooks() {
+/** ✅ Récupère les derniers livres ajoutés (avec filtres) */
+export function useLastAddedBooks(filters) {
   const [lastAddedBooks, setLastAddedBooks] = useState([]);
-  const [error, setError] = useState(null); // Nouvelle variable d'état pour les erreurs
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchLastBooks() {
+    async function fetchBooks() {
       try {
-        const response = await getLastAddedBooks();
-        if (Array.isArray(response)) {
-          setLastAddedBooks(response);
-        } else {
-          setLastAddedBooks([]); // Si la réponse n'est pas un tableau, utiliser un tableau vide
-          setError("La réponse des livres ajoutés n'est pas un tableau valide.");
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement des derniers livres :", error);
-        setError("Erreur lors de la récupération des derniers livres.");
+        setLoading(true);
+        const response = await getLastAddedBooks(filters);
+        setLastAddedBooks(Array.isArray(response) ? response : []);
+      } catch (err) {
+        console.error("Erreur derniers livres:", err);
+        setError("Erreur chargement des derniers livres");
         setLastAddedBooks([]);
+      } finally {
+        setLoading(false);
       }
     }
-    fetchLastBooks();
-  }, []);
+    fetchBooks();
+  }, [filters]);
 
-  return { lastAddedBooks, error };
+  return { lastAddedBooks, loading, error };
 }
 
+/** ✅ Prévisualisation locale de fichier (image) */
 export function useFilePreview(file) {
   const [imgSrc, setImgSrc] = useState(null);
 
   useEffect(() => {
-    if (file && file[0]?.length > 0) {
-      const newUrl = URL.createObjectURL(file[0][0]);
-
-      if (newUrl !== imgSrc) {
-        setImgSrc(newUrl);
-      }
+    if (file instanceof File) {
+      const url = URL.createObjectURL(file);
+      setImgSrc(url);
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setImgSrc(null);
     }
   }, [file]);
 
-  return [imgSrc, setImgSrc];
+  return [imgSrc];
+}
+
+/** ✅ Récupère tous les livres (filtrés) */
+export function useFilteredBooks(filters) {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchBooks() {
+      try {
+        setLoading(true);
+        const response = await getBooks(filters);
+        setBooks(Array.isArray(response) ? response : []);
+      } catch (err) {
+        console.error("Erreur livres filtrés:", err);
+        setError("Erreur chargement des livres");
+        setBooks([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBooks();
+  }, [filters]);
+
+  return { books, loading, error };
 }
