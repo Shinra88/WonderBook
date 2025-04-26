@@ -3,7 +3,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 999;
     background-image: url("../../images/backround.png");
     display: flex;
     justify-content: space-evenly;

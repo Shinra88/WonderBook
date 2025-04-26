@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import styles from './DropdownMenu.module.css';
+import useCategories from '../../hooks/useCategories';
+import { useFilters } from '../../hooks/filterContext';
 
-function DropdownMenu({ categories, backgroundClass = '', onFilterChange = () => {} }) {
+function DropdownMenu({ backgroundClass = '' }) {
+  const {
+    selectedCategories,
+    setSelectedCategories,
+    selectedType,
+    setSelectedType
+  } = useFilters();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [filterType, setFilterType] = useState('et');
   const dropdownRef = useRef(null);
+
+  const { categories, loading, error } = useCategories();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -26,18 +34,14 @@ function DropdownMenu({ categories, backgroundClass = '', onFilterChange = () =>
     };
   }, [isOpen]);
 
-  const handleCategorySelect = (category) => {
-    if (selectedCategories.includes(category)) {
-      const updatedCategories = selectedCategories.filter((c) => c !== category);
-      setSelectedCategories(updatedCategories);
-      onFilterChange(updatedCategories);
-    } else {
-      if (selectedCategories.length < 2) {
-        const updatedCategories = [...selectedCategories, category];
-        setSelectedCategories(updatedCategories);
-        onFilterChange(updatedCategories);
-      }
-    }
+  const handleCategorySelect = (categoryName) => {
+    const updatedCategories = selectedCategories.includes(categoryName)
+      ? selectedCategories.filter((c) => c !== categoryName)
+      : selectedCategories.length < 2
+        ? [...selectedCategories, categoryName]
+        : selectedCategories;
+
+    setSelectedCategories(updatedCategories);
   };
 
   return (
@@ -48,58 +52,61 @@ function DropdownMenu({ categories, backgroundClass = '', onFilterChange = () =>
 
       {isOpen && (
         <div className={`${styles.dropdownMenu} ${styles[backgroundClass]}`}>
-          <div className={styles.filterSection}>
-            <span>Filtrage</span>
-            <div className={styles.filterToggle}>
-              <label htmlFor="filter-et">
-                <input
-                  type="radio"
-                  name="filter"
-                  id="filter-et"
-                  value="et"
-                  checked={filterType === 'et'}
-                  onChange={() => setFilterType('et')}
-                />
-                et
-              </label>
-              <label htmlFor="filter-ou">
-                <input
-                  type="radio"
-                  name="filter"
-                  id="filter-ou"
-                  value="ou"
-                  checked={filterType === 'ou'}
-                  onChange={() => setFilterType('ou')}
-                />
-                ou
-              </label>
-            </div>
-          </div>
+          {loading && <p>Chargement...</p>}
+          {error && <p>Erreur de chargement</p>}
 
-          <ul className={styles.categoryList}>
-            {categories.map((category) => (
-              <li key={category} className={styles.categoryItem}>
-                <label htmlFor="category">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategorySelect(category)}
-                  />
-                  {category}
-                </label>
-              </li>
-            ))}
-          </ul>
+          {!loading && !error && (
+            <>
+              <div className={styles.filterSection}>
+                <span>Filtrage</span>
+                <div className={styles.filterToggle}>
+                  <label>
+                    <input
+                      type="radio"
+                      name="filter"
+                      value="et"
+                      checked={selectedType === 'et'}
+                      onChange={() => setSelectedType('et')}
+                    />
+                    et
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="filter"
+                      value="ou"
+                      checked={selectedType === 'ou'}
+                      onChange={() => setSelectedType('ou')}
+                    />
+                    ou
+                  </label>
+                </div>
+              </div>
+
+              <ul className={styles.categoryList}>
+                {categories.map((cat) => (
+                  <li key={cat.name} className={styles.categoryItem}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(cat.name)}
+                        onChange={() => handleCategorySelect(cat.name)}
+                        disabled={
+                          !selectedCategories.includes(cat.name) &&
+                          selectedCategories.length >= 2
+                        }
+                      />
+                      {cat.name}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       )}
     </div>
   );
 }
-
-DropdownMenu.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  backgroundClass: PropTypes.string,
-  onFilterChange: PropTypes.func,
-};
 
 export default DropdownMenu;

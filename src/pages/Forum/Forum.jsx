@@ -6,7 +6,7 @@ import DropdownMenu from '../../components/DropdownMenu/DropdownMenu';
 import BestRateBooks from '../../components/Books/BestRatedBooks/BestRatedBooks';
 import Banner from '../../images/library.png';
 import { getBooks } from '../../services/bookService';
-import BookItem from '../../components/Books/BookItem/BookItem';
+import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import styles from './Forum.module.css';
 
 function Forum() {
@@ -16,7 +16,7 @@ function Forum() {
   const displayBooks = () => (
     books
       ? books.map((book) => (
-        <BookItem
+        <BookDisplay
           size={2}
           book={book}
           key={book.id}

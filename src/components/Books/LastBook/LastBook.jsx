@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
-import { useLastAddedBooks } from '../../../hooks/customHooks';
-import BookItem from '../BookItem/BookItem';
+import PropTypes from 'prop-types';
+import BookDisplay from '../BookDisplay/BookDisplay';
 import styles from './LastBook.module.css';
 
-function LastBooks() {
-  const { lastAddedBooks, error } = useLastAddedBooks();
+function LastBooks({ lastAddedBooks = [], loading = false }) {
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
@@ -16,9 +15,11 @@ function LastBooks() {
     });
   };
 
+  if (loading) return <h3>Chargement des derniers livres...</h3>;
+
   const content = lastAddedBooks.length > 0 ? (
     lastAddedBooks.map((elt, index) => (
-      <BookItem
+      <BookDisplay
         key={`book-${elt.bookId ?? `fallback-${index}`}`}
         book={elt}
         size={3}
@@ -42,5 +43,10 @@ function LastBooks() {
     </section>
   );
 }
+
+LastBooks.propTypes = {
+  lastAddedBooks: PropTypes.array,
+  loading: PropTypes.bool,
+};
 
 export default LastBooks;

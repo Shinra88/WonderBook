@@ -131,11 +131,8 @@ function SignIn({ onClose = null, openLogin }) {
         <h2>Inscription</h2>
         <div className={styles.recaptchaWrapper}>
           <ReCAPTCHA
-            sitekey="6LeySBQrAAAAAP6T4OxTqoVWFOEkBnp7Mfntsnes"
-            onChange={(token) => {
-              console.log('reCAPTCHA token:', token);
-              setRecaptchaToken(token);
-            }}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={(token) => setRecaptchaToken(token)}
           />
         </div>
         <div>

@@ -1,7 +1,7 @@
 // 📁 utils/helpers.js
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import styles from '../components/Books/BookItem/BookItem.module.css';
+import styles from '../components/Books/BookDisplay/BookDisplay.module.css';
 
 /** ⭐ Affiche les étoiles selon la note */
 export function displayStars(rating) {

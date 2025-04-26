@@ -1,48 +1,58 @@
 import React, { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import styles from './DropdownYear.module.css';
+import { useYears } from '../../hooks/useYears';
+import { useFilters } from '../../hooks/filterContext';
 
-function DropdownYear({ onFilterChange = () => {} }) {
+function DropdownYear() {
+  const { minYear, currentYear } = useYears();
+
+  const {
+    selectedYear,
+    setSelectedYear
+  } = useFilters();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [filterType, setFilterType] = useState('unique');
-  const [year, setYear] = useState('');
-  const [yearStart, setYearStart] = useState('');
-  const [yearEnd, setYearEnd] = useState('');
+  const [filterType, setFilterType] = useState(
+    typeof selectedYear === 'object' ? 'tranche' : 'unique'
+  );
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  // Fermer le dropdown en cliquant à l'extérieur
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  // ✅ Fonction pour envoyer l'année unique au parent
-  const handleYearChange = (e) => {
-    const newYear = e.target.value;
-    console.log('🔹 Année sélectionnée dans DropdownYear:', newYear);
-    setYear(newYear);
-    onFilterChange(newYear);
+  const handleUniqueChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+    setSelectedYear(val); // toujours mettre à jour la saisie pour afficher ce qu'on tape
   };
+  
 
-  // ✅ Fonction pour envoyer une plage d'années au parent
-  const handleYearRangeChange = (start, end) => {
-    setYearStart(start);
-    setYearEnd(end);
-    onFilterChange({ start, end }); // ✅ Envoi de la plage d'années au parent
-  };
+  const handleRangeChange = (field, value) => {
+    const newVal = value.replace(/\D/g, '').slice(0, 4);
+    const newRange = { ...range, [field]: newVal };
+    setSelectedYear(newRange); // tu updates quoiqu’il arrive pour voir la saisie
+  
+    // Si les deux sont valides, tu vérifies ensuite
+    if (
+      newRange.start.length === 4 &&
+      newRange.end.length === 4 &&
+      parseInt(newRange.start) >= minYear &&
+      parseInt(newRange.end) <= currentYear &&
+      parseInt(newRange.start) <= parseInt(newRange.end)
+    ) {
+      setSelectedYear(newRange);
+    }
+  };  
+
+  const range = typeof selectedYear === 'object' ? selectedYear : { start: '', end: '' };
 
   return (
     <div className={styles.dropdownContainer} ref={dropdownRef}>
@@ -52,70 +62,77 @@ function DropdownYear({ onFilterChange = () => {} }) {
 
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          <div className={styles.filterSection}>
-            <div className={styles.filterToggle}>
-              <label htmlFor="filter-unique">
-                <input
-                  type="radio"
-                  name="filter"
-                  value="unique"
-                  checked={filterType === 'unique'}
-                  onChange={() => setFilterType('unique')}
-                />
-                Unique
-              </label>
-              <label htmlFor="filter-tranche">
-                <input
-                  type="radio"
-                  name="filter"
-                  value="tranche"
-                  checked={filterType === 'tranche'}
-                  onChange={() => setFilterType('tranche')}
-                />
-                Tranche
-              </label>
-            </div>
-          </div>
-          {filterType === 'unique' && (
-            <div className={styles.inputWrapper}>
+          <div className={styles.filterToggle}>
+            <label>
               <input
-                type="number"
-                placeholder="Année"
-                value={year}
-                onChange={handleYearChange} // ✅ Utilisation de la fonction ici
+                type="radio"
+                value="unique"
+                checked={filterType === 'unique'}
+                onChange={() => {
+                  setFilterType('unique');
+                  setSelectedYear('');
+                }}
               />
-            </div>
-          )}
-          {filterType === 'tranche' && (
+              Unique
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="tranche"
+                checked={filterType === 'tranche'}
+                onChange={() => {
+                  setFilterType('tranche');
+                  setSelectedYear({ start: '', end: '' });
+                }}
+              />
+              Tranche
+            </label>
+          </div>
+
+          {filterType === 'unique' && (
             <div className={styles.rangeInputs}>
-              <label htmlFor="yearStart">
-                de
-                <input
-                  type="number"
-                  placeholder="Année de début"
-                  value={yearStart}
-                  onChange={(e) => handleYearRangeChange(e.target.value, yearEnd)}
-                />
-              </label>
-              <label htmlFor="yearEnd">
-                à
-                <input
-                  type="number"
-                  placeholder="Année de fin"
-                  value={yearEnd}
-                  onChange={(e) => handleYearRangeChange(yearStart, e.target.value)}
-                />
-              </label>
+            <input
+              type="number"
+              placeholder="Année"
+              min={minYear}
+              max={currentYear}
+              value={typeof selectedYear === 'string' ? selectedYear : ''}
+              onChange={handleUniqueChange}
+            />
             </div>
           )}
+
+{filterType === 'tranche' && (
+  <div className={styles.rangeInputs}>
+    <label>
+      de
+      <input
+        type="number"
+        placeholder="Année de début"
+        min={minYear}
+        max={currentYear}
+        value={range.start}
+        onChange={(e) => handleRangeChange('start', e.target.value)}
+      />
+    </label>
+    <label>
+      à
+      <input
+        type="number"
+        placeholder="Année de fin"
+        min={minYear}
+        max={currentYear}
+        value={range.end}
+        onChange={(e) => handleRangeChange('end', e.target.value)}
+      />
+    </label>
+  </div>
+)}
+
         </div>
       )}
     </div>
   );
 }
-
-DropdownYear.propTypes = {
-  onFilterChange: PropTypes.func,
-};
 
 export default DropdownYear;

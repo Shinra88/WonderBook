@@ -1,3 +1,4 @@
+//useAuth.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 
 // Crée le contexte d'authentification

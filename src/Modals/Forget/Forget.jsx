@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import api from '../../services/api/api';
+import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
+import ReCAPTCHA from 'react-google-recaptcha'; // ➡️ Ajout du module
 import styles from './Forget.module.css';
 
 function Forget({ onClose }) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({ error: false, message: '' });
+  const [showToast, setShowToast] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState('');
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -19,17 +23,37 @@ function Forget({ onClose }) {
   }, [onClose]);
 
   const forget = async () => {
+    if (!email) {
+      setNotification({ error: true, message: "Merci d'entrer votre email." });
+      return;
+    }
+
+    if (!recaptchaToken) {
+      setNotification({ error: true, message: "Merci de valider le CAPTCHA." });
+      return;
+    }
+
     try {
       setIsLoading(true);
-      const response = await axios.post('/api/forget-password', { email });
+      const response = await api.post('/auth/forget-password', {
+        email,
+        recaptchaToken, // ➡️ envoi du token aussi
+      });
 
       if (!response?.data?.success) {
-        setNotification({ error: true, message: 'Une erreur est survenue' });
+        setNotification({ error: true, message: response?.data?.message || 'Une erreur est survenue.' });
       } else {
         setNotification({ error: false, message: 'Un email de réinitialisation a été envoyé.' });
+        setShowToast(true);
+        setEmail('');
+        setRecaptchaToken('');
+        setTimeout(() => {
+          setShowToast(false);
+          onClose();
+        }, 2000);
       }
     } catch (err) {
-      setNotification({ error: true, message: err.message });
+      setNotification({ error: true, message: err.response?.data?.message || err.message });
     } finally {
       setIsLoading(false);
     }
@@ -54,31 +78,46 @@ function Forget({ onClose }) {
       <div className={styles.modalContent}>
         <h2>Mot de passe oublié</h2>
 
-        {notification.message && (
-          <div className={notification.error ? styles.errorMessage : styles.successMessage}>
-            {notification.message}
-          </div>
+        {showToast && (
+          <ToastSuccess message="Un email de réinitialisation a été envoyé !" />
         )}
 
-        <label htmlFor="email">
-          E-mail
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
+        {!showToast && (
+          <>
+            {notification.message && (
+              <div className={notification.error ? styles.errorMessage : styles.successMessage}>
+                {notification.message}
+              </div>
+            )}
 
-        <div className={styles.buttonContainer}>
-          <button type="button" className={styles.cancelButton} onClick={onClose}>
-            Annuler
-          </button>
-          <button type="button" className={styles.validateButton} onClick={forget} disabled={isLoading}>
-            {isLoading ? 'Chargement...' : 'Valider'}
-          </button>
-        </div>
+            <label htmlFor="email">
+              E-mail
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+
+            <div className={styles.recaptchaContainer}>
+              <ReCAPTCHA
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                onChange={(token) => setRecaptchaToken(token)}
+              />
+            </div>
+
+            <div className={styles.buttonContainer}>
+              <button type="button" className={styles.cancelButton} onClick={onClose}>
+                Annuler
+              </button>
+              <button type="button" className={styles.validateButton} onClick={forget} disabled={isLoading}>
+                {isLoading ? 'Chargement...' : 'Valider'}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

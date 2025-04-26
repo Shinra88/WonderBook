@@ -17,7 +17,7 @@
   .dropdownMenu {
     position: absolute;
     top: 100%;
-    left: -55%;
+    left: -155%;
     background-image: url("../../images/backround.png");
     color: #e8d8a0;
     border-bottom: 4px solid #e8d8a0;
@@ -25,7 +25,7 @@
     border-right: 4px solid #e8d8a0;
     border-radius: 0px 0px 40px 40px;
     padding: 10px;
-    width: 160px;
+    width: 550px;
     z-index: 900;
   }
   
@@ -58,11 +58,19 @@
   
   .categoryList {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap; /* Permet aux éléments de revenir à la ligne */
+    justify-content: space-between; /* Espacement entre les éléments */
     list-style: none;
     padding: 0;
     margin: 0;
   }
+  
+  .categoryItem {
+    width: 25%; /* Ajuste la largeur pour permettre le retour à la ligne */
+    margin: 5px 0; /* Espace vertical entre les éléments */
+    white-space: normal; /* Corrige le comportement du texte */
+  }
+  
   
   .categoryList li {
     padding: 8px 0;
@@ -74,3 +82,14 @@
     background-color: #4b2d75;
     border-radius: 4px;
   }
+
+  .categoryItem {
+    padding: 4px 0;
+  }
+
+  .categoryItem:hover {
+    color: #ffffff;
+    background-color: #4b2d75;
+    border-radius: 4px;
+  }
+  

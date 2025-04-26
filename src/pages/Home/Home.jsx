@@ -1,39 +1,37 @@
-import React, { useState, useEffect } from 'react';
+// 📁 src/pages/Home/Home.jsx
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import BookItem from '../../components/Books/BookItem/BookItem';
+import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import BestRateBooks from '../../components/Books/BestRatedBooks/BestRatedBooks';
 import LastBook from '../../components/Books/LastBook/LastBook';
 import Banner from '../../images/library.png';
 import styles from './Home.module.css';
-import { getBooks } from '../../services/bookService';
 import Pagination from '../../components/Pagination/Pagination';
+import { useBestRatedBooks, useLastAddedBooks, useFilteredBooks } from '../../hooks/customHooks';
+import { useFilters } from '../../hooks/filterContext';
 
-function Home({ selectedCategories = [], selectedYear = '' }) {
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+function Home() {
+  const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
   const [selectedTab, setSelectedTab] = useState('LastBook');
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
-  const [lastAddedBooks, setLastAddedBooks] = useState([]); // Added state for last added books
 
-  useEffect(() => {
-    async function getBooksList() {
-      try {
-        const data = await getBooks();
-        if (Array.isArray(data)) {
-          setBooks(data);
-          // Assuming you want to fetch the last added books separately, 
-          // you could filter or fetch them here if needed
-          const lastAdded = data.slice(0, 5); // Example, get the 5 latest added books
-          setLastAddedBooks(lastAdded);
-        }
-      } catch (err) {
-      } finally {
-        setLoading(false);
-      }
-    }
-    getBooksList();
-  }, [selectedCategories, selectedYear]);
+  // ✅ Stabilise les filtres avec useMemo pour éviter les appels en boucle
+  const filters = useMemo(() => {
+    const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
+    return {
+      categories: selectedCategories,
+      year: validYear,
+      start: selectedYear?.start,
+      end: selectedYear?.end,
+      type: selectedType,
+    };
+  }, [selectedCategories, selectedYear, selectedType]);
+
+  // 🔄 Récupérations via les hooks
+  const { books, loading: booksLoading } = useFilteredBooks(filters);
+  const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(filters);
+  const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(filters);
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
@@ -43,20 +41,24 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
     setCurrentPage(page);
   };
 
+  // 🔍 Nouveau : filtrage par recherche (titre ou auteur)
+  const filteredBooks = useMemo(() => {
+    if (!searchQuery) return books;
+    const lowerQuery = searchQuery.toLowerCase();
+    return books.filter((book) =>
+      (book.title && book.title.toLowerCase().includes(lowerQuery)) ||
+      (book.author && book.author.toLowerCase().includes(lowerQuery))
+    );
+  }, [books, searchQuery]);
+
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
+  const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
   const displayBooks = () => {
-    if (!currentBooks.length) {
-      return <h2>Aucun livre à afficher.</h2>;
-    }
-    return currentBooks.map((book, index) => (
-      <BookItem
-        size={2}
-        book={book}
-        key={`book-${book.bookId || `fallback-${index}`}`}
-      />
+    if (!currentBooks.length) return <h2>Aucun livre trouvé pour votre recherche.</h2>;
+    return currentBooks.map((book) => (
+      <BookDisplay key={book.bookId} book={book} size={2} />
     ));
   };
 
@@ -84,9 +86,9 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
             </button>
           </div>
           <aside className={styles.bestRated}>
-            {selectedTab === 'bestRated' ? <BestRateBooks /> : (
-              <LastBook lastAddedBooks={Array.isArray(lastAddedBooks) ? lastAddedBooks : []} /> // Pass the books safely
-            )}
+            {selectedTab === 'bestRated'
+              ? <BestRateBooks books={bestRatedBooks} loading={bestLoading} />
+              : <LastBook lastAddedBooks={lastAddedBooks} loading={lastLoading} />}
           </aside>
         </header>
 
@@ -94,23 +96,30 @@ function Home({ selectedCategories = [], selectedYear = '' }) {
           <h3>Filtres appliqués :</h3>
           <div className={styles.filters}>
             <p>
-              <strong>Catégories :</strong>
-              {selectedCategories.length > 0 ? selectedCategories.join(', ') : 'Aucune'}
+              <strong>Catégories :</strong>{' '}
+              {selectedCategories.length > 0
+                ? selectedCategories.join(` ${selectedType || 'ou'} `)
+                : 'Aucune'}
             </p>
             <p>
-              <strong>Année :</strong>
-              {selectedYear || 'Aucune'}
+              <strong>Année :</strong>{' '}
+              {typeof selectedYear === 'string'
+                ? selectedYear
+                : selectedYear?.start && selectedYear?.end
+                  ? `${selectedYear.start} → ${selectedYear.end}`
+                  : 'Aucune'}
             </p>
           </div>
         </section>
 
         <section className={styles.bookList}>
-          {loading ? <h2>Chargement...</h2> : displayBooks()}
+          {booksLoading ? <h2>Chargement...</h2> : displayBooks()}
         </section>
+
         <div className={styles.paginationContainer}>
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(books.length / booksPerPage)}
+            totalPages={Math.ceil(filteredBooks.length / booksPerPage)}
             onPageChange={handlePageChange}
           />
         </div>
