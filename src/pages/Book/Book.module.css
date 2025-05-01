@@ -202,4 +202,41 @@
   color: #666;
 }
   
+.commercialLinks {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  border: 2px solid #e8d8a0;
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+}
+
+.linkList li {
+  margin: 0.5rem 0;
+}
+
+.linkList a {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  text-decoration: none;
+  color: #532222;
+  transition: color 0.2s ease;
+}
+
+.linkList a:hover {
+  color: #a35b00;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  object-fit: contain;
+}
+
   

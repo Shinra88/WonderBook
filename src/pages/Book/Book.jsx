@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './Book.module.css';
 import { getBookByTitle } from '../../services/bookService';
 import { addBookToCollection, removeBookFromCollection, getUserCollection } from '../../services/collectionService';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
@@ -10,6 +9,12 @@ import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import BackArrow  from '../../components/BackArrow/BackArrow';
 import avatarDefault from '../../images/avatar.png';
 import { displayStars } from '../../utils/helpers';
+import logoFnac from '../../images/logos/fnac.svg';
+import logoAmazon from '../../images/logos/amazon.svg';
+import logoCultura from '../../images/logos/cultura.png';
+import styles from './Book.module.css';
+
+
 
 function Book() {
   const { title } = useParams();
@@ -19,6 +24,11 @@ function Book() {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const { user } = useAuth();
+
+  const encodedTitle = encodeURIComponent(title || '');
+  const searchFnac = `https://www.fnac.com/SearchResult/ResultList.aspx?SCat=Livres__+BD__+Ebooks!1&SDM=list&Search=${encodedTitle}`;
+  const searchAmazon = `https://www.amazon.fr/s?k=${encodedTitle}&rh=n%3A301061&dc`;
+  const searchCultura = `https://www.cultura.com/search/results?search_query=${encodedTitle}&category_id=13668`;
 
   useEffect(() => {
     async function fetchBookAndCollection() {
@@ -144,7 +154,29 @@ function Book() {
                   </div>
                 )}
               </section>
+              
             )}
+<section className={styles.commercialLinks}>
+  <h3>Où acheter ce livre :</h3>
+  <ul className={styles.linkList}>
+    <li>
+      <a href={searchFnac} target="_blank" rel="noopener noreferrer">
+        <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
+      </a>
+    </li>
+    <li>
+      <a href={searchAmazon} target="_blank" rel="noopener noreferrer">
+        <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
+      </a>
+    </li>
+    <li>
+      <a href={searchCultura} target="_blank" rel="noopener noreferrer">
+        <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
+      </a>
+    </li>
+  </ul>
+</section>
+
           </article>
         </div>
       </main>
