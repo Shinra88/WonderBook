@@ -1,0 +1,207 @@
+.TopicDetail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 280px;
+    padding-bottom: 86px;
+    position: relative;
+  }
+  
+  .banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+  }
+  
+  .main {
+    width: 90%;
+    max-width: 1320px;
+    background-color: #9e9e9e;
+    border-radius: 15px;
+    border: 4px solid #e8d8a0;
+    margin: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .head {
+    min-height: 125px;
+    padding-inline: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url("../../images/wood-brown.jpg");
+  }
+
+  .head h2 {
+    color: #e8d8a0;
+    text-shadow: 2px 2px 4px #000000;
+    padding: 10px;
+  }
+  
+  .searchBar {
+    display: flex;
+    flex-direction: column;
+    background-color: #CBCBCB;
+    border-radius: 32px;
+    border: 2px solid #e8d8a0;
+    height: 2.4rem;
+    width: 20rem;
+    box-shadow: 4px 4px 8px black;
+  }
+  
+  .searchBar button {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--primary-color);
+    border: none;
+    padding: 15px;
+    box-shadow: 
+      4px 4px 8px rgba(0, 0, 0, 0.6),
+      inset 1px 1px 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  .searchBar .inputSearch {
+    display: flex;
+    border-radius: 32px;
+    overflow: hidden;
+  }
+  
+  .inputSearch input {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    border: none;
+    background-color: #CBCBCB;
+    padding: 1rem;
+    width: 25rem;
+    box-shadow: inset 2px 2px 15px rgba(0, 0, 0, 0.6);
+  }
+  
+  .author, .post{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+  }
+
+  .authorHead, .postHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #e8d8a0;
+    background-color: #532222;
+    padding-inline: 10px;
+    min-height: 66px;
+    border-top: 4px solid #e8d8a0;
+    border-bottom: 4px solid #e8d8a0;
+  }
+
+  .postHead {
+    border-left: 4px solid #e8d8a0;
+    border-right: 4px solid #e8d8a0;
+  }
+
+  .authorContent , .postContent {
+    font-size: 18px;
+    padding: 20px;
+    min-height: 96px;
+    border: 2px solid #e8d8a0;
+    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.4), inset -3px -3px 8px rgba(255, 255, 255, 0.2);
+  }
+  
+  .Topic ul {
+    width: 90%;
+    margin: auto;
+    padding: 0;
+    align-items: center;
+    list-style: none;
+    border: 2px solid #e8d8a0;
+    border-radius: 10px;
+  }
+
+  .Topic ul li:nth-child(odd) .post {
+    background-color: #D9D9D9;
+  }
+  
+  .Topic ul li:nth-child(even) .post {
+    background-color: #aebac2;
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid #e8d8a0;
+  }
+
+  .createButton {
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 32px;
+    font-family: 'Itim', serif;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+    transition: background-color 0.3s ease;
+  }
+  
+  .createButton:hover {
+    background-color: #d6c570;
+  }
+  
+  .backArrowWrapper > * {
+    transform: scale(0.6); /* rétrécit tout le composant */
+  }
+  
+  /* src/components/Pagination/Pagination.module.css */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.pagination button {
+  background-color: #e8d8a0;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: 'Itim', cursive;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.pagination button:disabled {
+  background-color: #c4c4c4;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: bold;
+  color: #532222;
+}
+
+.paginationWrapper {
+  margin-top: 20px;
+}
+
+
+  
+  

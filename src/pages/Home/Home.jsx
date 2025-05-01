@@ -65,7 +65,7 @@ function Home() {
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
 
   return (
-    <div className={styles.Home}>
+    <div className={styles.Home} >
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
         <header className={styles.head}>

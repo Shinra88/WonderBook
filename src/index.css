@@ -77,15 +77,6 @@ code {
 
 }
 
-.backArrow {
-  display: block;
-  margin-bottom: 5em;
-  color: #796157;
-  font-family: 'Itim', sans-serif;
-
-  text-decoration: none;
-}
-
 h1 {
   font-family: 'Itim', sans-serif;
   font-size: 44px;

@@ -3,8 +3,7 @@ import styles from './DropdownMenu.module.css';
 import useCategories from '../../hooks/useCategories';
 import { useFilters } from '../../hooks/filterContext';
 
-function DropdownMenu({ backgroundClass = '' }) {
-  const {
+function DropdownMenu({ isActive = false }) {  const {
     selectedCategories,
     setSelectedCategories,
     selectedType,
@@ -28,7 +27,6 @@ function DropdownMenu({ backgroundClass = '' }) {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -46,12 +44,16 @@ function DropdownMenu({ backgroundClass = '' }) {
 
   return (
     <div className={styles.dropdownContainer} ref={dropdownRef}>
-      <button className={styles.dropdownButton} type="button" onClick={toggleDropdown}>
+      <button 
+        className={`${styles.dropdownButton} ${isActive ? styles.activeFilter : ''}`} 
+        type="button" 
+        onClick={toggleDropdown}
+      >
         Catégories
       </button>
 
       {isOpen && (
-        <div className={`${styles.dropdownMenu} ${styles[backgroundClass]}`}>
+        <div className={`${styles.dropdownMenu}`}>
           {loading && <p>Chargement...</p>}
           {error && <p>Erreur de chargement</p>}
 

@@ -9,6 +9,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [honeypot, setHoneypot] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
 
@@ -20,9 +21,19 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
 
+  const isLoginValid = 
+    recaptchaToken && 
+    email.trim() !== '' && 
+    password.trim() !== '' && 
+    honeypot === '';
+
   const handleLogin = async () => {
     if (!recaptchaToken) {
       alert("Veuillez valider le CAPTCHA.");
+      return;
+    }
+    if (honeypot) {
+      console.warn("Bot détecté");
       return;
     }
 
@@ -43,7 +54,6 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
 
       login(res.data.user, res.data.token);
       onClose();
-
     } catch (err) {
       console.error('Erreur de login :', err?.response?.data || err.message || err);
       alert(err?.response?.data?.error || 'Erreur lors de la connexion');
@@ -68,6 +78,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={!recaptchaToken}
           />
         </label>
 
@@ -78,16 +89,25 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={!recaptchaToken}
           />
         </label>
 
+        {/* 🐝 Honeypot anti-bot */}
+        <input
+          type="text"
+          name="website"
+          className={styles.honeypot}
+          autoComplete="off"
+          tabIndex="-1"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+
         <div className={styles.recaptchaWrapper}>
           <ReCAPTCHA
-            sitekey="6LeySBQrAAAAAP6T4OxTqoVWFOEkBnp7Mfntsnes"
-            onChange={(token) => {
-              console.log('reCAPTCHA token:', token);
-              setRecaptchaToken(token);
-            }}
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+            onChange={(token) => setRecaptchaToken(token)}
           />
         </div>
 
@@ -115,7 +135,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             type="submit"
             className={styles.Validate}
             onClick={handleLogin}
-            disabled={isLoading || !recaptchaToken}
+            disabled={!isLoginValid || isLoading}
           >
             {isLoading ? 'Chargement...' : 'Valider'}
           </button>

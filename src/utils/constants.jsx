@@ -30,18 +30,33 @@ export const API_ROUTES = {
   },
 
   FORUM: {
-    BASE: `${API_URL}/api/forum`,
+    BASE: `${API_URL}/api/topics`,
+    GET_ALL_TOPICS: `${API_URL}/api/topics`,
+    ADD_TOPIC: `${API_URL}/api/topics`,
   },
 
+  POSTS: {
+    BASE: `${API_URL}/api/posts`,
+    GET_BY_TOPIC: (id) => `${API_URL}/api/posts/${id}`,
+  },  
+  
   COLLECTION: {
     BASE: `${API_URL}/api/collection`,
+    ADD: `${API_URL}/api/collection/add`,
+    REMOVE: (bookId) => `${API_URL}/api/collection/${bookId}`,
+    UPDATE_READ: (bookId) => `${API_URL}/api/collection/${bookId}`,
+    GET_USER_COLLECTION: `${API_URL}/api/collection`,
   },
+  
+  COMMENTS: {
+    BASE: `${API_URL}/api/comments`,
+  },
+  
 };
 
 export const APP_ROUTES = {
   HOME: '/',
   SIGN_IN: '/Register',
-  REGISTER_SEND: '/RegisterSend',
   LOGIN: '/Login',
   FORGET: '/ForgetPassword',
   ACCOUNT: '/Account',
