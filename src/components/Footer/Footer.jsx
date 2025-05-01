@@ -6,13 +6,13 @@ function Footer() {
   return (
     <footer className={styles.Footer}>
       <div className={styles.MapBlock}>
-        <img src={Map} alt="Position Géographique Mon Vieux Grimoire" />
+        <img src={Map} alt="Position Géographique Wonderbook" />
         <address>
-          {'8 place Jeanne d\'Arc'}
+          {'Place Pereire'}
           <br />
-          59000 Lille
+          64100 Bayonne
           <br />
-          <a className={styles.MapLink} target="_blank" href={'https://www.google.com/maps/place/8+Pl.+Jeanne+d\'Arc,+59000+Lille,+France/@50.6259112,3.0641085,17z/data=!3m1!4b1!4m5!3m4!1s0x47c2d590f9fc2c2d:0xf0d7614e1aa1964e!8m2!3d50.6259112!4d3.0641085'} rel="noreferrer">
+          <a className={styles.MapLink} target="_blank" href={'https://www.google.fr/maps/place/Gare+de+Bayonne/@43.4967847,-1.4730126,17z/data=!3m1!4b1!4m6!3m5!1s0xd5140edb3f3acf9:0xcccc210cb4db926e!8m2!3d43.4967808!4d-1.4704377!16s%2Fm%2F0g9wc83?hl=fr&entry=ttu&g_ep=EgoyMDI1MDQyOC4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D'} rel="noreferrer">
             voir sur la carte
           </a>
         </address>
