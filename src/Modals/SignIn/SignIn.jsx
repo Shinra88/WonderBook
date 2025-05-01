@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { register } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
-import styles from './SignIn.module.css';
+import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import ReCAPTCHA from "react-google-recaptcha";
+import styles from './SignIn.module.css';
 
 function SignIn({ onClose = null, openLogin }) {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function SignIn({ onClose = null, openLogin }) {
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState('');
   const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [showToast, setShowToast] = useState(false); // ✅ pour le toast
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -34,19 +36,6 @@ function SignIn({ onClose = null, openLogin }) {
     confirmPassword,
   });
 
-  const getPasswordStrength = (password) => {
-    let score = 0;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/\d/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-
-    if (score <= 2) return 'Faible';
-    if (score <= 4) return 'Moyen';
-    return 'Fort';
-  };
-
   const validateForm = (fields = getFormValues()) => {
     const { username, email, password, confirmPassword } = fields;
 
@@ -59,15 +48,12 @@ function SignIn({ onClose = null, openLogin }) {
     if (!pseudoRegex.test(username)) {
       newErrors.username = 'Le pseudo doit contenir 3-20 lettres, chiffres, - ou _';
     }
-
     if (!emailRegex.test(email)) {
       newErrors.email = "Adresse e-mail invalide.";
     }
-
     if (!passwordRegex.test(password)) {
       newErrors.password = '8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial.';
     }
-
     if (password !== confirmPassword) {
       newErrors.confirmPassword = 'Les mots de passe ne correspondent pas.';
     }
@@ -81,12 +67,7 @@ function SignIn({ onClose = null, openLogin }) {
       setNotification({ error: true, message: "Veuillez valider le captcha." });
       return;
     }
-    
-    if (errors.honeypot) {
-      console.warn("Bot détecté");
-      return;
-    }
-    
+
     const isValid = validateForm();
     if (!isValid) return;
 
@@ -96,16 +77,13 @@ function SignIn({ onClose = null, openLogin }) {
       if (!result.success) {
         setNotification({ error: true, message: result.error });
       } else {
-        setNotification({ error: false, message: 'Inscription réussie ! Redirection...' });
-        setTimeout(() =>
-          navigate('/RegisterSend', {
-            state: {
-              user: {
-                name: username,
-                mail: email
-              }
-            }
-          }), 2000);      }
+        setNotification({ error: false, message: 'Inscription réussie !' });
+        setShowToast(true); // ✅ affiche le toast
+
+        setTimeout(() => {
+          navigate('/'); // ou '/RegisterSend' si tu veux rediriger ailleurs
+        }, 2000);
+      }
     } catch (err) {
       setNotification({ error: true, message: 'Erreur lors de l’inscription.' });
     } finally {
@@ -127,21 +105,23 @@ function SignIn({ onClose = null, openLogin }) {
         if (e.target.classList.contains(styles.modalBackground) && onClose) onClose();
       }}
     >
+      {showToast && <ToastSuccess message="Inscription réussie 🎉" />}
+
       <div className={styles.modalContent}>
         <h2>Inscription</h2>
+
         <div className={styles.recaptchaWrapper}>
           <ReCAPTCHA
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-              onChange={(token) => setRecaptchaToken(token)}
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+            onChange={(token) => setRecaptchaToken(token)}
           />
         </div>
-        <div>
-          {!recaptchaToken && (
-            <p style={{ color: '#ff6666', fontWeight: 'bold', textAlign: 'center' }}>
-              Veuillez valider le CAPTCHA avant de remplir le formulaire.
-            </p>
-          )}
-        </div>
+
+        {!recaptchaToken && (
+          <p style={{ color: '#ff6666', fontWeight: 'bold', textAlign: 'center' }}>
+            Veuillez valider le CAPTCHA avant de remplir le formulaire.
+          </p>
+        )}
 
         {notification.message && (
           <div className={notification.error ? styles.errorMessage : styles.successMessage}>
@@ -150,6 +130,7 @@ function SignIn({ onClose = null, openLogin }) {
         )}
 
         <div className={styles.formContainer}>
+          {/* Champs Pseudo et Email */}
           {[
             {
               label: 'Pseudo',
@@ -188,7 +169,7 @@ function SignIn({ onClose = null, openLogin }) {
             </div>
           ))}
 
-          {/* Password field */}
+          {/* Password */}
           <div className={styles.formGroup}>
             <label htmlFor="password">Mot de passe</label>
             <div className={styles.passwordWrapper}>
@@ -234,8 +215,8 @@ function SignIn({ onClose = null, openLogin }) {
             <label htmlFor="confirmPassword">Confirmer mot de passe</label>
             <div className={styles.inputWrapper}>
               <input
-                disabled={!recaptchaToken}
                 className={`${styles.inputField} ${errors.confirmPassword ? styles.invalid : ''}`}
+                disabled={!recaptchaToken}
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
@@ -248,15 +229,6 @@ function SignIn({ onClose = null, openLogin }) {
             </div>
             <small className={styles.errorText}>{errors.confirmPassword || '\u00A0'}</small>
           </div>
-          <input
-            disabled={!recaptchaToken}
-            type="text"
-            name="website"
-            style={{ display: 'none' }}
-            autoComplete="off"
-            tabIndex="-1"
-            onChange={(e) => setErrors({ ...errors, honeypot: e.target.value })}
-          />
         </div>
 
         <div className={styles.Option}>

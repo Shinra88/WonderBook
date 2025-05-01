@@ -138,6 +138,13 @@
         inset -4px -4px 8px rgba(0, 0, 0, 0.6); /* Inner shadow */
 }
 
+.Validate:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 .Cancel {
     display: flex;
     justify-content: center;
@@ -161,3 +168,14 @@
         4px 4px 8px rgba(0, 0, 0, 0.6),  /* Drop shadow */
         inset -4px -4px 8px rgba(0, 0, 0, 0.6); /* Inner shadow */
 }
+
+.honeypot {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    pointer-events: none;
+  }
+  

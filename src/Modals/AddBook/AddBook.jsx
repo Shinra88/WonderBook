@@ -9,6 +9,7 @@ import { uploadImageToS3 } from '../../services/uploadServices';
 import useCategories from '../../hooks/useCategories';
 import useEditors from '../../hooks/useEditors';
 import api from '../../services/api/api';
+import { useAuth } from '../../hooks/useAuth';
 
 function AddBook({ onClose }) {
   const [author, setAuthor] = useState('');
@@ -26,7 +27,7 @@ function AddBook({ onClose }) {
   const [coverPreviewUrl, setCoverPreviewUrl] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [errors, setErrors] = useState({ day: '', month: '', year: '' });
-
+  const { isAuthenticated } = useAuth();
   const { categories, loading, error } = useCategories();
   const { editors: publishers } = useEditors();
 
@@ -36,6 +37,12 @@ function AddBook({ onClose }) {
       document.body.style.overflow = 'auto';
     };
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      onClose();
+    }
+  }, [isAuthenticated, onClose]);
 
   useEffect(() => {
     const handleEscape = (event) => {

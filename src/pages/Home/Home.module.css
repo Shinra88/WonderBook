@@ -1,11 +1,11 @@
 .Home {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centre le contenu verticalement si nécessaire */
+    justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Assure que .Home occupe au moins la hauteur de la fenêtre */
+    min-height: 100vh;
     padding-top: 250px;
-    padding-bottom: 60px; /* Hauteur du footer */
+    padding-bottom: 60px;
     position: relative;
 }
 

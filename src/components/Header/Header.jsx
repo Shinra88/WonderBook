@@ -14,6 +14,8 @@ import ForgetModal from '../../modals/Forget/Forget';
 import { useAuth } from '../../hooks/useAuth';
 import Avatar from '../../images/avatar.png';
 import { useFilters } from '../../hooks/filterContext';
+import { useLocation } from 'react-router-dom';
+
 
 function Header() {
   const [showAddBook, setShowAddBook] = useState(false);
@@ -22,8 +24,11 @@ function Header() {
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const { setSearchQuery } = useFilters();
-  const navigate = useNavigate();
+  const { setSearchQuery, selectedCategories, selectedYear } = useFilters();
+  const hasActiveFilter = selectedCategories.length > 0 || selectedYear !== '';  const navigate = useNavigate();
+  const location = useLocation();
+  const isForumPage = location.pathname.startsWith('/Forum') || location.pathname.startsWith('/topic');
+
 
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -36,7 +41,6 @@ function Header() {
 
   const handleSearch = () => {
     setSearchQuery(inputValue.trim());
-    navigate('/');
   };
 
   const handleKeyDown = (e) => {
@@ -70,10 +74,24 @@ function Header() {
                 Accueil
               </NavLink>
             </li>
-            <li><DropdownMenu /></li>
-            <li><DropdownYear /></li>
+            {!isForumPage && (
+              <>
+                <li>
+                  <DropdownMenu isActive={hasActiveFilter} />
+                </li>
+                <li>
+                  <DropdownYear isActive={
+                    (typeof selectedYear === 'string' && selectedYear !== '') ||
+                    (typeof selectedYear === 'object' && (selectedYear.start !== '' || selectedYear.end !== ''))
+                  } />
+                </li>
+              </>
+            )}
             <li>
-              <NavLink to="/Forum" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
+              <NavLink
+                to="/Forum"
+                className={() => (isForumPage ? styles.activeLink : undefined)}
+              >
                 Forum
               </NavLink>
             </li>
@@ -136,21 +154,22 @@ function Header() {
               </button>
             </>
           )}
-
-          <div className={styles.searchBar}>
-            <div className={styles.inputSearch}>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown} // Lancer recherche si Entrée
-                placeholder="Rechercher un livre ou un auteur"
-              />
-              <button type="button" onClick={handleSearch}>
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </button>
+          {!isForumPage && (
+            <div className={styles.searchBar}>
+              <div className={styles.inputSearch}>
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Rechercher un livre ou un auteur"
+                />
+                <button type="button" onClick={handleSearch}>
+                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

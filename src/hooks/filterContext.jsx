@@ -9,6 +9,7 @@ export function FilterProvider({ children }) {
   const [minYear, setMinYear] = useState(1900);
   const [searchQuery, setSearchQuery] = useState('');
   const currentYear = new Date().getFullYear();
+  const [filterRead, setFilterRead] = useState(false);
 
   return (
     <FilterContext.Provider value={{
@@ -22,7 +23,9 @@ export function FilterProvider({ children }) {
       setMinYear,
       currentYear,
       searchQuery,        
-      setSearchQuery    
+      setSearchQuery,  
+      filterRead,
+      setFilterRead  
     }}>
       {children}
     </FilterContext.Provider>

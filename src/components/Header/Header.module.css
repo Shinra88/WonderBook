@@ -197,4 +197,17 @@ padding-top: 4%;
   .userDropdown button:hover {
     text-decoration: underline;
   }
+
+  .activeLink {
+    text-decoration: underline !important;
+    font-weight: bold;
+}
+
+  .activeFilter {
+    border: 2px solid #d4af37; /* or couleur or / doré */
+    background-color: rgba(255, 215, 0, 0.2);
+    border-radius: 8px;
+  }
+  
+  
   

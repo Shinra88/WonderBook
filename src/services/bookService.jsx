@@ -1,6 +1,7 @@
 // 📁 services/bookService.js
 import api from '../services/api/api';
 import { API_ROUTES } from '../utils/constants';
+import { useAuth } from '../hooks/useAuth';
 
 // ✅ Fonction utilitaire pour appliquer les filtres à une URL
 function appendFiltersToParams(params, filters = {}) {

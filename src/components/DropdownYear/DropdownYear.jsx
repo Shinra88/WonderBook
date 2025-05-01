@@ -3,7 +3,7 @@ import styles from './DropdownYear.module.css';
 import { useYears } from '../../hooks/useYears';
 import { useFilters } from '../../hooks/filterContext';
 
-function DropdownYear() {
+function DropdownYear({ isActive = false }) {
   const { minYear, currentYear } = useYears();
 
   const {
@@ -56,7 +56,11 @@ function DropdownYear() {
 
   return (
     <div className={styles.dropdownContainer} ref={dropdownRef}>
-      <button className={styles.dropdownButton} type="button" onClick={toggleDropdown}>
+      <button
+        className={`${styles.dropdownButton} ${isActive ? styles.activeFilter : ''}`}
+        type="button"
+        onClick={toggleDropdown}
+      >
         Années
       </button>
 

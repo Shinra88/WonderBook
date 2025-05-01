@@ -7,12 +7,21 @@ import ChangePass from '../../modals/ChangePass/ChangePass';
 import { useAuth } from '../../hooks/useAuth';
 import { updateUserProfile } from '../../services/authService';
 import { updateAvatarOnS3 } from '../../services/uploadServices';
+import { useNavigate } from 'react-router-dom';
 
 function Account() {
   const { user, login } = useAuth();
   const token = user?.token;
   const [showChangePass, setShowChangePass] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/'); // ou '/login' si tu veux rediriger vers la page de connexion
+    }
+  }, [user, navigate]);
 
   const [form, setForm] = useState({
     name: '',
