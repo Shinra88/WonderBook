@@ -7,6 +7,7 @@ import { addOrUpdateComment } from '../../services/commentService';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import Banner from '../../images/library.png';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './Collection.module.css';
 
 function Collection() {
@@ -17,7 +18,7 @@ function Collection() {
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
-
+  const { user } = useAuth();
   const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
 
@@ -25,7 +26,7 @@ function Collection() {
 
   useEffect(() => {
     if (!user) {
-      navigate('/'); // ou '/login' si tu veux rediriger vers la page de connexion
+      navigate('/');
     }
   }, [user, navigate]);
 

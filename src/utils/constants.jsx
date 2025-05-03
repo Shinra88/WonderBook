@@ -27,6 +27,7 @@ export const API_ROUTES = {
     ADD_BOOK: `${API_URL}/api/books`,
     BEST_RATED: `${API_URL}/api/books/bestrating`,
     LAST_ADDED: `${API_URL}/api/books/lastadded`,
+    UPDATE_COVER: `${API_URL}/api/books/:id/cover`,
   },
 
   FORUM: {

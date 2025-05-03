@@ -30,6 +30,8 @@ function AddBook({ onClose }) {
   const { isAuthenticated } = useAuth();
   const { categories, loading, error } = useCategories();
   const { editors: publishers } = useEditors();
+  const [hasSaga, setHasSaga] = useState(false);
+  const [sagaName, setSagaName] = useState('');
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -90,6 +92,8 @@ function AddBook({ onClose }) {
     return !errors.day && !errors.month && !errors.year && day && month && year;
   };
 
+  const capitalize = (str) => str.replace(/\b\w/g, (l) => l.toUpperCase());
+
   const handleAddBook = async () => {
     if (!recaptchaToken) {
       setNotification({ error: true, message: 'Veuillez valider le CAPTCHA.' });
@@ -114,8 +118,12 @@ function AddBook({ onClose }) {
     setIsLoading(true);
     let coverUrl = '';
 
+    const finalTitle = hasSaga && sagaName
+      ? `${capitalize(sagaName)} : ${capitalize(title)}`
+      : capitalize(title);
+
     try {
-      const uploadedUrl = await uploadImageToS3(coverFile, title);
+      const uploadedUrl = await uploadImageToS3(coverFile, finalTitle);
       if (!uploadedUrl) {
         setNotification({ error: true, message: "Erreur lors de l'upload de l’image." });
         return;
@@ -126,17 +134,16 @@ function AddBook({ onClose }) {
       const paddedYear = String(year).padStart(4, '0');
       const paddedMonth = String(month).padStart(2, '0');
       const paddedDay = String(day).padStart(2, '0');
-      
       const fullDate = `${paddedYear}-${paddedMonth}-${paddedDay}`;
-      
+
       if (isNaN(Date.parse(fullDate))) {
         setNotification({ error: true, message: 'Date invalide. Vérifiez les champs JJ/MM/AAAA.' });
         setIsLoading(false);
         return;
-      }      
+      }
 
       const payload = {
-        title,
+        title: finalTitle,
         author,
         year: fullDate,
         summary,
@@ -155,12 +162,11 @@ function AddBook({ onClose }) {
       } else {
         setNotification({ error: false, message: "Livre ajouté avec succès !" });
         setShowToast(true);
-
         setTimeout(() => {
           setShowToast(false);
           onClose();
           window.location.reload();
-        }, 1500);        
+        }, 1500);
       }
     } catch (err) {
       console.error('❌ Erreur dans handleAddBook:', err);
@@ -175,6 +181,7 @@ function AddBook({ onClose }) {
 
   const errorClass = notification.error ? styles.errorMessage : '';
   const isDisabled = !title || !author || !selectedPublisher || !isValidDate() || !recaptchaToken || !coverFile || selectedGenres.length === 0 || isLoading;
+
 
   return (
     <div className={styles.modalBackground} onClick={handleClickOutside} role="presentation">
@@ -201,12 +208,41 @@ function AddBook({ onClose }) {
           <article className={styles.formProperty}>
             <label htmlFor="author">
               <p>Auteur</p>
-              <input type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+              <input type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)} placeholder= "Victor Hugo"/>
             </label>
 
+            {hasSaga && (
+              <label htmlFor="sagaName">
+                <p>Nom de la saga</p>
+                <input
+                  type="text"
+                  id="sagaName"
+                  value={sagaName}
+                  onChange={(e) => setSagaName(e.target.value)}
+                  placeholder="ex. Harry Potter"
+                />
+              </label>
+            )}
+
             <label htmlFor="title">
-              <p>Titre</p>
-              <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <p>{hasSaga ? "Titre de l’ouvrage (sans le nom de la saga)" : "Titre"}</p>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={hasSaga ? "ex. A l’école des sorciers" : "ex. Les Misérables"}
+              />
+            </label>
+
+            <label htmlFor="saga">
+              <input
+                type="checkbox"
+                id="saga"
+                checked={hasSaga}
+                onChange={(e) => setHasSaga(e.target.checked)}
+              />
+              <span> Ce livre fait partie d’une saga ou d’un cycle</span>
             </label>
 
             <label htmlFor="editor">
