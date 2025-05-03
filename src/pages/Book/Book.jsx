@@ -12,9 +12,9 @@ import { displayStars } from '../../utils/helpers';
 import logoFnac from '../../images/logos/fnac.svg';
 import logoAmazon from '../../images/logos/amazon.svg';
 import logoCultura from '../../images/logos/cultura.png';
+import UpdateCoverModal from '../../modals/UpdateCoverModal/UpdateCoverModal';
+
 import styles from './Book.module.css';
-
-
 
 function Book() {
   const { title } = useParams();
@@ -23,7 +23,9 @@ function Book() {
   const [inCollection, setInCollection] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const { user } = useAuth();
+
 
   const encodedTitle = encodeURIComponent(title || '');
   const searchFnac = `https://www.fnac.com/SearchResult/ResultList.aspx?SCat=Livres__+BD__+Ebooks!1&SDM=list&Search=${encodedTitle}`;
@@ -113,6 +115,12 @@ function Book() {
                   {buttonLoading ? 'Retrait...' : 'Retirer de ma collection'}
                 </button>
               )}
+              {user?.role === 'admin' && (
+  <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
+    🛠 Modifier la couverture
+  </button>
+)}
+
             </section>
 
             {/* 💬 SECTION COLLAPS COMMENTAIRES */}
@@ -180,6 +188,14 @@ function Book() {
           </article>
         </div>
       </main>
+      {showEditModal && (
+  <UpdateCoverModal
+    bookId={book.bookId}
+    bookTitle={book.title}
+    onClose={() => setShowEditModal(false)}
+    onSuccess={(newCoverUrl) => setBook((prev) => ({ ...prev, cover_url: newCoverUrl }))}
+  />
+)}
     </div>
   );
 }

@@ -5,18 +5,37 @@ import { formatDate, displayStars } from '../../../utils/helpers';
 import styles from './BookDisplay.module.css';
 
 function BookDisplay({ book, size, showDetails = false, hideImage = false }) {
-  let title;
-  switch (size) {
-    case 2:
-      title = <h2>{book.title}</h2>;
-      break;
-    case 3:
-      title = <h3>{book.title}</h3>;
-      break;
-    default:
-      title = <h2>{book.title}</h2>;
-      break;
-  }
+  let titleParts = book.title.split(':');
+let mainTitle = titleParts[0];
+let subTitle = titleParts[1]?.trim();
+
+let title;
+switch (size) {
+  case 2:
+    title = (
+      <>
+        <h2>{mainTitle}</h2>
+        {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+      </>
+    );
+    break;
+  case 3:
+    title = (
+      <>
+        <h3>{mainTitle}</h3>
+        {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+      </>
+    );
+    break;
+  default:
+    title = (
+      <>
+        <h2>{mainTitle}</h2>
+        {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+      </>
+    );
+    break;
+}
 
   return (
     <Link to={`/livre/${encodeURIComponent(book.title)}`} className={styles.BookDisplay}>
