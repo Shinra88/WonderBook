@@ -14,6 +14,18 @@ export function displayStars(rating) {
   ));
 }
 
+// 🔤 Normalisation pour la recherche (front)
+export function normalize(str = "") {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // accents
+    .replace(/['’"]/g, "")           // apostrophes
+    .replace(/[^a-z0-9\s]/g, "")     // caractères spéciaux (mais on garde les espaces)
+    .replace(/\s+/g, " ")            // espaces multiples -> simple espace
+    .trim();
+}
+
 /** ⭐ Étoiles interactives ou en lecture seule */
 export function generateStarsInputs(rating, register, readOnly = false) {
   return Array.from({ length: 5 }, (_, i) => {

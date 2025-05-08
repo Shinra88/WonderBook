@@ -98,7 +98,7 @@ function TopicDetail() {
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                  setCurrentPage(1); // 🔄 Réinitialise à la première page lors d'une recherche
+                  setCurrentPage(1); 
                 }}
                 placeholder="Rechercher dans les réponses"
               />

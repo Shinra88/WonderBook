@@ -40,8 +40,6 @@
     display: flex;
     gap: 60px;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
   }
   
   .BookImage {
@@ -203,8 +201,8 @@
 }
   
 .commercialLinks {
-  margin-top: 2rem;
   padding: 1rem;
+  height: 50%;
   background-color: #f4f4f4;
   border-radius: 10px;
   border: 2px solid #e8d8a0;
@@ -239,4 +237,7 @@
   object-fit: contain;
 }
 
+.backArrowWrapper > * {
+  transform: scale(0.6); /* rétrécit tout le composant */
+}
   

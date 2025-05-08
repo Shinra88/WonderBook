@@ -1,4 +1,3 @@
-// 📁 src/components/Books/BestRatedBooks/BestRatedBooks.jsx
 import React, { useMemo, useRef } from 'react';
 import { useBestRatedBooks } from '../../../hooks/customHooks';
 import { useFilters } from '../../../hooks/filterContext';

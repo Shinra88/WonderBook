@@ -15,7 +15,7 @@ switch (size) {
     title = (
       <>
         <h2>{mainTitle}</h2>
-        {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+        <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
       </>
     );
     break;
@@ -23,7 +23,7 @@ switch (size) {
     title = (
       <>
         <h3>{mainTitle}</h3>
-        {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+        <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
       </>
     );
     break;
@@ -31,7 +31,7 @@ switch (size) {
     title = (
       <>
         <h2>{mainTitle}</h2>
-        {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+        <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
       </>
     );
     break;
