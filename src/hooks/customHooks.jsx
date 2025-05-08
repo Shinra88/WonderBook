@@ -95,8 +95,8 @@ export function useFilePreview(file) {
   return [imgSrc];
 }
 
-/** ✅ Récupère tous les livres (filtrés) */
-export function useFilteredBooks(filters) {
+/** ✅ Récupère tous les livres (filtrés + recherche) */
+export function useFilteredBooks(filters = {}, searchQuery = '') {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -106,7 +106,20 @@ export function useFilteredBooks(filters) {
       try {
         setLoading(true);
         const response = await getBooks(filters);
-        setBooks(Array.isArray(response) ? response : []);
+        let filtered = Array.isArray(response) ? response : [];
+
+        if (searchQuery.trim()) {
+          const normalizedQuery = searchQuery.trim().toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") // enlève les accents
+            .replace(/['’]/g, '');           // enlève les apostrophes
+
+          filtered = filtered.filter(book =>
+            book.search_title?.includes(normalizedQuery)
+          );
+        }
+
+        setBooks(filtered);
       } catch (err) {
         console.error("Erreur livres filtrés:", err);
         setError("Erreur chargement des livres");
@@ -116,7 +129,7 @@ export function useFilteredBooks(filters) {
       }
     }
     fetchBooks();
-  }, [filters]);
+  }, [filters, searchQuery]);
 
   return { books, loading, error };
 }

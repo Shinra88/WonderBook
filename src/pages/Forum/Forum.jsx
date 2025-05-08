@@ -72,7 +72,7 @@ function Forum() {
             </button>
           </div>
         ) : (
-          <div style={{ width: '10rem' }} /> // 🧩 Espace réservé pour garder la searchBar à droite
+          <div style={{ width: '10rem' }} />
         )}
 
         {user && isModalOpen && (

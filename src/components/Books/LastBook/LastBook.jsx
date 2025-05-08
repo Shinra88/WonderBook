@@ -18,10 +18,10 @@ function LastBooks({ lastAddedBooks = [], loading = false }) {
   if (loading) return <h3>Chargement des derniers livres...</h3>;
 
   const content = lastAddedBooks.length > 0 ? (
-    lastAddedBooks.map((elt, index) => (
+    lastAddedBooks.map((book, index) => (
       <BookDisplay
-        key={`book-${elt.bookId ?? `fallback-${index}`}`}
-        book={elt}
+        key={`book-${book.bookId ?? `fallback-${index}`}`}
+        book={book}
         size={3}
       />
     ))

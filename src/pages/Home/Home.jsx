@@ -9,6 +9,7 @@ import styles from './Home.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import { useBestRatedBooks, useLastAddedBooks, useFilteredBooks } from '../../hooks/customHooks';
 import { useFilters } from '../../hooks/filterContext';
+import { normalize } from '../../utils/helpers';
 
 function Home() {
   const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
@@ -16,7 +17,6 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
 
-  // ✅ Stabilise les filtres avec useMemo pour éviter les appels en boucle
   const filters = useMemo(() => {
     const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
     return {
@@ -25,13 +25,24 @@ function Home() {
       start: selectedYear?.start,
       end: selectedYear?.end,
       type: selectedType,
+      search: searchQuery,
     };
-  }, [selectedCategories, selectedYear, selectedType]);
+  }, [selectedCategories, selectedYear, selectedType, searchQuery]);
+  
 
-  // 🔄 Récupérations via les hooks
   const { books, loading: booksLoading } = useFilteredBooks(filters);
   const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(filters);
   const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(filters);
+
+  // 🔍 Recherche locale
+  const filteredBooks = useMemo(() => {
+    if (!searchQuery) return books;
+    const query = searchQuery.toLowerCase();
+    return books.filter((book) =>
+      (book.search_title && normalize(book.search_title).includes(query)) ||
+      (book.author && normalize(book.author).includes(query))
+    );
+  }, [books, searchQuery]);  
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
@@ -40,16 +51,6 @@ function Home() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
-  // 🔍 Nouveau : filtrage par recherche (titre ou auteur)
-  const filteredBooks = useMemo(() => {
-    if (!searchQuery) return books;
-    const lowerQuery = searchQuery.toLowerCase();
-    return books.filter((book) =>
-      (book.title && book.title.toLowerCase().includes(lowerQuery)) ||
-      (book.author && book.author.toLowerCase().includes(lowerQuery))
-    );
-  }, [books, searchQuery]);
 
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
@@ -63,9 +64,9 @@ function Home() {
   };
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
-
+  
   return (
-    <div className={styles.Home} >
+    <div className={styles.Home}>
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
         <header className={styles.head}>
@@ -115,13 +116,15 @@ function Home() {
         <section className={styles.bookList}>
           {booksLoading ? <h2>Chargement...</h2> : displayBooks()}
         </section>
-
+        <div className={styles.up_container}>
+          <a href="#" className={styles.up}>Haut de page</a>
+        </div>
         <div className={styles.paginationContainer}>
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(filteredBooks.length / booksPerPage)}
             onPageChange={handlePageChange}
-          />
+          />      
         </div>
       </main>
     </div>

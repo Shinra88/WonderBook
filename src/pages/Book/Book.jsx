@@ -91,7 +91,9 @@ function Book() {
       <div className={styles.banner} style={{ backgroundImage: `url(${Banner})` }} />
       <main className={styles.main}>
         <div className={styles.BookContainer}>
-        <BackArrow />
+          <div className={styles.backArrowWrapper}>
+            <BackArrow />
+          </div>
           <div className={styles.BookImage} style={{ backgroundImage: `url(${encodeURI(book.cover_url)})` }} />
           <article className={styles.BookContent}>
             <BookDisplay book={book} size={2} showDetails hideImage />
@@ -116,10 +118,10 @@ function Book() {
                 </button>
               )}
               {user?.role === 'admin' && (
-  <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
-    🛠 Modifier la couverture
-  </button>
-)}
+                <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
+                  🛠 Modifier la couverture
+                </button>
+              )}
 
             </section>
 
@@ -162,30 +164,29 @@ function Book() {
                   </div>
                 )}
               </section>
-              
             )}
-<section className={styles.commercialLinks}>
-  <h3>Où acheter ce livre :</h3>
-  <ul className={styles.linkList}>
-    <li>
-      <a href={searchFnac} target="_blank" rel="noopener noreferrer">
-        <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
-      </a>
-    </li>
-    <li>
-      <a href={searchAmazon} target="_blank" rel="noopener noreferrer">
-        <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
-      </a>
-    </li>
-    <li>
-      <a href={searchCultura} target="_blank" rel="noopener noreferrer">
-        <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
-      </a>
-    </li>
-  </ul>
-</section>
 
           </article>
+          <section className={styles.commercialLinks}>
+            <h3>Où acheter ce livre :</h3>
+            <ul className={styles.linkList}>
+              <li>
+                <a href={searchFnac} target="_blank" rel="noopener noreferrer">
+                  <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
+                </a>
+              </li>
+              <li>
+                <a href={searchAmazon} target="_blank" rel="noopener noreferrer">
+                  <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
+                </a>
+              </li>
+              <li>
+                <a href={searchCultura} target="_blank" rel="noopener noreferrer">
+                  <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
+                </a>
+              </li>
+            </ul>
+          </section>
         </div>
       </main>
       {showEditModal && (

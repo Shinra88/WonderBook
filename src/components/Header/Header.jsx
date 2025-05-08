@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import styles from './Header.module.css';
@@ -14,8 +14,7 @@ import ForgetModal from '../../modals/Forget/Forget';
 import { useAuth } from '../../hooks/useAuth';
 import Avatar from '../../images/avatar.png';
 import { useFilters } from '../../hooks/filterContext';
-import { useLocation } from 'react-router-dom';
-
+import { normalize } from '../../utils/helpers';
 
 function Header() {
   const [showAddBook, setShowAddBook] = useState(false);
@@ -25,11 +24,10 @@ function Header() {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const { setSearchQuery, selectedCategories, selectedYear } = useFilters();
-  const hasActiveFilter = selectedCategories.length > 0 || selectedYear !== '';  const navigate = useNavigate();
+  const hasActiveFilter = selectedCategories.length > 0 || selectedYear !== '';
+  const navigate = useNavigate();
   const location = useLocation();
   const isForumPage = location.pathname.startsWith('/Forum') || location.pathname.startsWith('/topic');
-
-
   const { user, isAuthenticated, logout } = useAuth();
 
   const closeAllModals = () => {
@@ -40,7 +38,8 @@ function Header() {
   };
 
   const handleSearch = () => {
-    setSearchQuery(inputValue.trim());
+    const normalized = normalize(inputValue.trim());
+    setSearchQuery(normalized);
   };
 
   const handleKeyDown = (e) => {
