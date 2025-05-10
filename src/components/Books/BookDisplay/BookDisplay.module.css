@@ -74,6 +74,44 @@
     gap: 4px;
     margin-bottom: 10px;
   }
+
+  .SummaryContainer {
+    margin-top: 0.5em;
+  }
+  
+  .Summary {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .Collapsed {
+    max-height: 4em;
+    white-space: normal;
+    text-overflow: ellipsis;
+  }
+  
+  .Expanded {
+    max-height: 1000px;
+  }
+  
+  .ToggleButton {
+    display: flex;
+    justify-content: center;
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    border: none;
+    padding: 6px ;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 32px;
+    font-family: 'Itim', serif;
+    width: 11rem;
+    margin: auto;
+    align-items: center;
+    box-shadow: 
+        4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  }  
   
 @media all and (max-width: 600px) {
     .BookDisplay img {

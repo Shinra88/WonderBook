@@ -96,34 +96,9 @@ function Book() {
           </div>
           <div className={styles.BookImage} style={{ backgroundImage: `url(${encodeURI(book.cover_url)})` }} />
           <article className={styles.BookContent}>
-            <BookDisplay book={book} size={2} showDetails hideImage />
-
-            <section className={styles.edit}>
-              {user && !inCollection && (
-                <button
-                  className={styles.addButton}
-                  onClick={handleAddToCollection}
-                  disabled={buttonLoading}
-                >
-                  {buttonLoading ? 'Ajout...' : 'Ajouter à ma collection'}
-                </button>
-              )}
-              {user && inCollection && (
-                <button
-                  className={styles.removeButton}
-                  onClick={handleRemoveFromCollection}
-                  disabled={buttonLoading}
-                >
-                  {buttonLoading ? 'Retrait...' : 'Retirer de ma collection'}
-                </button>
-              )}
-              {user?.role === 'admin' && (
-                <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
-                  🛠 Modifier la couverture
-                </button>
-              )}
-
-            </section>
+            <div className={styles.bookDisplayWrapper}>
+              <BookDisplay book={book} size={2} showDetails hideImage />
+            </div>
 
             {/* 💬 SECTION COLLAPS COMMENTAIRES */}
             {book.comments && book.comments.length > 0 && (
@@ -186,6 +161,29 @@ function Book() {
                 </a>
               </li>
             </ul>
+            {user && !inCollection && (
+                <button
+                  className={styles.addButton}
+                  onClick={handleAddToCollection}
+                  disabled={buttonLoading}
+                >
+                  {buttonLoading ? 'Ajout...' : 'Ajouter à ma collection'}
+                </button>
+              )}
+              {user && inCollection && (
+                <button
+                  className={styles.removeButton}
+                  onClick={handleRemoveFromCollection}
+                  disabled={buttonLoading}
+                >
+                  {buttonLoading ? 'Retrait...' : 'Retirer de ma collection'}
+                </button>
+              )}
+              {user?.role === 'admin' && (
+                <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
+                  🛠 Modifier la couverture
+                </button>
+              )}
           </section>
         </div>
       </main>

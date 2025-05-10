@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    padding-top: 250px;
+    padding-top: 150px;
     padding-bottom: 60px;
     position: relative;
   }
@@ -238,6 +238,19 @@
 }
 
 .backArrowWrapper > * {
-  transform: scale(0.6); /* rétrécit tout le composant */
+  transform: scale(0.6);
 }
+
+.bookDisplayWrapper {
+  padding: 1rem;
+  border-radius: 15px;
+  background-color: #ffffff;
+}
+
+.bookDisplayWrapper a {
+  cursor: default;
+}
+
+
+
   

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatDate, displayStars } from '../../../utils/helpers';
@@ -36,6 +36,7 @@ switch (size) {
     );
     break;
 }
+const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <Link to={`/livre/${encodeURIComponent(book.title)}`} className={styles.BookDisplay}>
@@ -64,8 +65,22 @@ switch (size) {
           )}
 
           {showDetails && book.summary && (
-            <p className={styles.Summary}><strong>Résumé :</strong> {book.summary}</p>
+            <div className={styles.SummaryContainer}>
+              <p className={`${styles.Summary} ${isExpanded ? styles.Expanded : styles.Collapsed}`}>
+                <strong>Résumé :</strong> {book.summary}
+              </p>
+              {book.summary.length > 300 && (
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className={styles.ToggleButton}
+                >
+                  {isExpanded ? 'Lire moins ▲' : 'Lire plus ▼'}
+                </button>
+              )}
+            </div>
           )}
+
         </div>
       </article>
     </Link>
