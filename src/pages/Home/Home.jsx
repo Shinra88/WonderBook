@@ -86,7 +86,7 @@ function Home() {
           </aside>
         </header>
 
-        <section className={styles.filters_container}>
+        <section id="filters" className={styles.filters_container}>
           <h3>Filtres appliqués :</h3>
           <div className={styles.filters}>
             <p>
