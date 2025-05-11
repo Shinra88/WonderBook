@@ -14,19 +14,22 @@ function appendFiltersToParams(params, filters = {}) {
     filters.categories.forEach((cat) => params.append('categories', cat));
   }
   if (filters.type) params.append('type', filters.type);
+  if (filters.search) params.append('search', filters.search);
 }
 
 // ✅ Récupère tous les livres (avec ou sans filtres)
-export async function getBooks(filters = {}) {
+export async function getBooks(filters = {}, page = 1, limit = 10) {
   const params = new URLSearchParams();
   appendFiltersToParams(params, filters);
+  params.append('page', page);
+  params.append('limit', limit);
 
   try {
     const response = await api.get(`${API_ROUTES.BOOKS.BASE}?${params.toString()}`);
     return response.data;
   } catch (err) {
     console.error("Erreur lors de la récupération des livres :", err);
-    return [];
+    return { books: [], total: 0 };
   }
 }
 
