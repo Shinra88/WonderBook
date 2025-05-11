@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import styles from './Header.module.css';
@@ -23,13 +23,22 @@ function Header() {
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const { setSearchQuery, selectedCategories, selectedYear } = useFilters();
-  const hasActiveFilter = selectedCategories.length > 0 || selectedYear !== '';
+
   const navigate = useNavigate();
   const location = useLocation();
   const isForumPage = location.pathname.startsWith('/Forum') || location.pathname.startsWith('/topic');
+
   const { user, isAuthenticated, logout } = useAuth();
-  
+
+  const {
+    setSearchQuery,
+    setSelectedCategories,
+    setSelectedYear,
+    selectedCategories,
+    selectedYear
+  } = useFilters();
+
+  const hasActiveFilter = selectedCategories.length > 0 || selectedYear !== '';
 
   const closeAllModals = () => {
     setShowLogin(false);
@@ -39,37 +48,32 @@ function Header() {
   };
 
   const goHomeAndReset = () => {
-    // Réinitialiser les filtres
     setSearchQuery('');
+    setInputValue('');
     setSelectedCategories([]);
     setSelectedYear('');
-  
-    // Si déjà sur "/", forcer reload avec navigation vers une autre page et retour
-    if (location.pathname === '/') {
-      navigate('/temp'); // page bidon
-      setTimeout(() => navigate('/'), 0); // retour immédiat
-    } else {
-      navigate('/');
-    }
+
+    navigate('/#topPage');
+
+    setTimeout(() => {
+      const el = document.getElementById('topPage');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const handleSearch = () => {
     const normalized = normalize(inputValue.trim());
     setSearchQuery(normalized);
-  
-    // Scroll vers les filtres
+
     setTimeout(() => {
       const el = document.getElementById('filters');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }, 100);
-  
-    // Navigue vers la home si on n'y est pas
+
     if (location.pathname !== '/') {
       navigate('/#filters');
     }
-  };  
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -88,7 +92,7 @@ function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate('/');
   };
 
   return (
@@ -98,7 +102,24 @@ function Header() {
         <nav className={styles.navBar}>
           <ul>
             <li>
-              <NavLink to="/" end className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
+              <NavLink
+                to="/#topPage"
+                className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
+                onClick={(e) => {
+                  e.preventDefault(); // éviter le comportement par défaut du lien
+                  setSearchQuery('');
+                  setInputValue('');
+                  setSelectedCategories([]);
+                  setSelectedYear('');
+
+                  navigate('/#topPage');
+
+                  setTimeout(() => {
+                    const el = document.getElementById('topPage');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }}
+              >
                 Accueil
               </NavLink>
             </li>
@@ -108,10 +129,13 @@ function Header() {
                   <DropdownMenu isActive={hasActiveFilter} />
                 </li>
                 <li>
-                  <DropdownYear isActive={
-                    (typeof selectedYear === 'string' && selectedYear !== '') ||
-                    (typeof selectedYear === 'object' && (selectedYear.start !== '' || selectedYear.end !== ''))
-                  } />
+                  <DropdownYear
+                    isActive={
+                      (typeof selectedYear === 'string' && selectedYear !== '') ||
+                      (typeof selectedYear === 'object' &&
+                        (selectedYear.start !== '' || selectedYear.end !== ''))
+                    }
+                  />
                 </li>
               </>
             )}
