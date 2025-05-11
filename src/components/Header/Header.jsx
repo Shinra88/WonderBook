@@ -29,6 +29,7 @@ function Header() {
   const location = useLocation();
   const isForumPage = location.pathname.startsWith('/Forum') || location.pathname.startsWith('/topic');
   const { user, isAuthenticated, logout } = useAuth();
+  
 
   const closeAllModals = () => {
     setShowLogin(false);
@@ -37,10 +38,38 @@ function Header() {
     setShowAddBook(false);
   };
 
+  const goHomeAndReset = () => {
+    // Réinitialiser les filtres
+    setSearchQuery('');
+    setSelectedCategories([]);
+    setSelectedYear('');
+  
+    // Si déjà sur "/", forcer reload avec navigation vers une autre page et retour
+    if (location.pathname === '/') {
+      navigate('/temp'); // page bidon
+      setTimeout(() => navigate('/'), 0); // retour immédiat
+    } else {
+      navigate('/');
+    }
+  };
+
   const handleSearch = () => {
     const normalized = normalize(inputValue.trim());
     setSearchQuery(normalized);
-  };
+  
+    // Scroll vers les filtres
+    setTimeout(() => {
+      const el = document.getElementById('filters');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  
+    // Navigue vers la home si on n'y est pas
+    if (location.pathname !== '/') {
+      navigate('/#filters');
+    }
+  };  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
