@@ -1,5 +1,5 @@
 // 📁 src/pages/Home/Home.jsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import BestRateBooks from '../../components/Books/BestRatedBooks/BestRatedBooks';
@@ -9,7 +9,6 @@ import styles from './Home.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import { useBestRatedBooks, useLastAddedBooks, useFilteredBooks } from '../../hooks/customHooks';
 import { useFilters } from '../../hooks/filterContext';
-import { normalize } from '../../utils/helpers';
 
 function Home() {
   const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
@@ -17,32 +16,30 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
 
-  const filters = useMemo(() => {
-    const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
-    return {
-      categories: selectedCategories,
-      year: validYear,
-      start: selectedYear?.start,
-      end: selectedYear?.end,
-      type: selectedType,
-      search: searchQuery,
-    };
-  }, [selectedCategories, selectedYear, selectedType, searchQuery]);
-  
+  const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
 
-  const { books, loading: booksLoading } = useFilteredBooks(filters);
-  const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(filters);
-  const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(filters);
+  const baseFilters = useMemo(() => ({
+    categories: selectedCategories,
+    year: validYear,
+    start: selectedYear?.start,
+    end: selectedYear?.end,
+    type: selectedType,
+  }), [selectedCategories, selectedYear, selectedType, validYear]);
 
-  // 🔍 Recherche locale
-  const filteredBooks = useMemo(() => {
-    if (!searchQuery) return books;
-    const query = searchQuery.toLowerCase();
-    return books.filter((book) =>
-      (book.search_title && normalize(book.search_title).includes(query)) ||
-      (book.author && normalize(book.author).includes(query))
-    );
-  }, [books, searchQuery]);  
+  // ✅ Combine base filters + searchQuery pour ne pas recréer l'objet à chaque render
+  const combinedFilters = useMemo(() => ({
+    ...baseFilters,
+    search: searchQuery,
+  }), [baseFilters, searchQuery]);
+
+  const { books, total, loading: booksLoading } = useFilteredBooks(combinedFilters, currentPage, booksPerPage);
+  const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(baseFilters); // volontairement sans search
+  const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(baseFilters); // volontairement sans search
+
+  // ✅ Reset page à 1 lorsqu'on change les filtres ou la recherche
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [combinedFilters]);
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
@@ -52,19 +49,15 @@ function Home() {
     setCurrentPage(page);
   };
 
-  const indexOfLastBook = currentPage * booksPerPage;
-  const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
-
   const displayBooks = () => {
-    if (!currentBooks.length) return <h2>Aucun livre trouvé pour votre recherche.</h2>;
-    return currentBooks.map((book) => (
+    if (!books.length) return <h2>Aucun livre trouvé pour votre recherche.</h2>;
+    return books.map((book) => (
       <BookDisplay key={book.bookId} book={book} size={2} />
     ));
   };
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
-  
+
   return (
     <div className={styles.Home}>
       <div className={styles.banner} style={backgroundImageStyle} />
@@ -122,9 +115,9 @@ function Home() {
         <div className={styles.paginationContainer}>
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(filteredBooks.length / booksPerPage)}
+            totalPages={Math.ceil(total / booksPerPage)}
             onPageChange={handlePageChange}
-          />      
+          />
         </div>
       </main>
     </div>
