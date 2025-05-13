@@ -14,7 +14,11 @@ import logoAmazon from '../../images/logos/amazon.svg';
 import logoCultura from '../../images/logos/cultura.png';
 import logoCdiscount from '../../images/logos/cdiscount.svg';
 import logoeBay from '../../images/logos/ebay.svg';
+import FeatherIcon from '../../images/feather.png';
 import UpdateCoverModal from '../../modals/UpdateCoverModal/UpdateCoverModal';
+import UpdateBookModal from '../../modals/UpdateBookModal/UpdateBookModal';
+import CommentModerationModal from '../../modals/CommentModerationModal/CommentModerationModal';
+import { updateBook, updateBookInfo } from '../../services/bookService';
 
 import styles from './Book.module.css';
 
@@ -25,8 +29,11 @@ function Book() {
   const [inCollection, setInCollection] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditModal, setShowEditCoverModal] = useState(false);
+  const [showEditInfoModal , setShowInfoModal] = useState(false);
+  const [showCommentModerationModal, setShowCommentModerationModal] = useState(false);
   const { user } = useAuth();
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
 
 
   const encodedTitle = encodeURIComponent(title || '');
@@ -90,6 +97,14 @@ function Book() {
     }
   };
 
+  const handleUpdateBook = async (newData) => {
+    const updated = await updateBook(newData, book.bookId);
+    if (updated && !updated.error) {
+      setBook((prev) => ({ ...prev, ...newData }));
+      ToastSuccess('Livre mis à jour 🎉');
+    }
+  };
+  
   return (
     <div className={styles.BookPage}>
       <div className={styles.banner} style={{ backgroundImage: `url(${Banner})` }} />
@@ -106,37 +121,38 @@ function Book() {
 
           </article>
           <aside className={styles.BookAside}>
-          <section className={styles.commercialLinks}>
-            <h3>Où acheter ce livre :</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <a href={searchFnac} target="_blank" rel="noopener noreferrer">
-                  <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
-                </a>
-              </li>
-              <li>
-                <a href={searchAmazon} target="_blank" rel="noopener noreferrer">
-                  <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
-                </a>
-              </li>
-              <li>
-                <a href={searchCultura} target="_blank" rel="noopener noreferrer">
-                  <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
-                </a>
-              </li>
-              <li>
-                <a href={searchCdiscount} target="_blank" rel="noopener noreferrer">
-                  <img src={logoCdiscount} alt="Cdiscount" className={styles.logo} /> Cdiscount
-                </a>
-              </li>
-              <li>
-                <a href={searchEbay} target="_blank" rel="noopener noreferrer">
-                  <img src={logoeBay} alt="eBay" className={styles.logo} /> eBay
-                </a>
-              </li>
-            </ul>
-
-          </section>
+          {!isAdmin && (
+            <section className={styles.commercialLinks}>
+              <h3>Où acheter ce livre :</h3>
+              <ul className={styles.linkList}>
+                <li>
+                  <a href={searchFnac} target="_blank" rel="noopener noreferrer">
+                    <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
+                  </a>
+                </li>
+                <li>
+                  <a href={searchAmazon} target="_blank" rel="noopener noreferrer">
+                    <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
+                  </a>
+                </li>
+                <li>
+                  <a href={searchCultura} target="_blank" rel="noopener noreferrer">
+                    <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
+                  </a>
+                </li>
+                <li>
+                  <a href={searchCdiscount} target="_blank" rel="noopener noreferrer">
+                    <img src={logoCdiscount} alt="Cdiscount" className={styles.logo} /> Cdiscount
+                  </a>
+                </li>
+                <li>
+                  <a href={searchEbay} target="_blank" rel="noopener noreferrer">
+                    <img src={logoeBay} alt="eBay" className={styles.logo} /> eBay
+                  </a>
+                </li>
+              </ul>
+            </section>
+          )}
           {user && !inCollection && (
                 <button
                   className={styles.addButton}
@@ -155,11 +171,48 @@ function Book() {
                   {buttonLoading ? 'Retrait...' : 'Retirer de ma collection'}
                 </button>
               )}
-              {user?.role === 'admin' && (
-                <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
-                  🛠 Modifier la couverture
-                </button>
+
+              {isAdmin && (
+                <>
+                  <button className={styles.editButton} onClick={() => setShowEditCoverModal(true)}>
+                    Modifier couverture
+                    <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
+                  </button>
+                  <button className={styles.editButton} onClick={() => setShowInfoModal(true)}>
+                    Modifier informations
+                    <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
+                  </button>
+                  <button className={styles.editButton} onClick={() => setShowCommentModerationModal(true)}>
+                    Gérer commentaires
+                    <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
+                  </button>
+                </>
               )}
+
+              {showEditInfoModal && (
+                <UpdateBookModal
+                  book={book}
+                  onClose={() => setShowInfoModal(false)}
+                  onSave={async (updatedData) => {
+                    const result = await updateBookInfo(book.bookId, updatedData);
+                    if (!result.error) {
+                      setBook({ ...book, ...updatedData });
+                      ToastSuccess("Livre mis à jour ✅");
+                    }
+                  }}
+                />
+              )}
+              {showCommentModerationModal && (
+              <CommentModerationModal
+                bookId={book.bookId}
+                comments={book.comments}
+                onClose={() => setShowCommentModerationModal(false)}
+                onUpdate={(updatedComments) => {
+                  setBook((prev) => ({ ...prev, comments: updatedComments }));
+                }}
+              />
+            )}
+
               {/* 💬 SECTION COLLAPS COMMENTAIRES */}
             {book.comments && book.comments.length > 0 && (
               <section className={styles.commentsSection}>
@@ -207,7 +260,7 @@ function Book() {
   <UpdateCoverModal
     bookId={book.bookId}
     bookTitle={book.title}
-    onClose={() => setShowEditModal(false)}
+    onClose={() => setShowEditCoverModal(false)}
     onSuccess={(newCoverUrl) => setBook((prev) => ({ ...prev, cover_url: newCoverUrl }))}
   />
 )}

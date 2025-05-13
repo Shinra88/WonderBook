@@ -29,6 +29,7 @@ function Header() {
   const isForumPage = location.pathname.startsWith('/Forum') || location.pathname.startsWith('/topic');
 
   const { user, isAuthenticated, logout } = useAuth();
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
 
   const {
     setSearchQuery,
@@ -154,6 +155,13 @@ function Header() {
                 </NavLink>
               </li>
             )}
+             {isAdmin && (
+                <li>
+                <NavLink to="/Admin" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
+                  Admin
+                </NavLink>
+              </li>
+             )}
             {isAuthenticated && (
               <li>
                 <button

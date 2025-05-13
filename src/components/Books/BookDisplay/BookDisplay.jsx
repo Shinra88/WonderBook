@@ -4,50 +4,59 @@ import { Link } from 'react-router-dom';
 import { formatDate, displayStars } from '../../../utils/helpers';
 import styles from './BookDisplay.module.css';
 
-function BookDisplay({ book, size, showDetails = false, hideImage = false }) {
-  let titleParts = book.title.split(':');
-let mainTitle = titleParts[0];
-let subTitle = titleParts[1]?.trim();
+function BookDisplay({ book, size, showDetails = false, hideImage = false, adminView = false }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const statusLabel = book.status === 'pending' ? 'En attente' : 'Validé';
 
-let title;
-switch (size) {
-  case 2:
-    title = (
-      <>
+  if (adminView) {
+    return (
+        <Link to={`/livre/${encodeURIComponent(book.title)}`} className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}>
+          <img
+            src={book.cover_url}
+            alt={`${book.title}, ${book.author} - ${book.date || 'Date inconnue'}`}
+          />
+          <strong>{book.title}</strong>
+          <em>{statusLabel}</em>
+          <em>par {book.validated_by || 'Bdd'}</em>
+        </Link>
+      );
+  }  
+
+  // affichage standard
+  let titleParts = book.title.split(':');
+  let mainTitle = titleParts[0];
+  let subTitle = titleParts[1]?.trim();
+  let title;
+  switch (size) {
+    case 2:
+      title = <>
         <h2>{mainTitle}</h2>
         <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
-      </>
-    );
-    break;
-  case 3:
-    title = (
-      <>
+      </>;
+      break;
+    case 3:
+      title = <>
         <h3>{mainTitle}</h3>
         <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
-      </>
-    );
-    break;
-  default:
-    title = (
-      <>
+      </>;
+      break;
+    default:
+      title = <>
         <h2>{mainTitle}</h2>
         <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
-      </>
-    );
-    break;
-}
-const [isExpanded, setIsExpanded] = useState(false);
+      </>;
+  }
 
   return (
     <Link to={`/livre/${encodeURIComponent(book.title)}`} className={styles.BookDisplay}>
       <article>
-      {!hideImage && (
-        <img
-          className={styles.BookImage}
-          src={book.cover_url}
-          alt={`${book.title}, ${book.author} - ${book.date || 'Date inconnue'}`}
-        />
-      )}
+        {!hideImage && (
+          <img
+            className={styles.BookImage}
+            src={book.cover_url}
+            alt={`${book.title}, ${book.author} - ${book.date || 'Date inconnue'}`}
+          />
+        )}
         <div className={styles.BookInfo}>
           <div className={styles.Rating}>
             {displayStars(book.averageRating)}
@@ -80,7 +89,6 @@ const [isExpanded, setIsExpanded] = useState(false);
               )}
             </div>
           )}
-
         </div>
       </article>
     </Link>
@@ -106,6 +114,7 @@ BookDisplay.propTypes = {
     summary: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  adminView: PropTypes.bool,
 };
 
 export default BookDisplay;

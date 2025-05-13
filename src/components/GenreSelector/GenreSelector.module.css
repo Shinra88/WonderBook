@@ -1,14 +1,13 @@
 .genreSelectorContainer {
-    position: relative;
-    display: inline-block;
-    font-family: 'Itim', sans-serif;
-    display: flex;
-    justify-content: center;
-  }
+  justify-content: flex-start;
+  width: 100%;
+  margin-left: 20px;
+}
   
   .dropdownButton {
     display: flex;
     justify-content: center;
+    width: 80%;
     background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
     border: none;
     color: black;
@@ -19,7 +18,6 @@
     cursor: pointer;
     border-radius: 32px;
     font-family: 'Itim', serif;
-    margin-bottom: 20px;
     align-items: center;
     min-width: 11rem;
     box-shadow: 
