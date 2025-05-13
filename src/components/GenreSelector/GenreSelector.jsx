@@ -4,10 +4,10 @@ import axios from 'axios';
 import styles from './GenreSelector.module.css';
 import { API_ROUTES } from '../../utils/constants';
 
-function GenreSelector({ onGenresSelect }) {
+function GenreSelector({ onGenresSelect, initialGenres = [] }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState([]); // array of IDs
-  const [categories, setCategories] = useState([]); // { id or categoryId, name }
+  const [selected, setSelected] = useState(initialGenres);
+  const [categories, setCategories] = useState([]);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -16,9 +16,9 @@ function GenreSelector({ onGenresSelect }) {
         const res = await axios.get(API_ROUTES.CATEGORIES.GET_ALL);
         if (Array.isArray(res.data)) {
           const cleaned = res.data.map((cat) => ({
-            id: cat.id ?? cat.categoryId, // gestion des deux formats
+            id: cat.id ?? cat.categoryId,
             name: cat.name
-          })).filter(cat => cat.id && cat.name); // éviter les cas invalides
+          })).filter(cat => cat.id && cat.name);
           setCategories(cleaned);
         }
       } catch (err) {
@@ -27,6 +27,10 @@ function GenreSelector({ onGenresSelect }) {
     };
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    setSelected(initialGenres);
+  }, [initialGenres]);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
@@ -42,7 +46,7 @@ function GenreSelector({ onGenresSelect }) {
   };
 
   const handleApply = () => {
-    onGenresSelect([...selected]); // Renvoie uniquement les IDs
+    onGenresSelect([...selected]);
     setIsOpen(false);
   };
 
@@ -103,6 +107,7 @@ function GenreSelector({ onGenresSelect }) {
 
 GenreSelector.propTypes = {
   onGenresSelect: PropTypes.func.isRequired,
+  initialGenres: PropTypes.array,
 };
 
 export default GenreSelector;

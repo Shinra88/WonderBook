@@ -1,4 +1,3 @@
-// 📁 src/services/commentService.jsx
 import api from './api/api';
 import { API_ROUTES } from '../utils/constants';
 
@@ -24,13 +23,24 @@ export async function addOrUpdateComment(bookId, { content, rating }) {
   }
 }
 
-// ➔ Supprimer un commentaire
+// ➔ Supprimer son propre commentaire
 export async function deleteComment(bookId) {
   try {
     const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/${bookId}`);
     return data;
   } catch (error) {
     console.error('Erreur suppression commentaire :', error);
+    throw error;
+  }
+}
+
+// ➔ Supprimer n'importe quel commentaire (admin/modo)
+export async function deleteCommentAsAdmin(commentId) {
+  try {
+    const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/admin/${commentId}`);
+    return data;
+  } catch (error) {
+    console.error('Erreur suppression commentaire (admin) :', error);
     throw error;
   }
 }

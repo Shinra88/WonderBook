@@ -15,6 +15,9 @@ function appendFiltersToParams(params, filters = {}) {
   }
   if (filters.type) params.append('type', filters.type);
   if (filters.search) params.append('search', filters.search);
+
+  // 🆕 Ajout pour tri admin/modo
+  if (filters.pendingFirst) params.append('pendingFirst', 'true');
 }
 
 // ✅ Récupère tous les livres (avec ou sans filtres)
@@ -160,3 +163,15 @@ export const getBookByTitle = async (title) => {
     return null;
   }
 };
+
+// ✅ Met à jour les informations d'un livre
+// (pour les admins/modos)
+export async function updateBookInfo(id, data) {
+  try {
+    const response = await api.put(`${API_ROUTES.BOOKS.BASE}/${id}`, data);
+    return response.data;
+  } catch (err) {
+    console.error("Erreur mise à jour du livre :", err);
+    return { error: true, message: err.message };
+  }
+}

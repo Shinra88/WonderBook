@@ -9,12 +9,15 @@ import styles from './Home.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import { useBestRatedBooks, useLastAddedBooks, useFilteredBooks } from '../../hooks/customHooks';
 import { useFilters } from '../../hooks/filterContext';
+import { useAuth } from '../../hooks/useAuth';
 
 function Home() {
   const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
   const [selectedTab, setSelectedTab] = useState('LastBook');
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
 
   const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
 
@@ -26,17 +29,16 @@ function Home() {
     type: selectedType,
   }), [selectedCategories, selectedYear, selectedType, validYear]);
 
-  // ✅ Combine base filters + searchQuery pour ne pas recréer l'objet à chaque render
   const combinedFilters = useMemo(() => ({
     ...baseFilters,
     search: searchQuery,
-  }), [baseFilters, searchQuery]);
+    pendingFirst: isAdmin ? true : undefined,
+  }), [baseFilters, searchQuery, isAdmin]);
 
   const { books, total, loading: booksLoading } = useFilteredBooks(combinedFilters, currentPage, booksPerPage);
-  const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(baseFilters); // volontairement sans search
-  const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(baseFilters); // volontairement sans search
+  const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(baseFilters);
+  const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(baseFilters);
 
-  // ✅ Reset page à 1 lorsqu'on change les filtres ou la recherche
   useEffect(() => {
     setCurrentPage(1);
   }, [combinedFilters]);
@@ -50,9 +52,26 @@ function Home() {
   };
 
   const displayBooks = () => {
-    if (!books.length) return <h2>Aucun livre trouvé pour votre recherche.</h2>;
-    return books.map((book) => (
-      <BookDisplay key={book.bookId} book={book} size={2} />
+    if (!books.length) return <h2>Aucun livre trouvé.</h2>;
+
+    const visibleBooks = isAdmin
+      ? books
+      : books.filter((book) => book.status === 'validated');
+
+    const sorted = [...visibleBooks].sort((a, b) => {
+      if (a.status === 'pending' && b.status !== 'pending') return -1;
+      if (a.status !== 'pending' && b.status === 'pending') return 1;
+      return 0;
+    });
+
+    return sorted.map((book) => (
+      <BookDisplay
+        key={book.bookId}
+        book={book}
+        size={2}
+        adminView={isAdmin}
+        isPending={book.status === 'pending'}
+      />
     ));
   };
 
@@ -62,29 +81,31 @@ function Home() {
     <div id="topPage" className={styles.Home}>
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
-        <header className={styles.head}>
-          <div className={styles.menu}>
-            <button
-              type="button"
-              className={selectedTab === 'LastBook' ? styles.active : styles.inactive}
-              onClick={() => handleTabClick('LastBook')}
-            >
-              Dernier ajout
-            </button>
-            <button
-              type="button"
-              className={selectedTab === 'bestRated' ? styles.active : styles.inactive}
-              onClick={() => handleTabClick('bestRated')}
-            >
-              Mieux noté
-            </button>
-          </div>
-          <aside className={styles.bestRated}>
-            {selectedTab === 'bestRated'
-              ? <BestRateBooks books={bestRatedBooks} loading={bestLoading} />
-              : <LastBook lastAddedBooks={lastAddedBooks} loading={lastLoading} />}
-          </aside>
-        </header>
+        {!isAdmin && (
+          <header className={styles.head}>
+            <div className={styles.menu}>
+              <button
+                type="button"
+                className={selectedTab === 'LastBook' ? styles.active : styles.inactive}
+                onClick={() => handleTabClick('LastBook')}
+              >
+                Dernier ajout
+              </button>
+              <button
+                type="button"
+                className={selectedTab === 'bestRated' ? styles.active : styles.inactive}
+                onClick={() => handleTabClick('bestRated')}
+              >
+                Mieux noté
+              </button>
+            </div>
+            <aside className={styles.bestRated}>
+              {selectedTab === 'bestRated'
+                ? <BestRateBooks books={bestRatedBooks} loading={bestLoading} />
+                : <LastBook lastAddedBooks={lastAddedBooks} loading={lastLoading} />}
+            </aside>
+          </header>
+        )}
 
         <section id="filters" className={styles.filters_container}>
           <h3>Filtres appliqués :</h3>
