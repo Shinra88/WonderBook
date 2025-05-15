@@ -233,5 +233,7 @@
   margin-top: 20px;
 }
 
-  
+.deletePostButton {
+  background: radial-gradient(circle, #ca5d1d 0%, #d07b44 74%, #d4936a 89%, #e8b894 100%);
+}  
   
