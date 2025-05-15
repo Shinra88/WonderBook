@@ -143,16 +143,16 @@ padding-top: 4%;
   }
   
   .userCircle {
-    width: 60px;              /* taille externe */
+    width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: #e8d8a0;        /* ou une autre couleur de fond si tu veux */
-    padding: 5px;             /* marge intérieure pour que l'image soit + petite */
+    background: #e8d8a0;
+    padding: 5px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #c4ab5b; /* Bordure de 2px, de type solide et couleur #c4ab5b */
+    border: 2px solid #c4ab5b;
   }
   
   .icon {
@@ -204,7 +204,7 @@ padding-top: 4%;
 }
 
   .activeFilter {
-    border: 2px solid #d4af37; /* or couleur or / doré */
+    border: 2px solid #d4af37;
     background-color: rgba(255, 215, 0, 0.2);
     border-radius: 8px;
   }

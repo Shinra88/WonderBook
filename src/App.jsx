@@ -11,6 +11,7 @@ import ChangePass from './modals/ChangePass/ChangePass';
 import Collection from './pages/Collection/Collection';
 import HomeWithForgetPassword from './pages/HomeWithForgetPassword/HomeWithForgetPassword';
 import TopicDetail from './pages/Topics/TopicDetail';
+import Admin from './pages/Admin/Admin';
 
 import { FilterProvider } from './hooks/filterContext';
 
@@ -52,6 +53,7 @@ function App() {
             <Route path={APP_ROUTES.ACCOUNT} element={<Account />} />
             <Route path={APP_ROUTES.COLLECTION} element={<Collection />} />
             <Route path={APP_ROUTES.BOOK} element={<Book />} />
+            <Route path={APP_ROUTES.ADMIN} element={<Admin />} />
           </Route>
 
           {/* ✅ Route pour réinitialisation de mot de passe */}
