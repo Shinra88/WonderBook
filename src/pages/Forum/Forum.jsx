@@ -61,7 +61,7 @@ function Forum() {
   };
 
   return (
-    <div className={styles.Forum}>
+    <div id="topPage" className={styles.Forum}>
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
       <header className={styles.head}>
@@ -131,6 +131,10 @@ function Forum() {
               <p>Aucun sujet trouvé</p>
             )}
           </ul>
+          <div className={styles.up_container}>
+            <a href="#topPage" className={styles.up}>Haut de page</a>
+          </div>
+
           {totalPages > 1 && (
             <div className={styles.paginationWrapper}>
               <Pagination
