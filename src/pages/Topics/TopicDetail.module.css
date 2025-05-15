@@ -199,41 +199,31 @@
   .backArrowWrapper > * {
     transform: scale(0.6);
   }
-  
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  gap: 1rem;
-}
-
-.pagination button {
-  background-color: #e8d8a0;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-family: 'Itim', cursive;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.pagination button:disabled {
-  background-color: #c4c4c4;
-  cursor: not-allowed;
-}
-
-.pagination span {
-  font-weight: bold;
-  color: #532222;
-}
-
-.paginationWrapper {
-  margin-top: 20px;
-}
 
 .deletePostButton {
   background: radial-gradient(circle, #ca5d1d 0%, #d07b44 74%, #d4936a 89%, #e8b894 100%);
 }  
   
+.up_container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.up {
+  background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  cursor: pointer;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.up:hover {
+  background-color: #d6c570;
+}

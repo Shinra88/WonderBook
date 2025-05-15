@@ -7,17 +7,20 @@
   }
   
   .pagination button {
-    background-color: #e8d8a0;
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
     border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: bold;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 32px;
+    font-family: 'Itim', serif;
     cursor: pointer;
-    transition: background-color 0.3s;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+    transition: background-color 0.3s ease;
   }
   
   .pagination button:disabled {
-    background-color: #ccc;
+    background: #ccc ;
     cursor: not-allowed;
   }
   

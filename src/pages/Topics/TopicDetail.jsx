@@ -77,63 +77,74 @@ function TopicDetail() {
   const canModerate = user?.role === 'admin' || user?.role === 'moderator';
 
   function parseContent(content) {
-    const spoilerRegex = /\[spoiler](.*?)\[\/spoiler]/gi;
-    const boldRegex = /\[b](.*?)\[\/b]/gi;
-    const italicRegex = /\[i](.*?)\[\/i]/gi;
-    const underlineRegex = /\[u](.*?)\[\/u]/gi;
-    const strikethroughRegex = /\[s](.*?)\[\/s]/gi;
-  
-    const parseLine = (line, index) => {
-      // Stockage des contenus matchés par tag
-      const matches = { spoiler: [], b: [], i: [], u: [], s: [] };
-  
-      // Remplacement par token pour éviter chevauchements
-      let tempLine = line
-        .replace(spoilerRegex, (_, p1) => {
-          matches.spoiler.push(p1);
-          return `__SPOILER__${matches.spoiler.length - 1}__`;
-        })
-        .replace(boldRegex, (_, p1) => {
-          matches.b.push(p1);
-          return `__BOLD__${matches.b.length - 1}__`;
-        })
-        .replace(italicRegex, (_, p1) => {
-          matches.i.push(p1);
-          return `__ITALIC__${matches.i.length - 1}__`;
-        })
-        .replace(underlineRegex, (_, p1) => {
-          matches.u.push(p1);
-          return `__UNDERLINE__${matches.u.length - 1}__`;
-        })
-        .replace(strikethroughRegex, (_, p1) => {
-          matches.s.push(p1);
-          return `__STRIKE__${matches.s.length - 1}__`;
-        });
-  
-      // Conversion des tokens en JSX
-      return (
-        <p key={index}>
-          {tempLine.split(/(__[A-Z]+__\d+__)/).map((part, i) => {
-            if (part.startsWith("__SPOILER__")) {
-              const id = +part.match(/\d+/)[0];
-              return <Spoiler key={`sp-${index}-${i}`} content={<>{parseContent(matches.spoiler[id])}</>} />;
-            }
-            if (part.startsWith("__BOLD__")) return <strong key={`b-${index}-${i}`}>{matches.b[+part.match(/\d+/)[0]]}</strong>;
-            if (part.startsWith("__ITALIC__")) return <em key={`i-${index}-${i}`}>{matches.i[+part.match(/\d+/)[0]]}</em>;
-            if (part.startsWith("__UNDERLINE__")) return <u key={`u-${index}-${i}`}>{matches.u[+part.match(/\d+/)[0]]}</u>;
-            if (part.startsWith("__STRIKE__")) return <s key={`s-${index}-${i}`}>{matches.s[+part.match(/\d+/)[0]]}</s>;
-            return <span key={`t-${index}-${i}`}>{part}</span>;
-          })}
-        </p>
-      );
-    };
-  
-    return content.split('\n').map(parseLine);
-  }
+  const spoilerRegex = /\[spoiler](.*?)\[\/spoiler]/gi;
+  const boldRegex = /\[b](.*?)\[\/b]/gi;
+  const italicRegex = /\[i](.*?)\[\/i]/gi;
+  const underlineRegex = /\[u](.*?)\[\/u]/gi;
+  const strikethroughRegex = /\[s](.*?)\[\/s]/gi;
+
+  const parseLine = (line, index) => {
+    const matches = { spoiler: [], b: [], i: [], u: [], s: [] };
+
+    let tempLine = line
+      .replace(spoilerRegex, (_, p1) => {
+        matches.spoiler.push(p1);
+        return `__SPOILER__${matches.spoiler.length - 1}__`;
+      })
+      .replace(boldRegex, (_, p1) => {
+        matches.b.push(p1);
+        return `__BOLD__${matches.b.length - 1}__`;
+      })
+      .replace(italicRegex, (_, p1) => {
+        matches.i.push(p1);
+        return `__ITALIC__${matches.i.length - 1}__`;
+      })
+      .replace(underlineRegex, (_, p1) => {
+        matches.u.push(p1);
+        return `__UNDERLINE__${matches.u.length - 1}__`;
+      })
+      .replace(strikethroughRegex, (_, p1) => {
+        matches.s.push(p1);
+        return `__STRIKE__${matches.s.length - 1}__`;
+      });
+
+    return (
+      <div key={index} style={{ marginBottom: '0.5em' }}>
+        {tempLine.split(/(__[A-Z]+__\d+__)/).map((part, i) => {
+          if (part.startsWith('__SPOILER__')) {
+            const id = +part.match(/\d+/)[0];
+            return (
+              <Spoiler key={`sp-${index}-${i}`} content={<>{parseContent(matches.spoiler[id])}</>} />
+            );
+          }
+          if (part.startsWith('__BOLD__')) {
+            const id = +part.match(/\d+/)[0];
+            return <strong key={`b-${index}-${i}`}>{matches.b[id]}</strong>;
+          }
+          if (part.startsWith('__ITALIC__')) {
+            const id = +part.match(/\d+/)[0];
+            return <em key={`i-${index}-${i}`}>{matches.i[id]}</em>;
+          }
+          if (part.startsWith('__UNDERLINE__')) {
+            const id = +part.match(/\d+/)[0];
+            return <u key={`u-${index}-${i}`}>{matches.u[id]}</u>;
+          }
+          if (part.startsWith('__STRIKE__')) {
+            const id = +part.match(/\d+/)[0];
+            return <s key={`s-${index}-${i}`}>{matches.s[id]}</s>;
+          }
+          return <span key={`t-${index}-${i}`}>{part}</span>;
+        })}
+      </div>
+    );
+  };
+
+  return content.split('\n').map(parseLine);
+}
 
   
   return (
-    <div className={styles.TopicDetail}>
+    <div id="topPage" className={styles.TopicDetail}>
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
         {showToast && <ToastSuccess message={toastMessage} />}
@@ -303,6 +314,9 @@ function TopicDetail() {
               <p>Aucune réponse ne correspond à votre recherche.</p>
             )}
           </ul>
+          <div className={styles.up_container}>
+            <a href="#topPage" className={styles.up}>Haut de page</a>
+          </div>
 
           {totalPages > 1 && (
             <div className={styles.paginationWrapper}>
