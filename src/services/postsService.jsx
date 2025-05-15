@@ -30,3 +30,17 @@ export async function addPost({ topicId, content }, token) {
     throw error;
   }
 }
+
+export async function deletePost(id, token) {
+  try {
+    const res = await api.delete(`${API_ROUTES.POSTS.BASE}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.error("Erreur deletePost :", err);
+    throw err;
+  }
+}

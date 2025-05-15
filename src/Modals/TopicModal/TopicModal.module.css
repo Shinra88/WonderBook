@@ -94,4 +94,56 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  .pinButton, .deletePostButton {
+    margin-left: 10px;
+    background-color: #D0BF67;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: 'Itim', serif;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  }
+  .pinButton:hover, .deletePostButton:hover {
+    filter: brightness(0.95);
+  }
+  
+  .deleteTopicButton {
+    background-color: #d9534f;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  
+  .deleteTopicButton:hover {
+    background-color: #c9302c;
+  }
+  
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 2000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    animation: fadein 0.5s ease, fadeout 0.5s ease 1.5s;
+  }
+  
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeout {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+  }
   

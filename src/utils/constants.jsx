@@ -34,11 +34,14 @@ export const API_ROUTES = {
     BASE: `${API_URL}/api/topics`,
     GET_ALL_TOPICS: `${API_URL}/api/topics`,
     ADD_TOPIC: `${API_URL}/api/topics`,
-  },
+    UPDATE_NOTICE: (id) => `${API_URL}/api/topics/${id}/pin`,
+    LOCK_TOPIC: (id) => `${API_URL}/api/topics/${id}/lock`,
+  },  
 
   POSTS: {
     BASE: `${API_URL}/api/posts`,
     GET_BY_TOPIC: (id) => `${API_URL}/api/posts/${id}`,
+    DELETE_POST: (id) => `${API_URL}/api/posts/${id}`,
   },  
   
   COLLECTION: {
@@ -53,6 +56,13 @@ export const API_ROUTES = {
     BASE: `${API_URL}/api/comments`,
   },
   
+  ADMIN: {
+    GET_USERS: `${API_URL}/api/admin/users`,
+    UPDATE_USER: (id) => `${API_URL}/api/admin/users/${id}`,
+    DELETE_USER: (id) => `${API_URL}/api/admin/users/${id}`,
+    UPDATE_USER_STATUS: (id) => `${API_URL}/api/admin/users/${id}/status`,
+
+  },
 };
 
 export const APP_ROUTES = {
@@ -68,4 +78,5 @@ export const APP_ROUTES = {
   BOOK: '/livre/:title',
   UPDATE_BOOK: '/Book/edit/:id',
   RESET_PASSWORD: '/reset-password/:token',
+  ADMIN: '/Admin',
 };

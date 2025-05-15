@@ -13,11 +13,11 @@ export async function getTopics() {
   }
 }
 
-// ➔ Ajouter un topic
-export async function addTopic({ title, content }, token) {
+// ➔ Ajouter un topic avec notice et recaptcha
+export async function addTopic({ title, content, recaptchaToken, notice }, token) {
   try {
     const response = await api.post(API_ROUTES.FORUM.ADD_TOPIC,
-      { title, content },
+      { title, content, recaptchaToken, notice },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,4 +41,55 @@ export async function getTopicById(topicId) {
     throw error;
   }
 }
+
+// ✅ Met à jour l'état "notice" (épinglé) d'un topic
+export async function updateTopicNotice(id, token) {
+  try {
+    const response = await api.patch(
+      API_ROUTES.FORUM.UPDATE_NOTICE(id),
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erreur updateTopicNotice :", error);
+    throw error;
+  }
+}
+
+// ➔ Supprime le topic
+export async function deleteTopic(id, token) {
+  try {
+    const response = await api.delete(`${API_ROUTES.FORUM.BASE}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Erreur suppression topic :", err);
+    throw err;
+  }
+}
+
+// ➔ Verrouille ou déverrouille un topic
+export async function toggleTopicLock(id, token) {
+  try {
+    const response = await api.patch(
+      API_ROUTES.FORUM.LOCK_TOPIC(id),
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erreur toggle lock topic :", error);
+    throw error;
+  }
+}
+
+
 

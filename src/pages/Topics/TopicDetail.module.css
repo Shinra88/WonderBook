@@ -31,11 +31,11 @@
     display: flex;
     flex-direction: column;
   }
-  
+
   .head {
     min-height: 125px;
-    padding-inline: 5%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     background-image: url("../../images/wood-brown.jpg");
@@ -46,7 +46,23 @@
     text-shadow: 2px 2px 4px #000000;
     padding: 10px;
   }
-  
+
+  .title_container {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    border-bottom: 4px solid #e8d8a0;
+  }
+
+  .lockedMessage {
+    color: #e8d8a0;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 20px;
+  }
+
   .searchBar {
     display: flex;
     flex-direction: column;
@@ -87,6 +103,14 @@
     box-shadow: inset 2px 2px 15px rgba(0, 0, 0, 0.6);
   }
   
+  .btn_container {
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+    align-items: center;
+    margin: 20px;
+  }
+
   .author, .post{
     display: flex;
     flex-direction: column;
@@ -110,6 +134,10 @@
   .postHead {
     border-left: 4px solid #e8d8a0;
     border-right: 4px solid #e8d8a0;
+  }
+
+  .authorContent {
+    text-align: center;
   }
 
   .authorContent , .postContent {
@@ -147,7 +175,7 @@
     border: 2px solid #e8d8a0;
   }
 
-  .createButton {
+  .createButton, .lockButton, .pinButton, .deleteTopicButton {
     background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
     border: none;
     color: black;
@@ -159,16 +187,19 @@
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
     transition: background-color 0.3s ease;
   }
+
+  .deleteTopicButton {
+    background: radial-gradient(circle, #ca5d1d 0%, #d07b44 74%, #d4936a 89%, #e8b894 100%);
+  }
   
   .createButton:hover {
     background-color: #d6c570;
   }
   
   .backArrowWrapper > * {
-    transform: scale(0.6); /* rétrécit tout le composant */
+    transform: scale(0.6);
   }
   
-  /* src/components/Pagination/Pagination.module.css */
 .pagination {
   display: flex;
   justify-content: center;
@@ -201,7 +232,6 @@
 .paginationWrapper {
   margin-top: 20px;
 }
-
 
   
   
