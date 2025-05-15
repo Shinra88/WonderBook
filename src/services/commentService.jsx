@@ -26,7 +26,7 @@ export async function addOrUpdateComment(bookId, { content, rating }) {
 // ➔ Supprimer son propre commentaire
 export async function deleteComment(bookId) {
   try {
-    const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/${bookId}`);
+    const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/admin/${commentId}`);
     return data;
   } catch (error) {
     console.error('Erreur suppression commentaire :', error);
