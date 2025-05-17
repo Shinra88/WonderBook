@@ -26,7 +26,9 @@ function Header() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const isForumPage = location.pathname.startsWith('/Forum') || location.pathname.startsWith('/topic');
+
+  const isPath = (prefixes) => prefixes.some((prefix) => location.pathname.startsWith(prefix));
+  const hideSearchBar = isPath(['/Forum', '/topic', '/Admin']);
 
   const { user, isAuthenticated, logout } = useAuth();
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
@@ -46,20 +48,6 @@ function Header() {
     setShowRegister(false);
     setShowForgetPassword(false);
     setShowAddBook(false);
-  };
-
-  const goHomeAndReset = () => {
-    setSearchQuery('');
-    setInputValue('');
-    setSelectedCategories([]);
-    setSelectedYear('');
-
-    navigate('/#topPage');
-
-    setTimeout(() => {
-      const el = document.getElementById('topPage');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
   };
 
   const handleSearch = () => {
@@ -82,11 +70,6 @@ function Header() {
     }
   };
 
-  const openLogin = () => {
-    closeAllModals();
-    setShowLogin(true);
-  };
-
   const toggleUserDropdown = () => {
     setShowUserDropdown(!showUserDropdown);
   };
@@ -107,14 +90,12 @@ function Header() {
                 to="/#topPage"
                 className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
                 onClick={(e) => {
-                  e.preventDefault(); // éviter le comportement par défaut du lien
+                  e.preventDefault();
                   setSearchQuery('');
                   setInputValue('');
                   setSelectedCategories([]);
                   setSelectedYear('');
-
                   navigate('/#topPage');
-
                   setTimeout(() => {
                     const el = document.getElementById('topPage');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -124,7 +105,7 @@ function Header() {
                 Accueil
               </NavLink>
             </li>
-            {!isForumPage && (
+            {!isPath(['/Forum', '/topic']) && (
               <>
                 <li>
                   <DropdownMenu isActive={hasActiveFilter} />
@@ -133,8 +114,7 @@ function Header() {
                   <DropdownYear
                     isActive={
                       (typeof selectedYear === 'string' && selectedYear !== '') ||
-                      (typeof selectedYear === 'object' &&
-                        (selectedYear.start !== '' || selectedYear.end !== ''))
+                      (typeof selectedYear === 'object' && (selectedYear.start !== '' || selectedYear.end !== ''))
                     }
                   />
                 </li>
@@ -143,7 +123,7 @@ function Header() {
             <li>
               <NavLink
                 to="/Forum"
-                className={() => (isForumPage ? styles.activeLink : undefined)}
+                className={() => (isPath(['/Forum', '/topic']) ? styles.activeLink : undefined)}
               >
                 Forum
               </NavLink>
@@ -155,13 +135,16 @@ function Header() {
                 </NavLink>
               </li>
             )}
-             {isAdmin && (
-                <li>
-                <NavLink to="/Admin" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
+            {isAdmin && (
+              <li>
+                <NavLink
+                  to="/Admin"
+                  className={() => (isPath(['/Admin']) ? styles.activeLink : undefined)}
+                >
                   Admin
                 </NavLink>
               </li>
-             )}
+            )}
             {isAuthenticated && (
               <li>
                 <button
@@ -214,7 +197,7 @@ function Header() {
               </button>
             </>
           )}
-          {!isForumPage && (
+          {!hideSearchBar && (
             <div className={styles.searchBar}>
               <div className={styles.inputSearch}>
                 <input
@@ -247,7 +230,7 @@ function Header() {
           }}
         />
       )}
-      {showRegister && <RegisterModal onClose={closeAllModals} openLogin={openLogin} />}
+      {showRegister && <RegisterModal onClose={closeAllModals} openLogin={() => setShowLogin(true)} />}
       {showForgetPassword && <ForgetModal onClose={closeAllModals} />}
     </header>
   );

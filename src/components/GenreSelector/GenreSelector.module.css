@@ -1,143 +1,118 @@
 .genreSelectorContainer {
-  justify-content: flex-start;
   width: 100%;
   margin-left: 20px;
 }
-  
-  .dropdownButton {
-    display: flex;
-    justify-content: center;
-    width: 80%;
-    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
-    border: none;
-    color: black;
-    padding: 10px ;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    align-items: center;
-    min-width: 11rem;
-    box-shadow: 
-        4px 4px 8px rgba(0, 0, 0, 0.6),  /* Drop shadow */
-        inset -4px -4px 8px rgba(0, 0, 0, 0.6); /* Inner shadow */
-  }
-  
-  .dropdownButton:hover {
-    background-color: #d0bf67;
-  }
-  
-  .dropdownMenu {
-    position: absolute;
-    background-image: url('../../images/backround.png');
-    color: #e8d8a0;
-    border: 2px solid #e8d8a0;
-    border-radius: 0 0 20px 20px;
-    padding: 15px;
-    z-index: 1000;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-    width: 600px;
-  }
-  
-  .genreList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .genreItem {
-    width: 30%; /* Ajuste la largeur pour uniformiser la disposition */
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 10px;
-  }
-  
-  .genreItem label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 10px; /* Espace entre la case à cocher et le texte */
-    font-size: 16px;
-    color: #e8d8a0;
-  }
-  
-  .genreItem input[type='checkbox'] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #e8d8a0;
-    border-radius: 4px;
-  }
-  
-  
-  .applyButton {
-    display: flex;
-    justify-content: center;
-    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
-    border: none;
-    color: black;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-inline: auto;
-    width: 11rem;
-    align-items: center;
-    box-shadow: 
-      4px 4px 8px rgba(0, 0, 0, 0.6),  /* Drop shadow */
-      inset -4px -4px 8px rgba(0, 0, 0, 0.6); /* Inner shadow */
-  }
-  
-  .applyButton:hover:not(:disabled) {
-    background-color: #e8d8a0;
-  }
-  
-  .applyButton:disabled {
-    background: radial-gradient(circle, #737373 0%, #959595 40%, #A8A8A8 59%, #B9B9B9 78%, #D9D9D9 100%);
-    cursor: not-allowed;
-  }
 
-  .genreList {
-    display: flex;
-    flex-wrap: wrap; /* Permet aux éléments de revenir à la ligne */
-    justify-content: space-between; /* Espacement entre les éléments */
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .genreItem {
-    width: 25%; /* Ajuste la largeur pour permettre le retour à la ligne */
-    margin: 5px 0; /* Espace vertical entre les éléments */
-    white-space: normal; /* Corrige le comportement du texte */
-  }
+.dropdownButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', serif;
+  background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+  min-width: 11rem;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
 
-  .genreItem input[type='checkbox'] {
-    width: 15px;
-    margin-right: 10px;
-    cursor: pointer;
-    accent-color: #e8d8a0;
-  }
-  
-  /* Ajoutez un sélecteur parent pour augmenter la spécificité */
-.genreSelectorContainer .genreItem label {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 16px;
-    line-height: 20px;
-    cursor: pointer;
-  }
-  
-  
+.dropdownMenu {
+  position: absolute;
+  left: 0;
+  transform: translateY(10px);
+  z-index: 999;
+  width: 600px;
+  padding: 15px;
+  background-image: url('../../images/backround.png');
+  border: 2px solid #e8d8a0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  color: #e8d8a0;
+}
+
+.genreList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.genreItem {
+  width: 25%;
+  margin: 5px 0;
+  white-space: normal;
+}
+
+.genreItem label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #D0BF67;
+  font-family: 'Itim', serif;
+  cursor: pointer;
+}
+
+/* ✅ Style prioritaire avec class isolée */
+.genreItem input[type="checkbox"].genreCheckbox {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #D9D9D9;
+  border: 2px solid #e8d8a0;
+  border-radius: 5px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: content-box;
+}
+
+.genreItem input.genreCheckbox::before {
+  content: '✔';
+  font-size: 14px;
+  color: #4b2d75;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.genreItem input.genreCheckbox:checked::before {
+  opacity: 1;
+}
+
+.applyButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 11rem;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', serif;
+  background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.applyButton:hover:not(:disabled) {
+  background-color: #e8d8a0;
+}
+
+.applyButton:disabled {
+  background: radial-gradient(circle, #737373 0%, #959595 40%, #A8A8A8 59%, #B9B9B9 78%, #D9D9D9 100%);
+  cursor: not-allowed;
+}

@@ -12,6 +12,7 @@
   }
   
   .modalContent {
+    position: relative;
     background-image: url("../../images/backround.png");
     border-radius: 30px;
     padding: 25px;
@@ -128,7 +129,6 @@
   .formGroup label {
     font-size: 18px;
     color: #D0BF67;
-    width: 30%;
     text-align: left;
   }
   
@@ -193,4 +193,25 @@
     background: transparent;
   }
   
+  .formGroup input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #D9D9D9;
+    border: 2px solid #e8d8a0;
+    border-radius: 5px;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+    position: relative;
+  }
   
+  .formGroup input[type="checkbox"]:checked::before {
+    content: '✔';
+    font-size: 14px;
+    color: #4b2d75;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -56%);
+  }

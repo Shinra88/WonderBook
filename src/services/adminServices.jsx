@@ -2,10 +2,12 @@
 import api from './api/api';
 import { API_ROUTES } from '../utils/constants';
 
-/** ✅ Récupère tous les utilisateurs */
-export async function getAllUsers() {
+/** ✅ Récupère tous les utilisateurs avec pagination, recherche et filtrage par statut */
+export async function getAllUsers({ page, limit, search, status }) {
   try {
-    const res = await api.get(API_ROUTES.ADMIN.GET_USERS);
+    const res = await api.get(API_ROUTES.ADMIN.GET_USERS, {
+      params: { page, limit, search, status },
+    });
     return res.data;
   } catch (err) {
     console.error('❌ Erreur getAllUsers :', err);

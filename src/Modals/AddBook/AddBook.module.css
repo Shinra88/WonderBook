@@ -250,21 +250,6 @@ option {
   font-family: 'Itim', serif;
 }
 
-.toastSuccess {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4CAF50;
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  font-weight: bold;
-  z-index: 9999;
-  animation: fadeInOut 2s ease-in-out;
-}
-
 @keyframes fadeInOut {
   0% {
     opacity: 0;
@@ -281,6 +266,29 @@ option {
     opacity: 0;
     transform: translateX(-50%) translateY(-20px);
   }
+}
+
+.formGroup input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #D9D9D9;
+  border: 2px solid #e8d8a0;
+  border-radius: 5px;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.formGroup input[type="checkbox"]:checked::before {
+  content: '✔';
+  font-size: 14px;
+  color: #4b2d75;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -56%);
 }
 
 @media (max-height: 800px) {

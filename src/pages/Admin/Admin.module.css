@@ -38,18 +38,66 @@
 }
 
 .headContainer {
-    display: flex;
-    justify-content: center;
-    background-image: url("../../images/wood-brown.jpg");
-    border-bottom: 4px solid #e8d8a0;
-    box-shadow: 
+  min-height: 125px;
+  padding-inline: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url("../../images/wood-brown.jpg");
+  border-bottom: 4px solid #e8d8a0;
+  box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),
     inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-    color: #e8d8a0;
-    text-align: center;
-    
-    
+  text-align: center;
 }
+
+.headContainer h2 {
+  color: #e8d8a0;
+
+}
+
+.searchBar {
+  display: flex;
+  flex-direction: column;
+  background-color: #CBCBCB;
+  border-radius: 32px;
+  border: 2px solid #e8d8a0;
+  height: 2.4rem;
+  width: 20rem;
+  box-shadow: 4px 4px 8px black;
+  
+}
+
+.inputSearch {
+  display: flex;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.inputSearch input {
+  font-size: 0.8rem;
+  color: var(--text-color);
+  border: none;
+  background-color: #CBCBCB;
+  padding: 1rem;
+  width: 100%;
+  box-shadow: inset 2px 2px 15px rgba(0, 0, 0, 0.6);
+  outline: none;
+}
+
+.inputSearch button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  border: none;
+  padding: 15px;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset 1px 1px 8px rgba(0, 0, 0, 0.6);
+}
+
 
   .tableContainer {
     width: 100%;
@@ -130,4 +178,73 @@
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6),
                 inset -4px -4px 8px rgba(0, 0, 0, 0.6);
   }
+  
+  .radioGroup {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin: 0 1.5rem;
+    font-family: 'Itim', cursive;
+    font-size: 1rem;
+  }
+  
+  .radioGroup label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #e8d8a0;
+  }
+
+  .radioGroup input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e8d8a0;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .radioGroup input[type="radio"]::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+  }
+  .radioGroup input[type="radio"]:checked::before {
+    background-image: url("../../images/backround.png");
+  }
+  
+  .up_container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .up {
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 32px;
+    font-family: 'Itim', serif;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .up:hover {
+    background-color: #d6c570;
+  }
+  
   
