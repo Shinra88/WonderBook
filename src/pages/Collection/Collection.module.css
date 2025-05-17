@@ -117,11 +117,40 @@
         inset -4px -4px 8px rgba(0, 0, 0, 0.6);
   }
   
-  .statusItem input[type="checkbox"] {
+  .statusItem input[type="checkbox"], .filterToggle input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #D9D9D9;
+    border: 2px solid #e8d8a0;
+    border-radius: 5px;
     width: 18px;
     height: 18px;
-    accent-color: #ca5d1d;
+    margin-right: 8px;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
+  
+  .statusItem input[type="checkbox"]::before, .filterToggle input[type="checkbox"]::before {
+    content: '✔';
+    font-size: 14px;
+    color: #4b2d75;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -56%) scale(0.8);
+  }
+  
+  .statusItem input[type="checkbox"]:checked::before, .filterToggle input[type="checkbox"]:checked::before {
+    opacity: 1;
+    transform: translate(-50%, -56%) scale(1);
+  }
+  
 
   .filterContainer {
     display: flex;
@@ -131,7 +160,7 @@
     margin-bottom: 10px;
   }
   
-  .filterToggle {
+  .radioGroup {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -140,31 +169,44 @@
     color: #e8d8a0;
   }
   
-  .filterToggle input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+  .radioGroup input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #D9D9D9;
+    border: 2px solid #e8d8a0;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    position: relative;
     cursor: pointer;
   }
+  
+  .radioGroup input[type="radio"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-image: url("../../images/backround.png");
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .radioGroup input[type="radio"]:checked::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
 
-  .radioGroup {
+  .radioGroup label,
+  .filterToggle {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: 'Itim', serif;
+    color: #e8d8a0;
+    line-height: 1;
   }
-  
-  .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
-    opacity: 0.95;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  
   

@@ -79,13 +79,15 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
             {categories.map((cat) => (
               <li key={`genre-${cat.id}`} className={styles.genreItem}>
                 <label htmlFor={`genre-${cat.id}`}>
-                  <input
-                    id={`genre-${cat.id}`}
-                    type="checkbox"
-                    checked={selected.includes(cat.id)}
-                    onChange={() => handleGenreToggle(cat.id)}
-                    disabled={!selected.includes(cat.id) && selected.length >= 2}
-                  />
+                <input
+  id={`genre-${cat.id}`}
+  type="checkbox"
+  className="genreCheckbox"
+  checked={selected.includes(cat.id)}
+  onChange={() => handleGenreToggle(cat.id)}
+  disabled={!selected.includes(cat.id) && selected.length >= 2}
+/>
+
                   {cat.name}
                 </label>
               </li>
