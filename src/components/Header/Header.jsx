@@ -7,7 +7,6 @@ import Logo from '../../images/Logo.png';
 import FeatherIcon from '../../images/feather.png';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import DropdownYear from '../DropdownYear/DropdownYear';
-import AddBookModal from '../../modals/AddBook/AddBook';
 import LoginModal from '../../modals/Login/Login_modal';
 import RegisterModal from '../../modals/SignIn/SignIn';
 import ForgetModal from '../../modals/Forget/Forget';
@@ -15,6 +14,8 @@ import { useAuth } from '../../hooks/useAuth';
 import Avatar from '../../images/avatar.png';
 import { useFilters } from '../../hooks/filterContext';
 import { normalize } from '../../utils/helpers';
+import BookFormModal from '../../modals/BookFormModal/BookFormModal';
+
 
 function Header() {
   const [showAddBook, setShowAddBook] = useState(false);
@@ -23,6 +24,10 @@ function Header() {
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [showTestFormModal, setShowTestFormModal] = useState(false);
+    const [book, setBook] = useState(null);
+  
+  
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -151,7 +156,7 @@ function Header() {
                   type="button"
                   className={styles.Button}
                   aria-label="Ajouter un livre"
-                  onClick={() => setShowAddBook(true)}
+                  onClick={() => setShowTestFormModal(true)}
                 >
                   Ajouter un livre
                   <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
@@ -215,8 +220,18 @@ function Header() {
           )}
         </div>
       </div>
-
-      {showAddBook && <AddBookModal onClose={() => setShowAddBook(false)} />}
+            {showTestFormModal && (
+              <BookFormModal
+                mode="add"
+                book={book}
+                onSave={(updatedData) => {
+                  setBook({ ...book, ...updatedData });
+                  ToastSuccess('Livre mis à jour depuis le test ✅');
+                  setShowTestFormModal(false);
+                }}
+                onClose={() => setShowTestFormModal(false)}
+              />
+            )}
       {showLogin && (
         <LoginModal
           onClose={closeAllModals}

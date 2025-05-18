@@ -26,6 +26,13 @@ export function normalize(str = "") {
     .trim();
 }
 
+/** 🔠 Met en majuscule la première lettre de chaque mot */
+export function capitalize(str = "") {
+  return str
+    .toLowerCase()
+    .replace(/(^|\s|-|:)\p{L}/gu, (match) => match.toUpperCase());
+}
+
 /** ⭐ Étoiles interactives ou en lecture seule */
 export function generateStarsInputs(rating, register, readOnly = false) {
   return Array.from({ length: 5 }, (_, i) => {
@@ -56,3 +63,5 @@ export function generateStarsInputs(rating, register, readOnly = false) {
 export function formatDate(dateStr) {
   return dateStr?.slice(0, 10) || 'Date inconnue';
 }
+
+
