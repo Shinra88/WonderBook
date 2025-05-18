@@ -1,3 +1,4 @@
+// BookFormModal.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +24,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
     date: '',
     summary: '',
     status: 'pending',
+    cover_url: '',
   });
 
   const [sagaName, setSagaName] = useState('');
@@ -50,6 +52,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
         date: book.date?.split('T')[0] || '',
         summary: book.summary || '',
         status: book.status || 'pending',
+        cover_url: book.cover_url || '',
       });
       if (book.categories) {
         const matchedIds = categories.filter(cat => book.categories.includes(cat.name) || book.categories.some(c => c.name === cat.name)).map(cat => cat.id || cat.categoryId);
@@ -76,35 +79,29 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (
-      !formData.title ||
-      !formData.author ||
-      !formData.date ||
-      !selectedPublisher ||
-      selectedGenres.length === 0 ||
-      (!isUpdate && !recaptchaToken)
-    ) {
+
+    if (!formData.title || !formData.author || !formData.date || !selectedPublisher || selectedGenres.length === 0 || (!isUpdate && !recaptchaToken)) {
       setNotification({ error: true, message: 'Veuillez remplir tous les champs requis.' });
       return;
     }
-  
-    const finalTitle = hasSaga && sagaName
-    ? `${capitalize(sagaName)} : ${capitalize(formData.title)}`
-    : capitalize(formData.title);  
-  
+
+    const finalTitle = hasSaga && sagaName ? `${capitalize(sagaName)} : ${capitalize(formData.title)}` : capitalize(formData.title);
     const formattedDate = formData.date;
     let coverUrl = formData.cover_url || '';
-  
-    if (!isUpdate) {
-      if (!coverFile) {
-        setNotification({ error: true, message: 'Veuillez ajouter une image de couverture.' });
-        return;
-      }
-  
+
+    if (coverFile) {
       try {
-        const uploadedUrl = await uploadImageToS3(coverFile, finalTitle);
-        coverUrl = uploadedUrl;
+        if (isUpdate) {
+          const formDataImage = new FormData();
+          formDataImage.append('cover', coverFile);
+          const res = await api.put(API_ROUTES.BOOKS.UPDATE_COVER.replace(':id', book.bookId), formDataImage, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+          coverUrl = res.data.cover_url;
+        } else {
+          const uploadedUrl = await uploadImageToS3(coverFile, finalTitle);
+          coverUrl = uploadedUrl;
+        }
       } catch (err) {
         console.error(err);
         setNotification({ error: true, message: 'Erreur lors de l’upload de la couverture.' });
@@ -116,15 +113,14 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
       title: finalTitle,
       search_title: normalize(`${finalTitle} ${formData.author}`),
       author: formData.author,
-      year: formData.date,
+      year: formattedDate,
       summary: formData.summary,
       cover_url: coverUrl,
       status: formData.status,
       recaptchaToken,
       categories: selectedGenres,
-      editor: [Number(selectedPublisher)],
+      editors: [Number(selectedPublisher)],
     };
-    
 
     try {
       if (isUpdate) {
@@ -133,7 +129,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
         const response = await api.post(API_ROUTES.BOOKS.ADD_BOOK, payload);
         if (response.status !== 201) throw new Error('Erreur lors de l’ajout.');
       }
-  
+
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -144,7 +140,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
       console.error(err);
       setNotification({ error: true, message: 'Erreur lors de l’enregistrement du livre.' });
     }
-  };  
+  };
 
   const isDisabled = !formData.title || !formData.author || !formData.date || !selectedPublisher || selectedGenres.length === 0 || (!isUpdate && (!recaptchaToken || !coverFile));
 
@@ -154,13 +150,13 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
         onClose();
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  
+
   return (
     <div className={styles.modalBackground}>
       <div ref={modalRef} className={styles.modalContent}>
@@ -193,34 +189,29 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
             </div>
           ))}
 
-{!isUpdate && (
-  <div className={styles.formGroup}>
-    <div>
-      <p className={styles.formatText}>Formats d’image acceptés :</p>
-      <p className={styles.formatTypes}>PNG, JPEG, WEBP</p>
-    </div>
-    <label htmlFor="attachment" className={styles.imageUpload} title="Cliquez ici pour ajouter une image de couverture">
-    
-      <div className={styles.imageContainer}>
-        {!coverPreviewUrl && (
-          <img src={UploadIcon} alt="Upload Icon" className={styles.UploadIcon} />
-        )}
-        {coverPreviewUrl && (
-          <img src={coverPreviewUrl} alt="Aperçu couverture" className={styles.coverPreview} />
-        )}
-      </div>
-
-      <input
-        type="file"
-        id="attachment"
-        className={styles.fileInput}
-        accept=".png, .jpeg, .jpg, .webp"
-        onChange={handleFileChange}
-      />
-    </label>
-  </div>
-)}
-
+          <div className={styles.formGroup}>
+            <p className={styles.formatText}>{isUpdate ? 'Vous pouvez remplacer la couverture existante :' : 'Ajoutez une image de couverture :'}</p>
+            <label htmlFor="attachment" className={styles.imageUpload} title="Cliquez ici pour ajouter une image de couverture">
+              <div className={styles.imageContainer}>
+                {!coverPreviewUrl && formData.cover_url && isUpdate && (
+                  <img src={formData.cover_url} alt="Couverture actuelle" className={styles.coverPreview} />
+                )}
+                {!coverPreviewUrl && !formData.cover_url && (
+                  <img src={UploadIcon} alt="Upload Icon" className={styles.UploadIcon} />
+                )}
+                {coverPreviewUrl && (
+                  <img src={coverPreviewUrl} alt="Aperçu couverture" className={styles.coverPreview} />
+                )}
+              </div>
+              <input
+                type="file"
+                id="attachment"
+                className={styles.fileInput}
+                accept=".png, .jpeg, .jpg, .webp"
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
 
           {isUpdate && (
             <div className={styles.formGroup}>

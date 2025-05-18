@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getBookByTitle } from '../../services/bookService';
+import { getBookByTitle, updateBookInfo } from '../../services/bookService';
 import { addBookToCollection, removeBookFromCollection, getUserCollection } from '../../services/collectionService';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import Banner from '../../images/library.png';
@@ -15,10 +15,7 @@ import logoCultura from '../../images/logos/cultura.png';
 import logoCdiscount from '../../images/logos/cdiscount.svg';
 import logoeBay from '../../images/logos/ebay.svg';
 import FeatherIcon from '../../images/feather.png';
-import UpdateCoverModal from '../../modals/UpdateCoverModal/UpdateCoverModal';
-import UpdateBookModal from '../../modals/UpdateBookModal/UpdateBookModal';
 import CommentModerationModal from '../../modals/CommentModerationModal/CommentModerationModal';
-import { updateBook, updateBookInfo } from '../../services/bookService';
 import BookFormModal from '../../modals/BookFormModal/BookFormModal';
 
 import styles from './Book.module.css';
@@ -30,10 +27,8 @@ function Book() {
   const [inCollection, setInCollection] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [showEditModal, setShowEditCoverModal] = useState(false);
-  const [showEditInfoModal, setShowInfoModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showCommentModerationModal, setShowCommentModerationModal] = useState(false);
-  const [showTestFormModal, setShowTestFormModal] = useState(false);
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
 
@@ -128,40 +123,29 @@ function Book() {
 
             {isAdmin && (
               <>
-                <button className={styles.editButton} onClick={() => setShowEditCoverModal(true)}>Modifier couverture <img src={FeatherIcon} alt="" className={styles.icon} /></button>
-                <button className={styles.editButton} onClick={() => setShowInfoModal(true)}>Modifier informations <img src={FeatherIcon} alt="" className={styles.icon} /></button>
-                <button className={styles.editButton} onClick={() => setShowCommentModerationModal(true)}>Gérer commentaires <img src={FeatherIcon} alt="" className={styles.icon} /></button>
-                <button className={styles.editButton} onClick={() => setShowTestFormModal(true)}>Tester BookFormModal</button>
+                <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
+                  Modifier le livre <img src={FeatherIcon} alt="" className={styles.icon} />
+                </button>
+                <button className={styles.editButton} onClick={() => setShowCommentModerationModal(true)}>
+                  Gérer commentaires <img src={FeatherIcon} alt="" className={styles.icon} />
+                </button>
               </>
             )}
 
-            {showTestFormModal && (
+            {showEditModal && (
               <BookFormModal
                 mode="update"
                 book={book}
                 onSave={async (updatedData) => {
                   const result = await updateBookInfo(book.bookId, updatedData);
                   if (!result.error) {
-                    setBook({ ...book, ...updatedData });
-                    ToastSuccess('Livre mis à jour depuis le test ✅');
-                  }
-                  setShowTestFormModal(false);
-                }}
-                onClose={() => setShowTestFormModal(false)}
-              />
-            )}
-
-            {showEditInfoModal && (
-              <UpdateBookModal
-                book={book}
-                onClose={() => setShowInfoModal(false)}
-                onSave={async (updatedData) => {
-                  const result = await updateBookInfo(book.bookId, updatedData);
-                  if (!result.error) {
-                    setBook({ ...book, ...updatedData });
+                    const refreshed = await getBookByTitle(updatedData.title || book.title);
+                    setBook(refreshed);
                     ToastSuccess('Livre mis à jour ✅');
                   }
+                  setShowEditModal(false);
                 }}
+                onClose={() => setShowEditModal(false)}
               />
             )}
 
@@ -203,15 +187,6 @@ function Book() {
           </aside>
         </div>
       </main>
-
-      {showEditModal && (
-        <UpdateCoverModal
-          bookId={book.bookId}
-          bookTitle={book.title}
-          onClose={() => setShowEditCoverModal(false)}
-          onSuccess={(newCoverUrl) => setBook((prev) => ({ ...prev, cover_url: newCoverUrl }))}
-        />
-      )}
     </div>
   );
 }
