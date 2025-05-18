@@ -24,6 +24,9 @@
     flex-direction: column;
     align-items: center;
     font-family: 'Itim', serif;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding-right: 10px;
   }
 
   .modalContent form {
@@ -214,4 +217,45 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -56%);
+  }
+
+  .imageUpload {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    align-items: center;
+  }
+  
+  .imageContainer {
+    margin-top: 0.5rem;
+    position: relative;
+  }
+  
+  .fileInput {
+    display: none;
+  }
+  
+  .UploadIcon {
+    width: 140px;
+    height: 140px;
+    opacity: 0.7;
+    transition: 0.3s ease;
+  }
+  
+  .UploadIcon:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px #D0BF67);
+  }
+  
+  .coverPreview {
+    max-width: 140px;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  .formatText {
+    font-size: 18px;
+    color: #D0BF67;
+    margin-top: 5px;
   }

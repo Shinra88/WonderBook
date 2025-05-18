@@ -36,7 +36,7 @@
     padding-left: 8px;
 }
 
-.Header p {
+.userName {
     font-size: 20px;
 }
 
@@ -70,8 +70,6 @@
     cursor: pointer;
     border-radius: 32px;
     font-family: 'Itim', serif;
-    margin-bottom: 20px;
-    margin-left: 10px;
     width: 11rem;
     align-items: center;
     box-shadow: 
