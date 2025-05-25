@@ -191,7 +191,7 @@ function Header() {
               )}
             </div>
           ) : (
-            <>
+            <div className={styles.login_menu}>
               <button type="button" className={styles.Button} onClick={() => setShowLogin(true)}>
                 Se connecter
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
@@ -200,7 +200,7 @@ function Header() {
                 Inscription
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
-            </>
+            </div>
           )}
           {!hideSearchBar && (
             <div className={styles.searchBar}>

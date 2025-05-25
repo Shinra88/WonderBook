@@ -77,6 +77,11 @@
         inset -4px -4px 8px rgba(0, 0, 0, 0.6);
 }
 
+.login_menu button{
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
 .navBar{
 display: flex;
 flex-direction: row;

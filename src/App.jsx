@@ -1,3 +1,4 @@
+//app.jsx
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './layouts/AppLayout';
@@ -11,6 +12,7 @@ import Collection from './pages/Collection/Collection';
 import HomeWithForgetPassword from './pages/HomeWithForgetPassword/HomeWithForgetPassword';
 import TopicDetail from './pages/Topics/TopicDetail';
 import Admin from './pages/Admin/Admin';
+import ReadBook from './pages/ReadBook/ReadBook';
 
 import { FilterProvider } from './hooks/filterContext';
 
@@ -53,6 +55,7 @@ function App() {
             <Route path={APP_ROUTES.COLLECTION} element={<Collection />} />
             <Route path={APP_ROUTES.BOOK} element={<Book />} />
             <Route path={APP_ROUTES.ADMIN} element={<Admin />} />
+            <Route path="/read/:bookId" element={<ReadBook />} />
           </Route>
 
           {/* ✅ Route pour réinitialisation de mot de passe */}

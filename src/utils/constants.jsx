@@ -12,6 +12,7 @@ export const API_ROUTES = {
     UPDATE_PROFILE: `${API_URL}/api/auth/profile`,
     UPDATE_AVATAR: `${API_URL}/api/upload/update-avatar`,
     UPLOAD_IMAGE: `${API_URL}/api/upload/cover`,
+    UPLOAD_EBOOK: `${API_URL}/api/upload/ebook`,
   },
 
   CATEGORIES: {
@@ -50,6 +51,8 @@ export const API_ROUTES = {
     REMOVE: (bookId) => `${API_URL}/api/collection/${bookId}`,
     UPDATE_READ: (bookId) => `${API_URL}/api/collection/${bookId}`,
     GET_USER_COLLECTION: `${API_URL}/api/collection`,
+    GET_PROGRESS: (bookId) => `${API_URL}/api/collection/progress/${bookId}`,
+    SAVE_PROGRESS: (bookId) => `${API_URL}/api/collection/progress/${bookId}`,
   },
   
   COMMENTS: {

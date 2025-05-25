@@ -63,3 +63,34 @@ export async function updateAvatarOnS3(file, userId, oldUrl) {
     return null;
   }
 }
+
+/**
+ * 📚 Uploade un fichier ebook (epub) vers S3
+ */
+export async function uploadEbookToS3(file, bookId) {
+  if (!file || !bookId) {
+    console.error("❌ Fichier ou bookId manquant pour l’upload de l’ebook");
+    return null;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("bookId", bookId); // ✅ le champ attendu par le backend
+
+  try {
+    const response = await api.put(API_ROUTES.AUTH.UPLOAD_EBOOK, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (response?.data?.ebook_url) {
+      console.log("✅ Ebook uploadé :", response.data.ebook_url);
+      return response.data.ebook_url;
+    }
+
+    console.error("❌ Réponse inattendue upload ebook :", response);
+    return null;
+  } catch (err) {
+    console.error("❌ Erreur upload ebook S3 :", err);
+    return null;
+  }
+}
