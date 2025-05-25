@@ -50,3 +50,24 @@ export async function updateBookReadStatus(bookId, isRead) {
     throw error;
   }
 }
+
+// ➔ Récupérer la position de lecture (CFI)
+export async function getReadingProgress(bookId) {
+  try {
+    const { data } = await api.get(API_ROUTES.COLLECTION.GET_PROGRESS(bookId));
+    return data.cfi || null;
+  } catch (error) {
+    console.error('Erreur récupération position de lecture :', error);
+    return null;
+  }
+}
+
+// ➔ Sauvegarder la position de lecture (CFI)
+export async function saveReadingProgress(bookId, cfi) {
+  try {
+    await api.post(API_ROUTES.COLLECTION.SAVE_PROGRESS(bookId), { cfi });
+  } catch (error) {
+    console.error('Erreur sauvegarde position de lecture :', error);
+  }
+}
+
