@@ -206,25 +206,19 @@ function Collection() {
                           setIsCommentModalOpen(true);
                         }}>
                           {item.books.comments?.some(comment => comment.userId === item.userId)
-                            ? 'Modifier le commentaire'
+                            ? "Modifier l'avis"
                             : 'Commenter'}
                         </button>
                       </div>
                     )}
                     {item.books.ebook_url && (
                       <div className={styles.statusItem}>
-                        <a
-                          href={item.books.ebook_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.readEbookButton}
-                        >
-                          📖 Lire l’ebook
-                        </a>
-                          <Link to={`/read/${item.books.bookId}`} className={styles.readEbookButton}>
-                            📖 Lire en ligne
-                          </Link>
-
+                          <button
+                            className={styles.commentButton}
+                            onClick={() => navigate(`/read/${item.books.bookId}`)}
+                          >
+                            Lire l’ebook
+                          </button>
                       </div>
                     )}
                   </div>
