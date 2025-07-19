@@ -53,18 +53,18 @@ function DropdownMenu({ isActive = false }) {
         type="button" 
         onClick={toggleDropdown}
       >
-        {t('Dropdown.Categories')}
+        {t('DropdownMenu.Categories')}
       </button>
 
       {isOpen && (
         <div className={`${styles.dropdownMenu}`}>
-          {loading && <p>{t('Dropdown.Loading')}...</p>}
-          {error && <p>{t('Dropdown.ErrorLoading')}</p>}
+          {loading && <p>{t('DropdownMenu.Loading')}...</p>}
+          {error && <p>{t('DropdownMenu.ErrorLoading')}</p>}
 
           {!loading && !error && (
             <>
               <div className={styles.filterSection}>
-                <span>{t('Dropdown.Filter')}</span>
+                <span>{t('DropdownMenu.Filter')}</span>
                 <div className={styles.filterToggle}>
                   <label>
                     <input
@@ -74,7 +74,7 @@ function DropdownMenu({ isActive = false }) {
                       checked={selectedType === 'et'}
                       onChange={() => setSelectedType('et')}
                     />
-                    {t('Dropdown.And')}
+                    {t('DropdownMenu.And')}
                   </label>
                   <label>
                     <input
@@ -84,7 +84,7 @@ function DropdownMenu({ isActive = false }) {
                       checked={selectedType === 'ou'}
                       onChange={() => setSelectedType('ou')}
                     />
-                    {t('Dropdown.Or')}
+                    {t('DropdownMenu.Or')}
                   </label>
                 </div>
               </div>

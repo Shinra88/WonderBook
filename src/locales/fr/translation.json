@@ -28,7 +28,7 @@
     "Previous": "Précédent",
     "Next": "Suivant"
   },
-  "Dropdown": {
+  "DropdownMenu": {
     "Categories": "Catégories",
     "Years": "Années",
     "Filter": "Filtrer",
@@ -44,6 +44,7 @@
         "From": "De",
         "To": "À",
         "StartYear": "Année de début",
-        "EndYear": "Année de fin"
+        "EndYear": "Année de fin",
+        "Placeholder": "Année"
     }
 }

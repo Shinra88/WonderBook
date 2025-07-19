@@ -12,7 +12,7 @@
   },
   "Footer": {
     "TextMap": "See on the map",
-    "Legacy": "Legal Notice"
+    "LegalMentions": "Legal Notice"
   },
   "HomePage": {
     "LastAdded": "Last Added",
@@ -28,7 +28,7 @@
     "Previous": "Previous",
     "Next": "Next"
   },
-  "Dropdown": {
+  "DropdownMenu": {
     "Categories": "Categories",
     "Years": "Years",
     "Filter": "Filter",
@@ -44,6 +44,7 @@
         "From": "From",
         "To": "To",
         "StartYear": "Start Year",
-        "EndYear": "End Year"
+        "EndYear": "End Year",
+        "Placeholder": "Year"
     }
 }
