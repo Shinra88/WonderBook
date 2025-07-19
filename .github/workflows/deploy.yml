@@ -18,6 +18,8 @@ jobs:
 
       - name: 🏗️ Build project
         run: npm run build
+        env:
+          VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
 
       - name: 🚀 Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
