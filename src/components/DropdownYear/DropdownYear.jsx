@@ -64,7 +64,7 @@ function DropdownYear({ isActive = false }) {
         type="button"
         onClick={toggleDropdown}
       >
-        {t('Dropdown.Years')}
+        {t('DropdownYears.Years')}
       </button>
 
       {isOpen && (
@@ -80,7 +80,7 @@ function DropdownYear({ isActive = false }) {
                   setSelectedYear('');
                 }}
               />
-              {t('Dropdown.Unique')}
+              {t('DropdownYears.Unique')}
             </label>
             <label>
               <input
@@ -92,7 +92,7 @@ function DropdownYear({ isActive = false }) {
                   setSelectedYear({ start: '', end: '' });
                 }}
               />
-              {t('Dropdown.Range')}
+              {t('DropdownYears.Range')}
             </label>
           </div>
 
@@ -100,7 +100,7 @@ function DropdownYear({ isActive = false }) {
             <div className={styles.rangeInputs}>
             <input
               type="number"
-              placeholder={t('DropdownYear.SelectYear')}
+              placeholder={t('DropdownYears.SelectYear')}
               min={minYear}
               max={currentYear}
               value={typeof selectedYear === 'string' ? selectedYear : ''}
@@ -112,10 +112,10 @@ function DropdownYear({ isActive = false }) {
 {filterType === 'tranche' && (
   <div className={styles.rangeInputs}>
     <label>
-      {t('DropdownYear.From')}
+      {t('DropdownYears.From')}
       <input
         type="number"
-        placeholder={t('Dropdown.StartYear')}
+        placeholder={t('DropdownYears.StartYear')}
         min={minYear}
         max={currentYear}
         value={range.start}
@@ -123,10 +123,10 @@ function DropdownYear({ isActive = false }) {
       />
     </label>
     <label>
-      {t('DropdownYear.To')}
+      {t('DropdownYears.To')}
       <input
         type="number"
-        placeholder={t('DropdownYear.EndYear')}
+        placeholder={t('DropdownYears.EndYear')}
         min={minYear}
         max={currentYear}
         value={range.end}

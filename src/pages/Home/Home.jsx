@@ -90,14 +90,14 @@ function Home() {
                 className={selectedTab === 'LastBook' ? styles.active : styles.inactive}
                 onClick={() => handleTabClick('LastBook')}
               >
-                {t('Home.LastAdded')}
+                {t('HomePage.LastAdded')}
               </button>
               <button
                 type="button"
                 className={selectedTab === 'bestRated' ? styles.active : styles.inactive}
                 onClick={() => handleTabClick('bestRated')}
               >
-                {t('Home.BestRated')}
+                {t('HomePage.BestRated')}
               </button>
             </div>
             <aside className={styles.bestRated}>
@@ -109,30 +109,30 @@ function Home() {
         )}
 
         <section id="filters" className={styles.filters_container}>
-          <h3>{t('Home.FiltersApplied')} :</h3>
+          <h3>{t('HomePage.FiltersApplied')} :</h3>
           <div className={styles.filters}>
             <p>
-              <strong>{t('Home.Categories')} :</strong>{' '}
+              <strong>{t('HomePage.Categories')} :</strong>{' '}
               {selectedCategories.length > 0
                 ? selectedCategories.join(` ${selectedType || 'ou'} `)
-                : t('Home.None')}
+                : t('HomePage.None')}
             </p>
             <p>
-              <strong>{t('Home.Year')} :</strong>{' '}
+              <strong>{t('HomePage.Year')} :</strong>{' '}
               {typeof selectedYear === 'string'
                 ? selectedYear
                 : selectedYear?.start && selectedYear?.end
                   ? `${selectedYear.start} → ${selectedYear.end}`
-                  : t('Home.None') }
+                  : t('HomePage.None') }
             </p>
           </div>
         </section>
 
         <section className={styles.bookList}>
-          {booksLoading ? <h2>{t('Home.Loading')}...</h2> : displayBooks()}
+          {booksLoading ? <h2>{t('HomePage.Loading')}...</h2> : displayBooks()}
         </section>
         <div className={styles.up_container}>
-          <a href="#" className={styles.up}>{t('Home.UpPage')}</a>
+          <a href="#" className={styles.up}>{t('HomePage.UpPage')}</a>
         </div>
         <div className={styles.paginationContainer}>
           <Pagination
