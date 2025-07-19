@@ -4,6 +4,7 @@ import styles from './ChangePass.module.css';
 import { changePassword } from '../../services/authService';
 
 function ChangePass({ onClose, onSuccess }) {
+  // Function to handle password change
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
