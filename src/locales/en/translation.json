@@ -45,6 +45,35 @@
         "To": "To",
         "StartYear": "Start Year",
         "EndYear": "End Year",
-        "Placeholder": "Year"
+        "Placeholder": "Year",
+        "Years": "Years"
+    },
+    "Login": {
+        "Login": "Login",
+        "Email": "Email",
+        "Password": "Password",
+        "CaptchaRequired": "Please validate the CAPTCHA before proceeding.",
+        "ForgotPassword": "Forgot Password?",
+        "Or": "or",
+        "CreateAccount": "Create an Account",
+        "Cancel": "Cancel",
+        "Validate": "Validate",
+        "Loading": "Loading..."
+    },
+    "SignIn": {
+        "Username": "Username",
+        "Email": "Email",
+        "Password": "Password",
+        "ConfirmPassword": "Confirm Password",
+        "CaptchaRequired": "Please validate the CAPTCHA before filling out the form.",
+        "PasswordStrength": {
+            "Weak": "Weak",
+            "Medium": "Medium",
+            "Strong": "Strong"
+        },
+        "AlreadyHaveAccount": "Already have an account? Log in",
+        "Cancel": "Cancel",
+        "Validate": "Validate",
+        "Loading": "Loading..."
     }
 }

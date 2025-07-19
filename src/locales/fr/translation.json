@@ -45,6 +45,35 @@
         "To": "À",
         "StartYear": "Année de début",
         "EndYear": "Année de fin",
-        "Placeholder": "Année"
+        "Placeholder": "Année",
+        "Years": "Années"
+    },
+    "Login": {
+        "Login": "Se connecter",
+        "Email": "E-mail",
+        "Password": "Mot de passe",
+        "CaptchaRequired": "Veuillez valider le CAPTCHA avant de continuer.",
+        "ForgotPassword": "Mot de passe oublié ?",
+        "Or": "ou",
+        "CreateAccount": "Créer un compte",
+        "Cancel": "Annuler",
+        "Validate": "Valider",
+        "Loading": "Chargement..."
+    },
+    "SignIn": {
+        "Username": "Pseudo",
+        "Email": "E-mail",
+        "Password": "Mot de passe",
+        "ConfirmPassword": "Confirmer le mot de passe",
+        "CaptchaRequired": "Veuillez valider le CAPTCHA avant de remplir le formulaire.",
+        "PasswordStrength": {
+            "Weak": "Faible",
+            "Medium": "Moyen",
+            "Strong": "Fort"
+        },
+        "AlreadyHaveAccount": "Déjà un compte ? Connectez-vous",
+        "Cancel": "Annuler",
+        "Validate": "Valider",
+        "Loading": "Chargement..."
     }
 }

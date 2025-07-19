@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useAuth } from '../../hooks/useAuth';
 import api from '../../services/api/api';
+import { useTranslation } from 'react-i18next';
 import styles from './Login.module.css';
 
 function LoginModal({ onClose, openRegister, openForgetPassword }) {
@@ -12,6 +13,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
   const [honeypot, setHoneypot] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -68,10 +70,10 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
       role="presentation"
     >
       <div className={styles.Form}>
-        <h2>Connexion</h2>
+        <h2>{t('Login.Login')}</h2>
 
         <label htmlFor="email">
-          <p>E-mail</p>
+          <p>{t('Login.Email')}</p>
           <input
             type="email"
             id="email"
@@ -82,7 +84,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
         </label>
 
         <label htmlFor="password">
-          <p>Mot de passe</p>
+          <p>{t('Login.Password')}</p>
           <input
             type="password"
             id="password"
@@ -112,23 +114,23 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
 
         {!recaptchaToken && (
           <p style={{ color: '#ff6666', fontWeight: 'bold', textAlign: 'center' }}>
-            Veuillez valider le CAPTCHA avant de continuer.
+            {t('Login.CaptchaRequired')}
           </p>
         )}
 
         <div className={styles.Option}>
           <button type="button" className={styles.LinkButton} onClick={() => { onClose(); openForgetPassword(); }}>
-            Mot de passe oublié ?
+            {t('Login.ForgotPassword')}
           </button>
-          <p>ou</p>
+          <p>{t('Login.Or')}</p>
           <button type="button" className={styles.LinkButton} onClick={() => { onClose(); openRegister(); }}>
-            Créer un compte
+            {t('Login.CreateAccount')}
           </button>
         </div>
 
         <div className={styles.Submit}>
           <button type="button" className={styles.Cancel} onClick={onClose}>
-            Annuler
+            {t('Login.Cancel')}
           </button>
           <button
             type="submit"
@@ -136,7 +138,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             onClick={handleLogin}
             disabled={!isLoginValid || isLoading}
           >
-            {isLoading ? 'Chargement...' : 'Valider'}
+            {isLoading ? t('Login.Loading') : t('Login.Validate')}
           </button>
         </div>
       </div>

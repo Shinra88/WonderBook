@@ -4,10 +4,12 @@ import { register } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import ReCAPTCHA from "react-google-recaptcha";
+import { useTranslation } from 'react-i18next';
 import styles from './SignIn.module.css';
 
 function SignIn({ onClose = null, openLogin }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -46,16 +48,16 @@ function SignIn({ onClose = null, openLogin }) {
     const newErrors = {};
 
     if (!pseudoRegex.test(username)) {
-      newErrors.username = 'Le pseudo doit contenir 3-20 lettres, chiffres, - ou _';
+      newErrors.username = t('SignIn.UsernameInvalid'); // "Pseudo invalide. 3-20 caractères, lettres, chiffres, tirets et underscores."
     }
     if (!emailRegex.test(email)) {
-      newErrors.email = "Adresse e-mail invalide.";
+      newErrors.email = t('SignIn.EmailInvalid'); // "Adresse e-mail invalide."
     }
     if (!passwordRegex.test(password)) {
-      newErrors.password = '8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial.';
+      newErrors.password = t('SignIn.PasswordInvalid'); // "8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial."
     }
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas.';
+      newErrors.confirmPassword = t('SignIn.ConfirmPasswordInvalid'); // "Les mots de passe ne correspondent pas."
     }
 
     setErrors(newErrors);
@@ -64,7 +66,7 @@ function SignIn({ onClose = null, openLogin }) {
 
   const handleRegister = async () => {
     if (!recaptchaToken) {
-      setNotification({ error: true, message: "Veuillez valider le captcha." });
+      setNotification({ error: true, message: t('SignIn.CaptchaRequired') });
       return;
     }
 
@@ -77,7 +79,7 @@ function SignIn({ onClose = null, openLogin }) {
       if (!result.success) {
         setNotification({ error: true, message: result.error });
       } else {
-        setNotification({ error: false, message: 'Inscription réussie !' });
+        setNotification({ error: false, message: t('SignIn.RegisterSuccess') });
         setShowToast(true);
 
         setTimeout(() => {
@@ -85,7 +87,7 @@ function SignIn({ onClose = null, openLogin }) {
         }, 2000);
       }
     } catch (err) {
-      setNotification({ error: true, message: 'Erreur lors de l’inscription.' });
+      setNotification({ error: true, message: t('SignIn.RegisterError') });
     } finally {
       setIsLoading(false);
     }
@@ -105,10 +107,10 @@ function SignIn({ onClose = null, openLogin }) {
         if (e.target.classList.contains(styles.modalBackground) && onClose) onClose();
       }}
     >
-      {showToast && <ToastSuccess message="Inscription réussie 🎉" />}
+      {showToast && <ToastSuccess message={t('SignIn.RegisterSuccess')} />}
 
       <div className={styles.modalContent}>
-        <h2>Inscription</h2>
+        <h2>{t('SignIn.Register')}</h2>
 
         <div className={styles.recaptchaWrapper}>
           <ReCAPTCHA
@@ -119,7 +121,7 @@ function SignIn({ onClose = null, openLogin }) {
 
         {!recaptchaToken && (
           <p style={{ color: '#ff6666', fontWeight: 'bold', textAlign: 'center' }}>
-            Veuillez valider le CAPTCHA avant de remplir le formulaire.
+            {t('SignIn.CaptchaRequired')}
           </p>
         )}
 
@@ -169,7 +171,7 @@ function SignIn({ onClose = null, openLogin }) {
           ))}
 
           <div className={styles.formGroup}>
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">{t('SignIn.Password')}</label>
             <div className={styles.passwordWrapper}>
               <input
                 className={`${styles.inputField} ${errors.password ? styles.invalid : ''}`}
@@ -202,14 +204,14 @@ function SignIn({ onClose = null, openLogin }) {
                     : styles.weak
                 }
               >
-                Force du mot de passe : {passwordStrength}
+                {t(`SignIn.PasswordStrength.${passwordStrength}`)}
               </small>
             )}
             <small className={styles.errorText}>{errors.password || '\u00A0'}</small>
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword">Confirmer mot de passe</label>
+            <label htmlFor="confirmPassword">{t('SignIn.ConfirmPassword')}</label>
             <div className={styles.inputWrapper}>
               <input
                 className={`${styles.inputField} ${errors.confirmPassword ? styles.invalid : ''}`}
@@ -237,13 +239,13 @@ function SignIn({ onClose = null, openLogin }) {
               openLogin();
             }}
           >
-            Déjà un compte ? Connectez-vous
+            {t('SignIn.AlreadyHaveAccount')}
           </button>
         </div>
 
         <div className={styles.buttonContainer}>
           <button type="button" className={styles.cancelButton} onClick={onClose}>
-            Annuler
+            {t('SignIn.Cancel')}
           </button>
           <button
             type="button"
@@ -251,7 +253,7 @@ function SignIn({ onClose = null, openLogin }) {
             onClick={handleRegister}
             disabled={!isFormValid || isLoading}
           >
-            {isLoading ? 'Chargement...' : 'Valider'}
+            {isLoading ? t('SignIn.Loading') : t('SignIn.Validate')}
           </button>
         </div>
       </div>
