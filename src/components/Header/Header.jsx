@@ -15,7 +15,8 @@ import Avatar from '../../images/avatar.png';
 import { useFilters } from '../../hooks/filterContext';
 import { normalize } from '../../utils/helpers';
 import BookFormModal from '../../modals/BookFormModal/BookFormModal';
-
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 
 function Header() {
   const [showAddBook, setShowAddBook] = useState(false);
@@ -25,10 +26,13 @@ function Header() {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [showTestFormModal, setShowTestFormModal] = useState(false);
-    const [book, setBook] = useState(null);
-  
-  
+  const [book, setBook] = useState(null);
+  const { t, i18n } = useTranslation();
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -107,7 +111,7 @@ function Header() {
                   }, 100);
                 }}
               >
-                Accueil
+               {t('Header.Home')}
               </NavLink>
             </li>
             {!isPath(['/Forum', '/topic']) && (
@@ -158,7 +162,7 @@ function Header() {
                   aria-label="Ajouter un livre"
                   onClick={() => setShowTestFormModal(true)}
                 >
-                  Ajouter un livre
+                  {t('Header.AddBook')}
                   <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
                 </button>
               </li>
@@ -192,12 +196,13 @@ function Header() {
             </div>
           ) : (
             <div className={styles.login_menu}>
+              <LanguageSwitcher />
               <button type="button" className={styles.Button} onClick={() => setShowLogin(true)}>
-                Se connecter
+                {t('Header.Login')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
               <button type="button" className={styles.Button} onClick={() => setShowRegister(true)}>
-                Inscription
+                {t('Header.Register')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
             </div>
@@ -226,7 +231,7 @@ function Header() {
                 book={book}
                 onSave={(updatedData) => {
                   setBook({ ...book, ...updatedData });
-                  ToastSuccess('Livre mis à jour depuis le test ✅');
+                  ToastSuccess(t('Header.book.updatedSuccess'));
                   setShowTestFormModal(false);
                 }}
                 onClose={() => setShowTestFormModal(false)}

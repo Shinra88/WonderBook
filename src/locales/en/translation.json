@@ -1,0 +1,29 @@
+{
+  "Header": {
+    "updatedSuccess": "Book updated ✅",
+    "language": "Language",
+    "Home": "Home",
+    "AddBook": "Add Book",
+    "Years": "Years",
+    "Login": "Login",
+    "Register": "Register",
+    "Search": "Search",
+    "SearchPlaceholder": "Search for a book or an author"
+  },
+  "Footer": {
+    "TextMap": "See on the map",
+    "Legacy": "Legal Notice"
+  },
+  "HomePage": {
+    "LastAdded": "Last Added",
+    "BestRated": "Best Rated",
+    "Categories": "Categories",
+    "Filter": "Filters Applied",
+    "Year": "Year",
+    "UpPage": "Up to page"
+  },
+  "Pagination": {
+    "Previous": "Previous",
+    "Next": "Next"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Header": {
+    "updatedSuccess": "Livre mis à jour ✅",
+    "language": "Langue",
+    "Home": "Accueil",
+    "AddBook": "Ajouter un livre",
+    "Years": "Années",
+    "Login": "Se connecter",
+    "Register": "Inscription",
+    "Search": "Rechercher",
+    "SearchPlaceholder": "Rechercher un livre ou un auteur"
+  },
+  "Footer": {
+    "TextMap": "voir sur la carte",
+    "Legacy": "Mentions légales"
+  },
+  "HomePage": {
+    "LastAdded": "Dernier ajout",
+    "BestRated": "Mieux noté",
+    "Categories": "Catégories",
+    "Filter": "Filtres appliqués",
+    "Year": "Année",
+    "UpPage": "Haut de page"
+  },
+  "Pagination": {
+    "Previous": "Précédent",
+    "Next": "Suivant"
+  }
+}

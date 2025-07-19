@@ -1,0 +1,12 @@
+.select {
+  font-family: 'Itim', serif;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+      box-shadow: 
+        4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
