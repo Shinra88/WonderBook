@@ -2,8 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './DropdownMenu.module.css';
 import useCategories from '../../hooks/useCategories';
 import { useFilters } from '../../hooks/filterContext';
+import { useTranslation } from 'react-i18next';
 
-function DropdownMenu({ isActive = false }) {  const {
+function DropdownMenu({ isActive = false }) {
+  const { t } = useTranslation();
+
+  const {
     selectedCategories,
     setSelectedCategories,
     selectedType,
@@ -49,18 +53,18 @@ function DropdownMenu({ isActive = false }) {  const {
         type="button" 
         onClick={toggleDropdown}
       >
-        Catégories
+        {t('Dropdown.Categories')}
       </button>
 
       {isOpen && (
         <div className={`${styles.dropdownMenu}`}>
-          {loading && <p>Chargement...</p>}
-          {error && <p>Erreur de chargement</p>}
+          {loading && <p>{t('Dropdown.Loading')}...</p>}
+          {error && <p>{t('Dropdown.ErrorLoading')}</p>}
 
           {!loading && !error && (
             <>
               <div className={styles.filterSection}>
-                <span>Filtrage</span>
+                <span>{t('Dropdown.Filter')}</span>
                 <div className={styles.filterToggle}>
                   <label>
                     <input
@@ -70,7 +74,7 @@ function DropdownMenu({ isActive = false }) {  const {
                       checked={selectedType === 'et'}
                       onChange={() => setSelectedType('et')}
                     />
-                    et
+                    {t('Dropdown.And')}
                   </label>
                   <label>
                     <input
@@ -80,7 +84,7 @@ function DropdownMenu({ isActive = false }) {  const {
                       checked={selectedType === 'ou'}
                       onChange={() => setSelectedType('ou')}
                     />
-                    ou
+                    {t('Dropdown.Or')}
                   </label>
                 </div>
               </div>

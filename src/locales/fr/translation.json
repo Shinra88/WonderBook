@@ -12,7 +12,7 @@
   },
   "Footer": {
     "TextMap": "voir sur la carte",
-    "Legacy": "Mentions légales"
+    "LegalMentions": "Mentions légales"
   },
   "HomePage": {
     "LastAdded": "Dernier ajout",
@@ -20,10 +20,30 @@
     "Categories": "Catégories",
     "Filter": "Filtres appliqués",
     "Year": "Année",
-    "UpPage": "Haut de page"
+    "UpPage": "Haut de page",
+    "Loading": "Chargement",
+    "None": "Aucune"
   },
   "Pagination": {
     "Previous": "Précédent",
     "Next": "Suivant"
-  }
+  },
+  "Dropdown": {
+    "Categories": "Catégories",
+    "Years": "Années",
+    "Filter": "Filtrer",
+    "ErrorLoading": "Erreur lors du chargement des catégories",
+    "Loading": "Chargement des catégories",
+    "SelectCategory": "Sélectionner une catégorie",
+    "And": "et",
+    "Or": "ou"
+  },
+    "DropdownYear": {
+        "Unique": "Unique",
+        "Range": "Tranche",
+        "From": "De",
+        "To": "À",
+        "StartYear": "Année de début",
+        "EndYear": "Année de fin"
+    }
 }

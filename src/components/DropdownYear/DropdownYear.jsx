@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import styles from './DropdownYear.module.css';
 import { useYears } from '../../hooks/useYears';
 import { useFilters } from '../../hooks/filterContext';
+import { useTranslation } from 'react-i18next';
 
 function DropdownYear({ isActive = false }) {
   const { minYear, currentYear } = useYears();
@@ -10,6 +11,8 @@ function DropdownYear({ isActive = false }) {
     selectedYear,
     setSelectedYear
   } = useFilters();
+
+  const { t } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(false);
   const [filterType, setFilterType] = useState(
@@ -61,7 +64,7 @@ function DropdownYear({ isActive = false }) {
         type="button"
         onClick={toggleDropdown}
       >
-        Années
+        {t('Dropdown.Years')}
       </button>
 
       {isOpen && (
@@ -77,7 +80,7 @@ function DropdownYear({ isActive = false }) {
                   setSelectedYear('');
                 }}
               />
-              Unique
+              {t('Dropdown.Unique')}
             </label>
             <label>
               <input
@@ -89,7 +92,7 @@ function DropdownYear({ isActive = false }) {
                   setSelectedYear({ start: '', end: '' });
                 }}
               />
-              Tranche
+              {t('Dropdown.Range')}
             </label>
           </div>
 
@@ -109,10 +112,10 @@ function DropdownYear({ isActive = false }) {
 {filterType === 'tranche' && (
   <div className={styles.rangeInputs}>
     <label>
-      de
+      {t('Dropdown.From')}
       <input
         type="number"
-        placeholder="Année de début"
+        placeholder={t('Dropdown.StartYear')}
         min={minYear}
         max={currentYear}
         value={range.start}
@@ -120,10 +123,10 @@ function DropdownYear({ isActive = false }) {
       />
     </label>
     <label>
-      à
+      {t('Dropdown.To')}
       <input
         type="number"
-        placeholder="Année de fin"
+        placeholder={t('Dropdown.EndYear')}
         min={minYear}
         max={currentYear}
         value={range.end}

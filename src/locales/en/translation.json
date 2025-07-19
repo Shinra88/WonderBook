@@ -20,10 +20,30 @@
     "Categories": "Categories",
     "Filter": "Filters Applied",
     "Year": "Year",
-    "UpPage": "Up to page"
+    "UpPage": "Up to page",
+    "Loading": "Loading",
+    "None": "None"
   },
   "Pagination": {
     "Previous": "Previous",
     "Next": "Next"
-  }
+  },
+  "Dropdown": {
+    "Categories": "Categories",
+    "Years": "Years",
+    "Filter": "Filter",
+    "ErrorLoading": "Error loading categories",
+    "Loading": "Loading categories",
+    "SelectCategory": "Select a category",
+    "And": "and",
+    "Or": "or"
+  },
+    "DropdownYear": {
+        "Unique": "Unique",
+        "Range": "Range",
+        "From": "From",
+        "To": "To",
+        "StartYear": "Start Year",
+        "EndYear": "End Year"
+    }
 }

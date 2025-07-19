@@ -10,6 +10,7 @@ import Pagination from '../../components/Pagination/Pagination';
 import { useBestRatedBooks, useLastAddedBooks, useFilteredBooks } from '../../hooks/customHooks';
 import { useFilters } from '../../hooks/filterContext';
 import { useAuth } from '../../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
   const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
@@ -18,7 +19,7 @@ function Home() {
   const booksPerPage = 10;
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
-
+  const { t } = useTranslation();
   const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
 
   const baseFilters = useMemo(() => ({
@@ -89,14 +90,14 @@ function Home() {
                 className={selectedTab === 'LastBook' ? styles.active : styles.inactive}
                 onClick={() => handleTabClick('LastBook')}
               >
-                Dernier ajout
+                {t('Home.LastAdded')}
               </button>
               <button
                 type="button"
                 className={selectedTab === 'bestRated' ? styles.active : styles.inactive}
                 onClick={() => handleTabClick('bestRated')}
               >
-                Mieux noté
+                {t('Home.BestRated')}
               </button>
             </div>
             <aside className={styles.bestRated}>
@@ -108,30 +109,30 @@ function Home() {
         )}
 
         <section id="filters" className={styles.filters_container}>
-          <h3>Filtres appliqués :</h3>
+          <h3>{t('Home.FiltersApplied')} :</h3>
           <div className={styles.filters}>
             <p>
-              <strong>Catégories :</strong>{' '}
+              <strong>{t('Home.Categories')} :</strong>{' '}
               {selectedCategories.length > 0
                 ? selectedCategories.join(` ${selectedType || 'ou'} `)
-                : 'Aucune'}
+                : t('Home.None')}
             </p>
             <p>
-              <strong>Année :</strong>{' '}
+              <strong>{t('Home.Year')} :</strong>{' '}
               {typeof selectedYear === 'string'
                 ? selectedYear
                 : selectedYear?.start && selectedYear?.end
                   ? `${selectedYear.start} → ${selectedYear.end}`
-                  : 'Aucune'}
+                  : t('Home.None') }
             </p>
           </div>
         </section>
 
         <section className={styles.bookList}>
-          {booksLoading ? <h2>Chargement...</h2> : displayBooks()}
+          {booksLoading ? <h2>{t('Home.Loading')}...</h2> : displayBooks()}
         </section>
         <div className={styles.up_container}>
-          <a href="#" className={styles.up}>Haut de page</a>
+          <a href="#" className={styles.up}>{t('Home.UpPage')}</a>
         </div>
         <div className={styles.paginationContainer}>
           <Pagination
