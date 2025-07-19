@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from './BookRatingForm.module.css';
@@ -32,7 +32,6 @@ function BookRatingForm({
     }
     const update = await rateBook(id, userId, rating);
     if (update) {
-      // eslint-disable-next-line no-underscore-dangle
       setBook({ ...update, id: update._id });
     } else {
       alert(update);

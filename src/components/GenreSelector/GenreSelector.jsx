@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import styles from './GenreSelector.module.css';
@@ -80,14 +80,13 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
               <li key={`genre-${cat.id}`} className={styles.genreItem}>
                 <label htmlFor={`genre-${cat.id}`}>
                 <input
-  id={`genre-${cat.id}`}
-  type="checkbox"
-  className="genreCheckbox"
-  checked={selected.includes(cat.id)}
-  onChange={() => handleGenreToggle(cat.id)}
-  disabled={!selected.includes(cat.id) && selected.length >= 2}
-/>
-
+                  id={`genre-${cat.id}`}
+                  type="checkbox"
+                  className="genreCheckbox"
+                  checked={selected.includes(cat.id)}
+                  onChange={() => handleGenreToggle(cat.id)}
+                  disabled={!selected.includes(cat.id) && selected.length >= 2}
+                />
                   {cat.name}
                 </label>
               </li>

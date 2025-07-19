@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Avatar from '../../images/avatar.png';
 import { updateUserById } from '../../services/adminServices';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
@@ -52,7 +52,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
           const updated = await updateUserById(user.userId, form);
           onSave(updated);
           setShowToast(true);
-          setTimeout(() => setShowToast(false), 2500); // Masquer après 2,5s
+          setTimeout(() => setShowToast(false), 2500);
         } catch (err) {
           console.error('❌ Erreur lors de la sauvegarde :', err);
           alert('Erreur lors de la sauvegarde');

@@ -1,13 +1,13 @@
 //useAuth.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// Crée le contexte d'authentification
+// Creates the authentication context
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  // Vérifie si le token est encore valide
+  // Checks if token is valid
   useEffect(() => {
     const token = localStorage.getItem('token');
     const expiry = localStorage.getItem('token_expiry');
@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       setUser({ ...storedUser, token });
     } else {
-      logout(); // Token expiré
+      logout(); 
     }
   }, []);
 
@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Hook pour utiliser dans toute l'app
+// Hook to use throughout the app
 export function useAuth() {
   return useContext(AuthContext);
 }

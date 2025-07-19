@@ -1,4 +1,3 @@
-/* **Fond de la modal - Clic en dehors pour fermer** */
 .modalBackground {
     display: flex;
     align-items: center;
@@ -12,7 +11,6 @@
     z-index: 2000;
 }
 
-/* **Contenu de la modal** */
 .modalContent {
     display: flex;
     flex-direction: column;
@@ -28,14 +26,12 @@
     position: relative;
 }
 
-/* **Titre de la modal** */
 .modalContent h2 {
     margin-top: 0;
     margin-bottom: 60px;
     text-align: center;
 }
 
-/* **Labels et inputs** */
 .modalContent label {
     display: flex;
     justify-content: space-between;
@@ -63,7 +59,6 @@
         inset 4px 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* **Boutons** */
 .buttonContainer {
     display: flex;
     justify-content: space-between;
@@ -102,7 +97,6 @@
     background-color: #e8d8a0;
 }
 
-/* ✅ Ajouts pour cohérence visuelle */
 .toggleBtn {
     position: absolute;
     right: 10px;

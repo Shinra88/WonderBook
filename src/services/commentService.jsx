@@ -1,7 +1,7 @@
 import api from './api/api';
 import { API_ROUTES } from '../utils/constants';
 
-// ➔ Récupérer tous les commentaires d'un livre
+// ➔ Retrieves all comments for a book
 export async function getComments(bookId) {
   try {
     const { data } = await api.get(`${API_ROUTES.COMMENTS.BASE}/${bookId}`);
@@ -12,7 +12,7 @@ export async function getComments(bookId) {
   }
 }
 
-// ➔ Ajouter ou mettre à jour un commentaire
+// ➔ Adds or updates a comment
 export async function addOrUpdateComment(bookId, { content, rating }) {
   try {
     const { data } = await api.post(`${API_ROUTES.COMMENTS.BASE}/${bookId}`, { content, rating });
@@ -23,7 +23,7 @@ export async function addOrUpdateComment(bookId, { content, rating }) {
   }
 }
 
-// ➔ Supprimer son propre commentaire
+// ➔ Deletes its own comment
 export async function deleteComment(bookId) {
   try {
     const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/admin/${commentId}`);
@@ -34,7 +34,7 @@ export async function deleteComment(bookId) {
   }
 }
 
-// ➔ Supprimer n'importe quel commentaire (admin/modo)
+// ➔ Delete any comment (admin/moderator)
 export async function deleteCommentAsAdmin(commentId) {
   try {
     const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/admin/${commentId}`);

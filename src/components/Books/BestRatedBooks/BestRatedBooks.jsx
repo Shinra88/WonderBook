@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useBestRatedBooks } from '../../../hooks/customHooks';
 import { useFilters } from '../../../hooks/filterContext';
 import BookDisplay from '../BookDisplay/BookDisplay';

@@ -59,7 +59,6 @@
   cursor: pointer;
 }
 
-/* ✅ Style prioritaire avec class isolée */
 .genreItem input[type="checkbox"].genreCheckbox {
   appearance: none;
   -webkit-appearance: none;

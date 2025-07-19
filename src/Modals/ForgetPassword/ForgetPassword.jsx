@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import api from '../../services/api/api';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';

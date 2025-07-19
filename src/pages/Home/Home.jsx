@@ -1,5 +1,5 @@
 // 📁 src/pages/Home/Home.jsx
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import BestRateBooks from '../../components/Books/BestRatedBooks/BestRatedBooks';

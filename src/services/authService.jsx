@@ -7,7 +7,7 @@ import {
   removeFromLocalStorage
 } from '../utils/localStorage';
 
-/** ✅ Connexion */
+/** ✅ Login */
 export async function login(mail, password) {
   try {
     const response = await api.post(API_ROUTES.AUTH.LOGIN, { mail, password });
@@ -20,13 +20,13 @@ export async function login(mail, password) {
   }
 }
 
-/** ✅ Déconnexion */
+/** ✅ Logout */
 export function logout() {
   removeFromLocalStorage('token');
   removeFromLocalStorage('user');
 }
 
-/** ✅ Enregistrement */
+/** ✅ Register */
 export async function register(name, mail, password, recaptchaToken, website = "") {
   try {
     const response = await api.post(API_ROUTES.AUTH.REGISTER, {
@@ -45,7 +45,7 @@ export async function register(name, mail, password, recaptchaToken, website = "
   }
 }
 
-/** ✅ Récupère l'utilisateur connecté (localStorage) */
+/** ✅ Retrieves the logged in user (localStorage) */
 export function getCurrentUser() {
   const token = getFromLocalStorage('token');
   const user = JSON.parse(getFromLocalStorage('user'));
@@ -53,12 +53,12 @@ export function getCurrentUser() {
   return { token, ...user };
 }
 
-/** ✅ Est connecté ? */
+/** ✅ Is authenticated? */
 export function isAuthenticated() {
   return Boolean(getFromLocalStorage('token'));
 }
 
-/** ✅ Récupère le profil utilisateur depuis l'API */
+/** ✅ Retrieves the user profile from the API */
 export async function getAuthenticatedUser() {
   try {
     const response = await api.get(API_ROUTES.AUTH.UPDATE_PROFILE);
@@ -69,7 +69,7 @@ export async function getAuthenticatedUser() {
   }
 }
 
-/** ✅ Met à jour le profil utilisateur */
+/** ✅ Updates the user profile */
 export async function updateUserProfile(form) {
   try {
     const body = {
@@ -93,7 +93,7 @@ export async function updateUserProfile(form) {
   }
 }
 
-/** ✅ Changement de mot de passe */
+/** ✅ Change password */
 export async function changePassword(oldPassword, newPassword) {
   try {
     const response = await api.post(API_ROUTES.AUTH.CHANGE_PASS, {

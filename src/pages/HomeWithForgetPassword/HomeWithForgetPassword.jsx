@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import Home from '../Home/Home';
 import ForgetPassword from '../../modals/ForgetPassword/ForgetPassword';

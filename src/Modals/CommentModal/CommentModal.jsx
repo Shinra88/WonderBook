@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './CommentModal.module.css';
 import { addOrUpdateComment } from '../../services/commentService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

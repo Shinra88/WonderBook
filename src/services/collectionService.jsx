@@ -2,7 +2,7 @@
 import api from './api/api';
 import { API_ROUTES } from '../utils/constants';
 
-// ➔ Ajouter un livre à la collection
+// ➔ Adds a book to the collection
 export async function addBookToCollection(bookId) {
   try {
     const response = await api.post(API_ROUTES.COLLECTION.ADD, { bookId });
@@ -13,7 +13,7 @@ export async function addBookToCollection(bookId) {
   }
 }
 
-// ➔ Retirer un livre de la collection
+// ➔ Removes a book from the collection
 export async function removeBookFromCollection(bookId) {
   try {
     const response = await api.delete(API_ROUTES.COLLECTION.REMOVE(bookId));
@@ -24,7 +24,7 @@ export async function removeBookFromCollection(bookId) {
   }
 }
 
-// ➔ Récupérer la collection de l'utilisateur avec filtres facultatifs
+// ➔ Retrieves the user's collection with optional filters
 export const getUserCollection = async ({ read = false, noted = false, commented = false } = {}) => {
   try {
     const params = {};
@@ -40,7 +40,7 @@ export const getUserCollection = async ({ read = false, noted = false, commented
   }
 };
 
-// ➔ Mettre à jour le statut "lu" d'un livre
+// ➔ Updates the "read" status of a book
 export async function updateBookReadStatus(bookId, isRead) {
   try {
     const response = await api.patch(API_ROUTES.COLLECTION.UPDATE_READ(bookId), { is_read: isRead });
@@ -51,7 +51,7 @@ export async function updateBookReadStatus(bookId, isRead) {
   }
 }
 
-// ➔ Récupérer la position de lecture (CFI)
+// ➔ Retrieves the reading position (CFI)
 export async function getReadingProgress(bookId) {
   try {
     const { data } = await api.get(API_ROUTES.COLLECTION.GET_PROGRESS(bookId));
@@ -62,7 +62,7 @@ export async function getReadingProgress(bookId) {
   }
 }
 
-// ➔ Sauvegarder la position de lecture (CFI)
+// ➔ Save Reading Position (CFI)
 export async function saveReadingProgress(bookId, cfi) {
   try {
     await api.post(API_ROUTES.COLLECTION.SAVE_PROGRESS(bookId), { cfi });

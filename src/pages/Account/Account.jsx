@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Banner from '../../images/library.png';
 import Avatar from '../../images/avatar.png';
 import FeatherIcon from '../../images/feather.png';
@@ -19,7 +19,7 @@ function Account() {
 
   useEffect(() => {
     if (!user) {
-      navigate('/'); // ou '/login' si tu veux rediriger vers la page de connexion
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -72,8 +72,8 @@ function Account() {
     try {
       const response = await updateUserProfile(form);
       if (response.user) {
-        login(response.user, token); // Met à jour le localStorage
-        setOriginalForm(form); // Met à jour l'originalForm pour éviter des modifications non enregistrées
+        login(response.user, token); 
+        setOriginalForm(form);
         alert('Modifications enregistrées');
       }
     } catch (err) {
@@ -91,21 +91,21 @@ function Account() {
     const userId = user?.userId;
     const oldUrl = user?.avatar;
   
-    // Mise à jour de l'avatar dans AWS S3
+    // Update avatar in AWS S3
     const newUrl = await updateAvatarOnS3(file, userId, oldUrl);
     if (!newUrl) return alert("Erreur lors du changement d'image");
-  
-    // Mise à jour immédiate de l'avatar dans le formulaire
+
+    // Immediate update of the avatar in the form
     setForm((prev) => ({ ...prev, avatar: newUrl }));
-  
-    // Mise à jour de l'utilisateur dans le localStorage
-    await login({ ...user, avatar: newUrl }, token); // Relance login pour mettre à jour le localStorage et l'état global
-  
-    // Ajout d'un délai de 2 à 3 secondes avant de recharger la page
+
+    // Update user in localStorage
+    await login({ ...user, avatar: newUrl }, token);
+
+    // Add a delay of 2 to 3 seconds before reloading the page
     setTimeout(() => {
-      window.location.reload(); // Cette ligne force un rafraîchissement de la page après 2-3 secondes
-    }, 2000); // Délai de 2000 ms (2 secondes), vous pouvez ajuster cette valeur à 3000 ms pour 3 secondes
-  }; 
+      window.location.reload(); // This line forces a page refresh after 2-3 seconds
+    }, 2000); // Delay of 2000 ms (2 seconds), you can adjust this value to 3000 ms for 3 seconds
+  };
 
   const handleCancel = () => {
     setForm(originalForm);
@@ -176,7 +176,7 @@ function Account() {
               <div className={styles.ImageContainer}>
                 <img
                   src={
-                    form.avatar // Utilise l'avatar mis à jour immédiatement après le chargement
+                    form.avatar // Uses the updated avatar immediately after loading
                       ? form.avatar
                       : user?.avatar?.startsWith('http')
                       ? user.avatar
@@ -194,7 +194,7 @@ function Account() {
                 className={styles.FileInput}
                 accept=".png, .jpeg, .jpg, .webp"
                 disabled={!isEditing}
-                onChange={handleAvatarChange} // Lorsque l'image est choisie, on l'affiche immédiatement
+                onChange={handleAvatarChange} // When the image is chosen, it is displayed immediately
               />
             </label>
           </aside>

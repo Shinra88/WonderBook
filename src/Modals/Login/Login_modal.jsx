@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useAuth } from '../../hooks/useAuth';
@@ -39,7 +39,6 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
 
     try {
       setIsLoading(true);
-      console.log('Tentative de login vers :', import.meta.env.VITE_BACKEND_URL + '/api/auth/login');
 
       const res = await api.post('/auth/login', {
         mail: email,

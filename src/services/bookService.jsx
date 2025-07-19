@@ -1,9 +1,8 @@
 // 📁 services/bookService.js
 import api from '../services/api/api';
 import { API_ROUTES } from '../utils/constants';
-import { useAuth } from '../hooks/useAuth';
 
-// ✅ Fonction utilitaire pour appliquer les filtres à une URL
+// ✅ Utility function to apply filters to a URL
 function appendFiltersToParams(params, filters = {}) {
   if (filters.year) params.append('year', filters.year);
   if (filters.start && filters.end) {
@@ -16,11 +15,11 @@ function appendFiltersToParams(params, filters = {}) {
   if (filters.type) params.append('type', filters.type);
   if (filters.search) params.append('search', filters.search);
 
-  // 🆕 Ajout pour tri admin/modo
+  // 🆕 Added for admin/moderator sorting
   if (filters.pendingFirst) params.append('pendingFirst', 'true');
 }
 
-// ✅ Récupère tous les livres (avec ou sans filtres)
+// ✅ Retrieves all books (with or without filters)
 export async function getBooks(filters = {}, page = 1, limit = 10) {
   const params = new URLSearchParams();
   appendFiltersToParams(params, filters);
@@ -36,7 +35,7 @@ export async function getBooks(filters = {}, page = 1, limit = 10) {
   }
 }
 
-// ✅ Récupère un livre par ID
+// ✅ Retrieves a book by ID
 export async function getBook(id) {
   try {
     const response = await api.get(`${API_ROUTES.BOOKS.BASE}/${id}`);
@@ -47,7 +46,7 @@ export async function getBook(id) {
   }
 }
 
-// ✅ Récupère les livres les mieux notés (avec filtres)
+// ✅ Retrieves the best-rated books (with filters)
 export async function getBestRatedBooks(filters = {}) {
   const params = new URLSearchParams();
   appendFiltersToParams(params, filters);
@@ -61,7 +60,7 @@ export async function getBestRatedBooks(filters = {}) {
   }
 }
 
-// ✅ Récupère les 5 derniers livres ajoutés (avec filtres)
+// ✅ Retrieves the 5 last added books (with filters)
 export async function getLastAddedBooks(filters = {}) {
   const params = new URLSearchParams();
   appendFiltersToParams(params, filters);
@@ -75,7 +74,7 @@ export async function getLastAddedBooks(filters = {}) {
   }
 }
 
-// ✅ Supprime un livre
+// ✅ Deletes a book
 export async function deleteBook(id) {
   try {
     await api.delete(`${API_ROUTES.BOOKS.BASE}/${id}`);
@@ -86,7 +85,7 @@ export async function deleteBook(id) {
   }
 }
 
-// ✅ Ajoute un livre (et upload image)
+// ✅ Adds a book (and uploads image)
 export async function addBook(data) {
   const userId = localStorage.getItem('userId');
   const book = {
@@ -112,7 +111,7 @@ export async function addBook(data) {
   }
 }
 
-// ✅ Met à jour un livre (avec ou sans nouvelle image)
+// ✅ Updates a book (with or without new image)
 export async function updateBook(data, id) {
   const userId = localStorage.getItem('userId');
   const book = {
@@ -141,7 +140,7 @@ export async function updateBook(data, id) {
   }
 }
 
-// ✅ Notation d’un livre
+// ✅ Rates a book
 export async function rateBook(bookId, userId, rating) {
   const data = { userId, rating: parseInt(rating, 10) };
   try {
@@ -153,7 +152,7 @@ export async function rateBook(bookId, userId, rating) {
   }
 }
 
-// ✅ Récupère un livre par son titre
+// ✅ Retrieves a book by its title
 export const getBookByTitle = async (title) => {
   try {
     const response = await api.get(`${API_ROUTES.BOOKS.BASE}/title/${encodeURIComponent(title)}`);
@@ -164,8 +163,8 @@ export const getBookByTitle = async (title) => {
   }
 };
 
-// ✅ Met à jour les informations d'un livre
-// (pour les admins/modos)
+// ✅ Updates a book's information
+// (for admins/moderators)
 export async function updateBookInfo(id, data) {
   try {
     const response = await api.put(`${API_ROUTES.BOOKS.BASE}/${id}`, data);

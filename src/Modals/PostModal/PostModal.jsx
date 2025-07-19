@@ -27,10 +27,9 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
   
     setContent(newText);
   
-    // Remet le curseur après l’insertion
     setTimeout(() => {
       textarea.focus();
-      textarea.setSelectionRange(start + 9, start + 20); // sélectionne "Texte caché"
+      textarea.setSelectionRange(start + 9, start + 20);
     }, 0);
   };
   
@@ -86,7 +85,7 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
     setTimeout(() => {
       textarea.focus();
       const offset = selected ? selected.length : defaultText.length;
-      const selectStart = start + tag.length + 2; // after [tag]
+      const selectStart = start + tag.length + 2;
       const selectEnd = selectStart + offset;
       textarea.setSelectionRange(selectStart, selectEnd);
     }, 0);

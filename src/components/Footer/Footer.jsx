@@ -1,4 +1,3 @@
-import React from 'react';
 import Map from '../../images/map_footer.png';
 import styles from './Footer.module.css';
 

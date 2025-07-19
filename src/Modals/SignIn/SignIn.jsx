@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { register } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ function SignIn({ onClose = null, openLogin }) {
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState('');
   const [recaptchaToken, setRecaptchaToken] = useState(null);
-  const [showToast, setShowToast] = useState(false); // ✅ pour le toast
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -78,10 +78,10 @@ function SignIn({ onClose = null, openLogin }) {
         setNotification({ error: true, message: result.error });
       } else {
         setNotification({ error: false, message: 'Inscription réussie !' });
-        setShowToast(true); // ✅ affiche le toast
+        setShowToast(true);
 
         setTimeout(() => {
-          navigate('/'); // ou '/RegisterSend' si tu veux rediriger ailleurs
+          navigate('/');
         }, 2000);
       }
     } catch (err) {
@@ -130,7 +130,6 @@ function SignIn({ onClose = null, openLogin }) {
         )}
 
         <div className={styles.formContainer}>
-          {/* Champs Pseudo et Email */}
           {[
             {
               label: 'Pseudo',
@@ -169,7 +168,6 @@ function SignIn({ onClose = null, openLogin }) {
             </div>
           ))}
 
-          {/* Password */}
           <div className={styles.formGroup}>
             <label htmlFor="password">Mot de passe</label>
             <div className={styles.passwordWrapper}>
@@ -210,7 +208,6 @@ function SignIn({ onClose = null, openLogin }) {
             <small className={styles.errorText}>{errors.password || '\u00A0'}</small>
           </div>
 
-          {/* Confirm Password */}
           <div className={styles.formGroup}>
             <label htmlFor="confirmPassword">Confirmer mot de passe</label>
             <div className={styles.inputWrapper}>

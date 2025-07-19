@@ -1,5 +1,5 @@
 //constants.js
-const API_URL = 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'https://wonderbook.net';
 
 export const API_ROUTES = {
   AUTH: {

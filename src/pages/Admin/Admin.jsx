@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Banner from '../../images/library.png';
 import Avatar from '../../images/avatar.png';
 import styles from './Admin.module.css';

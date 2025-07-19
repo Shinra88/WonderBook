@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import api from '../../services/api/api';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
-import ReCAPTCHA from 'react-google-recaptcha'; // ➡️ Ajout du module
+import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './Forget.module.css';
 
 function Forget({ onClose }) {
@@ -37,7 +37,7 @@ function Forget({ onClose }) {
       setIsLoading(true);
       const response = await api.post('/auth/forget-password', {
         email,
-        recaptchaToken, // ➡️ envoi du token aussi
+        recaptchaToken,
       });
 
       if (!response?.data?.success) {

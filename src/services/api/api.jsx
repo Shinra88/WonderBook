@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: '/api',
 });
 
-// 🔐 Intercepteur : ajoute automatiquement le token si présent
+// 🔐 Interceptor: automatically adds the token if present
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -16,14 +16,14 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// ⚠️ Intercepteur de réponse : exemple pour erreurs globales
+// ⚠️ Interceptor response: example for global errors
 api.interceptors.response.use(
   response => response,
   error => {
     if (error.response?.status === 401 || error.response?.status === 403) {
       console.warn("🔐 Token invalide ou expiré");
-      // éventuellement : redirectToLogin(), logout(), etc.
-    }
+      // possibly: redirectToLogin(), logout(), etc.
+}
     return Promise.reject(error);
   }
 );

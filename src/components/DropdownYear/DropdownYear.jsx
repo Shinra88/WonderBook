@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styles from './DropdownYear.module.css';
 import { useYears } from '../../hooks/useYears';
 import { useFilters } from '../../hooks/filterContext';
@@ -31,16 +31,16 @@ function DropdownYear({ isActive = false }) {
 
   const handleUniqueChange = (e) => {
     const val = e.target.value.replace(/\D/g, '').slice(0, 4);
-    setSelectedYear(val); // toujours mettre à jour la saisie pour afficher ce qu'on tape
+    setSelectedYear(val); // always update the input to show what you type
   };
   
 
   const handleRangeChange = (field, value) => {
     const newVal = value.replace(/\D/g, '').slice(0, 4);
     const newRange = { ...range, [field]: newVal };
-    setSelectedYear(newRange); // tu updates quoiqu’il arrive pour voir la saisie
-  
-    // Si les deux sont valides, tu vérifies ensuite
+    setSelectedYear(newRange); // always update the input to show what you type
+
+    // If both are valid, check the values
     if (
       newRange.start.length === 4 &&
       newRange.end.length === 4 &&

@@ -8,8 +8,19 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
+    base: '/',
     plugins: [react()],
-    server: {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
+    esbuild: {
+      loader: 'jsx',
+      include: /src\/.*\.(js|jsx)$/,
+      exclude: [],
+    },
+    server: mode === 'development' ? {
       host: true,
       port: 3000,
       watch: {
@@ -23,16 +34,6 @@ export default defineConfig(({ mode }) => {
         middlewares.unshift(history());
         return middlewares;
       },
-    },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
-      },
-    },
-    esbuild: {
-      loader: 'jsx',
-      include: /src\/.*\.(js|jsx)$/,
-      exclude: [],
-    },
+    } : undefined,
   };
 });

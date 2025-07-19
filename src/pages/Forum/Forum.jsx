@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -36,11 +36,11 @@ function Forum() {
     navigate(`/topic/${topicId}`);
   };
 
-  // Séparation des topics selon "notice"
+// Separation of topics according to "notice"  
   const noticeTopics = topics.filter(topic => topic.notice === true);
   const subjectTopics = topics.filter(topic => topic.notice === false);
 
-  // Filtrage par recherche (dans titre uniquement ici)
+  // Filter by search (in title only here)
   const filteredNotices = noticeTopics.filter(topic =>
     topic.title.toLowerCase().includes(searchQuery.toLowerCase())
   );

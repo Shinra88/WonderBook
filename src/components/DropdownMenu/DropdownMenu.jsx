@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './DropdownMenu.module.css';
 import useCategories from '../../hooks/useCategories';
 import { useFilters } from '../../hooks/filterContext';

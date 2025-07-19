@@ -7,7 +7,7 @@ import {
   getBooks,
 } from '../services/bookService';
 
-/** ✅ Récupère l'utilisateur connecté */
+/** ✅ Retrieves the logged in user */
 export function useUser() {
   const [connectedUser, setConnectedUser] = useState(null);
   const [auth, setAuth] = useState(false);
@@ -26,7 +26,7 @@ export function useUser() {
   return { connectedUser, auth, userLoading };
 }
 
-/** ✅ Récupère les meilleurs livres (avec filtres) */
+/** ✅ Retrieves the best rated books (with filters) */
 export function useBestRatedBooks(filters) {
   const [bestRatedBooks, setBestRatedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ export function useBestRatedBooks(filters) {
   return { bestRatedBooks, loading, error };
 }
 
-/** ✅ Récupère les derniers livres ajoutés (avec filtres) */
+/** ✅ Retrieves the last added books (with filters) */
 export function useLastAddedBooks(filters) {
   const [lastAddedBooks, setLastAddedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,7 +78,7 @@ export function useLastAddedBooks(filters) {
   return { lastAddedBooks, loading, error };
 }
 
-/** ✅ Prévisualisation locale de fichier (image) */
+/** ✅ Retrieves the local file preview (image) */
 export function useFilePreview(file) {
   const [imgSrc, setImgSrc] = useState(null);
 
@@ -95,7 +95,7 @@ export function useFilePreview(file) {
   return [imgSrc];
 }
 
-/** ✅ Récupère tous les livres (filtrés + recherche) */
+/** ✅ Retrieves all books (filtered + search) */
 export function useFilteredBooks(filters = {}, page = 1, limit = 10) {
   const [books, setBooks] = useState([]);
   const [total, setTotal] = useState(0);

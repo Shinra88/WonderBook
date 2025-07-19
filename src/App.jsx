@@ -13,6 +13,7 @@ import HomeWithForgetPassword from './pages/HomeWithForgetPassword/HomeWithForge
 import TopicDetail from './pages/Topics/TopicDetail';
 import Admin from './pages/Admin/Admin';
 import EpubReader from './components/EpubReader/EpubReader';
+import NotFound from './pages/NotFound/NotFound';
 
 import { FilterProvider } from './hooks/filterContext';
 
@@ -20,7 +21,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
-  const [openAddBook, setOpenAddBook] = useState(false);
   const [openChangePass, setOpenChangePass] = useState(false);
 
   return (
@@ -56,6 +56,7 @@ function App() {
             <Route path={APP_ROUTES.BOOK} element={<Book />} />
             <Route path={APP_ROUTES.ADMIN} element={<Admin />} />
             <Route path="/read/:bookId" element={<EpubReader />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
 
           {/* ✅ Route pour réinitialisation de mot de passe */}
@@ -63,7 +64,6 @@ function App() {
         </Routes>
 
         {/* Modals globales */}
-        {openAddBook && <AddBook onClose={() => setOpenAddBook(false)} />}
         {openChangePass && <ChangePass onClose={() => setOpenChangePass(false)} />}
       </BrowserRouter>
     </FilterProvider>

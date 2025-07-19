@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './Spoiler.module.css';
 
 export default function Spoiler({ content }) {

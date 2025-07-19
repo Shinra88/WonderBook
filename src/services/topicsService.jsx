@@ -2,7 +2,7 @@
 import api from './api/api';
 import { API_ROUTES } from '../utils/constants';
 
-// ➔ Récupérer tous les topics
+// ➔ Retrieves all topics
 export async function getTopics() {
   try {
     const { data } = await api.get(API_ROUTES.FORUM.BASE);
@@ -13,7 +13,7 @@ export async function getTopics() {
   }
 }
 
-// ➔ Ajouter un topic avec notice et recaptcha
+// ➔ Add a topic with notice and recaptcha
 export async function addTopic({ title, content, recaptchaToken, notice }, token) {
   try {
     const response = await api.post(API_ROUTES.FORUM.ADD_TOPIC,
@@ -31,7 +31,7 @@ export async function addTopic({ title, content, recaptchaToken, notice }, token
   }
 }
 
-// ➔ Récupérer un topic par ID
+// ➔ Retrieves a topic by ID
 export async function getTopicById(topicId) {
   try {
     const { data } = await api.get(`${API_ROUTES.FORUM.BASE}/${topicId}`);
@@ -42,7 +42,7 @@ export async function getTopicById(topicId) {
   }
 }
 
-// ✅ Met à jour l'état "notice" (épinglé) d'un topic
+// ✅ Updates the "notice" (pinned) status of a topic
 export async function updateTopicNotice(id, token) {
   try {
     const response = await api.patch(
@@ -61,7 +61,7 @@ export async function updateTopicNotice(id, token) {
   }
 }
 
-// ➔ Supprime le topic
+// ➔ Deletes a topic
 export async function deleteTopic(id, token) {
   try {
     const response = await api.delete(`${API_ROUTES.FORUM.BASE}/${id}`, {
@@ -74,7 +74,7 @@ export async function deleteTopic(id, token) {
   }
 }
 
-// ➔ Verrouille ou déverrouille un topic
+// ➔ Lock or unlock a topic
 export async function toggleTopicLock(id, token) {
   try {
     const response = await api.patch(

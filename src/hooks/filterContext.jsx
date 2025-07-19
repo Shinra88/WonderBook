@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const FilterContext = createContext();
 
@@ -32,7 +32,6 @@ export function FilterProvider({ children }) {
   );
 }
 
-// ✅ LIGNE MANQUANTE QUI RÈGLE L’ERREUR
 export function useFilters() {
   return useContext(FilterContext);
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReactReader } from 'react-reader';
 import {
@@ -109,7 +109,6 @@ function EpubReader() {
 
               rendition.book.ready.then(() => {
                 rendition.book.locations.generate(1000).then(() => {
-                  console.log("✅ Locations générées");
                 });
               });
             }}

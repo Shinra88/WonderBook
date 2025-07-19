@@ -4,7 +4,7 @@ import { getFromLocalStorage } from "../utils/localStorage";
 import api from './api/api';
 
 /**
- * ✅ Uploade une image (ex: couverture livre)
+ * ✅ Upload an image (eg: book cover)
  */
 export async function uploadImageToS3(file, title = "image") {
   const formData = new FormData();
@@ -23,7 +23,7 @@ export async function uploadImageToS3(file, title = "image") {
 }
 
 /**
- * 🔁 Met à jour un avatar (upload + suppression ancien)
+ * 🔁 Updates an avatar (upload + delete old)
  */
 export async function updateAvatarOnS3(file, userId, oldUrl) {
   let user = null;
@@ -52,7 +52,6 @@ export async function updateAvatarOnS3(file, userId, oldUrl) {
     });
 
     if (response?.data?.imageUrl) {
-      console.log("✅ Avatar mis à jour :", response.data.imageUrl);
       return response.data.imageUrl;
     }
 
@@ -65,7 +64,7 @@ export async function updateAvatarOnS3(file, userId, oldUrl) {
 }
 
 /**
- * 📚 Uploade un fichier ebook (epub) vers S3
+ * 📚 Uploads an ebook file (epub) to S3
  */
 export async function uploadEbookToS3(file, bookId) {
   if (!file || !bookId) {
@@ -75,7 +74,7 @@ export async function uploadEbookToS3(file, bookId) {
 
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("bookId", bookId); // ✅ le champ attendu par le backend
+  formData.append("bookId", bookId);
 
   try {
     const response = await api.put(API_ROUTES.AUTH.UPLOAD_EBOOK, formData, {
@@ -83,7 +82,6 @@ export async function uploadEbookToS3(file, bookId) {
     });
 
     if (response?.data?.ebook_url) {
-      console.log("✅ Ebook uploadé :", response.data.ebook_url);
       return response.data.ebook_url;
     }
 

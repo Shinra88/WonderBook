@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import BookDisplay from '../BookDisplay/BookDisplay';
 import styles from './LastBook.module.css';

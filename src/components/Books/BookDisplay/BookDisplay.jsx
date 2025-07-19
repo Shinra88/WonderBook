@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatDate, displayStars } from '../../../utils/helpers';
@@ -22,7 +22,6 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       );
   }  
 
-  // affichage standard
   let titleParts = book.title.split(':');
   let mainTitle = titleParts[0];
   let subTitle = titleParts[1]?.trim();

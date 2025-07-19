@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { getUserCollection, updateBookReadStatus } from '../../services/collectionService';
 import { useFilters } from '../../hooks/filterContext';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';

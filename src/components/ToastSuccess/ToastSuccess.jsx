@@ -1,6 +1,5 @@
 //ToastSuccess.jsx
-import React from 'react';
-import styles from './ToastSuccess.module.css'; // à créer : position fixe, transition, couleur verte
+import styles from './ToastSuccess.module.css';
 
 export default function ToastSuccess({ message }) {
   return (

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api/api';
 
 export default function useCategories() {
-  const [categories, setCategories] = useState([]); // contient des objets { id, name }
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

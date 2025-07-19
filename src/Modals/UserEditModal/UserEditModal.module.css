@@ -82,7 +82,6 @@
     background: white;
   }
   
-  /* ✅ Groupe Notifications */
   .notificationsGroup {
     display: flex;
     flex-direction: column;
@@ -147,7 +146,7 @@
     transform: translateX(24px);
   }
   
-  /* ✅ Boutons */
+
   .buttonGroup {
     display: flex;
     justify-content: center;
