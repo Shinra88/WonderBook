@@ -60,7 +60,7 @@ function ForgetPassword({ token }) {
   return (
     <div className={styles.Login}>
       <div className={styles.Form}>
-        {showToast && <ToastSuccess message={t('ForgetPassword.SuccessToast')} />}
+        {showToast && <ToastSuccess message={t('ForgetPassword.SuccessMessage')} />}
 
         <h2>{t('ForgetPassword.ResetTitle')}</h2>
 

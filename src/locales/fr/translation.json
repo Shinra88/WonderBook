@@ -90,6 +90,9 @@
         "UnknownError": "Erreur inconnue.",
         "ServerError": "Erreur serveur.",
         "SuccessToast": "Mot de passe modifié 🎉",
-        "EmailRequired": "Merci d'entrer votre email."
+        "EmailRequired": "Merci d'entrer votre email.",
+        "EmailLabel": "E-mail",
+        "Cancel": "Annuler"
+
     }
 }

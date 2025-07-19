@@ -89,7 +89,10 @@
         "ServerError": "Server error occurred.",
         "Loading": "Loading...",
         "Validate": "Validate",
-        "EmailRequired": "Please enter your email."
+        "Cancel": "Cancel",
+        "EmailSent": "A reset email has been sent!",
+        "EmailRequired": "Please enter your email.",
+        "EmailLabel": "Email"
 
     }
 }

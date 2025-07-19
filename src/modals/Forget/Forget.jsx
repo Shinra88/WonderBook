@@ -78,10 +78,10 @@ function Forget({ onClose }) {
       }}
     >
       <div className={styles.modalContent}>
-        <h2>Mot de passe oublié</h2>
+        <h2>{t("ForgetPassword.ResetTitle")}</h2>
 
         {showToast && (
-          <ToastSuccess message={t("ForgetPassword.SuccessToast")} />
+          <ToastSuccess message={t("ForgetPassword.EmailSent")} />
         )}
 
         {!showToast && (
