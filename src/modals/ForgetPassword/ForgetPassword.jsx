@@ -4,6 +4,7 @@ import api from '../../services/api/api';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './ForgetPassword.module.css';
+import { useTranslation } from 'react-i18next';
 
 function ForgetPassword({ token }) {
   const [newPassword, setNewPassword] = useState('');
@@ -13,19 +14,21 @@ function ForgetPassword({ token }) {
   const [isLoading, setIsLoading] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
+  const { t } = useTranslation();
+
   const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
-      setNotification({ error: true, message: 'Les mots de passe ne correspondent pas.' });
+      setNotification({ error: true, message: t('ForgetPassword.PasswordMismatch') });
       return;
     }
 
     if (newPassword.length < 8) {
-      setNotification({ error: true, message: 'Le mot de passe doit faire au moins 8 caractères.' });
+      setNotification({ error: true, message: t('ForgetPassword.PasswordTooShort') });
       return;
     }
 
     if (!recaptchaToken) {
-      setNotification({ error: true, message: "Merci de valider le CAPTCHA." });
+      setNotification({ error: true, message: t('ForgetPassword.CaptchaRequired') });
       return;
     }
 
@@ -38,17 +41,17 @@ function ForgetPassword({ token }) {
 
       if (response.data.success) {
         setShowToast(true);
-        setNotification({ error: false, message: 'Mot de passe réinitialisé avec succès.' });
+        setNotification({ error: false, message: t('ForgetPassword.SuccessMessage') });
 
         setTimeout(() => {
             window.location.href = '/';
         }, 2000);
       } else {
-        setNotification({ error: true, message: response.data.message || 'Erreur inconnue.' });
+        setNotification({ error: true, message: response.data.message || t('ForgetPassword.UnknownError') });
       }
     } catch (err) {
       console.error('Erreur reset password :', err);
-      setNotification({ error: true, message: err.response?.data?.message || 'Erreur serveur.' });
+      setNotification({ error: true, message: err.response?.data?.message || t('ForgetPassword.ServerError') });
     } finally {
       setIsLoading(false);
     }
@@ -57,10 +60,10 @@ function ForgetPassword({ token }) {
   return (
     <div className={styles.Login}>
       <div className={styles.Form}>
-        {showToast && <ToastSuccess message="Mot de passe modifié 🎉" />}
-  
-        <h2>Réinitialiser votre mot de passe</h2>
-  
+        {showToast && <ToastSuccess message={t('ForgetPassword.SuccessToast')} />}
+
+        <h2>{t('ForgetPassword.ResetTitle')}</h2>
+
         {notification.message && (
           <div className={notification.error ? styles.errorMessage : styles.successMessage}>
             {notification.message}
@@ -68,7 +71,7 @@ function ForgetPassword({ token }) {
         )}
   
         <label htmlFor="newPassword">
-          Nouveau mot de passe
+          {t('ForgetPassword.NewPasswordLabel')}
           <input
             type="password"
             id="newPassword"
@@ -79,7 +82,7 @@ function ForgetPassword({ token }) {
         </label>
   
         <label htmlFor="confirmPassword">
-          Confirmer le mot de passe
+          {t('ForgetPassword.ConfirmPasswordLabel')}
           <input
             type="password"
             id="confirmPassword"
@@ -102,7 +105,7 @@ function ForgetPassword({ token }) {
           className={styles.validateButton}
           disabled={isLoading}
         >
-          {isLoading ? 'Chargement...' : 'Valider'}
+          {isLoading ? t('ForgetPassword.Loading') : t('ForgetPassword.Validate')}
         </button>
       </div>
     </div>

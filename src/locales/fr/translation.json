@@ -22,7 +22,8 @@
     "Year": "Année",
     "UpPage": "Haut de page",
     "Loading": "Chargement",
-    "None": "Aucune"
+    "None": "Aucune",
+    "NoneBooks": "Aucun livre trouvé."
   },
   "Pagination": {
     "Previous": "Précédent",
@@ -46,7 +47,8 @@
         "StartYear": "Année de début",
         "EndYear": "Année de fin",
         "Placeholder": "Année",
-        "Years": "Années"
+        "Years": "Années",
+        "SelectYear": "Année"
     },
     "Login": {
         "Login": "Se connecter",
@@ -61,6 +63,7 @@
         "Loading": "Chargement..."
     },
     "SignIn": {
+        "Register": "S'inscrire",
         "Username": "Pseudo",
         "Email": "E-mail",
         "Password": "Mot de passe",
@@ -75,5 +78,18 @@
         "Cancel": "Annuler",
         "Validate": "Valider",
         "Loading": "Chargement..."
+    },
+    "ForgetPassword": {
+        "ResetTitle": "Réinitialiser votre mot de passe",
+        "NewPasswordLabel": "Nouveau mot de passe",
+        "ConfirmPasswordLabel": "Confirmer le mot de passe",
+        "Validate": "Valider",
+        "Loading": "Chargement...",
+        "CaptchaRequired": "Veuillez valider le CAPTCHA avant de continuer.",
+        "SuccessMessage": "Mot de passe réinitialisé avec succès.",
+        "UnknownError": "Erreur inconnue.",
+        "ServerError": "Erreur serveur.",
+        "SuccessToast": "Mot de passe modifié 🎉",
+        "EmailRequired": "Merci d'entrer votre email."
     }
 }

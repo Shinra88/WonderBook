@@ -22,7 +22,8 @@
     "Year": "Year",
     "UpPage": "Up to page",
     "Loading": "Loading",
-    "None": "None"
+    "None": "None",
+    "NoneBooks": "No books found."
   },
   "Pagination": {
     "Previous": "Previous",
@@ -46,7 +47,8 @@
         "StartYear": "Start Year",
         "EndYear": "End Year",
         "Placeholder": "Year",
-        "Years": "Years"
+        "Years": "Years",
+        "SelectYear": "Year"
     },
     "Login": {
         "Login": "Login",
@@ -61,7 +63,8 @@
         "Loading": "Loading..."
     },
     "SignIn": {
-        "Username": "Username",
+        "Register": "Register",
+        "Username": "Pseudo",
         "Email": "Email",
         "Password": "Password",
         "ConfirmPassword": "Confirm Password",
@@ -75,5 +78,18 @@
         "Cancel": "Cancel",
         "Validate": "Validate",
         "Loading": "Loading..."
+    },
+    "ForgetPassword": {
+        "ResetTitle": "Reset Your Password",
+        "NewPasswordLabel": "New Password",
+        "ConfirmPasswordLabel": "Confirm Password",
+        "CaptchaRequired": "Please validate the CAPTCHA before proceeding.",
+        "SuccessMessage": "Password reset successfully.",
+        "UnknownError": "An unknown error occurred.",
+        "ServerError": "Server error occurred.",
+        "Loading": "Loading...",
+        "Validate": "Validate",
+        "EmailRequired": "Please enter your email."
+
     }
 }

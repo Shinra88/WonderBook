@@ -4,8 +4,10 @@ import api from '../../services/api/api';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './Forget.module.css';
+import { useTranslation } from 'react-i18next';
 
 function Forget({ onClose }) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({ error: false, message: '' });
@@ -24,12 +26,12 @@ function Forget({ onClose }) {
 
   const forget = async () => {
     if (!email) {
-      setNotification({ error: true, message: "Merci d'entrer votre email." });
+      setNotification({ error: true, message: t("ForgetPassword.EmailRequired") });
       return;
     }
 
     if (!recaptchaToken) {
-      setNotification({ error: true, message: "Merci de valider le CAPTCHA." });
+      setNotification({ error: true, message: t("ForgetPassword.CaptchaRequired") });
       return;
     }
 
@@ -41,9 +43,9 @@ function Forget({ onClose }) {
       });
 
       if (!response?.data?.success) {
-        setNotification({ error: true, message: response?.data?.message || 'Une erreur est survenue.' });
+        setNotification({ error: true, message: response?.data?.message || t("ForgetPassword.UnknownError") });
       } else {
-        setNotification({ error: false, message: 'Un email de réinitialisation a été envoyé.' });
+        setNotification({ error: false, message: t("ForgetPassword.SuccessMessage") });
         setShowToast(true);
         setEmail('');
         setRecaptchaToken('');
@@ -79,7 +81,7 @@ function Forget({ onClose }) {
         <h2>Mot de passe oublié</h2>
 
         {showToast && (
-          <ToastSuccess message="Un email de réinitialisation a été envoyé !" />
+          <ToastSuccess message={t("ForgetPassword.SuccessToast")} />
         )}
 
         {!showToast && (
@@ -91,7 +93,7 @@ function Forget({ onClose }) {
             )}
 
             <label htmlFor="email">
-              E-mail
+              {t('ForgetPassword.EmailLabel')}
               <input
                 type="email"
                 name="email"
@@ -110,10 +112,10 @@ function Forget({ onClose }) {
 
             <div className={styles.buttonContainer}>
               <button type="button" className={styles.cancelButton} onClick={onClose}>
-                Annuler
+                {t('ForgetPassword.Cancel')}
               </button>
               <button type="button" className={styles.validateButton} onClick={forget} disabled={isLoading}>
-                {isLoading ? 'Chargement...' : 'Valider'}
+                {isLoading ? t('ForgetPassword.Loading') : t('ForgetPassword.Validate')}
               </button>
             </div>
           </>

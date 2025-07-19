@@ -215,7 +215,7 @@ function Header() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Rechercher un livre ou un auteur"
+                  placeholder= {t('Header.SearchPlaceholder')}
                 />
                 <button type="button" onClick={handleSearch}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} />

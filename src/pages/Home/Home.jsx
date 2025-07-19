@@ -53,7 +53,7 @@ function Home() {
   };
 
   const displayBooks = () => {
-    if (!books.length) return <h2>Aucun livre trouvé.</h2>;
+    if (!books.length) return <h2>{t('HomePage.NoneBooks')}</h2>;
 
     const visibleBooks = isAdmin
       ? books
@@ -109,7 +109,7 @@ function Home() {
         )}
 
         <section id="filters" className={styles.filters_container}>
-          <h3>{t('HomePage.FiltersApplied')} :</h3>
+          <h3>{t('HomePage.Filter')} :</h3>
           <div className={styles.filters}>
             <p>
               <strong>{t('HomePage.Categories')} :</strong>{' '}

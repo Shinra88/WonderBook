@@ -134,7 +134,7 @@ function SignIn({ onClose = null, openLogin }) {
         <div className={styles.formContainer}>
           {[
             {
-              label: 'Pseudo',
+              label: t('SignIn.Username'),
               type: 'text',
               value: username,
               id: 'username',
@@ -142,7 +142,7 @@ function SignIn({ onClose = null, openLogin }) {
               error: errors.username,
             },
             {
-              label: 'E-mail',
+              label: t('SignIn.Email'),
               type: 'email',
               value: email,
               id: 'email',
