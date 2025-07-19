@@ -7,7 +7,7 @@ import Book from './pages/Book/Book';
 import { APP_ROUTES } from './utils/constants';
 import Forum from './pages/Forum/Forum';
 import Account from './pages/Account/Account';
-import ChangePass from './modals/ChangePass/ChangePass';
+import ChangePass from './modals/ChangePass/ChangePass.jsx';
 import Collection from './pages/Collection/Collection';
 import HomeWithForgetPassword from './pages/HomeWithForgetPassword/HomeWithForgetPassword';
 import TopicDetail from './pages/Topics/TopicDetail';
