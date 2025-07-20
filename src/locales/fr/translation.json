@@ -138,5 +138,38 @@
         "SelectCategory": "Sélectionner une catégorie",
         "Categories": "Catégories",
         "GenreSelector": "Sélecteur de genre"
+    },
+    "Collection": {
+        "Title": "Ma Collection",
+        "NumberOfBooks": "Nombre de livres : {{count}}",
+        "Error": "Une erreur est survenue lors de la récupération de la collection.",
+        "Filters": "Filtres",
+        "FilterAll": "Tous",
+        "FilterRead": "Lu",
+        "FilterUnread": "Non lu",
+        "FilterCommented": "Commenté",
+        "Loading": "Chargement de votre collection...",
+        "ErrorUpdate": "Une erreur est survenue lors de la mise à jour du statut du livre.",
+        "ErrorDelete": "Une erreur est survenue lors de la suppression du livre.",
+        "Cancel": "Annuler",
+        "UploadEbook": "Télécharger l'eBook",
+        "UploadSuccess": "eBook téléchargé avec succès !",
+        "ErrorUpload": "Erreur lors de l'ajout de l'ebook.",
+        "EditComment": "Modifier l'avis",
+        "Commenter": "Commentaire",
+        "ReadEbook": "Lire l’ebook",
+        "NoBooksFound": "Aucun livre trouvé dans votre collection.",
+        "CommentSuccess": "Commentaire ajouté avec succès !",
+        "CommentError": "Une erreur est survenue lors de l'ajout/modification du commentaire."
+    },
+        "CommentModal": {
+        "Title": "Commenter \"{{title}}\"",
+        "ContentPlaceholder": "Écris ton avis ici...",
+        "Rating": "Évaluation",
+        "Submit": "Soumettre",
+        "SubmitLoading": "Soumission...",
+        "Cancel": "Annuler",
+        "EmptyComment": "Le commentaire ne peut pas être vide.",
+        "ErrorSubmittingComment": "Erreur lors de l'envoi du commentaire."
     }
 }

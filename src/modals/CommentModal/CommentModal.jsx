@@ -3,8 +3,10 @@ import styles from './CommentModal.module.css';
 import { addOrUpdateComment } from '../../services/commentService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 function CommentModal({ book, userId, onClose }) {
+  const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -19,7 +21,7 @@ function CommentModal({ book, userId, onClose }) {
 
   const handleSubmit = async () => {
     if (!content.trim()) {
-      alert('Le commentaire ne peut pas être vide.');
+      alert(t('CommentModal.EmptyComment'));
       return;
     }
     try {
@@ -27,7 +29,7 @@ function CommentModal({ book, userId, onClose }) {
       await addOrUpdateComment(book.bookId, { content, rating });
       onClose();
     } catch (error) {
-      console.error('Erreur en envoyant le commentaire:', error);
+      console.error(t('CommentModal.ErrorSubmittingComment'), error);
     } finally {
       setLoading(false);
     }
@@ -36,13 +38,13 @@ function CommentModal({ book, userId, onClose }) {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <h2>Commenter "{book.title}"</h2>
+        <h2>{t('CommentModal.Title', { title: book.title })}</h2>
         <img src={book.cover_url} alt={book.title} className={styles.cover} />
         <textarea
           className={styles.textarea}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Écris ton avis ici..."
+          placeholder={t('CommentModal.ContentPlaceholder')}
         />
 
         <div className={styles.stars}>
@@ -62,9 +64,9 @@ function CommentModal({ book, userId, onClose }) {
         </div>
 
         <div className={styles.buttons}>
-          <button onClick={onClose} className={styles.cancelButton}>Annuler</button>
+          <button onClick={onClose} className={styles.cancelButton}>{t('CommentModal.Cancel')}</button>
           <button onClick={handleSubmit} disabled={loading} className={styles.validateButton}>
-            {loading ? 'Envoi...' : 'Envoyer'}
+            {loading ? t('CommentModal.SubmitLoading') : t('CommentModal.Submit')}
           </button>
         </div>
       </div>

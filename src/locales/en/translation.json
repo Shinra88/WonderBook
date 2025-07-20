@@ -137,5 +137,38 @@
         "SelectCategory": "Select a category",
         "Categories": "Categories",
         "GenreSelector": "Genre Selector"
-    } 
+    },
+    "Collection": {
+        "Title": "My Collection",
+        "NumberOfBooks": "Number of books: {{count}}",
+        "Error": "An error occurred while fetching the collection.",
+        "Filters": "Filters",
+        "FilterAll": "All",
+        "FilterRead": "Read",
+        "FilterUnread": "Unread",
+        "FilterCommented": "Commented",
+        "Loading": "Loading your collection...",
+        "ErrorUpdate": "An error occurred while updating the book status.",
+        "ErrorDelete": "An error occurred while deleting the book.",
+        "Cancel": "Cancel",
+        "UploadEbook": "Upload eBook",
+        "UploadSuccess": "eBook uploaded successfully!",
+        "ErrorUpload": "Error uploading eBook.",
+        "EditComment": "Edit Comment",
+        "Commenter": "Comment",
+        "ReadEbook": "Read eBook",
+        "NoBooksFound": "No books found in your collection.",
+        "CommentSuccess": "Comment added successfully!",
+        "CommentError": "An error occurred while adding/updating the comment."
+    },
+    "CommentModal": {
+        "Title": "Comment \"{{title}}\"",
+        "ContentPlaceholder": "Write your comment here...",
+        "Rating": "Rating",
+        "Submit": "Submit",
+        "SubmitLoading": "Submitting...",
+        "Cancel": "Cancel",
+        "EmptyComment": "Comment cannot be empty.",
+        "ErrorSubmittingComment": "Error submitting comment."
+    }
 }

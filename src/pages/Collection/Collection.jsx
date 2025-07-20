@@ -9,6 +9,7 @@ import Banner from '../../images/library.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { uploadEbookToS3 } from '../../services/uploadServices';
+import { useTranslation } from 'react-i18next';
 import styles from './Collection.module.css';
 
 function Collection() {
@@ -23,6 +24,7 @@ function Collection() {
   const { user } = useAuth();
   const { selectedCategories, selectedYear, selectedType, searchQuery } = useFilters();
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +44,7 @@ function Collection() {
         const data = await getUserCollection(query);
         setAllBooks(data);
       } catch (error) {
-        console.error('Erreur lors de la récupération de la collection :', error);
+        console.error(t('Collection.Error'), error);
       } finally {
         setLoading(false);
       }
@@ -98,24 +100,24 @@ function Collection() {
     <div className={styles.Collection} style={backgroundImageStyle}>
       <main className={styles.main}>
         <header className={styles.head}>
-          <h2>Ma Collection</h2>
-          <p>Nombre de livres : {filteredBooks.length}</p>
+          <h2>{t('Collection.Title')}</h2>
+          <p>{t('Collection.NumberOfBooks', { count: filteredBooks.length })}</p>
           <div className={styles.filterContainer}>
-            <label className={styles.filterToggle}>Filtres :</label>
+            <label className={styles.filterToggle}>{t('Collection.Filters')} :</label>
             <div className={styles.radioGroup}>
-              <label><input type="radio" name="readStatus" value="all" checked={filterReadStatus === 'all'} onChange={() => setFilterReadStatus('all')} /> Tous</label>
-              <label><input type="radio" name="readStatus" value="read" checked={filterReadStatus === 'read'} onChange={() => setFilterReadStatus('read')} /> Lu</label>
-              <label><input type="radio" name="readStatus" value="unread" checked={filterReadStatus === 'unread'} onChange={() => setFilterReadStatus('unread')} /> Non lu</label>
+              <label><input type="radio" name="readStatus" value="all" checked={filterReadStatus === 'all'} onChange={() => setFilterReadStatus('all')} /> {t('Collection.FilterAll')}</label>
+              <label><input type="radio" name="readStatus" value="read" checked={filterReadStatus === 'read'} onChange={() => setFilterReadStatus('read')} /> {t('Collection.FilterRead')}</label>
+              <label><input type="radio" name="readStatus" value="unread" checked={filterReadStatus === 'unread'} onChange={() => setFilterReadStatus('unread')} /> {t('Collection.FilterUnread')}</label>
             </div>
             <label htmlFor="commented" className={styles.filterToggle}>
-              <input type="checkbox" id="commented" checked={filterCommented} onChange={() => setFilterCommented(prev => !prev)} /> Commenté
+              <input type="checkbox" id="commented" checked={filterCommented} onChange={() => setFilterCommented(prev => !prev)} /> {t('Collection.FilterCommented')}                                           
             </label>
           </div>
         </header>
 
         <section className={styles.bookList}>
           {loading ? (
-            <h1>Chargement...</h1>
+            <h1>{t('Loading')}...</h1>
           ) : filteredBooks.length > 0 ? (
             filteredBooks.map((item) => {
               const userComment = item.books.comments?.find(comment => comment.userId === item.userId);
@@ -145,11 +147,11 @@ function Collection() {
                             await updateBookReadStatus(item.books.bookId, true);
                             setAllBooks(prev => prev.map(b => b.collectionId === item.collectionId ? { ...b, is_read: true } : b));
                           } catch (error) {
-                            console.error('Erreur update is_read :', error);
+                            console.error(t('Collection.ErrorUpdate'), error);
                           }
                         }
                       }} />
-                      <span>Lu</span>
+                      <span>{t('Collection.FilterRead')}</span>
                     </div>
 
                     {isAdmin && !item.books.ebook_url && (
@@ -158,7 +160,7 @@ function Collection() {
                           className={styles.uploadEbookButton}
                           onClick={() => setActiveUploadId(prev => prev === item.collectionId ? null : item.collectionId)}
                         >
-                          {activeUploadId === item.collectionId ? 'Annuler' : 'Ajouter un ebook'}
+                          {activeUploadId === item.collectionId ? t('Collection.Cancel') : t('Collection.UploadEbook')}
                         </button>
 
                         {activeUploadId === item.collectionId && (
@@ -182,9 +184,9 @@ function Collection() {
                                     )
                                   );
                                   setActiveUploadId(null);
-                                  ToastSuccess('Ebook ajouté 📚');
+                                  ToastSuccess(t('Collection.UploadSuccess'));
                                 } catch (err) {
-                                  console.error('Erreur upload ebook :', err);
+                                  console.error(t('Collection.ErrorUpload'), err);
                                 }
                               }}
                             />
@@ -205,8 +207,8 @@ function Collection() {
                           setIsCommentModalOpen(true);
                         }}>
                           {item.books.comments?.some(comment => comment.userId === item.userId)
-                            ? "Modifier l'avis"
-                            : 'Commenter'}
+                            ? t('Collection.EditComment')
+                            : t('Collection.Commenter')}
                         </button>
                       </div>
                     )}
@@ -216,7 +218,7 @@ function Collection() {
                             className={styles.commentButton}
                             onClick={() => navigate(`/read/${item.books.bookId}`)}
                           >
-                            Lire l’ebook
+                            {t('Collection.ReadEbook')}
                           </button>
                       </div>
                     )}
@@ -225,7 +227,7 @@ function Collection() {
               );
             })
           ) : (
-            <h1>Aucun livre trouvé</h1>
+            <h1>{t('Collection.NoBooksFound')}</h1>
           )}
         </section>
 
@@ -239,12 +241,12 @@ function Collection() {
             onSubmit={async (content, rating) => {
               try {
                 await addOrUpdateComment(selectedBook.bookId, { content, rating });
-                setToastMessage('Commentaire ajouté 📚');
+                setToastMessage(t('Collection.CommentSuccess'));
                 setIsCommentModalOpen(false);
                 setSelectedBook(null);
                 setTimeout(() => setToastMessage(''), 3000);
               } catch (error) {
-                console.error('Erreur lors de l’ajout/modification du commentaire :', error);
+                console.error(t('Collection.CommentError'), error);
               }
             }}
           />
