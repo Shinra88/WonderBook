@@ -95,22 +95,32 @@
         "Cancel": "Annuler"
     },
     "BookFormModal": {
+        "UpdateBook": "Mettre à jour le livre",
+        "Add": "Ajouter un livre",
+        "HasSaga": "Ce livre fait partie d'une saga ou d'une série",
+        "SagaName": "Nom de la saga",
+        "Status": "Statut",
+        "StatusOptions": {
+            "Pending": "En attente",
+            "Reading": "En cours de lecture",
+            "Read": "Lu"
+        },
+        "Submit": "Valider",
+        "BookUpdatedSuccessfully": "Livre mis à jour avec succès !",
+        "BookAddedSuccessfully": "Livre ajouté avec succès !",
+        "ErrorAddingBook": "Erreur lors de l'ajout du livre.",
+        "ErrorUpdatingBook": "Erreur lors de la mise à jour du livre.",
+        "Loading": "Chargement...",
+        "NotificationMessage": {
+            "Success": "Opération réussie !",
+            "Error": "Une erreur est survenue. Veuillez réessayer."
+        },
+        "Genres": "Genres",
+        "Publisher": "Éditeur",
+        "Summary": "Résumé",
         "Title": "Titre",
         "Author": "Auteur",
-        "PublicationDate": "Date de publication",
-        "Publisher": "Éditeur",
-        "Categories": "Catégories",
-        "AddCategory": "Ajouter une catégorie",
-        "CoverImage": "Image de couverture",
-        "ReplaceCurrentCover": "Vous pouvez remplacer la couverture existante :",
-        "AddCoverImage": "Ajoutez une image de couverture :",
-        "ClickToAddCover": "Cliquez ici pour ajouter une image de couverture",
-        "CurrentCover": "Couverture actuelle",
-        "UploadIcon": "Icône de téléchargement",
-        "CoverPreview": "Aperçu de la couverture",
-        "SaveError": "Erreur lors de l'enregistrement du livre.",
-        "Update": "Mettre à jour le livre",
-        "Add": "Ajouter le livre",
+        "YearPublished": "Année de publication",
         "Cancel": "Annuler"
     }
 }

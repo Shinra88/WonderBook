@@ -95,20 +95,32 @@
         "EmailLabel": "Email"
     },
     "BookFormModal": {
+        "UpdateBook": "Update Book",
+        "Add": "Add Book",
+        "HasSaga": "This book is part of a saga or series",
+        "SagaName": "Saga Name",
+        "Status": "Status",
+        "StatusOptions": {
+            "Pending": "Pending",
+            "Reading": "Reading",
+            "Read": "Read"
+        },
+        "Submit": "Submit",
+        "BookUpdatedSuccessfully": "Book updated successfully!",
+        "BookAddedSuccessfully": "Book added successfully!",
+        "ErrorAddingBook": "Error adding book.",
+        "ErrorUpdatingBook": "Error updating book.",
+        "Loading": "Loading...",
+        "NotificationMessage": {
+            "Success": "Operation completed successfully!",
+            "Error": "An error occurred. Please try again."
+        },
+        "Genres": "Genres",
+        "Publisher": "Publisher",
+        "Summary": "Summary",
         "Title": "Title",
         "Author": "Author",
-        "PublicationDate": "Publication Date",
-        "Publisher": "Publisher",
-        "AddCoverImage": "Add Cover Image",
-        "ReplaceCurrentCover": "You can replace the existing cover:",
-        "CurrentCover": "Current Cover",
-        "UploadIcon": "Upload Icon",
-        "CoverPreview": "Cover Preview",
-        "FormatText": "Supported formats: jpg, jpeg, png.",
-        "ClickToAddCover": "Click here to add a cover image",
-        "SaveError": "An error occurred while saving the book.",
-        "Update": "Update Book",
-        "Add": "Add Book",
+        "YearPublished": "Year Published",
         "Cancel": "Cancel"
     } 
 }

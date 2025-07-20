@@ -162,20 +162,20 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
   return (
     <div className={styles.modalBackground}>
       <div ref={modalRef} className={styles.modalContent}>
-        <h2>{isUpdate ? t('BookFormModal.UpdateBook') : t('BookFormModal.AddBook')}</h2>
+        <h2>{isUpdate ? t('BookFormModal.UpdateBook') : t('BookFormModal.Add')}</h2>
         {showToast && <ToastSuccess message={t(`BookFormModal.Book ${isUpdate ? 'Updated' : 'Added'} Successfully`)} />}
         {!showToast && notification.message && <p className={styles.errorMessage}>{notification.message}</p>}
 
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <div className={styles.formGroup}>
             <label>
-              <input type="checkbox" checked={hasSaga} onChange={(e) => setHasSaga(e.target.checked)} /> Ce livre fait partie d’une saga ou d’un cycle
+              <input type="checkbox" checked={hasSaga} onChange={(e) => setHasSaga(e.target.checked)} /> {t('BookFormModal.HasSaga')}
             </label>
           </div>
 
           {hasSaga && (
             <div className={styles.formGroup}>
-              <label>Nom de la saga :</label>
+              <label>{t('BookFormModal.SagaName')} :</label>
               <div className={styles.inputWrapper}>
                 <input type="text" value={sagaName} onChange={(e) => setSagaName(e.target.value)} className={styles.inputField} />
               </div>
@@ -217,25 +217,25 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
 
           {isUpdate && (
             <div className={styles.formGroup}>
-              <label>Statut :</label>
+              <label>{t('BookFormModal.Status')} :</label>
               <div className={styles.inputWrapper}>
                 <select name="status" value={formData.status} onChange={handleChange} className={styles.inputField}>
-                  <option value="pending">En attente</option>
-                  <option value="validated">Validé</option>
+                  <option value="pending">{t('BookFormModal.Status.Pending')}</option>
+                  <option value="validated">{t('BookFormModal.Status.Validated')}</option>
                 </select>
               </div>
             </div>
           )}
 
           <div className={styles.formGroup}>
-            <label>Genres :</label>
+            <label>{t('BookFormModal.Genres')} :</label>
             <div className={styles.genreButtonWrapper}>
               <GenreSelector categories={categories} onGenresSelect={setSelectedGenres} initialGenres={selectedGenres} />
             </div>
           </div>
 
           <div className={styles.formGroup}>
-            <label>Éditeur :</label>
+            <label>{t('BookFormModal.Publisher')} :</label>
             <div className={styles.inputWrapper}>
               <select className={styles.inputField} value={selectedPublisher} onChange={(e) => setSelectedPublisher(Number(e.target.value))}>
                 <option value="">{t('BookFormModal.Publisher')}</option>
@@ -247,7 +247,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Résumé :</label>
+            <label>{t('BookFormModal.Summary')} :</label>
             <div className={styles.inputWrapper}>
               <textarea name="summary" value={formData.summary} onFocus={() => setIsExpanded(true)} onBlur={() => setIsExpanded(false)} onChange={handleChange} className={`${styles.inputField} ${styles.textarea} ${isExpanded ? styles.expanded : ''}`} />
             </div>

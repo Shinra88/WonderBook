@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import styles from './GenreSelector.module.css';
 import { API_ROUTES } from '../../utils/constants';
+import { useTranslation } from 'react-i18next';
 
 function GenreSelector({ onGenresSelect, initialGenres = [] }) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(initialGenres);
   const [categories, setCategories] = useState([]);
@@ -70,7 +72,7 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
       <button type="button" className={styles.dropdownButton} onClick={toggleDropdown}>
         {selected.length > 0
           ? selected.map((id) => categories.find((c) => c.id === id)?.name).join(', ')
-          : 'Choisir des genres'}
+          : t('GenreSelector.SelectGenres')}
       </button>
 
       {isOpen && (
@@ -98,7 +100,7 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
             onClick={handleApply}
             disabled={selected.length === 0}
           >
-            Valider
+            {t('BookFormModal.Submit')}
           </button>
         </div>
       )}
