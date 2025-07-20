@@ -279,6 +279,41 @@
       "Strikethrough": "Strikethrough",
       "MessagePlaceholder": "Enter your message"
     },
+    "TopicModerator": {
+      "CommentModeration": "Comment Moderation",
+      "NoCommentsForThisBook": "No comments for this book.",
+      "CommentDeleted": "Comment deleted successfully!",
+      "ErrorDeletingComment": "Error deleting comment.",
+      "Delete": "Delete",
+      "Close": "Close",
+      "ErrorFetchingComments": "Error fetching comments."
+    },
+    "UserEditModal": {
+      "Title": "Edit User",
+      "Username": "Username",
+      "Email": "Email",
+      "Status": "Status",
+      "Active": "Active",
+      "Suspended": "Suspended",
+      "Banned": "Banned",
+      "About": "About Me",
+      "Notifications": "Notifications",
+      "RepForum": "Forum Replies",
+      "AddCom": "Add Comments",
+      "AddBook": "Add Books",
+      "News": "News",
+      "Password": "Password",
+      "SendResetLink": "Send Reset Link",
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "ResetLinkSent": "Reset link sent successfully!",
+      "ErrorSendingResetLink": "Error sending reset link.",
+      "Loading": "Loading...",
+      "SuccessMessage": {
+        "UpdateSuccess": "{{username}} updated successfully!",
+        "ErrorUpdateUser": "{{username}} update failed."
+      }
+    },
     "NotFound": {
       "Error404": "Error 404",
       "PageNotFound": "The page you are looking for does not exist or has been moved."

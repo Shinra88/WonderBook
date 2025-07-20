@@ -5,11 +5,14 @@ import avatarDefault from '../../images/avatar.png';
 import { displayStars } from '../../utils/helpers';
 import { deleteCommentAsAdmin } from '../../services/commentService';
 import FeatherIcon from '../../images/feather.png';
+import { useTranslation } from 'react-i18next';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
+
 
 function CommentModerationModal({ bookId, comments, onClose, onUpdate }) {
   const modalRef = useRef();
   const [showToast, setShowToast] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -30,18 +33,18 @@ function CommentModerationModal({ bookId, comments, onClose, onUpdate }) {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2000);
     } catch (error) {
-      console.error('Erreur suppression commentaire admin :', error);
+      console.error(t('TopicModerator.ErrorDeletingComment'), error);
     }
   };
 
   return (
     <div className={styles.modalBackground}>
       <div ref={modalRef} className={styles.modalContent}>
-        <h2>Modération des commentaires</h2>
+        <h2>{t('TopicModerator.CommentModeration')}</h2>
 
-        {showToast && <ToastSuccess message="Commentaire supprimé 🎉" />}
+        {showToast && <ToastSuccess message={t('TopicModerator.CommentDeleted')} />}
 
-        {comments.length === 0 && <p>Aucun commentaire pour ce livre.</p>}
+        {comments.length === 0 && <p>{t('TopicModerator.NoCommentsForThisBook')}</p>}
         {comments.map((comment) => (
           <div key={comment.commentId} className={styles.commentBlock}>
             <div className={styles.commentHeader}>
@@ -64,13 +67,13 @@ function CommentModerationModal({ bookId, comments, onClose, onUpdate }) {
                 className={styles.deleteBtn}
                 onClick={() => handleDelete(comment.commentId)}
               >
-                Supprimer
+                {t('TopicModerator.Delete')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
             </div>
           </div>
         ))}
-        <button onClick={onClose} className={styles.closeBtn}>Fermer</button>
+        <button onClick={onClose} className={styles.closeBtn}>{t('TopicModerator.Close')}</button>
       </div>
     </div>
   );

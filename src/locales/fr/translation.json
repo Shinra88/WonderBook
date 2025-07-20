@@ -280,6 +280,40 @@
       "Strikethrough": "Strikethrough",
       "MessagePlaceholder": "Enter your message"
     },
+    "TopicModerator": {
+      "CommentModeration": "Comment Moderation",
+      "NoCommentsForThisBook": "No comments for this book.",
+      "Delete": "Delete",
+      "CommentDeleted": "Comment deleted successfully!",
+      "ErrorDeletingComment": "Error deleting comment.",
+      "Close": "Close",
+      "ErrorFetchingComments": "Error fetching comments."
+    },
+    "UserEditModal": {
+        "Title": "Modifier l'utilisateur",
+        "Username": "Nom d'utilisateur",
+        "Email": "E-mail",
+        "Status": "Statut",
+        "Active": "Actif",
+        "Suspended": "Suspendu",
+        "Banned": "Banni",
+        "About": "À propos de l'utilisateur",
+        "Notifications": "Notifications",
+        "RepForum": "Répondre au forum",
+        "AddCom": "Ajouter un commentaire",
+        "AddBook": "Ajouter un livre",
+        "News": "Actualités",
+        "Password": "Mot de passe (laisser vide pour ne pas modifier)",
+        "SendResetLink": "Envoyer un lien de réinitialisation",
+        "Save": "Sauvegarder",
+        "Cancel": "Annuler",
+        "ResetLinkSent": "Lien de réinitialisation envoyé.",
+        "ErrorSendingResetLink": "Erreur lors de l'envoi du lien.",
+        "Loading": "Chargement...",
+        "SuccessMessage": {
+            "UpdateSuccess": "{{username}} a été mis à jour avec succès !"
+        }
+    },
     "NotFound": {
         "Error404": "Erreur 404",
         "PageNotFound": "La page que vous cherchez n'existe pas ou a été déplacée."

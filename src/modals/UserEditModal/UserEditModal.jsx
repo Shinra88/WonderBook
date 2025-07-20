@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import Avatar from '../../images/avatar.png';
 import { updateUserById } from '../../services/adminServices';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
+import { useTranslation } from 'react-i18next';
 import styles from './UserEditModal.module.css';
 
 function UserEditModal({ user, onClose, onSave, isAdmin }) {
     const [showRemoveAvatarBtn, setShowRemoveAvatarBtn] = useState(false);
     const [showToast, setShowToast] = useState(false);
-
+    const { t } = useTranslation();
     const [form, setForm] = useState({
         name: '',
         mail: '',
@@ -54,20 +55,20 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
           setShowToast(true);
           setTimeout(() => setShowToast(false), 2500);
         } catch (err) {
-          console.error('❌ Erreur lors de la sauvegarde :', err);
-          alert('Erreur lors de la sauvegarde');
+          console.error(t('UserEditModal.ErrorUpdatingUser'), err);
+          alert(t('UserEditModal.ErrorUpdatingUser'));
         }
       };      
 
   return (
     <div className={styles.modalBackground} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2>Modifier {user.name}</h2>
-        {showToast && <ToastSuccess message="Modifications enregistrées ✔️" />}
+        <h2>{t('UserEditModal.EditUser', { name: user.name })}</h2>
+        {showToast && <ToastSuccess message={t('UserEditModal.ChangesSaved')} />}
         <form onSubmit={handleSubmit}>
             
         <div className={styles.formGroup}>
-            <label>Avatar :</label>
+            <label>{t('UserEditModal.Avatar')} :</label>
             <div
                 className={styles.avatarWrapper}
                 onMouseEnter={() => setShowRemoveAvatarBtn(true)}
@@ -84,14 +85,14 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                     className={styles.removeAvatarBtn}
                     onClick={() => setForm(prev => ({ ...prev, avatar: '' }))}
                 >
-                    Supprimer
+                    {t('UserEditModal.Delete')}
                 </button>
                 )}
             </div>
           </div>
 
           <div className={styles.formGroup}>
-            <label>Pseudo :</label>
+            <label>{t('UserEditModal.Username')} :</label>
             <div className={styles.inputWrapper}>
               <input
                 type="text"
@@ -104,7 +105,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Email :</label>
+            <label>{t('UserEditModal.Email')} :</label>
             <div className={styles.inputWrapper}>
               <input
                 type="email"
@@ -118,7 +119,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
 
           {isAdmin && (
             <div className={styles.formGroup}>
-              <label>Rôle :</label>
+              <label>{t('UserEditModal.Role')} :</label>
               <div className={styles.inputWrapper}>
                 <select
                   name="role"
@@ -126,16 +127,16 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                   value={form.role}
                   onChange={handleChange}
                 >
-                  <option value="user">Utilisateur</option>
-                  <option value="moderator">Modérateur</option>
-                  <option value="admin">Admin</option>
+                  <option value="user">{t('UserEditModal.User')}</option>
+                  <option value="moderator">{t('UserEditModal.Moderator')}</option>
+                  <option value="admin">{t('UserEditModal.Admin')}</option>
                 </select>
               </div>
             </div>
           )}
 
           <div className={styles.formGroup}>
-            <label>Statut :</label>
+            <label>{t('UserEditModal.Status')} :</label>
             <div className={styles.inputWrapper}>
               <select
                 name="status"
@@ -143,15 +144,15 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                 value={form.status}
                 onChange={handleChange}
               >
-                <option value="active">Actif</option>
-                <option value="suspended">Suspendu</option>
-                {isAdmin && <option value="banned">Banni</option>}
+                <option value="active">{t('UserEditModal.Active')}</option>
+                <option value="suspended">{t('UserEditModal.Suspended')}</option>
+                {isAdmin && <option value="banned">{t('UserEditModal.Banned')}</option>}
               </select>
             </div>
           </div>
 
           <div className={styles.formGroup}>
-            <label>À propos :</label>
+            <label>{t('UserEditModal.About')} :</label>
             <textarea
               name="aboutMe"
               className={`${styles.textarea} ${styles.expanded}`}
@@ -161,7 +162,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Notifications :</label>
+            <label>{t('UserEditModal.Notifications')} :</label>
             <div className={styles.inputWrapper}>
               {['repForum', 'addCom', 'addBook', 'news'].map((notif) => (
                 <label key={notif} style={{ marginRight: '10px' }}>
@@ -177,7 +178,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
           </div>
           {isAdmin && (
             <div className={styles.formGroup}>
-              <label>Mot de passe :</label>
+              <label>{t('UserEditModal.Password')} :</label>
               <div className={styles.inputWrapper}>
                 <button
                   type="button"
@@ -188,14 +189,14 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                         setShowToast(true);
                         setTimeout(() => setShowToast(false), 2500);
                         
-                      alert('Lien de réinitialisation envoyé');
+                      alert(t('UserEditModal.ResetLinkSent'));
                     } catch (err) {
-                      alert("Erreur lors de l'envoi du lien.");
+                      alert(t('UserEditModal.ErrorSendingResetLink'));
                       console.error(err);
                     }
                   }}
                 >
-                  Envoyer un lien de réinitialisation
+                  {t('UserEditModal.SendResetLink')}
                 </button>
               </div>
             </div>
@@ -203,10 +204,10 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
 
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.validate}>
-              Sauvegarder
+              {t('UserEditModal.Save')}
             </button>
             <button type="button" className={styles.cancel} onClick={onClose}>
-              Annuler
+              {t('UserEditModal.Cancel')}
             </button>
           </div>
         </form>
