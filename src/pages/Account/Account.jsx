@@ -210,7 +210,7 @@ function Account() {
               ['repForum', t('Account.RepForum')],
               ['addCom', t('Account.AddCom')],
               ['addBook', t('Account.AddBook')],
-              ['news', 'Actualités'],
+              ['news', t('Account.News')],
             ].map(([key, label]) => (
               <div className={styles.switch_container} key={key}>
                 <p>{label}</p>

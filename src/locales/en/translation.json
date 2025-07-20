@@ -209,5 +209,20 @@
         "ChangePassword": "Change Password",
         "Finish": "Finish",
         "Cancel": "Cancel"
+    },
+    "ChangePass": {
+        "PasswordStrengthWeak": "Weak",
+        "PasswordStrengthMedium": "Medium",
+        "PasswordStrengthStrong": "Strong",
+        "Title": "Change Password",
+        "OldPassword": "Old Password",
+        "NewPassword": "New Password",
+        "ConfirmNewPassword": "Confirm New Password",
+        "PasswordStrength": "Password Strength",
+        "Cancel": "Cancel",
+        "Loading": "Changing password...",
+        "Validate": "Validate",
+        "PasswordRequirements": "8+ characters with uppercase, lowercase, number, and special character.",
+        "PasswordsDoNotMatch": "Passwords do not match."
     }
   }

@@ -210,5 +210,20 @@
         "ChangePassword": "Changer le mot de passe",
         "Finish": "Terminer",
         "Cancel": "Annuler"
+    },
+        "ChangePass": {
+        "PasswordStrengthWeak": "Faible",
+        "PasswordStrengthMedium": "Moyenne",
+        "PasswordStrengthStrong": "Forte",
+        "Title": "Changer le mot de passe",
+        "OldPassword": "Ancien mot de passe",
+        "NewPassword": "Nouveau mot de passe",
+        "ConfirmNewPassword": "Confirmer le nouveau mot de passe",
+        "PasswordStrength": "Force du mot de passe",
+        "Cancel": "Annuler",
+        "Loading": "Changement de mot de passe...",
+        "Validate": "Valider",
+        "PasswordRequirements": "8+ caractères avec majuscules, minuscules, chiffres et caractères spéciaux.",
+        "PasswordsDoNotMatch": "Les mots de passe ne correspondent pas."
     }
 }

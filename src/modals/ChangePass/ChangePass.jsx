@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ChangePass.module.css';
 import { changePassword } from '../../services/authService';
+import { useTranslation } from 'react-i18next';
 
 function ChangePass({ onClose, onSuccess }) {
   // Function to handle password change
@@ -13,7 +14,7 @@ function ChangePass({ onClose, onSuccess }) {
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const { t } = useTranslation();
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?]).{8,}$/;
 
   const getPasswordStrength = (password) => {
@@ -24,18 +25,18 @@ function ChangePass({ onClose, onSuccess }) {
     if (/\d/.test(password)) score++;
     if (/[^A-Za-z0-9]/.test(password)) score++;
 
-    if (score <= 2) return 'Faible';
-    if (score <= 4) return 'Moyen';
-    return 'Fort';
+    if (score <= 2) return t('ChangePass.PasswordStrengthWeak');
+    if (score <= 4) return t('ChangePass.PasswordStrengthMedium');
+    return t('ChangePass.PasswordStrengthStrong');
   };
 
   const validateFields = () => {
     const newErrors = {};
     if (!passwordRegex.test(newPassword)) {
-      newErrors.password = '8+ caractères avec maj, min, chiffre et caractère spécial.';
+      newErrors.password = t('ChangePass.PasswordRequirements');
     }
     if (newPassword !== confirmPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas.';
+      newErrors.confirmPassword = t('ChangePass.PasswordsDoNotMatch');
     }
     return newErrors;
   };
@@ -82,7 +83,7 @@ function ChangePass({ onClose, onSuccess }) {
   return (
     <div className={styles.modalBackground} onClick={handleClickOutside} role="presentation">
       <div className={styles.modalContent}>
-        <h2>Changer le mot de passe</h2>
+        <h2>{t('ChangePass.Title')}</h2>
 
         {notification.message && (
           <div className={notification.error ? styles.errorMessage : styles.successMessage}>
@@ -91,7 +92,7 @@ function ChangePass({ onClose, onSuccess }) {
         )}
 
         <label htmlFor="oldPassword">
-          Ancien mot de passe
+          {t('ChangePass.OldPassword')}
           <input
             type="password"
             id="oldPassword"
@@ -101,7 +102,7 @@ function ChangePass({ onClose, onSuccess }) {
         </label>
 
         <label htmlFor="newPassword">
-          Nouveau mot de passe
+          {t('ChangePass.NewPassword')}
           <div className={styles.passwordWrapper}>
             <input
               type={showPassword ? 'text' : 'password'}
@@ -122,7 +123,7 @@ function ChangePass({ onClose, onSuccess }) {
         <small className={styles.errorText}>{errors.password || '\u00A0'}</small>
 
         <label htmlFor="confirmPassword">
-          Confirmer mot de passe
+          {t('ChangePass.ConfirmNewPassword')}
           <input
             type="password"
             id="confirmPassword"
@@ -136,19 +137,19 @@ function ChangePass({ onClose, onSuccess }) {
         {newPassword && (
             <small
               className={
-                passwordStrength === 'Fort'
+                passwordStrength === t('ChangePass.PasswordStrengthStrong')
                   ? styles.strong
-                  : passwordStrength === 'Moyen'
+                  : passwordStrength === t('ChangePass.PasswordStrengthMedium')
                   ? styles.medium
                   : styles.weak
               }
             >
-              Force du mot de passe : {passwordStrength}
+              {t('ChangePass.PasswordStrength')} : {passwordStrength}
             </small>
           )}
         <div className={styles.buttonContainer}>
           <button type="button" className={styles.cancelButton} onClick={onClose}>
-            Annuler
+            {t('ChangePass.Cancel')}
           </button>
           <button
             type="submit"
@@ -156,7 +157,7 @@ function ChangePass({ onClose, onSuccess }) {
             onClick={handleSubmit}
             disabled={!isFormValid || isLoading}
           >
-            {isLoading ? 'Chargement...' : 'Valider'}
+            {isLoading ? t('ChangePass.Loading') : t('ChangePass.Validate')}
           </button>
         </div>
       </div>
