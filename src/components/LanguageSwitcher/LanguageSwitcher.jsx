@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
     i18n.changeLanguage(lang);
   };
 
-  const currentLang = i18n.language.startsWith('fr') ? 'fr' : 'en';
+  const currentLang = i18n.language.split('-')[0];
 
   return (
     <select
