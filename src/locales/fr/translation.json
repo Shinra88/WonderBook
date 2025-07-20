@@ -232,6 +232,31 @@
       "Notices": "Notices",
       "NoTopicsFound": "Aucun sujet trouvé.",
       "Subjects": "Sujets",
-      "SearchPlaceholder": "Rechercher un sujet"
+      "SearchPlaceholder": "Rechercher un sujet",
+      "BackToTop": "Haut de page"
+    },
+    "Topics": {
+      "ErrorFetchingDatas": "Erreur lors de la récupération des données.",
+      "ErrorRefreshTopics": "Erreur lors du rafraîchissement des postes.",
+      "AnswerTopic": "Répondre au poste",
+      "LockedMessage": "Ce sujet est verrouillé.",
+      "SearchPlaceholder": "Rechercher dans les réponses",
+      "Unlock": "Déverrouiller",
+      "Lock": "Verrouiller",
+      "Pin": "Épingler",
+      "Unpin": "Désépingler",
+      "ConfirmDelete": "Supprimer ce sujet et toutes ses réponses ?",
+      "DeleteSuccess": "Sujet supprimé avec succès !",
+      "ErrorDelete": "Erreur lors de la suppression du sujet.",
+      "Delete": "Supprimer le sujet",
+      "Replies": "Réponses",
+      "Author": "Auteur",
+      "CreatedOn": "Créé le",
+      "NoReplies": "Aucune réponse trouvée.",
+      "BackToTop": "Haut de page"
+    },
+    "NotFound": {
+        "Error404": "Erreur 404",
+        "PageNotFound": "La page que vous cherchez n'existe pas ou a été déplacée."
     }
 }

@@ -226,11 +226,36 @@
         "PasswordsDoNotMatch": "Passwords do not match."
     },
     "Forum": {
-      "ErrorFetchingTopics": "Error fetching topics.",
-      "CreateTopic": "Create Topic",
+      "ErrorFetchingTopics": "Error fetching subjects.",
+      "CreateTopic": "Create Subjects",
       "Notices": "Notices",
-      "NoTopicsFound": "No topics found.",
+      "NoTopicsFound": "No subjects found.",
       "Subjects": "Subjects",
-      "SearchPlaceholder": "Search for a topic"
+      "SearchPlaceholder": "Search for a subject",
+      "BackToTop": "Back to Top"
+    },
+    "Topics": {
+      "ErrorFetchingDatas": "Error fetching datas.",
+      "ErrorRefreshTopics": "Error refreshing topics.",
+      "AnswerTopic": "Answer Topic",
+      "LockedMessage": "This topic is locked.",
+      "SearchPlaceholder": "Search in replies",
+      "Unlock": "Unlock",
+      "Lock": "Lock",
+      "Pin": "Pin",
+      "Unpin": "Unpin",
+      "ConfirmDelete": "Delete this topic and all its replies?",
+      "DeleteSuccess": "Topic deleted successfully!",
+      "ErrorDelete": "Error deleting topic.",
+      "Delete": "Delete Topic",
+      "Replies": "Replies",
+      "Author": "Author",
+      "CreatedOn": "Created On",
+      "NoReplies": "No replies match your search.",
+      "BackToTop": "Back to Top"
+    },
+    "NotFound": {
+      "Error404": "Error 404",
+      "PageNotFound": "The page you are looking for does not exist or has been moved."
     }
-  }
+}

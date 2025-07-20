@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 import Banner from '../../images/library.png';
 import {
   getTopicById,
@@ -30,7 +31,7 @@ function TopicDetail() {
   const { user } = useAuth();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-
+  const { t } = useTranslation();
   const filteredPosts = posts.filter(post =>
     post.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -54,7 +55,7 @@ function TopicDetail() {
         setTopic(fetchedTopic);
         setPosts(fetchedPosts);
       } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
+        console.error(t("ErrorFetchingDatas", error));
       }
     }
 
@@ -66,7 +67,7 @@ function TopicDetail() {
       const updatedPosts = await getPostsByTopicId(topicId);
       setPosts(updatedPosts);
     } catch (error) {
-      console.error("Erreur lors du rafraîchissement des posts :", error);
+      console.error(t("ErrorRefreshTopics", error));
     }
   };
 
@@ -157,7 +158,7 @@ function TopicDetail() {
           {user && !topic.locked && (
             <>
               <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
-                Répondre au sujet
+                {t('TopicDetail.AnswerTopic')}
               </button>
               {isModalOpen && (
                 <PostModal
@@ -170,7 +171,7 @@ function TopicDetail() {
           )}
 
           {user && topic.locked && (
-            <h3 className={styles.lockedMessage}>Ce sujet est verrouillé.</h3>
+            <h3 className={styles.lockedMessage}>{t('TopicDetail.LockedMessage')}</h3>
           )}
 
 
@@ -186,7 +187,7 @@ function TopicDetail() {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                placeholder="Rechercher dans les réponses"
+                placeholder={t('TopicDetail.SearchPlaceholder')}
               />
               <button type="button">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -205,11 +206,11 @@ function TopicDetail() {
                     const res = await toggleTopicLock(topic._id, user.token);
                     setTopic(prev => ({ ...prev, locked: res.locked }));
                   } catch (err) {
-                    alert("Erreur lors du verrouillage du sujet.");
+                    alert(t("ErrorToggleLock", err));
                   }
                 }}
               >
-                {topic.locked ? "Déverrouiller" : "Verrouiller"}
+                {topic.locked ? t("TopicDetail.Unlock") : t("TopicDetail.Lock")}
               </button>
 
               <button
@@ -219,34 +220,34 @@ function TopicDetail() {
                     await updateTopicNotice(topic._id, user.token);
                     setTopic(prev => ({ ...prev, notice: !prev.notice }));
                   } catch (err) {
-                    alert("Erreur lors du changement d'état épinglé.");
+                    alert(t("ErrorTogglePin", err));
                     console.error(err);
                   }
                 }}
               >
-                {topic.notice ? "Désépingler" : "Épingler"}
+                {topic.notice ? t("TopicDetail.Unpin") : t("TopicDetail.Pin")}
               </button>
 
               <button
                 className={styles.deleteTopicButton}
                 onClick={async () => {
-                  const confirmDelete = window.confirm("Supprimer ce sujet et toutes ses réponses ?");
+                  const confirmDelete = window.confirm(t("TopicDetail.ConfirmDelete"));
                   if (!confirmDelete) return;
 
                   try {
                     await deleteTopic(topic._id, user.token);
-                    setToastMessage("Sujet supprimé avec succès ✅");
+                    setToastMessage(t("TopicDetail.DeleteSuccess"));
                     setShowToast(true);
                     setTimeout(() => {
                       setShowToast(false);
                       window.location.href = "/Forum";
                     }, 2000);
                   } catch (err) {
-                    alert("Erreur lors de la suppression du sujet.");
+                    alert(t("TopicDetail.ErrorDelete", err));
                   }
                 }}
               >
-                Supprimer le sujet
+                {t("TopicDetail.Delete")}
               </button>
             </aside>
             </>
@@ -261,8 +262,8 @@ function TopicDetail() {
                 alt="Avatar"
                 className={styles.avatar}
               />
-              <p><strong>Auteur :</strong> {topic.authorName}</p>
-              <p><strong>Créé le :</strong> {new Date(topic.created_at).toLocaleDateString()}</p>
+              <p><strong>{t("TopicDetail.Author")} :</strong> {topic.authorName}</p>
+              <p><strong>{t("TopicDetail.CreatedOn")} :</strong> {new Date(topic.created_at).toLocaleDateString()}</p>
             </div>
             <div className={styles.authorContent}>
             {topic.content.split('\n').map((line, index) => (
@@ -271,7 +272,7 @@ function TopicDetail() {
             </div>
           </div>
 
-          <h3>Réponses :</h3>
+          <h3>{t("TopicDetail.Replies")} :</h3>
           <ul>
             {currentPosts.length > 0 ? (
               currentPosts.map(post => (
@@ -284,7 +285,7 @@ function TopicDetail() {
                         className={styles.avatar}
                       />
                       <p><strong>{post.userName}</strong></p>
-                      <p><strong>Posté le :</strong> {new Date(post.created_at).toLocaleDateString()}</p>
+                      <p><strong>{t("TopicDetail.CreatedOn")} :</strong> {new Date(post.created_at).toLocaleDateString()}</p>
                     </div>
                     {canModerate && (
                       <button
@@ -301,7 +302,7 @@ function TopicDetail() {
                           }
                         }}
                       >
-                        Supprimer
+                        {t("TopicDetail.Delete")}
                       </button>
                     )}
                     <div className={styles.postContent}>
@@ -311,11 +312,11 @@ function TopicDetail() {
                 </li>
               ))
             ) : (
-              <p>Aucune réponse ne correspond à votre recherche.</p>
+              <p>{t("TopicDetail.NoReplies")}</p>
             )}
           </ul>
           <div className={styles.up_container}>
-            <a href="#topPage" className={styles.up}>Haut de page</a>
+            <a href="#topPage" className={styles.up}>{t("TopicDetail.BackToTop")}</a>
           </div>
 
           {totalPages > 1 && (
