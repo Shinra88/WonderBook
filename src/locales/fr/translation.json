@@ -126,7 +126,9 @@
         "Cancel": "Annuler",
         "PublicationDate": "Date de publication",
         "AddCoverImage": "Ajouter une image de couverture",
-        "CoverImage": "Image de couverture"
+        "CoverImage": "Image de couverture",
+        "Update": "Mettre à jour",
+        "ReplaceCurrentCover": "Remplacer l'image de couverture actuelle"
     },
     "GenreSelector": {
         "SelectGenres": "Sélectionner des genres",
@@ -189,7 +191,8 @@
       "Actions": "Actions",
       "Suspend": "Suspendre",
       "Activate": "Activer",
-      "BackToTop": "Haut de page"
+      "BackToTop": "Haut de page",
+      "SuspendedUsers": "Utilisateurs suspendus"
     },
     "Account": {
         "EditProfile": "Modifier le profil",
@@ -235,7 +238,7 @@
       "SearchPlaceholder": "Rechercher un sujet",
       "BackToTop": "Haut de page"
     },
-    "TopicsDetail": {
+    "TopicDetail": {
       "ErrorFetchingDatas": "Erreur lors de la récupération des données.",
       "ErrorRefreshTopics": "Erreur lors du rafraîchissement des postes.",
       "AnswerTopic": "Répondre au poste",
@@ -256,38 +259,38 @@
       "BackToTop": "Haut de page"
     },
         "TopicModal": {
-      "AddTopic": "Add Topic",
-      "Title": "Title",
-      "Content": "Content",
-      "Notice": "Pin this topic",
-      "Submit": "Submit",
-      "Cancel": "Cancel",
-      "SuccessMessage": "Topic added successfully!",
+      "AddTopic": "Nouveau Sujet",
+      "Title": "Titre du sujet",
+      "Content": "Contenu du sujet",
+      "Notice": "Épingler ce sujet",
+      "Submit": "Soumettre",
+      "Cancel": "Annuler",
+      "SuccessMessage": "Sujet ajouté avec succès !",
       "Error": {
-        "AdditionFailed": "Error adding topic.",
-        "UnknownError": "An unknown error occurred."
+        "AdditionFailed": "Erreur lors de l'ajout du sujet.",
+        "UnknownError": "Une erreur inconnue est survenue."
       },
-      "Loading": "Submitting...",
-      "NoticeTooltip": "Pin this topic to the top of the forum.",
-      "TitlePlaceholder": "Enter the topic title",
-      "ContentPlaceholder": "Enter the topic content",
-      "Sending": "Sending...",
-      "AnswerToTopic": "Answer to Topic",
+      "Loading": "Soumission...",
+      "NoticeTooltip": "Épingler ce sujet en haut du forum.",
+      "TitlePlaceholder": "Entrez le titre du sujet",
+      "ContentPlaceholder": "Entrez le contenu du sujet",
+      "Sending": "Envoi...",
+      "AnswerToTopic": "Répondre au sujet",
       "Spoiler": "Spoiler",
-      "Bold": "Bold",
-      "Italic": "Italic",
-      "Underline": "Underline",
-      "Strikethrough": "Strikethrough",
-      "MessagePlaceholder": "Enter your message"
+      "Bold": "Gras",
+      "Italic": "Italique",
+      "Underline": "Souligné",
+      "Strikethrough": "Barré",
+      "MessagePlaceholder": "Entrez votre message"
     },
     "TopicModerator": {
-      "CommentModeration": "Comment Moderation",
-      "NoCommentsForThisBook": "No comments for this book.",
-      "Delete": "Delete",
-      "CommentDeleted": "Comment deleted successfully!",
-      "ErrorDeletingComment": "Error deleting comment.",
-      "Close": "Close",
-      "ErrorFetchingComments": "Error fetching comments."
+      "CommentModeration": "Modération des commentaires",
+      "NoCommentsForThisBook": "Aucun commentaire pour ce livre.",
+      "Delete": "Supprimer",
+      "CommentDeleted": "Commentaire supprimé avec succès !",
+      "ErrorDeletingComment": "Erreur lors de la suppression du commentaire.",
+      "Close": "Fermer",
+      "ErrorFetchingComments": "Erreur lors de la récupération des commentaires."
     },
     "UserEditModal": {
         "Title": "Modifier l'utilisateur",

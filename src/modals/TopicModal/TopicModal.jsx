@@ -66,7 +66,7 @@ export default function TopicModal({ onClose, onSuccess }) {
   return (
     <div className={styles.modalBackground} onClick={handleOutsideClick}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2 className={styles.modalTitle}>{t("TopicModal.AddTopic")}</h2>
+        <h2 className={styles.modalTitle}>{t("TopicModal.AddSubject")}</h2>
 
         {showToast && <ToastSuccess message={t("TopicModal.SuccessMessage")} />}
         {!showToast && (
