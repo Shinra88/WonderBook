@@ -7,11 +7,18 @@ import translationFR from './locales/fr/translation.json';
 
 const resources = {
   en: { translation: translationEN },
-  fr: { translation: translationFR }
+  fr: { translation: translationFR },
+  ar: { translation: translationAR },
+  de: { translation: translationDE },
+  es: { translation: translationES },
+  zh: { translation: translationZH },
+  ja: { translation: translationJA },
+  ko: { translation: translationKO },
+  ru: { translation: translationRU }
 };
 
 i18n
-  .use(LanguageDetector) // détecte la langue du navigateur
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,

@@ -3,8 +3,16 @@ import styles from './LanguageSwitcher.module.css';
 
 const languages = [
   { code: 'fr', label: '🇫🇷 Français' },
-  { code: 'en', label: '🇬🇧 English' }
+  { code: 'en', label: '🇬🇧 English' },
+  { code: 'de', label: '🇩🇪 Deutsch' },
+  { code: 'es', label: '🇪🇸 Español' },
+  { code: 'zh', label: '🇨🇳 中文 (Chinese)' },
+  { code: 'ja', label: '🇯🇵 日本語 (Japanese)' },
+  { code: 'ko', label: '🇰🇷 한국어 (Korean)' },
+  { code: 'ru', label: '🇷🇺 Русский (Russian)' },
+  { code: 'ar', label: '🇸🇦 العربية (Arabic)' },
 ];
+
 
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
