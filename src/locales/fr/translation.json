@@ -23,7 +23,8 @@
     "UpPage": "Haut de page",
     "Loading": "Chargement",
     "None": "Aucune",
-    "NoneBooks": "Aucun livre trouvé."
+    "NoneBooks": "Aucun livre trouvé.",
+    "Collection": "Ma collection"
   },
   "Pagination": {
     "Previous": "Précédent",
@@ -92,6 +93,24 @@
         "EmailRequired": "Merci d'entrer votre email.",
         "EmailLabel": "E-mail",
         "Cancel": "Annuler"
-
+    },
+    "BookFormModal": {
+        "Title": "Titre",
+        "Author": "Auteur",
+        "PublicationDate": "Date de publication",
+        "Publisher": "Éditeur",
+        "Categories": "Catégories",
+        "AddCategory": "Ajouter une catégorie",
+        "CoverImage": "Image de couverture",
+        "ReplaceCurrentCover": "Vous pouvez remplacer la couverture existante :",
+        "AddCoverImage": "Ajoutez une image de couverture :",
+        "ClickToAddCover": "Cliquez ici pour ajouter une image de couverture",
+        "CurrentCover": "Couverture actuelle",
+        "UploadIcon": "Icône de téléchargement",
+        "CoverPreview": "Aperçu de la couverture",
+        "SaveError": "Erreur lors de l'enregistrement du livre.",
+        "Update": "Mettre à jour le livre",
+        "Add": "Ajouter le livre",
+        "Cancel": "Annuler"
     }
 }

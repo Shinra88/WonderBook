@@ -140,7 +140,7 @@ function Header() {
             {isAuthenticated && (
               <li>
                 <NavLink to="/Collection" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
-                  Ma collection
+                  {t('Header.Collection')}
                 </NavLink>
               </li>
             )}
@@ -178,8 +178,7 @@ function Header() {
               onMouseEnter={toggleUserDropdown}
               onMouseLeave={toggleUserDropdown}
             >
-              <LanguageSwitcher />
-
+              <div><LanguageSwitcher /></div>
               <div className={styles.userIcon}>
                 <div className={styles.userCircle}>
                   <img

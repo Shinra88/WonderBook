@@ -23,7 +23,8 @@
     "UpPage": "Up to page",
     "Loading": "Loading",
     "None": "None",
-    "NoneBooks": "No books found."
+    "NoneBooks": "No books found.",
+    "Collection": "My Collection"
   },
   "Pagination": {
     "Previous": "Previous",
@@ -92,6 +93,22 @@
         "EmailSent": "A reset email has been sent!",
         "EmailRequired": "Please enter your email.",
         "EmailLabel": "Email"
-
-    }
+    },
+    "BookFormModal": {
+        "Title": "Title",
+        "Author": "Author",
+        "PublicationDate": "Publication Date",
+        "Publisher": "Publisher",
+        "AddCoverImage": "Add Cover Image",
+        "ReplaceCurrentCover": "You can replace the existing cover:",
+        "CurrentCover": "Current Cover",
+        "UploadIcon": "Upload Icon",
+        "CoverPreview": "Cover Preview",
+        "FormatText": "Supported formats: jpg, jpeg, png.",
+        "ClickToAddCover": "Click here to add a cover image",
+        "SaveError": "An error occurred while saving the book.",
+        "Update": "Update Book",
+        "Add": "Add Book",
+        "Cancel": "Cancel"
+    } 
 }
