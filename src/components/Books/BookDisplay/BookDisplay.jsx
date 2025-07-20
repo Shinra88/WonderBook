@@ -2,22 +2,24 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatDate, displayStars } from '../../../utils/helpers';
+import { useTranslation } from 'react-i18next';
 import styles from './BookDisplay.module.css';
 
 function BookDisplay({ book, size, showDetails = false, hideImage = false, adminView = false }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const statusLabel = book.status === 'pending' ? 'En attente' : 'Validé';
+  const { t } = useTranslation();
+  const statusLabel = book.status === 'pending' ? t('BookDisplay.Pending') : t('BookDisplay.Validated');
 
   if (adminView) {
     return (
         <Link to={`/livre/${encodeURIComponent(book.title)}`} className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}>
           <img
             src={book.cover_url}
-            alt={`${book.title}, ${book.author} - ${book.date || 'Date inconnue'}`}
+            alt={`${book.title}, ${book.author} - ${book.date || t('BookDisplay.UnknownDate')}`}
           />
           <strong>{book.title}</strong>
           <em>{statusLabel}</em>
-          <em>par {book.validated_by || 'Bdd'}</em>
+          <em>{t('BookDisplay.By', { user: book.validated_by || 'Bdd' })}</em>
         </Link>
       );
   }  
@@ -53,7 +55,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
           <img
             className={styles.BookImage}
             src={book.cover_url}
-            alt={`${book.title}, ${book.author} - ${book.date || 'Date inconnue'}`}
+            alt={`${book.title}, ${book.author} - ${book.date || t('BookDisplay.UnknownDate')}`}
           />
         )}
         <div className={styles.BookInfo}>
@@ -65,17 +67,17 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
           <p>{formatDate(book.date)}</p>
 
           {showDetails && book.editors?.length > 0 && (
-            <p><strong>Éditeur(s) :</strong> {book.editors.join(', ')}</p>
+            <p><strong>{t('BookDisplay.Editors')} :</strong> {book.editors.join(', ')}</p>
           )}
 
           {showDetails && book.categories?.length > 0 && (
-            <p><strong>Catégories :</strong> {book.categories.join(', ')}</p>
+            <p><strong>{t('BookDisplay.Categories')} :</strong> {book.categories.join(', ')}</p>
           )}
 
           {showDetails && book.summary && (
             <div className={styles.SummaryContainer}>
               <p className={`${styles.Summary} ${isExpanded ? styles.Expanded : styles.Collapsed}`}>
-                <strong>Résumé :</strong> {book.summary}
+                <strong>{t('BookDisplay.Summary')} :</strong> {book.summary}
               </p>
               {book.summary.length > 300 && (
                 <button

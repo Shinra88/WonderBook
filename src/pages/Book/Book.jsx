@@ -17,7 +17,7 @@ import logoeBay from '../../images/logos/ebay.svg';
 import FeatherIcon from '../../images/feather.png';
 import CommentModerationModal from '../../modals/CommentModerationModal/CommentModerationModal';
 import BookFormModal from '../../modals/BookFormModal/BookFormModal';
-
+import { useTranslation } from 'react-i18next';
 import styles from './Book.module.css';
 
 function Book() {
@@ -31,7 +31,7 @@ function Book() {
   const [showCommentModerationModal, setShowCommentModerationModal] = useState(false);
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
-
+  const { t } = useTranslation();
   useEffect(() => {
     async function fetchBookAndCollection() {
       try {
@@ -45,7 +45,7 @@ function Book() {
           }
         }
       } catch (error) {
-        console.error('Erreur lors de la récupération du livre :', error);
+        console.error(t('Book.ErrorFetchingBook'), error);
       } finally {
         setLoading(false);
       }
@@ -58,9 +58,9 @@ function Book() {
     try {
       await addBookToCollection(book.bookId);
       setInCollection(true);
-      ToastSuccess('Livre ajouté à votre collection 📚');
+      ToastSuccess(t('Book.AddedToCollection'));
     } catch (error) {
-      console.error('Erreur ajout collection :', error);
+      console.error(t('Book.ErrorAddingToCollection'), error);
     } finally {
       setButtonLoading(false);
     }
@@ -71,16 +71,16 @@ function Book() {
     try {
       await removeBookFromCollection(book.bookId);
       setInCollection(false);
-      ToastSuccess('Livre retiré de votre collection 📚');
+      ToastSuccess(t('Book.RemovedFromCollection'));
     } catch (error) {
-      console.error('Erreur retrait collection :', error);
+      console.error(t('Book.ErrorRemovingFromCollection'), error);
     } finally {
       setButtonLoading(false);
     }
   };
 
-  if (loading) return <h1 className={styles.center}>Chargement ...</h1>;
-  if (!book) return <h1 className={styles.center}>Livre non trouvé</h1>;
+  if (loading) return <h1 className={styles.center}>{t('Book.Loading')}</h1>;
+  if (!book) return <h1 className={styles.center}>{t('Book.NotFound')}</h1>;
 
   return (
     <div className={styles.BookPage}>
@@ -99,7 +99,7 @@ function Book() {
           <aside className={styles.BookAside}>
             {!isAdmin && (
               <section className={styles.commercialLinks}>
-                <h3>Où acheter ce livre :</h3>
+                <h3>{t('Book.WhereToBuy')}</h3>
                 <ul className={styles.linkList}>
                   <li><a href={`https://www.fnac.com/SearchResult/ResultList.aspx?SCat=Livres__+BD__+Ebooks!1&SDM=list&Search=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer"><img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac</a></li>
                   <li><a href={`https://www.amazon.fr/s?k=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer"><img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon</a></li>
@@ -112,22 +112,22 @@ function Book() {
 
             {user && !inCollection && (
               <button className={styles.addButton} onClick={handleAddToCollection} disabled={buttonLoading}>
-                {buttonLoading ? 'Ajout...' : 'Ajouter à ma collection'}
+                {buttonLoading ? t('Book.AddingToCollection') : t('Book.AddToCollection')}
               </button>
             )}
             {user && inCollection && (
               <button className={styles.removeButton} onClick={handleRemoveFromCollection} disabled={buttonLoading}>
-                {buttonLoading ? 'Retrait...' : 'Retirer de ma collection'}
+                {buttonLoading ? t('Book.RemovingFromCollection') : t('Book.RemoveFromCollection')}
               </button>
             )}
 
             {isAdmin && (
               <>
                 <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
-                  Modifier le livre <img src={FeatherIcon} alt="" className={styles.icon} />
+                  {t('Book.EditBook')} <img src={FeatherIcon} alt="" className={styles.icon} />
                 </button>
                 <button className={styles.editButton} onClick={() => setShowCommentModerationModal(true)}>
-                  Gérer commentaires <img src={FeatherIcon} alt="" className={styles.icon} />
+                  {t('Book.ManageComments')} <img src={FeatherIcon} alt="" className={styles.icon} />
                 </button>
               </>
             )}
@@ -141,7 +141,7 @@ function Book() {
                   if (!result.error) {
                     const refreshed = await getBookByTitle(updatedData.title || book.title);
                     setBook(refreshed);
-                    ToastSuccess('Livre mis à jour ✅');
+                    ToastSuccess(t('Book.BookUpdatedSuccessfully'));
                   }
                   setShowEditModal(false);
                 }}
@@ -165,7 +165,7 @@ function Book() {
                   className={styles.toggleComments}
                   onClick={() => setShowComments(prev => !prev)}
                 >
-                  {showComments ? 'Masquer les commentaires' : `Voir les commentaires (${book.comments.length})`}
+                  {showComments ? t('Book.HideComments') : t('Book.ShowComments', { count: book.comments.length })}
                 </button>
 
                 {showComments && (

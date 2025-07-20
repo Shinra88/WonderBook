@@ -2,12 +2,13 @@ import { useMemo, useRef } from 'react';
 import { useBestRatedBooks } from '../../../hooks/customHooks';
 import { useFilters } from '../../../hooks/filterContext';
 import BookDisplay from '../BookDisplay/BookDisplay';
+import { useTranslation } from 'react-i18next';
 import styles from './BestRatedBooks.module.css';
 
 function BestRatedBooks() {
   const { selectedCategories, selectedYear, selectedType } = useFilters();
   const scrollRef = useRef(null);
-
+  const { t } = useTranslation();
   const filters = useMemo(() => ({
     categories: selectedCategories,
     year: typeof selectedYear === 'string' ? selectedYear : '',
@@ -28,7 +29,7 @@ function BestRatedBooks() {
   };
 
   const content = loading ? (
-    <h3>Chargement des livres les mieux notés...</h3>
+    <h3>{t('BookDisplay.Loading')}</h3>
   ) : bestRatedBooks.length > 0 ? (
     bestRatedBooks.map((book, index) => (
       <BookDisplay
@@ -38,7 +39,7 @@ function BestRatedBooks() {
       />
     ))
   ) : (
-    <h3>Aucune recommandation</h3>
+    <h3>{t('BookDisplay.NoBooksFound')}</h3>
   );
 
   return (

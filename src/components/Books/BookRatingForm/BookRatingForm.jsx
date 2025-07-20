@@ -6,12 +6,14 @@ import styles from './BookRatingForm.module.css';
 import { generateStarsInputs, displayStars } from '../../../utils/helpers';
 import { APP_ROUTES } from '../../../utils/constants';
 import { useUser } from '../../../hooks/customHooks';
+import { useTranslation } from 'react-i18next';
 import { rateBook } from '../../../services/bookService';
 
 function BookRatingForm({
   rating, setRating, userId, setBook, id, userRated,
 }) {
   const { connectedUser, auth } = useUser();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { register, formState, handleSubmit } = useForm({
     mode: 'onChange',
@@ -40,11 +42,11 @@ function BookRatingForm({
   return (
     <div className={styles.BookRatingForm}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p>{rating > 0 ? 'Votre Note' : 'Notez cet ouvrage'}</p>
+        <p>{rating > 0 ? t('BookDisplay.YourRating') : t('BookDisplay.RateThisBook')}</p>
         <div className={styles.Stars}>
           {!userRated ? generateStarsInputs(rating, register) : displayStars(rating)}
         </div>
-        {!userRated ? <button type="submit">Valider</button> : null}
+        {!userRated ? <button type="submit">{t('BookDisplay.Validate')}</button> : null}
       </form>
     </div>
   );

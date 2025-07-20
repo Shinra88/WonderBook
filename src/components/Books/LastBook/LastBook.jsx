@@ -1,11 +1,12 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import BookDisplay from '../BookDisplay/BookDisplay';
+import { useTranslation } from 'react-i18next';
 import styles from './LastBook.module.css';
 
 function LastBooks({ lastAddedBooks = [], loading = false }) {
   const scrollRef = useRef(null);
-
+  const { t } = useTranslation();
   const scroll = (direction) => {
     if (!scrollRef.current) return;
     const scrollAmount = 300;
@@ -15,7 +16,7 @@ function LastBooks({ lastAddedBooks = [], loading = false }) {
     });
   };
 
-  if (loading) return <h3>Chargement des derniers livres...</h3>;
+  if (loading) return <h3>{t('BookDisplay.Loading')}</h3>;
 
   const content = lastAddedBooks.length > 0 ? (
     lastAddedBooks.map((book, index) => (
@@ -26,7 +27,7 @@ function LastBooks({ lastAddedBooks = [], loading = false }) {
       />
     ))
   ) : (
-    <h3>Aucune recommandation</h3>
+    <h3>{t('BookDisplay.NoBooksFound')}</h3>
   );
 
   return (

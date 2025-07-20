@@ -317,5 +317,38 @@
     "NotFound": {
       "Error404": "Error 404",
       "PageNotFound": "The page you are looking for does not exist or has been moved."
+    },
+    "Book": {
+      "ErrorFetchingBook": "Error fetching book details.",
+      "AddedToCollection": "Book added to your collection!",
+      "ErrorAddingToCollection": "Error adding book to collection.",
+      "RemovedFromCollection": "Book removed from your collection!",
+      "ErrorRemovingFromCollection": "Error removing book from collection.",
+      "EditBook": "Edit Book",
+      "ManageComments": "Manage Comments",
+      "WhereToBuy": "Where to Buy",
+      "AddToCollection": "Add to Collection",
+      "AddingToCollection": "Adding to Collection...",
+      "RemoveFromCollection": "Remove from Collection",
+      "RemovingFromCollection": "Removing from Collection...",
+      "Loading": "Loading book details...",
+      "NotFound": "Book not found.",
+      "ShowComments": "Show Comments ({{count}})",
+      "HideComments": "Hide Comments",
+      "BookUpdatedSuccessfully": "Book updated successfully!"
+    },
+    "BookDisplay": {
+      "Loading": "Loading books...",
+      "NoBooksFound": "No books found.",
+      "Pending": "Pending",
+      "Validated": "Validated",
+      "UnknownDate": "Unknown Date",
+      "By": "By",
+      "Editors": "Editors",
+      "Categories": "Categories",
+      "Summary": "Summary",
+      "YourRating": "Your Rating",
+      "RateThisBook": "Rate this book",
+      "Validate": "Validate"
     }
 }

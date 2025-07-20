@@ -317,5 +317,38 @@
     "NotFound": {
         "Error404": "Erreur 404",
         "PageNotFound": "La page que vous cherchez n'existe pas ou a été déplacée."
+    },
+    "Book": {
+      "ErrorFetchingBook": "Erreur lors de la récupération des détails du livre.",
+      "AddedToCollection": "Livre ajouté à votre collection !",
+      "ErrorAddingToCollection": "Erreur lors de l'ajout du livre à la collection.",
+      "RemovedFromCollection": "Livre retiré de votre collection !",
+      "ErrorRemovingFromCollection": "Erreur lors du retrait du livre de la collection.",
+      "EditBook": "Modifier le livre",
+      "ManageComments": "Gérer les commentaires",
+      "WhereToBuy": "Où acheter",
+      "AddToCollection": "Ajouter à la collection",
+      "AddingToCollection": "Ajout à la collection...",
+      "RemoveFromCollection": "Retirer de la collection",
+      "RemovingFromCollection": "Retrait de la collection...",
+      "Loading": "Chargement des détails du livre...",
+      "NotFound": "Livre non trouvé.",
+      "ShowComments": "Afficher les commentaires ({{count}})",
+      "HideComments": "Masquer les commentaires",
+      "BookUpdatedSuccessfully": "Livre mis à jour avec succès !"
+    },
+        "BookDisplay": {
+      "Loading": "Chargement des livres...",
+      "NoBooksFound": "Aucun livre trouvé.",
+      "Pending": "En attente",
+      "Validated": "Validé",
+      "UnknownDate": "Date inconnue",
+      "By": "Par",
+      "Editors": "Éditeurs",
+      "Categories": "Catégories",
+      "Summary": "Résumé",
+      "YourRating": "Votre Note",
+      "RateThisBook": "Notez cet ouvrage",
+      "Validate": "Valider"
     }
 }
