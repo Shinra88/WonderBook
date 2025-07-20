@@ -178,7 +178,6 @@
       "UserManagement": "Gestion des utilisateurs",
       "AllUsers": "Tous les utilisateurs",
       "ActiveUsers": "Utilisateurs actifs",
-      "SuspendedUsers": "Utilisateurs suspendus",
       "Search": "Rechercher un utilisateur par nom",
       "NoResults": "Aucun utilisateur trouvé.",
       "UserUpdated": "Utilisateur mis à jour avec succès !",
@@ -191,5 +190,25 @@
       "Suspend": "Suspendre",
       "Activate": "Activer",
       "BackToTop": "Haut de page"
+    },
+    "Account": {
+        "EditProfile": "Modifier le profil",
+        "Username": "Pseudo",
+        "Email": "Email",
+        "NoChangesDetected": "No changes detected.",
+        "ConfirmProfileUpdate": "Confirm profile update?",
+        "ProfileUpdated": "Profile updated successfully!",
+        "ProfileUpdateError": "Erreur lors de la mise à jour du profil.",
+        "ErrorUpdatingAvatar": "Erreur lors de la mise à jour de l'avatar.",
+        "AcceptedImageFormats": "Formats d'image acceptés:",
+        "Notifications": "Notifications",
+        "RepForum": "Répondre au forum",
+        "AddCom": "Ajouter un commentaire",
+        "AddBook": "Ajouter un livre",
+        "News": "Actualités",
+        "AboutMe": "Mon Univers Littéraire",
+        "ChangePassword": "Changer le mot de passe",
+        "Finish": "Terminer",
+        "Cancel": "Annuler"
     }
 }

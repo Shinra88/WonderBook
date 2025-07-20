@@ -8,13 +8,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { updateUserProfile } from '../../services/authService';
 import { updateAvatarOnS3 } from '../../services/uploadServices';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Account() {
   const { user, login } = useAuth();
   const token = user?.token;
   const [showChangePass, setShowChangePass] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,12 +62,12 @@ function Account() {
   const handleSaveChanges = async () => {
     const isSame = JSON.stringify(form) === JSON.stringify(originalForm);
     if (isSame) {
-      alert("Aucune modification détectée.");
+      alert(t('Account.NoChangesDetected'));
       setIsEditing(false);
       return;
     }
 
-    const confirmed = window.confirm("Confirmer la mise à jour de votre profil ?");
+    const confirmed = window.confirm(t('Account.ConfirmProfileUpdate'));
     if (!confirmed) return;
 
     try {
@@ -74,10 +75,10 @@ function Account() {
       if (response.user) {
         login(response.user, token); 
         setOriginalForm(form);
-        alert('Modifications enregistrées');
+        alert(t('Account.ProfileUpdated'));
       }
     } catch (err) {
-      alert("Erreur lors de la sauvegarde du profil");
+      alert(t('Account.ProfileUpdateError'));
       console.error(err);
     } finally {
       setIsEditing(false);
@@ -93,7 +94,7 @@ function Account() {
   
     // Update avatar in AWS S3
     const newUrl = await updateAvatarOnS3(file, userId, oldUrl);
-    if (!newUrl) return alert("Erreur lors du changement d'image");
+    if (!newUrl) return alert(t('Account.ErrorUpdatingAvatar'));
 
     // Immediate update of the avatar in the form
     setForm((prev) => ({ ...prev, avatar: newUrl }));
@@ -130,21 +131,21 @@ function Account() {
         <div className={styles.buttonContainer}>
           {!isEditing ? (
             <button type="button" className={styles.Button} onClick={toggleEdit}>
-              Éditer Profil
+              {t('Account.EditProfile')}
               <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
             </button>
           ) : (
             <>
               <button type="button" className={styles.Button} onClick={toggleEdit}>
-                Terminer
+                {t('Account.Finish')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
               <button type="button" className={styles.Button} onClick={() => setShowChangePass(true)}>
-                Changer le mot de passe
+                {t('Account.ChangePassword')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
               <button type="button" className={styles.cancelButton} onClick={handleCancel}>
-                Annuler
+                {t('Account.Cancel')}
               </button>
             </>
           )}
@@ -162,11 +163,11 @@ function Account() {
         <section className={styles.info}>
           <article>
             <label>
-              <p>Pseudo</p>
+              <p>{t('Account.Username')}</p>
               <input type="text" name="name" value={form.name} onChange={handleChange} disabled={!isEditing} />
             </label>
             <label>
-              <p>E-mail</p>
+              <p>{t('Account.Email')}</p>
               <input type="email" name="mail" value={form.mail} onChange={handleChange} disabled={!isEditing} />
             </label>
           </article>
@@ -185,7 +186,7 @@ function Account() {
                   alt="Avatar utilisateur"
                   className={styles.icon}
                 />
-                <p className={styles.FormatText}>Formats d’image acceptés</p>
+                <p className={styles.FormatText}>{t('Account.AcceptedImageFormats')}</p>
                 <p className={styles.FormatTypes}>PNG, JPEG, WEBP</p>
               </div>
               <input
@@ -203,12 +204,12 @@ function Account() {
         <hr />
 
         <section className={styles.notif}>
-          <h4>Notifications:</h4>
+          <h4>{t('Account.Notifications')}</h4>
           <article className={styles.article_switch}>
             {[
-              ['repForum', 'Réponse Forum'],
-              ['addCom', 'Ajout d’un commentaire'],
-              ['addBook', 'Ajout d’un livre'],
+              ['repForum', t('Account.RepForum')],
+              ['addCom', t('Account.AddCom')],
+              ['addBook', t('Account.AddBook')],
               ['news', 'Actualités'],
             ].map(([key, label]) => (
               <div className={styles.switch_container} key={key}>
@@ -230,7 +231,7 @@ function Account() {
         <hr />
 
         <section className={styles.pres}>
-          <h4>Mon Univers Littéraire:</h4>
+          <h4>{t('Account.AboutMe')}:</h4>
           <textarea
             name="aboutMe"
             value={form.aboutMe}

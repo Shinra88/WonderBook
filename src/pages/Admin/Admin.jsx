@@ -176,7 +176,7 @@ function Admin() {
                               handleToggleStatus(u);
                             }}
                           >
-                            {u.status === t('Admin.SuspendedUsers') ? t('Admin.Activate') : t('Admin.Suspend')}
+                            {u.status === 'suspended' ? t('Admin.Activate') : t('Admin.Suspend')}
                           </button>
                         )
                       )}

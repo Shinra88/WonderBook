@@ -177,7 +177,6 @@
       "UserManagement": "User Management",
       "AllUsers": "All Users",
       "ActiveUsers": "Active Users",
-      "SuspendedUsers": "Suspended Users",
       "Search": "Search for a user by name",
       "NoResults": "No users found.",
       "UserUpdated": "User updated successfully!",
@@ -190,5 +189,25 @@
       "Suspend": "Suspend",
       "Activate": "Activate",
       "BackToTop": "Back to Top"
+    },
+    "Account": {
+        "EditProfile": "Edit Profile",
+        "Username": "Username",
+        "Email": "Email",
+        "NoChangesDetected": "No changes detected.",
+        "ConfirmProfileUpdate": "Confirm profile update?",
+        "ProfileUpdated": "Profile updated successfully!",
+        "ProfileUpdateError": "Error updating profile.",
+        "ErrorUpdatingAvatar": "Error updating avatar.",
+        "AcceptedImageFormats": "Accepted image formats:",
+        "Notifications": "Notifications",
+        "RepForum": "Forum Reply",
+        "AddCom": "Add Comment",
+        "AddBook": "Add Book",
+        "News": "News",
+        "AboutMe": "About Me",
+        "ChangePassword": "Change Password",
+        "Finish": "Finish",
+        "Cancel": "Cancel"
     }
-}
+  }
