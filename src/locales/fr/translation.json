@@ -8,7 +8,8 @@
     "Login": "Se connecter",
     "Register": "Inscription",
     "Search": "Rechercher",
-    "SearchPlaceholder": "Rechercher un livre ou un auteur"
+    "SearchPlaceholder": "Rechercher un livre ou un auteur",
+    "Collection": "Ma collection"
   },
   "Footer": {
     "TextMap": "voir sur la carte",
@@ -23,8 +24,7 @@
     "UpPage": "Haut de page",
     "Loading": "Chargement",
     "None": "Aucune",
-    "NoneBooks": "Aucun livre trouvé.",
-    "Collection": "Ma collection"
+    "NoneBooks": "Aucun livre trouvé."
   },
   "Pagination": {
     "Previous": "Précédent",
@@ -121,6 +121,20 @@
         "Title": "Titre",
         "Author": "Auteur",
         "YearPublished": "Année de publication",
-        "Cancel": "Annuler"
+        "Cancel": "Annuler",
+        "PublicationDate": "Date de publication",
+        "AddCoverImage": "Ajouter une image de couverture",
+        "CoverImage": "Image de couverture"
+    },
+    "GenreSelector": {
+        "SelectGenres": "Sélectionner des genres",
+        "Apply": "Appliquer",
+        "Cancel": "Annuler",
+        "Loading": "Chargement des genres...",
+        "ErrorLoading": "Erreur lors du chargement des genres",
+        "NoGenresSelected": "Aucun genre sélectionné",
+        "SelectCategory": "Sélectionner une catégorie",
+        "Categories": "Catégories",
+        "GenreSelector": "Sélecteur de genre"
     }
 }

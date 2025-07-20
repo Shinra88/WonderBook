@@ -8,7 +8,8 @@
     "Login": "Login",
     "Register": "Register",
     "Search": "Search",
-    "SearchPlaceholder": "Search for a book or an author"
+    "SearchPlaceholder": "Search for a book or an author",
+    "Collection": "My Collection"
   },
   "Footer": {
     "TextMap": "See on the map",
@@ -23,8 +24,7 @@
     "UpPage": "Up to page",
     "Loading": "Loading",
     "None": "None",
-    "NoneBooks": "No books found.",
-    "Collection": "My Collection"
+    "NoneBooks": "No books found."
   },
   "Pagination": {
     "Previous": "Previous",
@@ -121,6 +121,19 @@
         "Title": "Title",
         "Author": "Author",
         "YearPublished": "Year Published",
-        "Cancel": "Cancel"
+        "Cancel": "Cancel",
+        "PublicationDate": "Publication Date",
+        "AddCoverImage": "Add Cover Image",
+        "CoverImage": "Cover Image"
+    },
+    "GenreSelector": {
+        "SelectGenres": "Select Genres",
+        "Apply": "Apply",
+        "Loading": "Loading genres...",
+        "ErrorLoading": "Error loading genres",
+        "NoGenresSelected": "No genres selected",
+        "SelectCategory": "Select a category",
+        "Categories": "Categories",
+        "GenreSelector": "Genre Selector"
     } 
 }
