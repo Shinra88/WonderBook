@@ -100,7 +100,7 @@ function DropdownYear({ isActive = false }) {
             <div className={styles.rangeInputs}>
             <input
               type="number"
-              placeholder={t('DropdownYears.SelectYear')}
+              placeholder={t('DropdownYears.Placeholder')}
               min={minYear}
               max={currentYear}
               value={typeof selectedYear === 'string' ? selectedYear : ''}

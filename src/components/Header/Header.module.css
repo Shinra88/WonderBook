@@ -137,11 +137,12 @@ padding-top: 4%;
   }
 
   .userMenuWrapper {
-    position: relative;
-    display: inline-block;
+    display: flex;
     text-align: center;
     cursor: pointer;
     margin-right: 1rem;
+    width: 25rem;
+    justify-content: space-between;
   }
   
   .userIcon {
@@ -181,14 +182,17 @@ padding-top: 4%;
   .userDropdown {
     position: absolute;
     top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 0px;
+    margin-right: 35px;
     background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
     border-radius: 12px;
     padding: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+    box-shadow: 
+      4px 4px 8px rgba(0, 0, 0, 0.6),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.6);
     z-index: 100;
   }
   

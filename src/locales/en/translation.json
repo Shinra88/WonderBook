@@ -47,8 +47,7 @@
         "StartYear": "Start Year",
         "EndYear": "End Year",
         "Placeholder": "Year",
-        "Years": "Years",
-        "SelectYear": "Year"
+        "Years": "Years"
     },
     "Login": {
         "Login": "Login",

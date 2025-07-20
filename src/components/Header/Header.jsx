@@ -172,11 +172,14 @@ function Header() {
 
         <div className={styles.content}>
           {isAuthenticated ? (
+            
             <div
               className={styles.userMenuWrapper}
               onMouseEnter={toggleUserDropdown}
               onMouseLeave={toggleUserDropdown}
             >
+              <LanguageSwitcher />
+
               <div className={styles.userIcon}>
                 <div className={styles.userCircle}>
                   <img

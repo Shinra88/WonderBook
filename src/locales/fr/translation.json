@@ -39,7 +39,7 @@
     "And": "et",
     "Or": "ou"
   },
-    "DropdownYear": {
+    "DropdownYears": {
         "Unique": "Unique",
         "Range": "Tranche",
         "From": "De",
@@ -47,8 +47,7 @@
         "StartYear": "Année de début",
         "EndYear": "Année de fin",
         "Placeholder": "Année",
-        "Years": "Années",
-        "SelectYear": "Année"
+        "Years": "Années"
     },
     "Login": {
         "Login": "Se connecter",
