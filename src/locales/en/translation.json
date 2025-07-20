@@ -224,5 +224,13 @@
         "Validate": "Validate",
         "PasswordRequirements": "8+ characters with uppercase, lowercase, number, and special character.",
         "PasswordsDoNotMatch": "Passwords do not match."
+    },
+    "Forum": {
+      "ErrorFetchingTopics": "Error fetching topics.",
+      "CreateTopic": "Create Topic",
+      "Notices": "Notices",
+      "NoTopicsFound": "No topics found.",
+      "Subjects": "Subjects",
+      "SearchPlaceholder": "Search for a topic"
     }
   }

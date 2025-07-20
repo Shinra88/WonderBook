@@ -225,5 +225,13 @@
         "Validate": "Valider",
         "PasswordRequirements": "8+ caractères avec majuscules, minuscules, chiffres et caractères spéciaux.",
         "PasswordsDoNotMatch": "Les mots de passe ne correspondent pas."
+    },
+    "Forum": {
+      "ErrorFetchingTopics": "Erreur lors de la récupération des sujets.",
+      "CreateTopic": "Créer un sujet",
+      "Notices": "Notices",
+      "NoTopicsFound": "Aucun sujet trouvé.",
+      "Subjects": "Sujets",
+      "SearchPlaceholder": "Rechercher un sujet"
     }
 }

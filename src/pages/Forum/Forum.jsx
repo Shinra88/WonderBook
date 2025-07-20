@@ -7,6 +7,7 @@ import { getTopics } from '../../services/topicsService';
 import TopicModal from '../../modals/TopicModal/TopicModal';
 import { useAuth } from '../../hooks/useAuth';
 import Pagination from '../../components/Pagination/Pagination';
+import { useTranslation } from 'react-i18next';
 import styles from './Forum.module.css';
 
 function Forum() {
@@ -17,6 +18,7 @@ function Forum() {
   const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPerPage = 10;
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchTopics() {
@@ -24,7 +26,7 @@ function Forum() {
         const fetchedTopics = await getTopics();
         setTopics(fetchedTopics);
       } catch (error) {
-        console.error("Erreur lors de la récupération des topics :", error);
+        console.error(t("ErrorFetchingTopics:"), error);
       }
     }
     fetchTopics();
@@ -68,7 +70,7 @@ function Forum() {
         {user ? (
           <div className={styles.actions}>
             <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
-              Créer un topic
+              {t('Forum.CreateTopic')}
             </button>
           </div>
         ) : (
@@ -91,7 +93,7 @@ function Forum() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher un sujet"
+              placeholder={t('Forum.SearchPlaceholder')}
             />
             <button type="button">
               <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -100,7 +102,7 @@ function Forum() {
         </div>
       </header>
         <section className={styles.Notice}>
-          <h2>Notice</h2>
+          <h2>{t('Forum.Notices')}</h2>
         </section>
         <section className={styles.subjectList}>
           <ul>
@@ -111,13 +113,13 @@ function Forum() {
                 </li>
               ))
             ) : (
-              <p>Aucune notice trouvée</p>
+              <p>{t('Forum.NoTopicsFound')}</p>
             )}
           </ul>
         </section>
 
         <section className={styles.Subject}>
-          <h2>Subjects</h2>
+          <h2>{t('Forum.Subjects')}</h2>
         </section>
         <section className={styles.subjectList}>
           <ul>
@@ -128,11 +130,11 @@ function Forum() {
                 </li>
               ))
             ) : (
-              <p>Aucun sujet trouvé</p>
+              <p>{t('Forum.NoTopicsFound')}</p>
             )}
           </ul>
           <div className={styles.up_container}>
-            <a href="#topPage" className={styles.up}>Haut de page</a>
+            <a href="#topPage" className={styles.up}>{t('Forum.BackToTop')}</a>
           </div>
 
           {totalPages > 1 && (
