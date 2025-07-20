@@ -9,7 +9,9 @@
     "Register": "Register",
     "Search": "Search",
     "SearchPlaceholder": "Search for a book or an author",
-    "Collection": "My Collection"
+    "Collection": "My Collection",
+    "Profil": "Profile",
+    "Logout": "Logout"
   },
   "Footer": {
     "TextMap": "See on the map",

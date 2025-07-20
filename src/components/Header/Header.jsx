@@ -172,27 +172,26 @@ function Header() {
 
         <div className={styles.content}>
           {isAuthenticated ? (
-            
-            <div
-              className={styles.userMenuWrapper}
-              onMouseEnter={toggleUserDropdown}
-              onMouseLeave={toggleUserDropdown}
-            >
+            <div className={styles.userMenuWrapper}>
               <div><LanguageSwitcher /></div>
               <div className={styles.userIcon}>
-                <div className={styles.userCircle}>
-                  <img
-                    src={user?.avatar?.startsWith('http') ? user.avatar : Avatar}
-                    alt="Avatar utilisateur"
-                    className={styles.icon}
-                  />
+                <div
+                  className={styles.userCircle}
+                  onMouseEnter={toggleUserDropdown}
+                  onMouseLeave={toggleUserDropdown}
+                >
+              <img
+                src={user?.avatar?.startsWith('http') ? user.avatar : Avatar}
+                alt="Avatar utilisateur"
+                className={styles.icon}
+              />
                 </div>
                 <p className={styles.userName}>{user?.name || 'User'}</p>
               </div>
               {showUserDropdown && (
                 <div className={styles.userDropdown}>
-                  <button type="button" onClick={() => navigate('/Account')}>Profil</button>
-                  <button type="button" onClick={handleLogout}>Déconnexion</button>
+                  <button type="button" onClick={() => navigate('/Account')}>{t('Header.Profil')}</button>
+                  <button type="button" onClick={handleLogout}>{t('Header.Logout')}</button>
                 </div>
               )}
             </div>
