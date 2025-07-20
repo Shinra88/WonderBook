@@ -170,5 +170,25 @@
         "Cancel": "Cancel",
         "EmptyComment": "Comment cannot be empty.",
         "ErrorSubmittingComment": "Error submitting comment."
+    },
+    "Admin": {
+      "ErrorFetchingUsers": "Error fetching users.",
+      "ErrorUpdatingUser": "Error updating user.",
+      "UserManagement": "User Management",
+      "AllUsers": "All Users",
+      "ActiveUsers": "Active Users",
+      "SuspendedUsers": "Suspended Users",
+      "Search": "Search for a user by name",
+      "NoResults": "No users found.",
+      "UserUpdated": "User updated successfully!",
+      "Avatar": "Avatar",
+      "Username": "Username",
+      "Email": "Email",
+      "Role": "Role",
+      "SignupDate": "Signup Date",
+      "Actions": "Actions",
+      "Suspend": "Suspend",
+      "Activate": "Activate",
+      "BackToTop": "Back to Top"
     }
 }

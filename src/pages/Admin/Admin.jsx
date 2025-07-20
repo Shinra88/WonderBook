@@ -9,10 +9,12 @@ import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '../../components/Pagination/Pagination';
+import { useTranslation } from 'react-i18next';
 
 function Admin() {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
+  const { t } = useTranslation();
 
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -38,7 +40,7 @@ function Admin() {
           setUsers(users);
           setTotalUsers(total);
         })
-        .catch(() => alert("Erreur chargement des utilisateurs"));
+        .catch(() => alert(t('Admin.ErrorFetchingUsers')));
     }
   }, [user, currentPage, searchQuery, statusFilter]);
 
@@ -62,8 +64,8 @@ function Admin() {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2500);
     } catch (err) {
-      console.error('Erreur statut utilisateur:', err);
-      alert('Erreur lors du changement de statut.');
+      console.error(t('Admin.ErrorUpdatingUser'), err);
+      alert(t('Admin.ErrorUpdatingUser'));
     }
   };
 
@@ -78,7 +80,7 @@ function Admin() {
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
         <div className={styles.headContainer}>
-          <h2>Gestion des utilisateurs</h2>
+          <h2>{t('Admin.UserManagement')}</h2>
           <div className={styles.radioGroup}>
             <label>
               <input
@@ -88,7 +90,7 @@ function Admin() {
                 checked={statusFilter === 'all'}
                 onChange={() => setStatusFilter('all')}
               />
-              Tous
+              {t('Admin.AllUsers')}
             </label>
             <label>
               <input
@@ -98,7 +100,7 @@ function Admin() {
                 checked={statusFilter === 'active'}
                 onChange={() => setStatusFilter('active')}
               />
-              Actifs
+              {t('Admin.ActiveUsers')}
             </label>
             <label>
               <input
@@ -108,7 +110,7 @@ function Admin() {
                 checked={statusFilter === 'suspended'}
                 onChange={() => setStatusFilter('suspended')}
               />
-              Suspendus
+              {t('Admin.SuspendedUsers')}
             </label>
           </div>
 
@@ -118,7 +120,7 @@ function Admin() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Rechercher un utilisateur par nom"
+                placeholder={t('Admin.Search')}
               />
               <button type="button">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -126,22 +128,22 @@ function Admin() {
             </div>
           </div>
 
-          {showToast && <ToastSuccess message="Modifications enregistrées ✔️" />}
+          {showToast && <ToastSuccess message={t('Admin.UserUpdated')} />}
         </div>
 
         <section className={styles.tableContainer}>
           {users.length === 0 ? (
-            <p>Aucun utilisateur trouvé.</p>
+            <p>{t('Admin.NoResults')}</p>
           ) : (
             <table className={styles.userTable}>
               <thead>
                 <tr>
-                  <th>Avatar</th>
-                  <th>Pseudo</th>
-                  <th>Email</th>
-                  <th>Rôle</th>
-                  <th>Date inscription</th>
-                  <th>Actions</th>
+                  <th>{t('Admin.Avatar')}</th>
+                  <th>{t('Admin.Username')}</th>
+                  <th>{t('Admin.Email')}</th>
+                  <th>{t('Admin.Role')}</th>
+                  <th>{t('Admin.SignupDate')}</th>
+                  <th>{t('Admin.Actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -174,7 +176,7 @@ function Admin() {
                               handleToggleStatus(u);
                             }}
                           >
-                            {u.status === 'suspended' ? 'Réactiver' : 'Suspendre'}
+                            {u.status === t('Admin.SuspendedUsers') ? t('Admin.Activate') : t('Admin.Suspend')}
                           </button>
                         )
                       )}
@@ -186,7 +188,7 @@ function Admin() {
           )}
 
           <div className={styles.up_container}>
-            <a href="#topPage" className={styles.up}>Haut de page</a>
+            <a href="#topPage" className={styles.up}>{t('Admin.BackToTop')}</a>
           </div>
 
           {totalPages > 1 && (
