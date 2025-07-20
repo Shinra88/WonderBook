@@ -4,6 +4,7 @@ import { addTopic } from '../../services/topicsService';
 import { useAuth } from '../../hooks/useAuth';
 import ReCAPTCHA from 'react-google-recaptcha';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
+import { useTranslation } from 'react-i18next';
 import styles from './TopicModal.module.css';
 
 export default function TopicModal({ onClose, onSuccess }) {
@@ -15,7 +16,7 @@ export default function TopicModal({ onClose, onSuccess }) {
   const [notice, setNotice] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') onClose();
@@ -35,12 +36,12 @@ export default function TopicModal({ onClose, onSuccess }) {
     setError(null);
 
     if (!title || !content) {
-      setError('Titre et contenu obligatoires.');
+      setError(t("TopicModal.Error.RequiredFields"));
       return;
     }
 
     if (!recaptchaToken) {
-      setError('Veuillez valider le CAPTCHA.');
+      setError(t("TopicModal.Error.CaptchaRequired"));
       return;
     }
 
@@ -55,7 +56,7 @@ export default function TopicModal({ onClose, onSuccess }) {
         onClose();
       }, 2000);
     } catch (err) {
-      setError("Erreur lors de l'ajout du topic.");
+      setError(t("TopicModal.Error.AdditionFailed"));
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -65,9 +66,9 @@ export default function TopicModal({ onClose, onSuccess }) {
   return (
     <div className={styles.modalBackground} onClick={handleOutsideClick}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2 className={styles.modalTitle}>Créer un nouveau topic</h2>
+        <h2 className={styles.modalTitle}>{t("TopicModal.AddTopic")}</h2>
 
-        {showToast && <ToastSuccess message="Sujet publié avec succès 🎉" />}
+        {showToast && <ToastSuccess message={t("TopicModal.SuccessMessage")} />}
         {!showToast && (
           <>
             {error && <p className={styles.errorText}>{error}</p>}
@@ -76,7 +77,7 @@ export default function TopicModal({ onClose, onSuccess }) {
               <div className={styles.formField}>
                 <input
                   type="text"
-                  placeholder="Titre du sujet"
+                  placeholder={t("TopicModal.Title")}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
@@ -84,7 +85,7 @@ export default function TopicModal({ onClose, onSuccess }) {
 
               <div className={styles.formField}>
                 <textarea
-                  placeholder="Contenu du message"
+                  placeholder={t("TopicModal.Content")}
                   rows={5}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
@@ -99,7 +100,7 @@ export default function TopicModal({ onClose, onSuccess }) {
                       checked={notice}
                       onChange={(e) => setNotice(e.target.checked)}
                     />{' '}
-                    Épingler ce sujet
+                    {t("TopicModal.Notice")}
                   </label>
                 </div>
               )}
@@ -113,14 +114,14 @@ export default function TopicModal({ onClose, onSuccess }) {
 
               <div className={styles.buttonRow}>
                 <button type="button" className={styles.cancelButton} onClick={onClose}>
-                  Annuler
+                  {t("TopicModal.Cancel")}
                 </button>
                 <button
                   type="submit"
                   className={styles.submitButton}
                   disabled={!title || !content || !recaptchaToken || isSubmitting}
                 >
-                  {isSubmitting ? 'Envoi...' : 'Publier'}
+                  {isSubmitting ? t("TopicModal.Sending") : t("TopicModal.Submit")}
                 </button>
               </div>
             </form>

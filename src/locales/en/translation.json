@@ -234,7 +234,7 @@
       "SearchPlaceholder": "Search for a subject",
       "BackToTop": "Back to Top"
     },
-    "Topics": {
+    "TopicsDetail": {
       "ErrorFetchingDatas": "Error fetching datas.",
       "ErrorRefreshTopics": "Error refreshing topics.",
       "AnswerTopic": "Answer Topic",
@@ -253,6 +253,31 @@
       "CreatedOn": "Created On",
       "NoReplies": "No replies match your search.",
       "BackToTop": "Back to Top"
+    },
+    "TopicModal": {
+      "AddTopic": "Add Topic",
+      "Title": "Title",
+      "Content": "Content",
+      "Notice": "Pin this topic",
+      "Submit": "Submit",
+      "Cancel": "Cancel",
+      "SuccessMessage": "Topic added successfully!",
+      "Error": {
+        "AdditionFailed": "Error adding topic.",
+        "UnknownError": "An unknown error occurred."
+      },
+      "Loading": "Submitting...",
+      "NoticeTooltip": "Pin this topic to the top of the forum.",
+      "TitlePlaceholder": "Enter the topic title",
+      "ContentPlaceholder": "Enter the topic content",
+      "Sending": "Sending...",
+      "AnswerToTopic": "Answer to Topic",
+      "Spoiler": "Spoiler",
+      "Bold": "Bold",
+      "Italic": "Italic",
+      "Underline": "Underline",
+      "Strikethrough": "Strikethrough",
+      "MessagePlaceholder": "Enter your message"
     },
     "NotFound": {
       "Error404": "Error 404",

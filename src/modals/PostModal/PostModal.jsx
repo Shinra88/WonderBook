@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { addPost } from '../../services/postsService';
 import { useAuth } from '../../hooks/useAuth';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useTranslation } from 'react-i18next';
 import styles from './PostModal.module.css';
 
 export default function PostModal({ topicId, onClose, onSuccess }) {
@@ -12,7 +13,7 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const textareaRef = useRef();
-
+  const { t } = useTranslation();
   const insertSpoiler = () => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -47,12 +48,12 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
     setError(null);
 
     if (!content) {
-      setError('Le contenu est obligatoire.');
+      setError(t("PostModal.Error.RequiredField"));
       return;
     }
 
     if (!recaptchaToken) {
-      setError('Veuillez valider le CAPTCHA.');
+      setError(t("PostModal.Error.CaptchaRequired"));
       return;
     }
 
@@ -62,7 +63,7 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
       onSuccess();
       onClose();
     } catch (err) {
-      setError("Erreur lors de l'ajout du post.");
+      setError(t("PostModal.Error.AdditionFailed"));
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -94,23 +95,23 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContent}>
-        <h2 className={styles.modalTitle}>Répondre au sujet</h2>
+        <h2 className={styles.modalTitle}>{t("PostModal.AnswerToTopic")}</h2>
 
         {error && <p className={styles.errorText}>{error}</p>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formField}>
             <div className={styles.toolsRow}>
-              <button type="button" className={styles.toolButton} onClick={() => insertTag('spoiler', 'Texte caché')}>🔒 Spoiler</button>
-              <button type="button" className={styles.toolButton} onClick={() => insertTag('b', 'Texte en gras')}>🅱️ Gras</button>
-              <button type="button" className={styles.toolButton} onClick={() => insertTag('i', 'Texte en italique')}>Italique</button>
-              <button type="button" className={styles.toolButton} onClick={() => insertTag('u', 'Texte souligné')}>Souligné</button>
-              <button type="button" className={styles.toolButton} onClick={() => insertTag('s', 'Texte barré')}>Barré</button>
+              <button type="button" className={styles.toolButton} onClick={() => insertTag('spoiler', 'Texte caché')}>🔒 {t("PostModal.Spoiler")}</button>
+              <button type="button" className={styles.toolButton} onClick={() => insertTag('b', 'Texte en gras')}>🅱️ {t("PostModal.Bold")}</button>
+              <button type="button" className={styles.toolButton} onClick={() => insertTag('i', 'Texte en italique')}>{t("PostModal.Italic")}</button>
+              <button type="button" className={styles.toolButton} onClick={() => insertTag('u', 'Texte souligné')}>{t("PostModal.Underline")}</button>
+              <button type="button" className={styles.toolButton} onClick={() => insertTag('s', 'Texte barré')}>{t("PostModal.Strikethrough")}</button>
             </div>
 
             <textarea
               ref={textareaRef}
-              placeholder="Votre message"
+              placeholder={t("PostModal.MessagePlaceholder")}
               rows={5}
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -126,14 +127,14 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
 
           <div className={styles.buttonRow}>
             <button type="button" className={styles.cancelButton} onClick={onClose}>
-              Annuler
+              {t("PostModal.Cancel")}
             </button>
             <button
               type="submit"
               className={styles.submitButton}
               disabled={!content || !recaptchaToken || isSubmitting}
             >
-              {isSubmitting ? 'Envoi...' : 'Publier'}
+              {isSubmitting ? t("PostModal.Sending") : t("PostModal.Publish")}
             </button>
           </div>
         </form>
