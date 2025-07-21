@@ -43,17 +43,15 @@ function CommentModal({ book, onClose }) {
         <textarea
           className={styles.textarea}
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={e => setContent(e.target.value)}
           placeholder={t('CommentModal.ContentPlaceholder')}
         />
 
         <div className={styles.stars}>
-          {[1, 2, 3, 4, 5].map((star) => (
+          {[1, 2, 3, 4, 5].map(star => (
             <span
               key={star}
-              className={
-                (hoverRating || rating) >= star ? styles.filledStar : styles.emptyStar
-              }
+              className={(hoverRating || rating) >= star ? styles.filledStar : styles.emptyStar}
               onClick={() => setRating(star)}
               onMouseEnter={() => setHoverRating(star)}
               onMouseLeave={() => setHoverRating(0)}
@@ -64,7 +62,9 @@ function CommentModal({ book, onClose }) {
         </div>
 
         <div className={styles.buttons}>
-          <button onClick={onClose} className={styles.cancelButton}>{t('CommentModal.Cancel')}</button>
+          <button onClick={onClose} className={styles.cancelButton}>
+            {t('CommentModal.Cancel')}
+          </button>
           <button onClick={handleSubmit} disabled={loading} className={styles.validateButton}>
             {loading ? t('CommentModal.SubmitLoading') : t('CommentModal.Submit')}
           </button>

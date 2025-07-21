@@ -20,23 +20,34 @@ function Home() {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
   const { t } = useTranslation();
-  const validYear = typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
+  const validYear =
+    typeof selectedYear === 'string' && selectedYear.length === 4 ? selectedYear : '';
 
-  const baseFilters = useMemo(() => ({
-    categories: selectedCategories,
-    year: validYear,
-    start: selectedYear?.start,
-    end: selectedYear?.end,
-    type: selectedType,
-  }), [selectedCategories, selectedYear, selectedType, validYear]);
+  const baseFilters = useMemo(
+    () => ({
+      categories: selectedCategories,
+      year: validYear,
+      start: selectedYear?.start,
+      end: selectedYear?.end,
+      type: selectedType,
+    }),
+    [selectedCategories, selectedYear, selectedType, validYear]
+  );
 
-  const combinedFilters = useMemo(() => ({
-    ...baseFilters,
-    search: searchQuery,
-    pendingFirst: isAdmin ? true : undefined,
-  }), [baseFilters, searchQuery, isAdmin]);
+  const combinedFilters = useMemo(
+    () => ({
+      ...baseFilters,
+      search: searchQuery,
+      pendingFirst: isAdmin ? true : undefined,
+    }),
+    [baseFilters, searchQuery, isAdmin]
+  );
 
-  const { books, total, loading: booksLoading } = useFilteredBooks(combinedFilters, currentPage, booksPerPage);
+  const {
+    books,
+    total,
+    loading: booksLoading,
+  } = useFilteredBooks(combinedFilters, currentPage, booksPerPage);
   const { bestRatedBooks, loading: bestLoading } = useBestRatedBooks(baseFilters);
   const { lastAddedBooks, loading: lastLoading } = useLastAddedBooks(baseFilters);
 
@@ -44,20 +55,18 @@ function Home() {
     setCurrentPage(1);
   }, [combinedFilters]);
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = tab => {
     setSelectedTab(tab);
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setCurrentPage(page);
   };
 
   const displayBooks = () => {
     if (!books.length) return <h2>{t('HomePage.NoneBooks')}</h2>;
 
-    const visibleBooks = isAdmin
-      ? books
-      : books.filter((book) => book.status === 'validated');
+    const visibleBooks = isAdmin ? books : books.filter(book => book.status === 'validated');
 
     const sorted = [...visibleBooks].sort((a, b) => {
       if (a.status === 'pending' && b.status !== 'pending') return -1;
@@ -65,7 +74,7 @@ function Home() {
       return 0;
     });
 
-    return sorted.map((book) => (
+    return sorted.map(book => (
       <BookDisplay
         key={book.bookId}
         book={book}
@@ -101,9 +110,11 @@ function Home() {
               </button>
             </div>
             <aside className={styles.bestRated}>
-              {selectedTab === 'bestRated'
-                ? <BestRateBooks books={bestRatedBooks} loading={bestLoading} />
-                : <LastBook lastAddedBooks={lastAddedBooks} loading={lastLoading} />}
+              {selectedTab === 'bestRated' ? (
+                <BestRateBooks books={bestRatedBooks} loading={bestLoading} />
+              ) : (
+                <LastBook lastAddedBooks={lastAddedBooks} loading={lastLoading} />
+              )}
             </aside>
           </header>
         )}
@@ -123,7 +134,7 @@ function Home() {
                 ? selectedYear
                 : selectedYear?.start && selectedYear?.end
                   ? `${selectedYear.start} → ${selectedYear.end}`
-                  : t('HomePage.None') }
+                  : t('HomePage.None')}
             </p>
           </div>
         </section>
@@ -132,7 +143,9 @@ function Home() {
           {booksLoading ? <h2>{t('HomePage.Loading')}...</h2> : displayBooks()}
         </section>
         <div className={styles.up_container}>
-          <a href="#" className={styles.up}>{t('HomePage.UpPage')}</a>
+          <a href="#" className={styles.up}>
+            {t('HomePage.UpPage')}
+          </a>
         </div>
         <div className={styles.paginationContainer}>
           <Pagination

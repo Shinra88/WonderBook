@@ -7,12 +7,7 @@ import { useTranslation } from 'react-i18next';
 function DropdownMenu({ isActive = false }) {
   const { t } = useTranslation();
 
-  const {
-    selectedCategories,
-    setSelectedCategories,
-    selectedType,
-    setSelectedType
-  } = useFilters();
+  const { selectedCategories, setSelectedCategories, selectedType, setSelectedType } = useFilters();
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -22,7 +17,7 @@ function DropdownMenu({ isActive = false }) {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -36,9 +31,9 @@ function DropdownMenu({ isActive = false }) {
     };
   }, [isOpen]);
 
-  const handleCategorySelect = (categoryName) => {
+  const handleCategorySelect = categoryName => {
     const updatedCategories = selectedCategories.includes(categoryName)
-      ? selectedCategories.filter((c) => c !== categoryName)
+      ? selectedCategories.filter(c => c !== categoryName)
       : selectedCategories.length < 2
         ? [...selectedCategories, categoryName]
         : selectedCategories;
@@ -48,9 +43,9 @@ function DropdownMenu({ isActive = false }) {
 
   return (
     <div className={styles.dropdownContainer} ref={dropdownRef}>
-      <button 
-        className={`${styles.dropdownButton} ${isActive ? styles.activeFilter : ''}`} 
-        type="button" 
+      <button
+        className={`${styles.dropdownButton} ${isActive ? styles.activeFilter : ''}`}
+        type="button"
         onClick={toggleDropdown}
       >
         {t('DropdownMenu.Categories')}
@@ -90,7 +85,7 @@ function DropdownMenu({ isActive = false }) {
               </div>
 
               <ul className={styles.categoryList}>
-                {categories.map((cat) => (
+                {categories.map(cat => (
                   <li key={cat.name} className={styles.categoryItem}>
                     <label>
                       <input
@@ -98,8 +93,7 @@ function DropdownMenu({ isActive = false }) {
                         checked={selectedCategories.includes(cat.name)}
                         onChange={() => handleCategorySelect(cat.name)}
                         disabled={
-                          !selectedCategories.includes(cat.name) &&
-                          selectedCategories.length >= 2
+                          !selectedCategories.includes(cat.name) && selectedCategories.length >= 2
                         }
                       />
                       {cat.name}

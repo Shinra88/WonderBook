@@ -16,7 +16,8 @@ export async function getTopics() {
 // ➔ Add a topic with notice and recaptcha
 export async function addTopic({ title, content, recaptchaToken, notice }, token) {
   try {
-    const response = await api.post(API_ROUTES.FORUM.ADD_TOPIC,
+    const response = await api.post(
+      API_ROUTES.FORUM.ADD_TOPIC,
       { title, content, recaptchaToken, notice },
       {
         headers: {
@@ -56,7 +57,7 @@ export async function updateTopicNotice(id, token) {
     );
     return response.data;
   } catch (error) {
-    console.error("Erreur updateTopicNotice :", error);
+    console.error('Erreur updateTopicNotice :', error);
     throw error;
   }
 }
@@ -69,7 +70,7 @@ export async function deleteTopic(id, token) {
     });
     return response.data;
   } catch (err) {
-    console.error("Erreur suppression topic :", err);
+    console.error('Erreur suppression topic :', err);
     throw err;
   }
 }
@@ -86,10 +87,7 @@ export async function toggleTopicLock(id, token) {
     );
     return response.data;
   } catch (error) {
-    console.error("Erreur toggle lock topic :", error);
+    console.error('Erreur toggle lock topic :', error);
     throw error;
   }
 }
-
-
-

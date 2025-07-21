@@ -8,14 +8,13 @@ import FeatherIcon from '../../images/feather.png';
 import { useTranslation } from 'react-i18next';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 
-
 function CommentModerationModal({ comments, onClose, onUpdate }) {
   const modalRef = useRef();
   const [showToast, setShowToast] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         onClose();
       }
@@ -25,10 +24,10 @@ function CommentModerationModal({ comments, onClose, onUpdate }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
-  const handleDelete = async (commentId) => {
+  const handleDelete = async commentId => {
     try {
       await deleteCommentAsAdmin(commentId);
-      const updated = comments.filter((c) => c.commentId !== commentId);
+      const updated = comments.filter(c => c.commentId !== commentId);
       onUpdate(updated);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2000);
@@ -45,7 +44,7 @@ function CommentModerationModal({ comments, onClose, onUpdate }) {
         {showToast && <ToastSuccess message={t('TopicModerator.CommentDeleted')} />}
 
         {comments.length === 0 && <p>{t('TopicModerator.NoCommentsForThisBook')}</p>}
-        {comments.map((comment) => (
+        {comments.map(comment => (
           <div key={comment.commentId} className={styles.commentBlock}>
             <div className={styles.commentHeader}>
               <img
@@ -63,17 +62,16 @@ function CommentModerationModal({ comments, onClose, onUpdate }) {
             <p className={styles.commentText}>« {comment.content} »</p>
             <div className={styles.stars}>{displayStars(comment.rating)}</div>
             <div className={styles.actions}>
-              <button
-                className={styles.deleteBtn}
-                onClick={() => handleDelete(comment.commentId)}
-              >
+              <button className={styles.deleteBtn} onClick={() => handleDelete(comment.commentId)}>
                 {t('TopicModerator.Delete')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
             </div>
           </div>
         ))}
-        <button onClick={onClose} className={styles.closeBtn}>{t('TopicModerator.Close')}</button>
+        <button onClick={onClose} className={styles.closeBtn}>
+          {t('TopicModerator.Close')}
+        </button>
       </div>
     </div>
   );

@@ -48,6 +48,7 @@ const TestWrapper = ({ children }) => (
 describe('Header Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    i18n.changeLanguage('fr');
   });
 
   describe('Rendering', () => {

@@ -46,21 +46,19 @@ function Admin() {
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
 
-  const handleEditUser = (target) => {
+  const handleEditUser = target => {
     if (!isAdmin && user?.role !== 'moderator') return;
     setSelectedUser(target);
     setShowModal(true);
   };
 
-  const handleToggleStatus = async (targetUser) => {
+  const handleToggleStatus = async targetUser => {
     if (targetUser.status === 'banned') return;
     const newStatus = targetUser.status === 'suspended' ? 'active' : 'suspended';
 
     try {
       const updated = await updateUserStatus(targetUser.userId, newStatus);
-      setUsers((prev) =>
-        prev.map((u) => (u.userId === updated.userId ? updated : u))
-      );
+      setUsers(prev => prev.map(u => (u.userId === updated.userId ? updated : u)));
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2500);
     } catch (err) {
@@ -69,7 +67,7 @@ function Admin() {
     }
   };
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = newPage => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
@@ -119,7 +117,7 @@ function Admin() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t('Admin.Search')}
               />
               <button type="button">
@@ -147,11 +145,11 @@ function Admin() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((u) => (
+                {users.map(u => (
                   <tr
                     key={u.userId}
-                    onClick={() => (isAdmin) && handleEditUser(u)}
-                    className={(isAdmin || user?.role === 'moderator') ? styles.clickableRow : ''}
+                    onClick={() => isAdmin && handleEditUser(u)}
+                    className={isAdmin || user?.role === 'moderator' ? styles.clickableRow : ''}
                   >
                     <td>
                       <img
@@ -170,8 +168,10 @@ function Admin() {
                       ) : (
                         (isAdmin || user?.role === 'moderator') && (
                           <button
-                            className={u.status === 'suspended' ? styles.activateBtn : styles.suspendBtn}
-                            onClick={(e) => {
+                            className={
+                              u.status === 'suspended' ? styles.activateBtn : styles.suspendBtn
+                            }
+                            onClick={e => {
                               e.stopPropagation();
                               handleToggleStatus(u);
                             }}
@@ -188,7 +188,9 @@ function Admin() {
           )}
 
           <div className={styles.up_container}>
-            <a href="#topPage" className={styles.up}>{t('Admin.BackToTop')}</a>
+            <a href="#topPage" className={styles.up}>
+              {t('Admin.BackToTop')}
+            </a>
           </div>
 
           {totalPages > 1 && (
@@ -207,11 +209,9 @@ function Admin() {
         <UserEditModal
           user={selectedUser}
           onClose={() => setShowModal(false)}
-          onSave={(updatedUser) => {
-            setUsers((prev) =>
-              prev.map((u) =>
-                u.userId === updatedUser.userId ? { ...u, ...updatedUser } : u
-              )
+          onSave={updatedUser => {
+            setUsers(prev =>
+              prev.map(u => (u.userId === updatedUser.userId ? { ...u, ...updatedUser } : u))
             );
             setShowModal(false);
           }}

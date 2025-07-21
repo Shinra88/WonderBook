@@ -7,88 +7,83 @@ import api from '../../services/api';
 import styles from './UserEditModal.module.css';
 
 function UserEditModal({ user, onClose, onSave, isAdmin }) {
-    const [showRemoveAvatarBtn, setShowRemoveAvatarBtn] = useState(false);
-    const [showToast, setShowToast] = useState(false);
-    const { t } = useTranslation();
-    const [form, setForm] = useState({
-        name: '',
-        mail: '',
-        role: '',
-        status: '',
-        aboutMe: '',
-        repForum: false,
-        addCom: false,
-        addBook: false,
-        news: false,
-    });
+  const [showRemoveAvatarBtn, setShowRemoveAvatarBtn] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const { t } = useTranslation();
+  const [form, setForm] = useState({
+    name: '',
+    mail: '',
+    role: '',
+    status: '',
+    aboutMe: '',
+    repForum: false,
+    addCom: false,
+    addBook: false,
+    news: false,
+  });
 
-    useEffect(() => {
-        if (user) {
-            setForm({
-                userId: user.userId,
-                name: user.name || '',
-                mail: user.mail || '',
-                avatar: user.avatar || '',
-                aboutMe: user.aboutMe || '',
-                role: user.role || 'user',
-                status: user.status || 'active',
-                repForum: user.repForum ?? false,
-                addCom: user.addCom ?? false,
-                addBook: user.addBook ?? false,
-                news: user.news ?? false,
-            });          
-        }
-    }, [user]);
+  useEffect(() => {
+    if (user) {
+      setForm({
+        userId: user.userId,
+        name: user.name || '',
+        mail: user.mail || '',
+        avatar: user.avatar || '',
+        aboutMe: user.aboutMe || '',
+        role: user.role || 'user',
+        status: user.status || 'active',
+        repForum: user.repForum ?? false,
+        addCom: user.addCom ?? false,
+        addBook: user.addBook ?? false,
+        news: user.news ?? false,
+      });
+    }
+  }, [user]);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setForm((prev) => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-        }));
-    };
+  const handleChange = e => {
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const updated = await updateUserById(user.userId, form);
-          onSave(updated);
-          setShowToast(true);
-          setTimeout(() => setShowToast(false), 2500);
-        } catch (err) {
-          console.error(t('UserEditModal.ErrorUpdatingUser'), err);
-          alert(t('UserEditModal.ErrorUpdatingUser'));
-        }
-      };      
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const updated = await updateUserById(user.userId, form);
+      onSave(updated);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2500);
+    } catch (err) {
+      console.error(t('UserEditModal.ErrorUpdatingUser'), err);
+      alert(t('UserEditModal.ErrorUpdatingUser'));
+    }
+  };
 
   return (
     <div className={styles.modalBackground} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <h2>{t('UserEditModal.EditUser', { name: user.name })}</h2>
         {showToast && <ToastSuccess message={t('UserEditModal.ChangesSaved')} />}
         <form onSubmit={handleSubmit}>
-            
-        <div className={styles.formGroup}>
+          <div className={styles.formGroup}>
             <label>{t('UserEditModal.Avatar')} :</label>
             <div
-                className={styles.avatarWrapper}
-                onMouseEnter={() => setShowRemoveAvatarBtn(true)}
-                onMouseLeave={() => setShowRemoveAvatarBtn(false)}
+              className={styles.avatarWrapper}
+              onMouseEnter={() => setShowRemoveAvatarBtn(true)}
+              onMouseLeave={() => setShowRemoveAvatarBtn(false)}
             >
-                <img
-                src={form.avatar || Avatar}
-                alt="avatar"
-                className={styles.avatarPreview}
-                />
-                {form.avatar && showRemoveAvatarBtn && (
+              <img src={form.avatar || Avatar} alt="avatar" className={styles.avatarPreview} />
+              {form.avatar && showRemoveAvatarBtn && (
                 <button
-                    type="button"
-                    className={styles.removeAvatarBtn}
-                    onClick={() => setForm(prev => ({ ...prev, avatar: '' }))}
+                  type="button"
+                  className={styles.removeAvatarBtn}
+                  onClick={() => setForm(prev => ({ ...prev, avatar: '' }))}
                 >
-                    {t('UserEditModal.Delete')}
+                  {t('UserEditModal.Delete')}
                 </button>
-                )}
+              )}
             </div>
           </div>
 
@@ -165,14 +160,15 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
           <div className={styles.formGroup}>
             <label>{t('UserEditModal.Notifications')} :</label>
             <div className={styles.inputWrapper}>
-              {['repForum', 'addCom', 'addBook', 'news'].map((notif) => (
+              {['repForum', 'addCom', 'addBook', 'news'].map(notif => (
                 <label key={notif} style={{ marginRight: '10px' }}>
                   <input
                     type="checkbox"
                     name={notif}
                     checked={form[notif]}
                     onChange={handleChange}
-                  /> {notif}
+                  />{' '}
+                  {notif}
                 </label>
               ))}
             </div>
@@ -186,10 +182,13 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                   className={styles.resetPass}
                   onClick={async () => {
                     try {
-                        await api.post('/auth/forget-password', { email: user.mail, recaptchaToken: 'bypass_for_admin' });
-                        setShowToast(true);
-                        setTimeout(() => setShowToast(false), 2500);
-                        
+                      await api.post('/auth/forget-password', {
+                        email: user.mail,
+                        recaptchaToken: 'bypass_for_admin',
+                      });
+                      setShowToast(true);
+                      setTimeout(() => setShowToast(false), 2500);
+
                       alert(t('UserEditModal.ResetLinkSent'));
                     } catch (err) {
                       alert(t('UserEditModal.ErrorSendingResetLink'));

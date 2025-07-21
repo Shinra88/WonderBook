@@ -12,7 +12,7 @@ export default function Spoiler({ content }) {
 
   return (
     <Wrapper className={styles.spoiler} onClick={() => setVisible(!visible)}>
-     {visible ? content : <span className={styles.clickToReveal}>🔒 Cliquez pour révéler</span>}
+      {visible ? content : <span className={styles.clickToReveal}>🔒 Cliquez pour révéler</span>}
     </Wrapper>
   );
 }

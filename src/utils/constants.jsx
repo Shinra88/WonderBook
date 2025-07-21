@@ -16,13 +16,13 @@ export const API_ROUTES = {
   },
 
   CATEGORIES: {
-    GET_ALL: `${API_URL}/api/categories`, 
+    GET_ALL: `${API_URL}/api/categories`,
   },
 
   PUBLISHERS: {
     GET_ALL: `${API_URL}/api/publishers`,
   },
-  
+
   BOOKS: {
     BASE: `${API_URL}/api/books`,
     ADD_BOOK: `${API_URL}/api/books`,
@@ -35,36 +35,35 @@ export const API_ROUTES = {
     BASE: `${API_URL}/api/topics`,
     GET_ALL_TOPICS: `${API_URL}/api/topics`,
     ADD_TOPIC: `${API_URL}/api/topics`,
-    UPDATE_NOTICE: (id) => `${API_URL}/api/topics/${id}/pin`,
-    LOCK_TOPIC: (id) => `${API_URL}/api/topics/${id}/lock`,
-  },  
+    UPDATE_NOTICE: id => `${API_URL}/api/topics/${id}/pin`,
+    LOCK_TOPIC: id => `${API_URL}/api/topics/${id}/lock`,
+  },
 
   POSTS: {
     BASE: `${API_URL}/api/posts`,
-    GET_BY_TOPIC: (id) => `${API_URL}/api/posts/${id}`,
-    DELETE_POST: (id) => `${API_URL}/api/posts/${id}`,
-  },  
-  
+    GET_BY_TOPIC: id => `${API_URL}/api/posts/${id}`,
+    DELETE_POST: id => `${API_URL}/api/posts/${id}`,
+  },
+
   COLLECTION: {
     BASE: `${API_URL}/api/collection`,
     ADD: `${API_URL}/api/collection/add`,
-    REMOVE: (bookId) => `${API_URL}/api/collection/${bookId}`,
-    UPDATE_READ: (bookId) => `${API_URL}/api/collection/${bookId}`,
+    REMOVE: bookId => `${API_URL}/api/collection/${bookId}`,
+    UPDATE_READ: bookId => `${API_URL}/api/collection/${bookId}`,
     GET_USER_COLLECTION: `${API_URL}/api/collection`,
-    GET_PROGRESS: (bookId) => `${API_URL}/api/collection/progress/${bookId}`,
-    SAVE_PROGRESS: (bookId) => `${API_URL}/api/collection/progress/${bookId}`,
+    GET_PROGRESS: bookId => `${API_URL}/api/collection/progress/${bookId}`,
+    SAVE_PROGRESS: bookId => `${API_URL}/api/collection/progress/${bookId}`,
   },
-  
+
   COMMENTS: {
     BASE: `${API_URL}/api/comments`,
   },
-  
+
   ADMIN: {
     GET_USERS: `${API_URL}/api/admin/users`,
-    UPDATE_USER: (id) => `${API_URL}/api/admin/users/${id}`,
-    DELETE_USER: (id) => `${API_URL}/api/admin/users/${id}`,
-    UPDATE_USER_STATUS: (id) => `${API_URL}/api/admin/users/${id}/status`,
-
+    UPDATE_USER: id => `${API_URL}/api/admin/users/${id}`,
+    DELETE_USER: id => `${API_URL}/api/admin/users/${id}`,
+    UPDATE_USER_STATUS: id => `${API_URL}/api/admin/users/${id}/status`,
   },
 };
 

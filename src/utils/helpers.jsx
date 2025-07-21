@@ -15,22 +15,20 @@ export function displayStars(rating) {
 }
 
 // 🔤 Normalisation pour la recherche (front)
-export function normalize(str = "") {
+export function normalize(str = '') {
   return str
     .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // accents
-    .replace(/['’"]/g, "")           // apostrophes
-    .replace(/[^a-z0-9\s]/g, "")     // caractères spéciaux (mais on garde les espaces)
-    .replace(/\s+/g, " ")            // espaces multiples -> simple espace
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // accents
+    .replace(/['’"]/g, '') // apostrophes
+    .replace(/[^a-z0-9\s]/g, '') // caractères spéciaux (mais on garde les espaces)
+    .replace(/\s+/g, ' ') // espaces multiples -> simple espace
     .trim();
 }
 
 /** 🔠 Met en majuscule la première lettre de chaque mot */
-export function capitalize(str = "") {
-  return str
-    .toLowerCase()
-    .replace(/(^|\s|-|:)\p{L}/gu, (match) => match.toUpperCase());
+export function capitalize(str = '') {
+  return str.toLowerCase().replace(/(^|\s|-|:)\p{L}/gu, match => match.toUpperCase());
 }
 
 /** ⭐ Étoiles interactives ou en lecture seule */
@@ -48,12 +46,7 @@ export function generateStarsInputs(rating, register, readOnly = false) {
     ) : (
       <label key={index} htmlFor={`rating${index}`}>
         {icon}
-        <input
-          type="radio"
-          id={`rating${index}`}
-          value={index}
-          {...register('rating')}
-        />
+        <input type="radio" id={`rating${index}`} value={index} {...register('rating')} />
       </label>
     );
   });
@@ -63,5 +56,3 @@ export function generateStarsInputs(rating, register, readOnly = false) {
 export function formatDate(dateStr) {
   return dateStr?.slice(0, 10) || 'Date inconnue';
 }
-
-

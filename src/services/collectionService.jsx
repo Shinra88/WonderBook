@@ -25,7 +25,11 @@ export async function removeBookFromCollection(bookId) {
 }
 
 // ➔ Retrieves the user's collection with optional filters
-export const getUserCollection = async ({ read = false, noted = false, commented = false } = {}) => {
+export const getUserCollection = async ({
+  read = false,
+  noted = false,
+  commented = false,
+} = {}) => {
   try {
     const params = {};
     if (read) params.is_read = true;
@@ -43,7 +47,9 @@ export const getUserCollection = async ({ read = false, noted = false, commented
 // ➔ Updates the "read" status of a book
 export async function updateBookReadStatus(bookId, isRead) {
   try {
-    const response = await api.patch(API_ROUTES.COLLECTION.UPDATE_READ(bookId), { is_read: isRead });
+    const response = await api.patch(API_ROUTES.COLLECTION.UPDATE_READ(bookId), {
+      is_read: isRead,
+    });
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la mise à jour du statut de lecture :', error);
@@ -70,4 +76,3 @@ export async function saveReadingProgress(bookId, cfi) {
     console.error('Erreur sauvegarde position de lecture :', error);
   }
 }
-

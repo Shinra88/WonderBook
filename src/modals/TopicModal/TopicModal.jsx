@@ -18,30 +18,30 @@ export default function TopicModal({ onClose, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = event => {
       if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
 
-  const handleOutsideClick = (e) => {
+  const handleOutsideClick = e => {
     if (e.target.classList.contains(styles.modalBackground)) {
       onClose();
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
 
     if (!title || !content) {
-      setError(t("TopicModal.Error.RequiredFields"));
+      setError(t('TopicModal.Error.RequiredFields'));
       return;
     }
 
     if (!recaptchaToken) {
-      setError(t("TopicModal.Error.CaptchaRequired"));
+      setError(t('TopicModal.Error.CaptchaRequired'));
       return;
     }
 
@@ -56,7 +56,7 @@ export default function TopicModal({ onClose, onSuccess }) {
         onClose();
       }, 2000);
     } catch (err) {
-      setError(t("TopicModal.Error.AdditionFailed"));
+      setError(t('TopicModal.Error.AdditionFailed'));
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -65,10 +65,10 @@ export default function TopicModal({ onClose, onSuccess }) {
 
   return (
     <div className={styles.modalBackground} onClick={handleOutsideClick}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2 className={styles.modalTitle}>{t("TopicModal.AddSubject")}</h2>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <h2 className={styles.modalTitle}>{t('TopicModal.AddSubject')}</h2>
 
-        {showToast && <ToastSuccess message={t("TopicModal.SuccessMessage")} />}
+        {showToast && <ToastSuccess message={t('TopicModal.SuccessMessage')} />}
         {!showToast && (
           <>
             {error && <p className={styles.errorText}>{error}</p>}
@@ -77,18 +77,18 @@ export default function TopicModal({ onClose, onSuccess }) {
               <div className={styles.formField}>
                 <input
                   type="text"
-                  placeholder={t("TopicModal.Title")}
+                  placeholder={t('TopicModal.Title')}
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={e => setTitle(e.target.value)}
                 />
               </div>
 
               <div className={styles.formField}>
                 <textarea
-                  placeholder={t("TopicModal.Content")}
+                  placeholder={t('TopicModal.Content')}
                   rows={5}
                   value={content}
-                  onChange={(e) => setContent(e.target.value)}
+                  onChange={e => setContent(e.target.value)}
                 />
               </div>
 
@@ -98,9 +98,9 @@ export default function TopicModal({ onClose, onSuccess }) {
                     <input
                       type="checkbox"
                       checked={notice}
-                      onChange={(e) => setNotice(e.target.checked)}
+                      onChange={e => setNotice(e.target.checked)}
                     />{' '}
-                    {t("TopicModal.Notice")}
+                    {t('TopicModal.Notice')}
                   </label>
                 </div>
               )}
@@ -108,20 +108,20 @@ export default function TopicModal({ onClose, onSuccess }) {
               <div className={styles.formField}>
                 <ReCAPTCHA
                   sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                  onChange={(token) => setRecaptchaToken(token)}
+                  onChange={token => setRecaptchaToken(token)}
                 />
               </div>
 
               <div className={styles.buttonRow}>
                 <button type="button" className={styles.cancelButton} onClick={onClose}>
-                  {t("TopicModal.Cancel")}
+                  {t('TopicModal.Cancel')}
                 </button>
                 <button
                   type="submit"
                   className={styles.submitButton}
                   disabled={!title || !content || !recaptchaToken || isSubmitting}
                 >
-                  {isSubmitting ? t("TopicModal.Sending") : t("TopicModal.Submit")}
+                  {isSubmitting ? t('TopicModal.Sending') : t('TopicModal.Submit')}
                 </button>
               </div>
             </form>

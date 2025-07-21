@@ -6,11 +6,8 @@ import { useNavigate } from 'react-router-dom';
 function BackArrow() {
   const navigate = useNavigate();
 
-
   const handleBack = () => {
-
     navigate(-1);
-
   };
   return (
     <button onClick={handleBack} className={styles.backArrow}>

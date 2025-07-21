@@ -41,7 +41,7 @@ function EpubReader() {
     };
   }, []);
 
-  const handleLocationChange = (loc) => {
+  const handleLocationChange = loc => {
     setLocation(loc);
     saveReadingProgress(bookId, loc);
     localStorage.setItem(`reading-position-${bookId}`, loc);
@@ -52,7 +52,7 @@ function EpubReader() {
     }
   };
 
-  const handleSliderChange = async (value) => {
+  const handleSliderChange = async value => {
     const rendition = renditionRef.current;
     const book = rendition?.book;
     const percentage = parseFloat(value);
@@ -97,7 +97,7 @@ function EpubReader() {
             url={epubUrl}
             location={location}
             locationChanged={handleLocationChange}
-            getRendition={(rendition) => {
+            getRendition={rendition => {
               renditionRef.current = rendition;
               rendition.themes.default({
                 body: {
@@ -108,8 +108,7 @@ function EpubReader() {
               });
 
               rendition.book.ready.then(() => {
-                rendition.book.locations.generate(1000).then(() => {
-                });
+                rendition.book.locations.generate(1000).then(() => {});
               });
             }}
             showToc={false}
@@ -121,9 +120,9 @@ function EpubReader() {
             max="1"
             step="0.01"
             value={progress}
-            onChange={(e) => setProgress(parseFloat(e.target.value))}
-            onMouseUp={(e) => handleSliderChange(e.target.value)}
-            onTouchEnd={(e) => handleSliderChange(e.target.value)}
+            onChange={e => setProgress(parseFloat(e.target.value))}
+            onMouseUp={e => handleSliderChange(e.target.value)}
+            onTouchEnd={e => handleSliderChange(e.target.value)}
             className={styles.slider}
           />
         </>

@@ -12,21 +12,23 @@ export function FilterProvider({ children }) {
   const [filterRead, setFilterRead] = useState(false);
 
   return (
-    <FilterContext.Provider value={{
-      selectedCategories,
-      setSelectedCategories,
-      selectedYear,
-      setSelectedYear,
-      selectedType,
-      setSelectedType,
-      minYear,
-      setMinYear,
-      currentYear,
-      searchQuery,        
-      setSearchQuery,  
-      filterRead,
-      setFilterRead  
-    }}>
+    <FilterContext.Provider
+      value={{
+        selectedCategories,
+        setSelectedCategories,
+        selectedYear,
+        setSelectedYear,
+        selectedType,
+        setSelectedType,
+        minYear,
+        setMinYear,
+        currentYear,
+        searchQuery,
+        setSearchQuery,
+        filterRead,
+        setFilterRead,
+      }}
+    >
       {children}
     </FilterContext.Provider>
   );

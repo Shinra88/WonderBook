@@ -26,7 +26,7 @@ function Forum() {
         const fetchedTopics = await getTopics();
         setTopics(fetchedTopics);
       } catch (error) {
-        console.error(t("ErrorFetchingTopics:"), error);
+        console.error(t('ErrorFetchingTopics:'), error);
       }
     }
     fetchTopics();
@@ -34,11 +34,11 @@ function Forum() {
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
 
-  const handleTopicClick = (topicId) => {
+  const handleTopicClick = topicId => {
     navigate(`/topic/${topicId}`);
   };
 
-// Separation of topics according to "notice"  
+  // Separation of topics according to "notice"
   const noticeTopics = topics.filter(topic => topic.notice === true);
   const subjectTopics = topics.filter(topic => topic.notice === false);
 
@@ -56,7 +56,7 @@ function Forum() {
   const currentSubjects = filteredSubjects.slice(indexOfFirstSubject, indexOfLastSubject);
   const totalPages = Math.ceil(filteredSubjects.length / subjectsPerPage);
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = newPage => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
@@ -66,49 +66,53 @@ function Forum() {
     <div id="topPage" className={styles.Forum}>
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
-      <header className={styles.head}>
-        {user ? (
-          <div className={styles.actions}>
-            <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
-              {t('Forum.CreateTopic')}
-            </button>
-          </div>
-        ) : (
-          <div style={{ width: '10rem' }} />
-        )}
+        <header className={styles.head}>
+          {user ? (
+            <div className={styles.actions}>
+              <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
+                {t('Forum.CreateTopic')}
+              </button>
+            </div>
+          ) : (
+            <div style={{ width: '10rem' }} />
+          )}
 
-        {user && isModalOpen && (
-          <TopicModal
-            onClose={() => setIsModalOpen(false)}
-            onSuccess={() => {
-              setIsModalOpen(false);
-              window.location.reload();
-            }}
-          />
-        )}
-
-        <div className={styles.searchBar}>
-          <div className={styles.inputSearch}>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t('Forum.SearchPlaceholder')}
+          {user && isModalOpen && (
+            <TopicModal
+              onClose={() => setIsModalOpen(false)}
+              onSuccess={() => {
+                setIsModalOpen(false);
+                window.location.reload();
+              }}
             />
-            <button type="button">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
+          )}
+
+          <div className={styles.searchBar}>
+            <div className={styles.inputSearch}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder={t('Forum.SearchPlaceholder')}
+              />
+              <button type="button">
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
         <section className={styles.Notice}>
           <h2>{t('Forum.Notices')}</h2>
         </section>
         <section className={styles.subjectList}>
           <ul>
             {filteredNotices.length > 0 ? (
-              filteredNotices.map((topic) => (
-                <li key={topic._id} className={styles.topicItem} onClick={() => handleTopicClick(topic._id)}>
+              filteredNotices.map(topic => (
+                <li
+                  key={topic._id}
+                  className={styles.topicItem}
+                  onClick={() => handleTopicClick(topic._id)}
+                >
                   <h3>{topic.title}</h3>
                 </li>
               ))
@@ -124,8 +128,12 @@ function Forum() {
         <section className={styles.subjectList}>
           <ul>
             {currentSubjects.length > 0 ? (
-              currentSubjects.map((topic) => (
-                <li key={topic._id} className={styles.topicItem} onClick={() => handleTopicClick(topic._id)}>
+              currentSubjects.map(topic => (
+                <li
+                  key={topic._id}
+                  className={styles.topicItem}
+                  onClick={() => handleTopicClick(topic._id)}
+                >
                   <h3>{topic.title}</h3>
                 </li>
               ))
@@ -134,7 +142,9 @@ function Forum() {
             )}
           </ul>
           <div className={styles.up_container}>
-            <a href="#topPage" className={styles.up}>{t('Forum.BackToTop')}</a>
+            <a href="#topPage" className={styles.up}>
+              {t('Forum.BackToTop')}
+            </a>
           </div>
 
           {totalPages > 1 && (

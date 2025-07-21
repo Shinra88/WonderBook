@@ -40,7 +40,7 @@ export async function deletePost(id, token) {
     });
     return res.data;
   } catch (err) {
-    console.error("Erreur deletePost :", err);
+    console.error('Erreur deletePost :', err);
     throw err;
   }
 }

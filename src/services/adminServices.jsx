@@ -17,14 +17,14 @@ export async function getAllUsers({ page, limit, search, status }) {
 
 /** ✅ Met à jour un utilisateur (rôle, email, etc.) */
 export async function updateUserById(id, data) {
-    try {
-      const res = await api.put(API_ROUTES.ADMIN.UPDATE_USER(id), data);
-      return res.data.user; // ✅ c’est ça que tu veux mettre à jour dans setUsers()
-    } catch (err) {
-      console.error(`❌ Erreur updateUser [id=${id}] :`, err);
-      throw err;
-    }
-  }  
+  try {
+    const res = await api.put(API_ROUTES.ADMIN.UPDATE_USER(id), data);
+    return res.data.user; // ✅ c’est ça que tu veux mettre à jour dans setUsers()
+  } catch (err) {
+    console.error(`❌ Erreur updateUser [id=${id}] :`, err);
+    throw err;
+  }
+}
 
 /** ✅ Supprime un utilisateur */
 export async function deleteUserById(id) {
@@ -39,12 +39,11 @@ export async function deleteUserById(id) {
 
 //** ✅ Met à jour le statut d'un utilisateur (actif, suspendu, banni) */
 export async function updateUserStatus(id, status) {
-    try {
-      const response = await api.put(`${API_ROUTES.ADMIN.UPDATE_USER_STATUS(id)}`, { status });
-      return response.data.user;
-    } catch (err) {
-      console.error("Erreur updateUserStatus:", err);
-      throw err;
-    }
+  try {
+    const response = await api.put(`${API_ROUTES.ADMIN.UPDATE_USER_STATUS(id)}`, { status });
+    return response.data.user;
+  } catch (err) {
+    console.error('Erreur updateUserStatus:', err);
+    throw err;
   }
-  
+}

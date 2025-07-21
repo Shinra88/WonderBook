@@ -15,7 +15,7 @@ function Forget({ onClose }) {
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = event => {
       if (event.key === 'Escape' && onClose) {
         onClose();
       }
@@ -26,12 +26,12 @@ function Forget({ onClose }) {
 
   const forget = async () => {
     if (!email) {
-      setNotification({ error: true, message: t("ForgetPassword.EmailRequired") });
+      setNotification({ error: true, message: t('ForgetPassword.EmailRequired') });
       return;
     }
 
     if (!recaptchaToken) {
-      setNotification({ error: true, message: t("ForgetPassword.CaptchaRequired") });
+      setNotification({ error: true, message: t('ForgetPassword.CaptchaRequired') });
       return;
     }
 
@@ -43,9 +43,12 @@ function Forget({ onClose }) {
       });
 
       if (!response?.data?.success) {
-        setNotification({ error: true, message: response?.data?.message || t("ForgetPassword.UnknownError") });
+        setNotification({
+          error: true,
+          message: response?.data?.message || t('ForgetPassword.UnknownError'),
+        });
       } else {
-        setNotification({ error: false, message: t("ForgetPassword.SuccessMessage") });
+        setNotification({ error: false, message: t('ForgetPassword.SuccessMessage') });
         setShowToast(true);
         setEmail('');
         setRecaptchaToken('');
@@ -64,25 +67,23 @@ function Forget({ onClose }) {
   return (
     <div
       className={styles.modalBackground}
-      onClick={(e) => {
+      onClick={e => {
         if (e.target.classList.contains(styles.modalBackground) && onClose) {
           onClose();
         }
       }}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
+      onKeyDown={e => {
         if ((e.key === 'Enter' || e.key === 'Escape') && onClose) {
           onClose();
         }
       }}
     >
       <div className={styles.modalContent}>
-        <h2>{t("ForgetPassword.ResetTitle")}</h2>
+        <h2>{t('ForgetPassword.ResetTitle')}</h2>
 
-        {showToast && (
-          <ToastSuccess message={t("ForgetPassword.EmailSent")} />
-        )}
+        {showToast && <ToastSuccess message={t('ForgetPassword.EmailSent')} />}
 
         {!showToast && (
           <>
@@ -99,14 +100,14 @@ function Forget({ onClose }) {
                 name="email"
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               />
             </label>
 
             <div className={styles.recaptchaContainer}>
               <ReCAPTCHA
                 sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                onChange={(token) => setRecaptchaToken(token)}
+                onChange={token => setRecaptchaToken(token)}
               />
             </div>
 
@@ -114,7 +115,12 @@ function Forget({ onClose }) {
               <button type="button" className={styles.cancelButton} onClick={onClose}>
                 {t('ForgetPassword.Cancel')}
               </button>
-              <button type="button" className={styles.validateButton} onClick={forget} disabled={isLoading}>
+              <button
+                type="button"
+                className={styles.validateButton}
+                onClick={forget}
+                disabled={isLoading}
+              >
                 {isLoading ? t('ForgetPassword.Loading') : t('ForgetPassword.Validate')}
               </button>
             </div>

@@ -1,11 +1,7 @@
 // 📁 hooks/customHooks.jsx
 import { useState, useEffect } from 'react';
 import { getAuthenticatedUser } from '../services/authService';
-import {
-  getBestRatedBooks,
-  getLastAddedBooks,
-  getBooks,
-} from '../services/bookService';
+import { getBestRatedBooks, getLastAddedBooks, getBooks } from '../services/bookService';
 
 /** ✅ Retrieves the logged in user */
 export function useUser() {
@@ -39,8 +35,8 @@ export function useBestRatedBooks(filters) {
         const response = await getBestRatedBooks(filters);
         setBestRatedBooks(Array.isArray(response) ? response : []);
       } catch (err) {
-        console.error("Erreur meilleurs livres:", err);
-        setError("Erreur chargement des meilleurs livres");
+        console.error('Erreur meilleurs livres:', err);
+        setError('Erreur chargement des meilleurs livres');
         setBestRatedBooks([]);
       } finally {
         setLoading(false);
@@ -65,8 +61,8 @@ export function useLastAddedBooks(filters) {
         const response = await getLastAddedBooks(filters);
         setLastAddedBooks(Array.isArray(response) ? response : []);
       } catch (err) {
-        console.error("Erreur derniers livres:", err);
-        setError("Erreur chargement des derniers livres");
+        console.error('Erreur derniers livres:', err);
+        setError('Erreur chargement des derniers livres');
         setLastAddedBooks([]);
       } finally {
         setLoading(false);
@@ -110,8 +106,8 @@ export function useFilteredBooks(filters = {}, page = 1, limit = 10) {
         setBooks(Array.isArray(fetchedBooks) ? fetchedBooks : []);
         setTotal(totalCount || 0);
       } catch (err) {
-        console.error("Erreur livres filtrés:", err);
-        setError("Erreur chargement des livres");
+        console.error('Erreur livres filtrés:', err);
+        setError('Erreur chargement des livres');
         setBooks([]);
         setTotal(0);
       } finally {
@@ -123,4 +119,3 @@ export function useFilteredBooks(filters = {}, page = 1, limit = 10) {
 
   return { books, total, loading, error };
 }
-

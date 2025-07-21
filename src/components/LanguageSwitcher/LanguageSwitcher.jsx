@@ -13,11 +13,10 @@ const languages = [
   { code: 'ar', label: '🇸🇦 العربية (Arabic)' },
 ];
 
-
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
-  const handleLanguageChange = (e) => {
+  const handleLanguageChange = e => {
     const lang = e.target.value;
     i18n.changeLanguage(lang);
   };
@@ -25,12 +24,8 @@ export default function LanguageSwitcher() {
   const currentLang = i18n.language.split('-')[0];
 
   return (
-    <select
-      onChange={handleLanguageChange}
-      value={currentLang}
-      className={styles.select}
-    >
-      {languages.map((lang) => (
+    <select onChange={handleLanguageChange} value={currentLang} className={styles.select}>
+      {languages.map(lang => (
         <option key={lang.code} value={lang.code}>
           {lang.label}
         </option>

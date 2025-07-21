@@ -73,7 +73,7 @@ function Account() {
     try {
       const response = await updateUserProfile(form);
       if (response.user) {
-        login(response.user, token); 
+        login(response.user, token);
         setOriginalForm(form);
         alert(t('Account.ProfileUpdated'));
       }
@@ -85,19 +85,19 @@ function Account() {
     }
   };
 
-  const handleAvatarChange = async (e) => {
+  const handleAvatarChange = async e => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     const userId = user?.userId;
     const oldUrl = user?.avatar;
-  
+
     // Update avatar in AWS S3
     const newUrl = await updateAvatarOnS3(file, userId, oldUrl);
     if (!newUrl) return alert(t('Account.ErrorUpdatingAvatar'));
 
     // Immediate update of the avatar in the form
-    setForm((prev) => ({ ...prev, avatar: newUrl }));
+    setForm(prev => ({ ...prev, avatar: newUrl }));
 
     // Update user in localStorage
     await login({ ...user, avatar: newUrl }, token);
@@ -113,13 +113,13 @@ function Account() {
     setIsEditing(false);
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const toggleSwitch = (field) => {
-    setForm((prev) => ({ ...prev, [field]: !prev[field] }));
+  const toggleSwitch = field => {
+    setForm(prev => ({ ...prev, [field]: !prev[field] }));
   };
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
@@ -140,7 +140,11 @@ function Account() {
                 {t('Account.Finish')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
-              <button type="button" className={styles.Button} onClick={() => setShowChangePass(true)}>
+              <button
+                type="button"
+                className={styles.Button}
+                onClick={() => setShowChangePass(true)}
+              >
                 {t('Account.ChangePassword')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>
@@ -164,11 +168,23 @@ function Account() {
           <article>
             <label>
               <p>{t('Account.Username')}</p>
-              <input type="text" name="name" value={form.name} onChange={handleChange} disabled={!isEditing} />
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                disabled={!isEditing}
+              />
             </label>
             <label>
               <p>{t('Account.Email')}</p>
-              <input type="email" name="mail" value={form.mail} onChange={handleChange} disabled={!isEditing} />
+              <input
+                type="email"
+                name="mail"
+                value={form.mail}
+                onChange={handleChange}
+                disabled={!isEditing}
+              />
             </label>
           </article>
 
@@ -180,8 +196,8 @@ function Account() {
                     form.avatar // Uses the updated avatar immediately after loading
                       ? form.avatar
                       : user?.avatar?.startsWith('http')
-                      ? user.avatar
-                      : Avatar
+                        ? user.avatar
+                        : Avatar
                   }
                   alt="Avatar utilisateur"
                   className={styles.icon}

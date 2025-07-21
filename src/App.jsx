@@ -42,10 +42,7 @@ function App() {
             <Route
               index
               element={
-                <Home
-                  selectedCategories={selectedCategories}
-                  selectedYear={selectedYear || ''}
-                />
+                <Home selectedCategories={selectedCategories} selectedYear={selectedYear || ''} />
               }
             />
             <Route path={APP_ROUTES.FORUM} element={<Forum />} />

@@ -53,21 +53,23 @@ function Collection() {
   }, [filterReadStatus, filterCommented]);
 
   const filterBooks = () => {
-    return allBooks.filter((item) => {
+    return allBooks.filter(item => {
       const book = item.books;
       if (!book) return false;
       if (filterReadStatus === 'read' && item.is_read !== true) return false;
       if (filterReadStatus === 'unread' && item.is_read === true) return false;
       if (filterCommented) {
-        if (!book.comments || !book.comments.some(comment => comment.userId === item.userId)) return false;
+        if (!book.comments || !book.comments.some(comment => comment.userId === item.userId))
+          return false;
       }
 
       let categoryPass = true;
       if (selectedCategories.length > 0) {
         const bookCategories = book.book_categories?.map(bc => bc.categories.name) || [];
-        categoryPass = selectedType === 'et'
-          ? selectedCategories.every(cat => bookCategories.includes(cat))
-          : selectedCategories.some(cat => bookCategories.includes(cat));
+        categoryPass =
+          selectedType === 'et'
+            ? selectedCategories.every(cat => bookCategories.includes(cat))
+            : selectedCategories.some(cat => bookCategories.includes(cat));
       }
 
       let yearPass = true;
@@ -87,7 +89,8 @@ function Collection() {
       let searchPass = true;
       if (searchQuery.trim() !== '') {
         const lower = searchQuery.toLowerCase();
-        searchPass = (book.title?.toLowerCase().includes(lower) || book.author?.toLowerCase().includes(lower));
+        searchPass =
+          book.title?.toLowerCase().includes(lower) || book.author?.toLowerCase().includes(lower);
       }
 
       return categoryPass && yearPass && searchPass;
@@ -105,12 +108,45 @@ function Collection() {
           <div className={styles.filterContainer}>
             <label className={styles.filterToggle}>{t('Collection.Filters')} :</label>
             <div className={styles.radioGroup}>
-              <label><input type="radio" name="readStatus" value="all" checked={filterReadStatus === 'all'} onChange={() => setFilterReadStatus('all')} /> {t('Collection.FilterAll')}</label>
-              <label><input type="radio" name="readStatus" value="read" checked={filterReadStatus === 'read'} onChange={() => setFilterReadStatus('read')} /> {t('Collection.FilterRead')}</label>
-              <label><input type="radio" name="readStatus" value="unread" checked={filterReadStatus === 'unread'} onChange={() => setFilterReadStatus('unread')} /> {t('Collection.FilterUnread')}</label>
+              <label>
+                <input
+                  type="radio"
+                  name="readStatus"
+                  value="all"
+                  checked={filterReadStatus === 'all'}
+                  onChange={() => setFilterReadStatus('all')}
+                />{' '}
+                {t('Collection.FilterAll')}
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="readStatus"
+                  value="read"
+                  checked={filterReadStatus === 'read'}
+                  onChange={() => setFilterReadStatus('read')}
+                />{' '}
+                {t('Collection.FilterRead')}
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="readStatus"
+                  value="unread"
+                  checked={filterReadStatus === 'unread'}
+                  onChange={() => setFilterReadStatus('unread')}
+                />{' '}
+                {t('Collection.FilterUnread')}
+              </label>
             </div>
             <label htmlFor="commented" className={styles.filterToggle}>
-              <input type="checkbox" id="commented" checked={filterCommented} onChange={() => setFilterCommented(prev => !prev)} /> {t('Collection.FilterCommented')}                                           
+              <input
+                type="checkbox"
+                id="commented"
+                checked={filterCommented}
+                onChange={() => setFilterCommented(prev => !prev)}
+              />{' '}
+              {t('Collection.FilterCommented')}
             </label>
           </div>
         </header>
@@ -119,8 +155,10 @@ function Collection() {
           {loading ? (
             <h1>{t('Loading')}...</h1>
           ) : filteredBooks.length > 0 ? (
-            filteredBooks.map((item) => {
-              const userComment = item.books.comments?.find(comment => comment.userId === item.userId);
+            filteredBooks.map(item => {
+              const userComment = item.books.comments?.find(
+                comment => comment.userId === item.userId
+              );
               const userRating = userComment ? userComment.rating : 0;
               return (
                 <div key={item.collectionId} className={styles.bookItemWrapper}>
@@ -141,16 +179,25 @@ function Collection() {
                   />
                   <div className={styles.bookStatus}>
                     <div className={styles.statusItem}>
-                      <input type="checkbox" checked={item.is_read} disabled={item.is_read} onChange={async () => {
-                        if (!item.is_read) {
-                          try {
-                            await updateBookReadStatus(item.books.bookId, true);
-                            setAllBooks(prev => prev.map(b => b.collectionId === item.collectionId ? { ...b, is_read: true } : b));
-                          } catch (error) {
-                            console.error(t('Collection.ErrorUpdate'), error);
+                      <input
+                        type="checkbox"
+                        checked={item.is_read}
+                        disabled={item.is_read}
+                        onChange={async () => {
+                          if (!item.is_read) {
+                            try {
+                              await updateBookReadStatus(item.books.bookId, true);
+                              setAllBooks(prev =>
+                                prev.map(b =>
+                                  b.collectionId === item.collectionId ? { ...b, is_read: true } : b
+                                )
+                              );
+                            } catch (error) {
+                              console.error(t('Collection.ErrorUpdate'), error);
+                            }
                           }
-                        }
-                      }} />
+                        }}
+                      />
                       <span>{t('Collection.FilterRead')}</span>
                     </div>
 
@@ -158,9 +205,15 @@ function Collection() {
                       <div className={styles.statusItem}>
                         <button
                           className={styles.uploadEbookButton}
-                          onClick={() => setActiveUploadId(prev => prev === item.collectionId ? null : item.collectionId)}
+                          onClick={() =>
+                            setActiveUploadId(prev =>
+                              prev === item.collectionId ? null : item.collectionId
+                            )
+                          }
                         >
-                          {activeUploadId === item.collectionId ? t('Collection.Cancel') : t('Collection.UploadEbook')}
+                          {activeUploadId === item.collectionId
+                            ? t('Collection.Cancel')
+                            : t('Collection.UploadEbook')}
                         </button>
 
                         {activeUploadId === item.collectionId && (
@@ -168,7 +221,7 @@ function Collection() {
                             <input
                               type="file"
                               accept=".epub"
-                              onChange={async (e) => {
+                              onChange={async e => {
                                 const file = e.target.files[0];
                                 if (!file) return;
 
@@ -197,15 +250,20 @@ function Collection() {
 
                     {item.is_read && (
                       <div className={styles.statusItem}>
-                        <button className={styles.commentButton} onClick={() => {
-                          const existingComment = item.books.comments?.find(comment => comment.userId === item.userId);
-                          setSelectedBook({
-                            ...item.books,
-                            existingComment: existingComment || null,
-                            rating: existingComment?.rating || 0,
-                          });
-                          setIsCommentModalOpen(true);
-                        }}>
+                        <button
+                          className={styles.commentButton}
+                          onClick={() => {
+                            const existingComment = item.books.comments?.find(
+                              comment => comment.userId === item.userId
+                            );
+                            setSelectedBook({
+                              ...item.books,
+                              existingComment: existingComment || null,
+                              rating: existingComment?.rating || 0,
+                            });
+                            setIsCommentModalOpen(true);
+                          }}
+                        >
                           {item.books.comments?.some(comment => comment.userId === item.userId)
                             ? t('Collection.EditComment')
                             : t('Collection.Commenter')}
@@ -214,12 +272,12 @@ function Collection() {
                     )}
                     {item.books.ebook_url && (
                       <div className={styles.statusItem}>
-                          <button
-                            className={styles.commentButton}
-                            onClick={() => navigate(`/read/${item.books.bookId}`)}
-                          >
-                            {t('Collection.ReadEbook')}
-                          </button>
+                        <button
+                          className={styles.commentButton}
+                          onClick={() => navigate(`/read/${item.books.bookId}`)}
+                        >
+                          {t('Collection.ReadEbook')}
+                        </button>
                       </div>
                     )}
                   </div>

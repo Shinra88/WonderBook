@@ -8,19 +8,15 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
   return (
     <div className={styles.pagination}>
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
+      <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
         ◀ {t('Pagination.Previous')}
       </button>
 
-      <span>Page {currentPage} / {totalPages}</span>
+      <span>
+        Page {currentPage} / {totalPages}
+      </span>
 
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
+      <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
         {t('Pagination.Next')} ▶
       </button>
     </div>

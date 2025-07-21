@@ -4,7 +4,7 @@ import { API_ROUTES } from '../utils/constants';
 import {
   storeInLocalStorage,
   getFromLocalStorage,
-  removeFromLocalStorage
+  removeFromLocalStorage,
 } from '../utils/localStorage';
 
 /** ✅ Login */
@@ -27,21 +27,21 @@ export function logout() {
 }
 
 /** ✅ Register */
-export async function register(name, mail, password, recaptchaToken, website = "") {
+export async function register(name, mail, password, recaptchaToken, website = '') {
   try {
     const response = await api.post(API_ROUTES.AUTH.REGISTER, {
       name,
       mail,
       password,
       recaptchaToken,
-      website
+      website,
     });
     const { token, user } = response.data;
     storeInLocalStorage('token', token);
     storeInLocalStorage('user', JSON.stringify(user));
     return { success: true, user };
   } catch (err) {
-    return { success: false, error: err.response?.data?.error || 'Erreur lors de l\'inscription' };
+    return { success: false, error: err.response?.data?.error || "Erreur lors de l'inscription" };
   }
 }
 
@@ -64,7 +64,7 @@ export async function getAuthenticatedUser() {
     const response = await api.get(API_ROUTES.AUTH.UPDATE_PROFILE);
     return { authenticated: true, user: response.data };
   } catch (err) {
-    console.error("Erreur auth user:", err);
+    console.error('Erreur auth user:', err);
     return { authenticated: false, user: null };
   }
 }
@@ -88,7 +88,7 @@ export async function updateUserProfile(form) {
   } catch (err) {
     return {
       success: false,
-      error: err.response?.data?.error || 'Erreur mise à jour du profil'
+      error: err.response?.data?.error || 'Erreur mise à jour du profil',
     };
   }
 }

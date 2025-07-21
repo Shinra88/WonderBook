@@ -7,10 +7,7 @@ import { useTranslation } from 'react-i18next';
 function DropdownYear({ isActive = false }) {
   const { minYear, currentYear } = useYears();
 
-  const {
-    selectedYear,
-    setSelectedYear
-  } = useFilters();
+  const { selectedYear, setSelectedYear } = useFilters();
 
   const { t } = useTranslation();
 
@@ -23,7 +20,7 @@ function DropdownYear({ isActive = false }) {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -32,11 +29,10 @@ function DropdownYear({ isActive = false }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const handleUniqueChange = (e) => {
+  const handleUniqueChange = e => {
     const val = e.target.value.replace(/\D/g, '').slice(0, 4);
     setSelectedYear(val); // always update the input to show what you type
   };
-  
 
   const handleRangeChange = (field, value) => {
     const newVal = value.replace(/\D/g, '').slice(0, 4);
@@ -53,7 +49,7 @@ function DropdownYear({ isActive = false }) {
     ) {
       setSelectedYear(newRange);
     }
-  };  
+  };
 
   const range = typeof selectedYear === 'object' ? selectedYear : { start: '', end: '' };
 
@@ -98,44 +94,43 @@ function DropdownYear({ isActive = false }) {
 
           {filterType === 'unique' && (
             <div className={styles.rangeInputs}>
-            <input
-              type="number"
-              placeholder={t('DropdownYears.Placeholder')}
-              min={minYear}
-              max={currentYear}
-              value={typeof selectedYear === 'string' ? selectedYear : ''}
-              onChange={handleUniqueChange}
-            />
+              <input
+                type="number"
+                placeholder={t('DropdownYears.Placeholder')}
+                min={minYear}
+                max={currentYear}
+                value={typeof selectedYear === 'string' ? selectedYear : ''}
+                onChange={handleUniqueChange}
+              />
             </div>
           )}
 
-{filterType === 'tranche' && (
-  <div className={styles.rangeInputs}>
-    <label>
-      {t('DropdownYears.From')}
-      <input
-        type="number"
-        placeholder={t('DropdownYears.StartYear')}
-        min={minYear}
-        max={currentYear}
-        value={range.start}
-        onChange={(e) => handleRangeChange('start', e.target.value)}
-      />
-    </label>
-    <label>
-      {t('DropdownYears.To')}
-      <input
-        type="number"
-        placeholder={t('DropdownYears.EndYear')}
-        min={minYear}
-        max={currentYear}
-        value={range.end}
-        onChange={(e) => handleRangeChange('end', e.target.value)}
-      />
-    </label>
-  </div>
-)}
-
+          {filterType === 'tranche' && (
+            <div className={styles.rangeInputs}>
+              <label>
+                {t('DropdownYears.From')}
+                <input
+                  type="number"
+                  placeholder={t('DropdownYears.StartYear')}
+                  min={minYear}
+                  max={currentYear}
+                  value={range.start}
+                  onChange={e => handleRangeChange('start', e.target.value)}
+                />
+              </label>
+              <label>
+                {t('DropdownYears.To')}
+                <input
+                  type="number"
+                  placeholder={t('DropdownYears.EndYear')}
+                  min={minYear}
+                  max={currentYear}
+                  value={range.end}
+                  onChange={e => handleRangeChange('end', e.target.value)}
+                />
+              </label>
+            </div>
+          )}
         </div>
       )}
     </div>

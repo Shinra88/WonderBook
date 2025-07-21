@@ -9,9 +9,7 @@ import { useUser } from '../../../hooks/customHooks';
 import { useTranslation } from 'react-i18next';
 import { rateBook } from '../../../services/bookService';
 
-function BookRatingForm({
-  rating, setRating, userId, setBook, id, userRated,
-}) {
+function BookRatingForm({ rating, setRating, userId, setBook, id, userRated }) {
   const { connectedUser, auth } = useUser();
   const { t } = useTranslation();
   const navigate = useNavigate();

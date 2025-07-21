@@ -8,21 +8,25 @@ import styles from './BookDisplay.module.css';
 function BookDisplay({ book, size, showDetails = false, hideImage = false, adminView = false }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
-  const statusLabel = book.status === 'pending' ? t('BookDisplay.Pending') : t('BookDisplay.Validated');
+  const statusLabel =
+    book.status === 'pending' ? t('BookDisplay.Pending') : t('BookDisplay.Validated');
 
   if (adminView) {
     return (
-        <Link to={`/livre/${encodeURIComponent(book.title)}`} className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}>
-          <img
-            src={book.cover_url}
-            alt={`${book.title}, ${book.author} - ${book.date || t('BookDisplay.UnknownDate')}`}
-          />
-          <strong>{book.title}</strong>
-          <em>{statusLabel}</em>
-          <em>{t('BookDisplay.By', { user: book.validated_by || 'Bdd' })}</em>
-        </Link>
-      );
-  }  
+      <Link
+        to={`/livre/${encodeURIComponent(book.title)}`}
+        className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}
+      >
+        <img
+          src={book.cover_url}
+          alt={`${book.title}, ${book.author} - ${book.date || t('BookDisplay.UnknownDate')}`}
+        />
+        <strong>{book.title}</strong>
+        <em>{statusLabel}</em>
+        <em>{t('BookDisplay.By', { user: book.validated_by || 'Bdd' })}</em>
+      </Link>
+    );
+  }
 
   let titleParts = book.title.split(':');
   let mainTitle = titleParts[0];
@@ -30,22 +34,28 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
   let title;
   switch (size) {
     case 2:
-      title = <>
-        <h2>{mainTitle}</h2>
-        <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
-      </>;
+      title = (
+        <>
+          <h2>{mainTitle}</h2>
+          <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
+        </>
+      );
       break;
     case 3:
-      title = <>
-        <h3>{mainTitle}</h3>
-        <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
-      </>;
+      title = (
+        <>
+          <h3>{mainTitle}</h3>
+          <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
+        </>
+      );
       break;
     default:
-      title = <>
-        <h2>{mainTitle}</h2>
-        <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
-      </>;
+      title = (
+        <>
+          <h2>{mainTitle}</h2>
+          <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
+        </>
+      );
   }
 
   return (
@@ -59,19 +69,21 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
           />
         )}
         <div className={styles.BookInfo}>
-          <div className={styles.Rating}>
-            {displayStars(book.averageRating)}
-          </div>
+          <div className={styles.Rating}>{displayStars(book.averageRating)}</div>
           {title}
           <p>{book.author}</p>
           <p>{formatDate(book.date)}</p>
 
           {showDetails && book.editors?.length > 0 && (
-            <p><strong>{t('BookDisplay.Editors')} :</strong> {book.editors.join(', ')}</p>
+            <p>
+              <strong>{t('BookDisplay.Editors')} :</strong> {book.editors.join(', ')}
+            </p>
           )}
 
           {showDetails && book.categories?.length > 0 && (
-            <p><strong>{t('BookDisplay.Categories')} :</strong> {book.categories.join(', ')}</p>
+            <p>
+              <strong>{t('BookDisplay.Categories')} :</strong> {book.categories.join(', ')}
+            </p>
           )}
 
           {showDetails && book.summary && (
@@ -108,10 +120,12 @@ BookDisplay.propTypes = {
     cover_url: PropTypes.string,
     editors: PropTypes.arrayOf(PropTypes.string),
     averageRating: PropTypes.number,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.number,
-      score: PropTypes.number,
-    })),
+    ratings: PropTypes.arrayOf(
+      PropTypes.shape({
+        userId: PropTypes.number,
+        score: PropTypes.number,
+      })
+    ),
     summary: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,

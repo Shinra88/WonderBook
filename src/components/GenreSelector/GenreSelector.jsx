@@ -17,10 +17,12 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
       try {
         const res = await axios.get(API_ROUTES.CATEGORIES.GET_ALL);
         if (Array.isArray(res.data)) {
-          const cleaned = res.data.map((cat) => ({
-            id: cat.id ?? cat.categoryId,
-            name: cat.name
-          })).filter(cat => cat.id && cat.name);
+          const cleaned = res.data
+            .map(cat => ({
+              id: cat.id ?? cat.categoryId,
+              name: cat.name,
+            }))
+            .filter(cat => cat.id && cat.name);
           setCategories(cleaned);
         }
       } catch (err) {
@@ -34,12 +36,12 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
     setSelected(initialGenres);
   }, [initialGenres]);
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  const toggleDropdown = () => setIsOpen(prev => !prev);
 
-  const handleGenreToggle = (id) => {
-    setSelected((prev) => {
+  const handleGenreToggle = id => {
+    setSelected(prev => {
       if (prev.includes(id)) {
-        return prev.filter((g) => g !== id);
+        return prev.filter(g => g !== id);
       } else if (prev.length < 2) {
         return [...prev, id];
       }
@@ -52,7 +54,7 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
     setIsOpen(false);
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = event => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen(false);
     }
@@ -71,24 +73,24 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
     <div className={styles.genreSelectorContainer} ref={dropdownRef}>
       <button type="button" className={styles.dropdownButton} onClick={toggleDropdown}>
         {selected.length > 0
-          ? selected.map((id) => categories.find((c) => c.id === id)?.name).join(', ')
+          ? selected.map(id => categories.find(c => c.id === id)?.name).join(', ')
           : t('GenreSelector.SelectGenres')}
       </button>
 
       {isOpen && (
         <div className={styles.dropdownMenu}>
           <ul className={styles.genreList}>
-            {categories.map((cat) => (
+            {categories.map(cat => (
               <li key={`genre-${cat.id}`} className={styles.genreItem}>
                 <label htmlFor={`genre-${cat.id}`}>
-                <input
-                  id={`genre-${cat.id}`}
-                  type="checkbox"
-                  className="genreCheckbox"
-                  checked={selected.includes(cat.id)}
-                  onChange={() => handleGenreToggle(cat.id)}
-                  disabled={!selected.includes(cat.id) && selected.length >= 2}
-                />
+                  <input
+                    id={`genre-${cat.id}`}
+                    type="checkbox"
+                    className="genreCheckbox"
+                    checked={selected.includes(cat.id)}
+                    onChange={() => handleGenreToggle(cat.id)}
+                    disabled={!selected.includes(cat.id) && selected.length >= 2}
+                  />
                   {cat.name}
                 </label>
               </li>

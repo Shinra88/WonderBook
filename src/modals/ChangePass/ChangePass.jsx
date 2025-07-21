@@ -15,9 +15,10 @@ function ChangePass({ onClose, onSuccess }) {
   const [passwordStrength, setPasswordStrength] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { t } = useTranslation();
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={};':"\\|,.<>/?]).{8,}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={};':"\\|,.<>/?]).{8,}$/;
 
-  const getPasswordStrength = (password) => {
+  const getPasswordStrength = password => {
     let score = 0;
     if (password.length >= 8) score++;
     if (/[A-Z]/.test(password)) score++;
@@ -45,7 +46,7 @@ function ChangePass({ onClose, onSuccess }) {
     oldPassword && newPassword && confirmPassword && Object.keys(errors).length === 0;
 
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = event => {
       if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleEscape);
@@ -57,7 +58,7 @@ function ChangePass({ onClose, onSuccess }) {
     setPasswordStrength(getPasswordStrength(newPassword));
   }, [newPassword, confirmPassword]);
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = event => {
     if (event.target.classList.contains(styles.modalBackground)) onClose();
   };
 
@@ -97,7 +98,7 @@ function ChangePass({ onClose, onSuccess }) {
             type="password"
             id="oldPassword"
             value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
+            onChange={e => setOldPassword(e.target.value)}
           />
         </label>
 
@@ -108,18 +109,18 @@ function ChangePass({ onClose, onSuccess }) {
               type={showPassword ? 'text' : 'password'}
               id="newPassword"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={e => setNewPassword(e.target.value)}
               className={errors.password ? styles.invalid : ''}
             />
             <button
               type="button"
               className={styles.toggleBtn}
-              onClick={() => setShowPassword((prev) => !prev)}
+              onClick={() => setShowPassword(prev => !prev)}
             >
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
-        </label>          
+        </label>
         <small className={styles.errorText}>{errors.password || '\u00A0'}</small>
 
         <label htmlFor="confirmPassword">
@@ -128,25 +129,25 @@ function ChangePass({ onClose, onSuccess }) {
             type="password"
             id="confirmPassword"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={e => setConfirmPassword(e.target.value)}
             className={errors.confirmPassword ? styles.invalid : ''}
           />
         </label>
         <small className={styles.errorText}>{errors.confirmPassword || '\u00A0'}</small>
 
         {newPassword && (
-            <small
-              className={
-                passwordStrength === t('ChangePass.PasswordStrengthStrong')
-                  ? styles.strong
-                  : passwordStrength === t('ChangePass.PasswordStrengthMedium')
+          <small
+            className={
+              passwordStrength === t('ChangePass.PasswordStrengthStrong')
+                ? styles.strong
+                : passwordStrength === t('ChangePass.PasswordStrengthMedium')
                   ? styles.medium
                   : styles.weak
-              }
-            >
-              {t('ChangePass.PasswordStrength')} : {passwordStrength}
-            </small>
-          )}
+            }
+          >
+            {t('ChangePass.PasswordStrength')} : {passwordStrength}
+          </small>
+        )}
         <div className={styles.buttonContainer}>
           <button type="button" className={styles.cancelButton} onClick={onClose}>
             {t('ChangePass.Cancel')}

@@ -45,7 +45,9 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
 
   useEffect(() => {
     if (isUpdate && book) {
-      const [saga, title] = book.title.includes(':') ? book.title.split(':').map(p => p.trim()) : [null, book.title];
+      const [saga, title] = book.title.includes(':')
+        ? book.title.split(':').map(p => p.trim())
+        : [null, book.title];
       setHasSaga(!!saga);
       setSagaName(saga || '');
       setFormData({
@@ -57,37 +59,54 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
         cover_url: book.cover_url || '',
       });
       if (book.categories) {
-        const matchedIds = categories.filter(cat => book.categories.includes(cat.name) || book.categories.some(c => c.name === cat.name)).map(cat => cat.id || cat.categoryId);
+        const matchedIds = categories
+          .filter(
+            cat =>
+              book.categories.includes(cat.name) || book.categories.some(c => c.name === cat.name)
+          )
+          .map(cat => cat.id || cat.categoryId);
         setSelectedGenres(matchedIds);
       }
       if (book.editors) {
-        const match = publishers.find(pub => pub.name === book.editors[0] || book.editors.some(e => e.name === pub.name));
+        const match = publishers.find(
+          pub => pub.name === book.editors[0] || book.editors.some(e => e.name === pub.name)
+        );
         if (match) setSelectedPublisher(match.id || match.publisherId);
       }
     }
   }, [isUpdate, book, categories, publishers]);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = e => {
     const file = e.target.files[0];
     if (!file) return;
     setCoverFile(file);
     setCoverPreviewUrl(URL.createObjectURL(file));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
-    if (!formData.title || !formData.author || !formData.date || !selectedPublisher || selectedGenres.length === 0 || (!isUpdate && !recaptchaToken)) {
+    if (
+      !formData.title ||
+      !formData.author ||
+      !formData.date ||
+      !selectedPublisher ||
+      selectedGenres.length === 0 ||
+      (!isUpdate && !recaptchaToken)
+    ) {
       setNotification({ error: true, message: t('BookFormModal.RequiredFields') });
       return;
     }
 
-    const finalTitle = hasSaga && sagaName ? `${capitalize(sagaName)} : ${capitalize(formData.title)}` : capitalize(formData.title);
+    const finalTitle =
+      hasSaga && sagaName
+        ? `${capitalize(sagaName)} : ${capitalize(formData.title)}`
+        : capitalize(formData.title);
     const formattedDate = formData.date;
     let coverUrl = formData.cover_url || '';
 
@@ -96,9 +115,13 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
         if (isUpdate) {
           const formDataImage = new FormData();
           formDataImage.append('cover', coverFile);
-          const res = await api.put(API_ROUTES.BOOKS.UPDATE_COVER.replace(':id', book.bookId), formDataImage, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-          });
+          const res = await api.put(
+            API_ROUTES.BOOKS.UPDATE_COVER.replace(':id', book.bookId),
+            formDataImage,
+            {
+              headers: { 'Content-Type': 'multipart/form-data' },
+            }
+          );
           coverUrl = res.data.cover_url;
         } else {
           const uploadedUrl = await uploadImageToS3(coverFile, finalTitle);
@@ -144,10 +167,16 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
     }
   };
 
-  const isDisabled = !formData.title || !formData.author || !formData.date || !selectedPublisher || selectedGenres.length === 0 || (!isUpdate && (!recaptchaToken || !coverFile));
+  const isDisabled =
+    !formData.title ||
+    !formData.author ||
+    !formData.date ||
+    !selectedPublisher ||
+    selectedGenres.length === 0 ||
+    (!isUpdate && (!recaptchaToken || !coverFile));
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         onClose();
       }
@@ -163,13 +192,24 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
     <div className={styles.modalBackground}>
       <div ref={modalRef} className={styles.modalContent}>
         <h2>{isUpdate ? t('BookFormModal.UpdateBook') : t('BookFormModal.Add')}</h2>
-        {showToast && <ToastSuccess message={t(`BookFormModal.Book ${isUpdate ? 'Updated' : 'Added'} Successfully`)} />}
-        {!showToast && notification.message && <p className={styles.errorMessage}>{notification.message}</p>}
+        {showToast && (
+          <ToastSuccess
+            message={t(`BookFormModal.Book ${isUpdate ? 'Updated' : 'Added'} Successfully`)}
+          />
+        )}
+        {!showToast && notification.message && (
+          <p className={styles.errorMessage}>{notification.message}</p>
+        )}
 
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <div className={styles.formGroup}>
             <label>
-              <input type="checkbox" checked={hasSaga} onChange={(e) => setHasSaga(e.target.checked)} /> {t('BookFormModal.HasSaga')}
+              <input
+                type="checkbox"
+                checked={hasSaga}
+                onChange={e => setHasSaga(e.target.checked)}
+              />{' '}
+              {t('BookFormModal.HasSaga')}
             </label>
           </div>
 
@@ -177,32 +217,66 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
             <div className={styles.formGroup}>
               <label>{t('BookFormModal.SagaName')} :</label>
               <div className={styles.inputWrapper}>
-                <input type="text" value={sagaName} onChange={(e) => setSagaName(e.target.value)} className={styles.inputField} />
+                <input
+                  type="text"
+                  value={sagaName}
+                  onChange={e => setSagaName(e.target.value)}
+                  className={styles.inputField}
+                />
               </div>
             </div>
           )}
 
-          {[{ label: t('BookFormModal.Title'), name: 'title' }, { label: t('BookFormModal.Author'), name: 'author' }, { label: t('BookFormModal.PublicationDate'), name: 'date', type: 'date' }].map(({ label, name, type = 'text' }) => (
+          {[
+            { label: t('BookFormModal.Title'), name: 'title' },
+            { label: t('BookFormModal.Author'), name: 'author' },
+            { label: t('BookFormModal.PublicationDate'), name: 'date', type: 'date' },
+          ].map(({ label, name, type = 'text' }) => (
             <div key={name} className={styles.formGroup}>
               <label>{label} :</label>
               <div className={styles.inputWrapper}>
-                <input type={type} name={name} value={formData[name]} onChange={handleChange} className={styles.inputField} max={new Date().toISOString().split('T')[0]} />
+                <input
+                  type={type}
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  className={styles.inputField}
+                  max={new Date().toISOString().split('T')[0]}
+                />
               </div>
             </div>
           ))}
 
           <div className={styles.formGroup}>
-            <p className={styles.formatText}>{isUpdate ? t('BookFormModal.ReplaceCurrentCover') : t('BookFormModal.AddCoverImage')}</p>
-            <label htmlFor="attachment" className={styles.imageUpload} title={t('BookFormModal.ClickToAddCover')}>
+            <p className={styles.formatText}>
+              {isUpdate ? t('BookFormModal.ReplaceCurrentCover') : t('BookFormModal.AddCoverImage')}
+            </p>
+            <label
+              htmlFor="attachment"
+              className={styles.imageUpload}
+              title={t('BookFormModal.ClickToAddCover')}
+            >
               <div className={styles.imageContainer}>
                 {!coverPreviewUrl && formData.cover_url && isUpdate && (
-                  <img src={formData.cover_url} alt={t('BookFormModal.CurrentCover')} className={styles.coverPreview} />
+                  <img
+                    src={formData.cover_url}
+                    alt={t('BookFormModal.CurrentCover')}
+                    className={styles.coverPreview}
+                  />
                 )}
                 {!coverPreviewUrl && !formData.cover_url && (
-                  <img src={UploadIcon} alt={t('BookFormModal.UploadIcon')} className={styles.UploadIcon} />
+                  <img
+                    src={UploadIcon}
+                    alt={t('BookFormModal.UploadIcon')}
+                    className={styles.UploadIcon}
+                  />
                 )}
                 {coverPreviewUrl && (
-                  <img src={coverPreviewUrl} alt={t('BookFormModal.CoverPreview')} className={styles.coverPreview} />
+                  <img
+                    src={coverPreviewUrl}
+                    alt={t('BookFormModal.CoverPreview')}
+                    className={styles.coverPreview}
+                  />
                 )}
               </div>
               <input
@@ -219,7 +293,12 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
             <div className={styles.formGroup}>
               <label>{t('BookFormModal.Status')} :</label>
               <div className={styles.inputWrapper}>
-                <select name="status" value={formData.status} onChange={handleChange} className={styles.inputField}>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className={styles.inputField}
+                >
                   <option value="pending">{t('BookFormModal.Status.Pending')}</option>
                   <option value="validated">{t('BookFormModal.Status.Validated')}</option>
                 </select>
@@ -230,17 +309,27 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
           <div className={styles.formGroup}>
             <label>{t('BookFormModal.Genres')} :</label>
             <div className={styles.genreButtonWrapper}>
-              <GenreSelector categories={categories} onGenresSelect={setSelectedGenres} initialGenres={selectedGenres} />
+              <GenreSelector
+                categories={categories}
+                onGenresSelect={setSelectedGenres}
+                initialGenres={selectedGenres}
+              />
             </div>
           </div>
 
           <div className={styles.formGroup}>
             <label>{t('BookFormModal.Publisher')} :</label>
             <div className={styles.inputWrapper}>
-              <select className={styles.inputField} value={selectedPublisher} onChange={(e) => setSelectedPublisher(Number(e.target.value))}>
+              <select
+                className={styles.inputField}
+                value={selectedPublisher}
+                onChange={e => setSelectedPublisher(Number(e.target.value))}
+              >
                 <option value="">{t('BookFormModal.Publisher')}</option>
-                {publishers.map((pub) => (
-                  <option key={pub.id} value={pub.id}>{pub.name}</option>
+                {publishers.map(pub => (
+                  <option key={pub.id} value={pub.id}>
+                    {pub.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -249,19 +338,33 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
           <div className={styles.formGroup}>
             <label>{t('BookFormModal.Summary')} :</label>
             <div className={styles.inputWrapper}>
-              <textarea name="summary" value={formData.summary} onFocus={() => setIsExpanded(true)} onBlur={() => setIsExpanded(false)} onChange={handleChange} className={`${styles.inputField} ${styles.textarea} ${isExpanded ? styles.expanded : ''}`} />
+              <textarea
+                name="summary"
+                value={formData.summary}
+                onFocus={() => setIsExpanded(true)}
+                onBlur={() => setIsExpanded(false)}
+                onChange={handleChange}
+                className={`${styles.inputField} ${styles.textarea} ${isExpanded ? styles.expanded : ''}`}
+              />
             </div>
           </div>
 
           {!isUpdate && (
             <div className={styles.formGroup}>
-              <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={(token) => setRecaptchaToken(token)} />
+              <ReCAPTCHA
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                onChange={token => setRecaptchaToken(token)}
+              />
             </div>
           )}
 
           <div className={styles.buttonGroup}>
-            <button type="submit" className={styles.validate} disabled={isDisabled}>{isUpdate ? t('BookFormModal.Update') : t('BookFormModal.Add')}</button>
-            <button type="button" onClick={onClose} className={styles.cancel}>{t('BookFormModal.Cancel')}</button>
+            <button type="submit" className={styles.validate} disabled={isDisabled}>
+              {isUpdate ? t('BookFormModal.Update') : t('BookFormModal.Add')}
+            </button>
+            <button type="button" onClick={onClose} className={styles.cancel}>
+              {t('BookFormModal.Cancel')}
+            </button>
           </div>
         </form>
       </div>

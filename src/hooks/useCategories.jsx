@@ -10,14 +10,14 @@ export default function useCategories() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await api.get("/categories");
-        const formatted = res.data.map((cat) => ({
+        const res = await api.get('/categories');
+        const formatted = res.data.map(cat => ({
           id: cat.categoryId,
           name: cat.name,
         }));
         setCategories(formatted);
       } catch (err) {
-        console.error("Erreur lors de la récupération des catégories :", err);
+        console.error('Erreur lors de la récupération des catégories :', err);
         setError(err);
       } finally {
         setLoading(false);

@@ -12,8 +12,8 @@ function NotFound() {
       <div className={styles.banner} style={backgroundImageStyle} />
       <main className={styles.main}>
         <section className={styles.errorNotice}>
-            <h2>{t('NotFound.Error404')}</h2>
-            <h4>{t('NotFound.PageNotFound')}</h4>
+          <h2>{t('NotFound.Error404')}</h2>
+          <h4>{t('NotFound.PageNotFound')}</h4>
         </section>
       </main>
     </div>

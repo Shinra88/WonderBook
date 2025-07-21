@@ -9,17 +9,20 @@ function BestRatedBooks() {
   const { selectedCategories, selectedYear, selectedType } = useFilters();
   const scrollRef = useRef(null);
   const { t } = useTranslation();
-  const filters = useMemo(() => ({
-    categories: selectedCategories,
-    year: typeof selectedYear === 'string' ? selectedYear : '',
-    start: selectedYear?.start,
-    end: selectedYear?.end,
-    type: selectedType,
-  }), [selectedCategories, selectedYear, selectedType]);
+  const filters = useMemo(
+    () => ({
+      categories: selectedCategories,
+      year: typeof selectedYear === 'string' ? selectedYear : '',
+      start: selectedYear?.start,
+      end: selectedYear?.end,
+      type: selectedType,
+    }),
+    [selectedCategories, selectedYear, selectedType]
+  );
 
   const { bestRatedBooks, loading } = useBestRatedBooks(filters);
 
-  const scroll = (direction) => {
+  const scroll = direction => {
     if (!scrollRef.current) return;
     const scrollAmount = 300;
     scrollRef.current.scrollBy({
@@ -32,11 +35,7 @@ function BestRatedBooks() {
     <h3>{t('BookDisplay.Loading')}</h3>
   ) : bestRatedBooks.length > 0 ? (
     bestRatedBooks.map((book, index) => (
-      <BookDisplay
-        key={`book-${book.bookId ?? `fallback-${index}`}`}
-        book={book}
-        size={3}
-      />
+      <BookDisplay key={`book-${book.bookId ?? `fallback-${index}`}`} book={book} size={3} />
     ))
   ) : (
     <h3>{t('BookDisplay.NoBooksFound')}</h3>

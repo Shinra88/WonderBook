@@ -10,7 +10,7 @@ function appendFiltersToParams(params, filters = {}) {
     params.append('end', filters.end);
   }
   if (filters.categories?.length) {
-    filters.categories.forEach((cat) => params.append('categories', cat));
+    filters.categories.forEach(cat => params.append('categories', cat));
   }
   if (filters.type) params.append('type', filters.type);
   if (filters.search) params.append('search', filters.search);
@@ -30,7 +30,7 @@ export async function getBooks(filters = {}, page = 1, limit = 10) {
     const response = await api.get(`${API_ROUTES.BOOKS.BASE}?${params.toString()}`);
     return response.data;
   } catch (err) {
-    console.error("Erreur lors de la récupération des livres :", err);
+    console.error('Erreur lors de la récupération des livres :', err);
     return { books: [], total: 0 };
   }
 }
@@ -41,7 +41,7 @@ export async function getBook(id) {
     const response = await api.get(`${API_ROUTES.BOOKS.BASE}/${id}`);
     return response.data;
   } catch (err) {
-    console.error("Erreur lors de la récupération du livre :", err);
+    console.error('Erreur lors de la récupération du livre :', err);
     return null;
   }
 }
@@ -55,7 +55,7 @@ export async function getBestRatedBooks(filters = {}) {
     const response = await api.get(`${API_ROUTES.BOOKS.BEST_RATED}?${params.toString()}`);
     return response.data;
   } catch (err) {
-    console.error("Erreur lors de la récupération des meilleurs livres :", err);
+    console.error('Erreur lors de la récupération des meilleurs livres :', err);
     return [];
   }
 }
@@ -69,7 +69,7 @@ export async function getLastAddedBooks(filters = {}) {
     const response = await api.get(`${API_ROUTES.BOOKS.LAST_ADDED}?${params.toString()}`);
     return response.data;
   } catch (err) {
-    console.error("Erreur lors des derniers livres :", err);
+    console.error('Erreur lors des derniers livres :', err);
     return [];
   }
 }
@@ -80,7 +80,7 @@ export async function deleteBook(id) {
     await api.delete(`${API_ROUTES.BOOKS.BASE}/${id}`);
     return true;
   } catch (err) {
-    console.error("Erreur lors de la suppression du livre :", err);
+    console.error('Erreur lors de la suppression du livre :', err);
     return false;
   }
 }
@@ -106,7 +106,7 @@ export async function addBook(data) {
     const response = await api.post(API_ROUTES.BOOKS.BASE, bodyFormData);
     return response.data;
   } catch (err) {
-    console.error("Erreur ajout livre :", err);
+    console.error('Erreur ajout livre :', err);
     return { error: true, message: err.message };
   }
 }
@@ -135,7 +135,7 @@ export async function updateBook(data, id) {
     const response = await api.put(`${API_ROUTES.BOOKS.BASE}/${id}`, newData);
     return response.data;
   } catch (err) {
-    console.error("Erreur mise à jour livre :", err);
+    console.error('Erreur mise à jour livre :', err);
     return { error: true, message: err.message };
   }
 }
@@ -147,18 +147,18 @@ export async function rateBook(bookId, userId, rating) {
     const response = await api.post(`${API_ROUTES.BOOKS.BASE}/${bookId}/rating`, data);
     return response.data;
   } catch (err) {
-    console.error("Erreur notation livre :", err);
+    console.error('Erreur notation livre :', err);
     return err.message;
   }
 }
 
 // ✅ Retrieves a book by its title
-export const getBookByTitle = async (title) => {
+export const getBookByTitle = async title => {
   try {
     const response = await api.get(`${API_ROUTES.BOOKS.BASE}/title/${encodeURIComponent(title)}`);
     return response.data;
   } catch (error) {
-    console.error("Erreur lors de la récupération du livre par titre :", error);
+    console.error('Erreur lors de la récupération du livre par titre :', error);
     return null;
   }
 };
@@ -170,7 +170,7 @@ export async function updateBookInfo(id, data) {
     const response = await api.put(`${API_ROUTES.BOOKS.BASE}/${id}`, data);
     return response.data;
   } catch (err) {
-    console.error("Erreur mise à jour du livre :", err);
+    console.error('Erreur mise à jour du livre :', err);
     return { error: true, message: err.message };
   }
 }

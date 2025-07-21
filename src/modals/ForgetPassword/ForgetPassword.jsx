@@ -44,14 +44,20 @@ function ForgetPassword({ token }) {
         setNotification({ error: false, message: t('ForgetPassword.SuccessMessage') });
 
         setTimeout(() => {
-            window.location.href = '/';
+          window.location.href = '/';
         }, 2000);
       } else {
-        setNotification({ error: true, message: response.data.message || t('ForgetPassword.UnknownError') });
+        setNotification({
+          error: true,
+          message: response.data.message || t('ForgetPassword.UnknownError'),
+        });
       }
     } catch (err) {
       console.error('Erreur reset password :', err);
-      setNotification({ error: true, message: err.response?.data?.message || t('ForgetPassword.ServerError') });
+      setNotification({
+        error: true,
+        message: err.response?.data?.message || t('ForgetPassword.ServerError'),
+      });
     } finally {
       setIsLoading(false);
     }
@@ -69,36 +75,36 @@ function ForgetPassword({ token }) {
             {notification.message}
           </div>
         )}
-  
+
         <label htmlFor="newPassword">
           {t('ForgetPassword.NewPasswordLabel')}
           <input
             type="password"
             id="newPassword"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={e => setNewPassword(e.target.value)}
             placeholder="Votre nouveau mot de passe"
           />
         </label>
-  
+
         <label htmlFor="confirmPassword">
           {t('ForgetPassword.ConfirmPasswordLabel')}
           <input
             type="password"
             id="confirmPassword"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={e => setConfirmPassword(e.target.value)}
             placeholder="Confirmez votre nouveau mot de passe"
           />
         </label>
-  
+
         <div className={styles.recaptchaContainer}>
           <ReCAPTCHA
             sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            onChange={(token) => setRecaptchaToken(token)}
+            onChange={token => setRecaptchaToken(token)}
           />
         </div>
-  
+
         <button
           type="button"
           onClick={handleResetPassword}
@@ -109,7 +115,7 @@ function ForgetPassword({ token }) {
         </button>
       </div>
     </div>
-  );  
+  );
 }
 
 ForgetPassword.propTypes = {

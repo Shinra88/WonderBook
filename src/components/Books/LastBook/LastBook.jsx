@@ -7,7 +7,7 @@ import styles from './LastBook.module.css';
 function LastBooks({ lastAddedBooks = [], loading = false }) {
   const scrollRef = useRef(null);
   const { t } = useTranslation();
-  const scroll = (direction) => {
+  const scroll = direction => {
     if (!scrollRef.current) return;
     const scrollAmount = 300;
     scrollRef.current.scrollBy({
@@ -18,17 +18,14 @@ function LastBooks({ lastAddedBooks = [], loading = false }) {
 
   if (loading) return <h3>{t('BookDisplay.Loading')}</h3>;
 
-  const content = lastAddedBooks.length > 0 ? (
-    lastAddedBooks.map((book, index) => (
-      <BookDisplay
-        key={`book-${book.bookId ?? `fallback-${index}`}`}
-        book={book}
-        size={3}
-      />
-    ))
-  ) : (
-    <h3>{t('BookDisplay.NoBooksFound')}</h3>
-  );
+  const content =
+    lastAddedBooks.length > 0 ? (
+      lastAddedBooks.map((book, index) => (
+        <BookDisplay key={`book-${book.bookId ?? `fallback-${index}`}`} book={book} size={3} />
+      ))
+    ) : (
+      <h3>{t('BookDisplay.NoBooksFound')}</h3>
+    );
 
   return (
     <section className={styles.LastBook}>

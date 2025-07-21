@@ -55,7 +55,7 @@ function TopicDetail() {
         setTopic(fetchedTopic);
         setPosts(fetchedPosts);
       } catch (error) {
-        console.error(t("ErrorFetchingDatas", error));
+        console.error(t('ErrorFetchingDatas', error));
       }
     }
 
@@ -67,7 +67,7 @@ function TopicDetail() {
       const updatedPosts = await getPostsByTopicId(topicId);
       setPosts(updatedPosts);
     } catch (error) {
-      console.error(t("ErrorRefreshTopics", error));
+      console.error(t('ErrorRefreshTopics', error));
     }
   };
 
@@ -78,72 +78,74 @@ function TopicDetail() {
   const canModerate = user?.role === 'admin' || user?.role === 'moderator';
 
   function parseContent(content) {
-  const spoilerRegex = /\[spoiler](.*?)\[\/spoiler]/gi;
-  const boldRegex = /\[b](.*?)\[\/b]/gi;
-  const italicRegex = /\[i](.*?)\[\/i]/gi;
-  const underlineRegex = /\[u](.*?)\[\/u]/gi;
-  const strikethroughRegex = /\[s](.*?)\[\/s]/gi;
+    const spoilerRegex = /\[spoiler](.*?)\[\/spoiler]/gi;
+    const boldRegex = /\[b](.*?)\[\/b]/gi;
+    const italicRegex = /\[i](.*?)\[\/i]/gi;
+    const underlineRegex = /\[u](.*?)\[\/u]/gi;
+    const strikethroughRegex = /\[s](.*?)\[\/s]/gi;
 
-  const parseLine = (line, index) => {
-    const matches = { spoiler: [], b: [], i: [], u: [], s: [] };
+    const parseLine = (line, index) => {
+      const matches = { spoiler: [], b: [], i: [], u: [], s: [] };
 
-    let tempLine = line
-      .replace(spoilerRegex, (_, p1) => {
-        matches.spoiler.push(p1);
-        return `__SPOILER__${matches.spoiler.length - 1}__`;
-      })
-      .replace(boldRegex, (_, p1) => {
-        matches.b.push(p1);
-        return `__BOLD__${matches.b.length - 1}__`;
-      })
-      .replace(italicRegex, (_, p1) => {
-        matches.i.push(p1);
-        return `__ITALIC__${matches.i.length - 1}__`;
-      })
-      .replace(underlineRegex, (_, p1) => {
-        matches.u.push(p1);
-        return `__UNDERLINE__${matches.u.length - 1}__`;
-      })
-      .replace(strikethroughRegex, (_, p1) => {
-        matches.s.push(p1);
-        return `__STRIKE__${matches.s.length - 1}__`;
-      });
+      let tempLine = line
+        .replace(spoilerRegex, (_, p1) => {
+          matches.spoiler.push(p1);
+          return `__SPOILER__${matches.spoiler.length - 1}__`;
+        })
+        .replace(boldRegex, (_, p1) => {
+          matches.b.push(p1);
+          return `__BOLD__${matches.b.length - 1}__`;
+        })
+        .replace(italicRegex, (_, p1) => {
+          matches.i.push(p1);
+          return `__ITALIC__${matches.i.length - 1}__`;
+        })
+        .replace(underlineRegex, (_, p1) => {
+          matches.u.push(p1);
+          return `__UNDERLINE__${matches.u.length - 1}__`;
+        })
+        .replace(strikethroughRegex, (_, p1) => {
+          matches.s.push(p1);
+          return `__STRIKE__${matches.s.length - 1}__`;
+        });
 
-    return (
-      <div key={index} style={{ marginBottom: '0.5em' }}>
-        {tempLine.split(/(__[A-Z]+__\d+__)/).map((part, i) => {
-          if (part.startsWith('__SPOILER__')) {
-            const id = +part.match(/\d+/)[0];
-            return (
-              <Spoiler key={`sp-${index}-${i}`} content={<>{parseContent(matches.spoiler[id])}</>} />
-            );
-          }
-          if (part.startsWith('__BOLD__')) {
-            const id = +part.match(/\d+/)[0];
-            return <strong key={`b-${index}-${i}`}>{matches.b[id]}</strong>;
-          }
-          if (part.startsWith('__ITALIC__')) {
-            const id = +part.match(/\d+/)[0];
-            return <em key={`i-${index}-${i}`}>{matches.i[id]}</em>;
-          }
-          if (part.startsWith('__UNDERLINE__')) {
-            const id = +part.match(/\d+/)[0];
-            return <u key={`u-${index}-${i}`}>{matches.u[id]}</u>;
-          }
-          if (part.startsWith('__STRIKE__')) {
-            const id = +part.match(/\d+/)[0];
-            return <s key={`s-${index}-${i}`}>{matches.s[id]}</s>;
-          }
-          return <span key={`t-${index}-${i}`}>{part}</span>;
-        })}
-      </div>
-    );
-  };
+      return (
+        <div key={index} style={{ marginBottom: '0.5em' }}>
+          {tempLine.split(/(__[A-Z]+__\d+__)/).map((part, i) => {
+            if (part.startsWith('__SPOILER__')) {
+              const id = +part.match(/\d+/)[0];
+              return (
+                <Spoiler
+                  key={`sp-${index}-${i}`}
+                  content={<>{parseContent(matches.spoiler[id])}</>}
+                />
+              );
+            }
+            if (part.startsWith('__BOLD__')) {
+              const id = +part.match(/\d+/)[0];
+              return <strong key={`b-${index}-${i}`}>{matches.b[id]}</strong>;
+            }
+            if (part.startsWith('__ITALIC__')) {
+              const id = +part.match(/\d+/)[0];
+              return <em key={`i-${index}-${i}`}>{matches.i[id]}</em>;
+            }
+            if (part.startsWith('__UNDERLINE__')) {
+              const id = +part.match(/\d+/)[0];
+              return <u key={`u-${index}-${i}`}>{matches.u[id]}</u>;
+            }
+            if (part.startsWith('__STRIKE__')) {
+              const id = +part.match(/\d+/)[0];
+              return <s key={`s-${index}-${i}`}>{matches.s[id]}</s>;
+            }
+            return <span key={`t-${index}-${i}`}>{part}</span>;
+          })}
+        </div>
+      );
+    };
 
-  return content.split('\n').map(parseLine);
-}
+    return content.split('\n').map(parseLine);
+  }
 
-  
   return (
     <div id="topPage" className={styles.TopicDetail}>
       <div className={styles.banner} style={backgroundImageStyle} />
@@ -151,105 +153,102 @@ function TopicDetail() {
         {showToast && <ToastSuccess message={toastMessage} />}
         <header className={styles.head}>
           <section className={styles.title_container}>
-          <div className={styles.backArrowWrapper}>
-            <BackArrow />
-          </div>
-
-          {user && !topic.locked && (
-            <>
-              <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
-                {t('TopicDetail.AnswerTopic')}
-              </button>
-              {isModalOpen && (
-                <PostModal
-                  topicId={topicId}
-                  onClose={() => setIsModalOpen(false)}
-                  onSuccess={handleSuccess}
-                />
-              )}
-            </>
-          )}
-
-          {user && topic.locked && (
-            <h3 className={styles.lockedMessage}>{t('TopicDetail.LockedMessage')}</h3>
-          )}
-
-
-
-          <h2>{topic.title}</h2>
-
-          <div className={styles.searchBar}>
-            <div className={styles.inputSearch}>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                placeholder={t('TopicDetail.SearchPlaceholder')}
-              />
-              <button type="button">
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </button>
+            <div className={styles.backArrowWrapper}>
+              <BackArrow />
             </div>
-          </div>
+
+            {user && !topic.locked && (
+              <>
+                <button onClick={() => setIsModalOpen(true)} className={styles.createButton}>
+                  {t('TopicDetail.AnswerTopic')}
+                </button>
+                {isModalOpen && (
+                  <PostModal
+                    topicId={topicId}
+                    onClose={() => setIsModalOpen(false)}
+                    onSuccess={handleSuccess}
+                  />
+                )}
+              </>
+            )}
+
+            {user && topic.locked && (
+              <h3 className={styles.lockedMessage}>{t('TopicDetail.LockedMessage')}</h3>
+            )}
+
+            <h2>{topic.title}</h2>
+
+            <div className={styles.searchBar}>
+              <div className={styles.inputSearch}>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder={t('TopicDetail.SearchPlaceholder')}
+                />
+                <button type="button">
+                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                </button>
+              </div>
+            </div>
           </section>
           {canModerate && (
             <>
-            <aside className={styles.btn_container}>
-          
-              <button
-                className={styles.lockButton}
-                onClick={async () => {
-                  try {
-                    const res = await toggleTopicLock(topic._id, user.token);
-                    setTopic(prev => ({ ...prev, locked: res.locked }));
-                  } catch (err) {
-                    alert(t("ErrorToggleLock", err));
-                  }
-                }}
-              >
-                {topic.locked ? t("TopicDetail.Unlock") : t("TopicDetail.Lock")}
-              </button>
+              <aside className={styles.btn_container}>
+                <button
+                  className={styles.lockButton}
+                  onClick={async () => {
+                    try {
+                      const res = await toggleTopicLock(topic._id, user.token);
+                      setTopic(prev => ({ ...prev, locked: res.locked }));
+                    } catch (err) {
+                      alert(t('ErrorToggleLock', err));
+                    }
+                  }}
+                >
+                  {topic.locked ? t('TopicDetail.Unlock') : t('TopicDetail.Lock')}
+                </button>
 
-              <button
-                className={styles.pinButton}
-                onClick={async () => {
-                  try {
-                    await updateTopicNotice(topic._id, user.token);
-                    setTopic(prev => ({ ...prev, notice: !prev.notice }));
-                  } catch (err) {
-                    alert(t("ErrorTogglePin", err));
-                    console.error(err);
-                  }
-                }}
-              >
-                {topic.notice ? t("TopicDetail.Unpin") : t("TopicDetail.Pin")}
-              </button>
+                <button
+                  className={styles.pinButton}
+                  onClick={async () => {
+                    try {
+                      await updateTopicNotice(topic._id, user.token);
+                      setTopic(prev => ({ ...prev, notice: !prev.notice }));
+                    } catch (err) {
+                      alert(t('ErrorTogglePin', err));
+                      console.error(err);
+                    }
+                  }}
+                >
+                  {topic.notice ? t('TopicDetail.Unpin') : t('TopicDetail.Pin')}
+                </button>
 
-              <button
-                className={styles.deleteTopicButton}
-                onClick={async () => {
-                  const confirmDelete = window.confirm(t("TopicDetail.ConfirmDelete"));
-                  if (!confirmDelete) return;
+                <button
+                  className={styles.deleteTopicButton}
+                  onClick={async () => {
+                    const confirmDelete = window.confirm(t('TopicDetail.ConfirmDelete'));
+                    if (!confirmDelete) return;
 
-                  try {
-                    await deleteTopic(topic._id, user.token);
-                    setToastMessage(t("TopicDetail.DeleteSuccess"));
-                    setShowToast(true);
-                    setTimeout(() => {
-                      setShowToast(false);
-                      window.location.href = "/Forum";
-                    }, 2000);
-                  } catch (err) {
-                    alert(t("TopicDetail.ErrorDelete", err));
-                  }
-                }}
-              >
-                {t("TopicDetail.Delete")}
-              </button>
-            </aside>
+                    try {
+                      await deleteTopic(topic._id, user.token);
+                      setToastMessage(t('TopicDetail.DeleteSuccess'));
+                      setShowToast(true);
+                      setTimeout(() => {
+                        setShowToast(false);
+                        window.location.href = '/Forum';
+                      }, 2000);
+                    } catch (err) {
+                      alert(t('TopicDetail.ErrorDelete', err));
+                    }
+                  }}
+                >
+                  {t('TopicDetail.Delete')}
+                </button>
+              </aside>
             </>
           )}
         </header>
@@ -262,17 +261,22 @@ function TopicDetail() {
                 alt="Avatar"
                 className={styles.avatar}
               />
-              <p><strong>{t("TopicDetail.Author")} :</strong> {topic.authorName}</p>
-              <p><strong>{t("TopicDetail.CreatedOn")} :</strong> {new Date(topic.created_at).toLocaleDateString()}</p>
+              <p>
+                <strong>{t('TopicDetail.Author')} :</strong> {topic.authorName}
+              </p>
+              <p>
+                <strong>{t('TopicDetail.CreatedOn')} :</strong>{' '}
+                {new Date(topic.created_at).toLocaleDateString()}
+              </p>
             </div>
             <div className={styles.authorContent}>
-            {topic.content.split('\n').map((line, index) => (
-              <p key={index}>{line}</p>
-            ))}
+              {topic.content.split('\n').map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
             </div>
           </div>
 
-          <h3>{t("TopicDetail.Replies")} :</h3>
+          <h3>{t('TopicDetail.Replies')} :</h3>
           <ul>
             {currentPosts.length > 0 ? (
               currentPosts.map(post => (
@@ -284,8 +288,13 @@ function TopicDetail() {
                         alt="Avatar"
                         className={styles.avatar}
                       />
-                      <p><strong>{post.userName}</strong></p>
-                      <p><strong>{t("TopicDetail.CreatedOn")} :</strong> {new Date(post.created_at).toLocaleDateString()}</p>
+                      <p>
+                        <strong>{post.userName}</strong>
+                      </p>
+                      <p>
+                        <strong>{t('TopicDetail.CreatedOn')} :</strong>{' '}
+                        {new Date(post.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                     {canModerate && (
                       <button
@@ -294,15 +303,15 @@ function TopicDetail() {
                           try {
                             await deletePost(post._id, user.token);
                             setPosts(prev => prev.filter(p => p._id !== post._id));
-                            setToastMessage("Post supprimé avec succès ✅");
+                            setToastMessage('Post supprimé avec succès ✅');
                             setShowToast(true);
                             setTimeout(() => setShowToast(false), 2000);
                           } catch {
-                            alert("Erreur lors de la suppression.");
+                            alert('Erreur lors de la suppression.');
                           }
                         }}
                       >
-                        {t("TopicDetail.Delete")}
+                        {t('TopicDetail.Delete')}
                       </button>
                     )}
                     <div className={styles.postContent}>
@@ -312,11 +321,13 @@ function TopicDetail() {
                 </li>
               ))
             ) : (
-              <p>{t("TopicDetail.NoReplies")}</p>
+              <p>{t('TopicDetail.NoReplies')}</p>
             )}
           </ul>
           <div className={styles.up_container}>
-            <a href="#topPage" className={styles.up}>{t("TopicDetail.BackToTop")}</a>
+            <a href="#topPage" className={styles.up}>
+              {t('TopicDetail.BackToTop')}
+            </a>
           </div>
 
           {totalPages > 1 && (

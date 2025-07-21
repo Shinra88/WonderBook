@@ -21,7 +21,7 @@ const resources = {
   zh: { translation: translationZH },
   ja: { translation: translationJA },
   ko: { translation: translationKO },
-  ru: { translation: translationRU }
+  ru: { translation: translationRU },
 };
 
 i18n
@@ -31,8 +31,8 @@ i18n
     resources,
     fallbackLng: 'fr',
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   });
 
 export default i18n;

@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       setUser({ ...storedUser, token });
     } else {
-      logout(); 
+      logout();
     }
   }, []);
 

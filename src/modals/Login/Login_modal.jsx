@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ReCAPTCHA from "react-google-recaptcha";
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useAuth } from '../../hooks/useAuth';
 import api from '../../services/api/api';
 import { useTranslation } from 'react-i18next';
@@ -16,26 +16,23 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = event => {
       if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
 
-  const isLoginValid = 
-    recaptchaToken && 
-    email.trim() !== '' && 
-    password.trim() !== '' && 
-    honeypot === '';
+  const isLoginValid =
+    recaptchaToken && email.trim() !== '' && password.trim() !== '' && honeypot === '';
 
   const handleLogin = async () => {
     if (!recaptchaToken) {
-      alert("Veuillez valider le CAPTCHA.");
+      alert('Veuillez valider le CAPTCHA.');
       return;
     }
     if (honeypot) {
-      console.warn("Bot détecté");
+      console.warn('Bot détecté');
       return;
     }
 
@@ -66,7 +63,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
   return (
     <div
       className={styles.Login}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={e => e.target === e.currentTarget && onClose()}
       role="presentation"
     >
       <div className={styles.Form}>
@@ -78,7 +75,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             disabled={!recaptchaToken}
           />
         </label>
@@ -89,7 +86,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             disabled={!recaptchaToken}
           />
         </label>
@@ -102,13 +99,13 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
           autoComplete="off"
           tabIndex="-1"
           value={honeypot}
-          onChange={(e) => setHoneypot(e.target.value)}
+          onChange={e => setHoneypot(e.target.value)}
         />
 
         <div className={styles.recaptchaWrapper}>
           <ReCAPTCHA
             sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            onChange={(token) => setRecaptchaToken(token)}
+            onChange={token => setRecaptchaToken(token)}
           />
         </div>
 
@@ -119,11 +116,25 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
         )}
 
         <div className={styles.Option}>
-          <button type="button" className={styles.LinkButton} onClick={() => { onClose(); openForgetPassword(); }}>
+          <button
+            type="button"
+            className={styles.LinkButton}
+            onClick={() => {
+              onClose();
+              openForgetPassword();
+            }}
+          >
             {t('Login.ForgotPassword')}
           </button>
           <p>{t('Login.Or')}</p>
-          <button type="button" className={styles.LinkButton} onClick={() => { onClose(); openRegister(); }}>
+          <button
+            type="button"
+            className={styles.LinkButton}
+            onClick={() => {
+              onClose();
+              openRegister();
+            }}
+          >
             {t('Login.CreateAccount')}
           </button>
         </div>
