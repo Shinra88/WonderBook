@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -58,11 +58,6 @@ function Header() {
     const normalized = normalize(inputValue.trim());
     setSearchQuery(normalized);
 
-    setTimeout(() => {
-      const el = document.getElementById('filters');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-
     if (location.pathname !== '/') {
       navigate('/#filters');
     }
@@ -78,6 +73,23 @@ function Header() {
     logout();
     navigate('/');
   };
+
+  // 👇 Scroll automatique si on est sur la page d’accueil
+  useEffect(() => {
+    let isMounted = true;
+
+    const timeout = setTimeout(() => {
+      if (isMounted && location.pathname === '/') {
+        const el = document.getElementById('filters');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeout);
+    };
+  }, [location.pathname]);
 
   return (
     <header className={styles.Header}>
@@ -231,6 +243,7 @@ function Header() {
           )}
         </div>
       </div>
+
       {showTestFormModal && (
         <BookFormModal
           mode="add"
@@ -243,6 +256,7 @@ function Header() {
           onClose={() => setShowTestFormModal(false)}
         />
       )}
+
       {showLogin && (
         <LoginModal
           onClose={closeAllModals}

@@ -1,5 +1,5 @@
 // src/components/Header/Header.test.jsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
@@ -52,12 +52,16 @@ describe('Header Component', () => {
     vi.clearAllMocks();
     i18n.changeLanguage('fr');
 
-    // Reset mocks before each test
     mockUseAuth = {
       user: null,
       isAuthenticated: false,
       logout: vi.fn(),
     };
+  });
+
+  afterEach(() => {
+    vi.useRealTimers(); // assure que tous les timers sont restaurés
+    vi.clearAllTimers(); // évite les setTimeout encore en attente
   });
 
   describe('Rendering', () => {
@@ -81,21 +85,23 @@ describe('Header Component', () => {
       expect(screen.getByRole('button', { name: /inscription|register/i })).toBeInTheDocument();
     });
 
-    it('should show user menu when authenticated', () => {
+    it('should show user menu when authenticated', async () => {
       mockUseAuth.isAuthenticated = true;
       mockUseAuth.user = { name: 'John Doe', avatar: 'avatar.png' };
+
       renderHeader();
 
-      expect(screen.getByText(/john doe/i)).toBeInTheDocument();
+      expect(await screen.findByText(/john doe/i)).toBeInTheDocument();
       expect(screen.getByAltText(/avatar utilisateur/i)).toBeInTheDocument();
     });
 
-    it('should show admin link for admin users', () => {
+    it('should show admin link for admin users', async () => {
       mockUseAuth.isAuthenticated = true;
       mockUseAuth.user = { name: 'Admin', role: 'admin' };
+
       renderHeader();
 
-      expect(screen.getByRole('link', { name: /admin/i })).toBeInTheDocument();
+      expect(await screen.findByRole('link', { name: /admin/i })).toBeInTheDocument();
     });
   });
 
@@ -125,8 +131,9 @@ describe('Header Component', () => {
       renderHeader();
 
       const input = screen.getByPlaceholderText(/rechercher/i);
-      const button = input.nextSibling; // assuming the search button is next to input
       fireEvent.change(input, { target: { value: 'click search' } });
+
+      const button = screen.getByRole('button', { name: /rechercher|search/i });
       fireEvent.click(button);
 
       await waitFor(() => {
@@ -162,7 +169,9 @@ describe('Header Component', () => {
       const profilButton = await screen.findByRole('button', { name: /profil/i });
       fireEvent.click(profilButton);
 
-      expect(mockNavigate).toHaveBeenCalledWith('/Account');
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/Account');
+      });
     });
 
     it('should logout user', async () => {
@@ -174,8 +183,10 @@ describe('Header Component', () => {
       const logoutButton = await screen.findByRole('button', { name: /déconnexion/i });
       fireEvent.click(logoutButton);
 
-      expect(mockUseAuth.logout).toHaveBeenCalled();
-      expect(mockNavigate).toHaveBeenCalledWith('/');
+      await waitFor(() => {
+        expect(mockUseAuth.logout).toHaveBeenCalled();
+        expect(mockNavigate).toHaveBeenCalledWith('/');
+      });
     });
   });
 });
