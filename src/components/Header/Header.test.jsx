@@ -22,6 +22,18 @@ const mockUseFilters = {
   selectedYear: '',
 };
 
+// --- MOCK useCategories ---
+vi.mock('../../hooks/useCategories', () => ({
+  default: () => ({
+    categories: [
+      { id: 1, name: 'Catégorie 1' },
+      { id: 2, name: 'Catégorie 2' },
+    ],
+    loading: false,
+    error: null,
+  }),
+}));
+
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
@@ -60,8 +72,8 @@ describe('Header Component', () => {
   });
 
   afterEach(() => {
-    vi.useRealTimers(); // assure que tous les timers sont restaurés
-    vi.clearAllTimers(); // évite les setTimeout encore en attente
+    vi.useRealTimers();
+    vi.clearAllTimers();
   });
 
   describe('Rendering', () => {

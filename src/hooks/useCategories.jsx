@@ -8,6 +8,8 @@ export default function useCategories() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     async function fetchCategories() {
       try {
         const res = await api.get('/categories');
@@ -23,6 +25,7 @@ export default function useCategories() {
         setLoading(false);
       }
     }
+
     fetchCategories();
   }, []);
 
