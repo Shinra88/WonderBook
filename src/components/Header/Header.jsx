@@ -235,7 +235,7 @@ function Header() {
                   onKeyDown={handleKeyDown}
                   placeholder={t('Header.SearchPlaceholder')}
                 />
-                <button type="button" onClick={handleSearch}>
+                <button type="button" onClick={handleSearch} aria-label={t('Header.Search')}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
               </div>
