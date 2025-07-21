@@ -27,9 +27,9 @@
   border-radius: 15px;
   border: 4px solid #e8d8a0;
   margin: auto;
-  box-shadow: 
+  box-shadow:
     inset 0 0 20px 10px rgba(98, 98, 98, 0.8),
-    inset 0 0 40px 30px #D9D9D9;
+    inset 0 0 40px 30px #d9d9d9;
   overflow: hidden;
   flex: 1;
   display: flex;
@@ -42,13 +42,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: url("../../images/wood-brown.jpg");
+  background-image: url('../../images/wood-brown.jpg');
 }
 
 .searchBar {
   display: flex;
   flex-direction: column;
-  background-color: #CBCBCB;
+  background-color: #cbcbcb;
   border-radius: 32px;
   border: 2px solid #e8d8a0;
   height: 2.4rem;
@@ -64,7 +64,7 @@
   background-color: var(--primary-color);
   border: none;
   padding: 15px;
-  box-shadow: 
+  box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),
     inset 1px 1px 8px rgba(0, 0, 0, 0.6);
 }
@@ -79,7 +79,7 @@
   font-size: 0.8rem;
   color: var(--text-color);
   border: none;
-  background-color: #CBCBCB;
+  background-color: #cbcbcb;
   padding: 1rem;
   width: 25rem;
   box-shadow: inset 2px 2px 15px rgba(0, 0, 0, 0.6);
@@ -97,7 +97,7 @@
   margin: 0 10px;
   padding: 0 10px;
   text-align: center;
-  border: 2px solid #B9B9B9;
+  border: 2px solid #b9b9b9;
   border-radius: 10px;
 }
 
@@ -109,44 +109,46 @@
   margin: 0 10px;
   padding: 0 10px;
   text-align: center;
-  border: 2px solid #B9B9B9;
+  border: 2px solid #b9b9b9;
   border-radius: 10px;
   cursor: pointer;
 }
 
 .subjectList li:hover {
-  background-color: #D0BF67;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6),
-              inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  background-color: #d0bf67;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
 }
 
 .subjectList ul li:nth-child(odd) {
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
 }
 
 .subjectList ul li:nth-child(even) {
   background-color: #aebac2;
 }
 
-
-.Notice, .Subject {
+.Notice,
+.Subject {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   height: 3.5rem;
-  background-image: url("../../images/wood.jpg");
+  background-image: url('../../images/wood.jpg');
   background-position: center;
 }
 
-.Notice h2, .Subject h2 {
+.Notice h2,
+.Subject h2 {
   width: 18%;
   font-size: 18px;
   color: #e8d8a0;
   text-shadow: 2px 2px 4px #000000;
-  background-image: url("../../images/wood-brown.jpg");
+  background-image: url('../../images/wood-brown.jpg');
   padding: 10px;
-  border: 2px solid #B9B9B9;
+  border: 2px solid #b9b9b9;
   text-align: center;
 }
 
@@ -158,7 +160,7 @@
 }
 
 .createButton {
-  background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
   border: none;
   color: black;
   padding: 10px 20px;
@@ -166,7 +168,9 @@
   border-radius: 32px;
   font-family: 'Itim', serif;
   cursor: pointer;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
   transition: background-color 0.3s ease;
 }
 
@@ -181,7 +185,7 @@
 }
 
 .up {
-  background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
   border: none;
   color: black;
   padding: 10px 20px;
@@ -189,7 +193,9 @@
   border-radius: 32px;
   font-family: 'Itim', serif;
   cursor: pointer;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
   text-decoration: none;
   transition: background-color 0.3s ease;
 }

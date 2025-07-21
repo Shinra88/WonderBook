@@ -12,13 +12,13 @@
 .main {
   width: 90%;
   max-width: 1320px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border-radius: 15px;
   border: 4px solid #e8d8a0;
   margin: auto;
-  box-shadow: 
-      inset 0 0 20px 10px rgba(98, 98, 98, 0.8),
-      inset 0 0 40px 30px #D9D9D9;
+  box-shadow:
+    inset 0 0 20px 10px rgba(98, 98, 98, 0.8),
+    inset 0 0 40px 30px #d9d9d9;
   overflow: hidden;
   flex: 1;
   display: flex;
@@ -28,190 +28,192 @@
 .head {
   display: flex;
   flex-direction: column;
-    min-height: 125px ;
-    padding-inline: 5%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-image: url("../../images/wood-brown.jpg");
-    border-bottom: 4px solid #e8d8a0;
-    color: #e8d8a0;
-    box-shadow: 
-        0 0 20px 10px rgba(98, 98, 98, 0.8)
+  min-height: 125px;
+  padding-inline: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url('../../images/wood-brown.jpg');
+  border-bottom: 4px solid #e8d8a0;
+  color: #e8d8a0;
+  box-shadow: 0 0 20px 10px rgba(98, 98, 98, 0.8);
 }
 
 .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 15px;
-    color: #e8d8a0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 15px;
+  color: #e8d8a0;
 }
 
 .filters {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 2rem;
-    color: #e8d8a0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+  color: #e8d8a0;
 }
 
 .head h4 {
-    font-size: 18px;
-    text-shadow: 2px 2px 4px #000000;
+  font-size: 18px;
+  text-shadow: 2px 2px 4px #000000;
 }
 
-  .bookList {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    padding: 20px;
-    margin-inline: 20%;
-  }
+.bookList {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 20px;
+  margin-inline: 20%;
+}
 
-  .bookItemWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f2f2f2;
-    border-radius: 12px;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-  }
-  
-  .bookStatus {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 12px;
-    margin-left: 0px;
-  }
-  
-  .statusItem {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-  }
+.bookItemWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
 
-  .statusItem button {
-    display: flex;
-    justify-content: center;
-    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
-    border: none;
-    color: black;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    margin-bottom: 20px;
-    width: 100%;
-    align-items: center;
-    box-shadow: 
-        4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-  }
-  
-  .statusItem input[type="checkbox"], .filterToggle input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    background-color: #D9D9D9;
-    border: 2px solid #e8d8a0;
-    border-radius: 5px;
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    cursor: pointer;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .statusItem input[type="checkbox"]::before, .filterToggle input[type="checkbox"]::before {
-    content: '✔';
-    font-size: 14px;
-    color: #4b2d75;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -56%) scale(0.8);
-  }
-  
-  .statusItem input[type="checkbox"]:checked::before, .filterToggle input[type="checkbox"]:checked::before {
-    opacity: 1;
-    transform: translate(-50%, -56%) scale(1);
-  }
-  
+.bookStatus {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  margin-left: 0px;
+}
 
-  .filterContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 10px;
-  }
-  
-  .radioGroup {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Itim', serif;
-    font-size: 18px;
-    color: #e8d8a0;
-  }
-  
-  .radioGroup input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    background-color: #D9D9D9;
-    border: 2px solid #e8d8a0;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .radioGroup input[type="radio"]::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    background-image: url("../../images/backround.png");
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .radioGroup input[type="radio"]:checked::before {
-    transform: translate(-50%, -50%) scale(1);
-  }
+.statusItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
 
-  .radioGroup label,
-  .filterToggle {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    font-size: 18px;
-    font-family: 'Itim', serif;
-    color: #e8d8a0;
-    line-height: 1;
-  }
-  
-  .uploadFieldWrapper {
-    margin-top: 8px;
-  }
-  
+.statusItem button {
+  display: flex;
+  justify-content: center;
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  margin-bottom: 20px;
+  width: 100%;
+  align-items: center;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.statusItem input[type='checkbox'],
+.filterToggle input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #d9d9d9;
+  border: 2px solid #e8d8a0;
+  border-radius: 5px;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusItem input[type='checkbox']::before,
+.filterToggle input[type='checkbox']::before {
+  content: '✔';
+  font-size: 14px;
+  color: #4b2d75;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -56%) scale(0.8);
+}
+
+.statusItem input[type='checkbox']:checked::before,
+.filterToggle input[type='checkbox']:checked::before {
+  opacity: 1;
+  transform: translate(-50%, -56%) scale(1);
+}
+
+.filterContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.radioGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Itim', serif;
+  font-size: 18px;
+  color: #e8d8a0;
+}
+
+.radioGroup input[type='radio'] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #d9d9d9;
+  border: 2px solid #e8d8a0;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  cursor: pointer;
+}
+
+.radioGroup input[type='radio']::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-image: url('../../images/backround.png');
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.radioGroup input[type='radio']:checked::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.radioGroup label,
+.filterToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: 'Itim', serif;
+  color: #e8d8a0;
+  line-height: 1;
+}
+
+.uploadFieldWrapper {
+  margin-top: 8px;
+}

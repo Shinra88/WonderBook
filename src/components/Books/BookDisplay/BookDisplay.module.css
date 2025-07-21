@@ -1,163 +1,176 @@
-.BookDisplay{
-    display: flex;
-    text-decoration: none;
-    color: inherit;
-    max-width: 360px;
-    width: 80%;
-    align-items: center;
+.BookDisplay {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  max-width: 360px;
+  width: 80%;
+  align-items: center;
 }
 
 .BookDisplay article {
-    display: flex;
-    align-items: center;
-    margin-top: 42px;
-    margin-bottom: 42px;
+  display: flex;
+  align-items: center;
+  margin-top: 42px;
+  margin-bottom: 42px;
 }
 
 .BookDisplay img {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 .BookDisplay h2 {
-    font-size: 18px;
-    font-weight: 700;
-    font-family: "Libre Baskerville", serif;
-    margin-bottom: 10px ;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 10px;
 }
 
 .BookImage {
-    width: 206px;
-    height: 260px;
-    object-fit: contain;
-    object-position: center;
-    background-color: transparent;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }  
+  width: 206px;
+  height: 260px;
+  object-fit: contain;
+  object-position: center;
+  background-color: transparent;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
 
 .BookDisplay h3 {
-    font-size: 18px;
-    font-weight: 700;
-    font-family: "Libre Baskerville", serif;
-    margin-bottom: 10px ;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 10px;
 }
 
 .BookDisplay p {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: #796157;
-    text-align: justify;
-    margin-bottom: 10px ;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #796157;
+  text-align: justify;
+  margin-bottom: 10px;
 }
 
 .full {
-    color: #D9A963;
-    font-size: 23px;
+  color: #d9a963;
+  font-size: 23px;
 }
 
 .empty {
-    color : rgba(98, 98, 98, 0.8);
-    font-size: 23px;
+  color: rgba(98, 98, 98, 0.8);
+  font-size: 23px;
 }
 
 .BookInfo {
-    display: flex;
-    text-align: center;
-    flex: 1;
-    flex-direction: column;
+  display: flex;
+  text-align: center;
+  flex: 1;
+  flex-direction: column;
 }
 
 .Rating {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 10px;
-  }
-  
-  .Summary {
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  
-  .Collapsed {
-    max-height: 4em;
-    white-space: normal;
-    text-overflow: ellipsis;
-  }
-  
-  .Expanded {
-    max-height: 1000px;
-  }
-  
-  .ToggleButton {
-    display: flex;
-    justify-content: center;
-    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
-    border: none;
-    padding: 6px ;
-    text-align: center;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    width: 11rem;
-    margin: auto;
-    align-items: center;
-    box-shadow: 
-        4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-  } 
-  
-  .BookDisplay.admin {
-    display: grid;
-    grid-template-columns: 60px 1fr 150px 150px;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.6rem 1rem;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    width: 45%;
-    max-width: none;
-  }
-  
-  .BookDisplay.admin:hover {
-    background-color: #f0e9c9;
-  }
-  
-  .BookDisplay.admin img {
-    width: 60px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  }
-  
-  .BookDisplay.admin strong {
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  .BookDisplay.admin em {
-    font-style: normal;
-    color: #555;
-    font-size: 0.95rem;
-  }
-  
-  .pendingRow {
-    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%) !important;
-    border: 1px solid rgb(153, 153, 153) !important;
-  }  
-  
-  .pendingRow:hover {
-    background: radial-gradient(circle, #737373 0%, #959595 40%, #A8A8A8 59%, #B9B9B9 78%, #D9D9D9 100%) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.Summary {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.Collapsed {
+  max-height: 4em;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+
+.Expanded {
+  max-height: 1000px;
+}
+
+.ToggleButton {
+  display: flex;
+  justify-content: center;
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  border: none;
+  padding: 6px;
+  text-align: center;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  width: 11rem;
+  margin: auto;
+  align-items: center;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.BookDisplay.admin {
+  display: grid;
+  grid-template-columns: 60px 1fr 150px 150px;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  width: 45%;
+  max-width: none;
+}
+
+.BookDisplay.admin:hover {
+  background-color: #f0e9c9;
+}
+
+.BookDisplay.admin img {
+  width: 60px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.BookDisplay.admin strong {
+  font-size: 1rem;
+  color: #333;
+}
+
+.BookDisplay.admin em {
+  font-style: normal;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.pendingRow {
+  background: radial-gradient(
+    circle,
+    #c4ab5b 0%,
+    #d0bf67 34%,
+    #d2c675 79%,
+    #e8d8a0 100%
+  ) !important;
+  border: 1px solid rgb(153, 153, 153) !important;
+}
+
+.pendingRow:hover {
+  background: radial-gradient(
+    circle,
+    #737373 0%,
+    #959595 40%,
+    #a8a8a8 59%,
+    #b9b9b9 78%,
+    #d9d9d9 100%
+  ) !important;
 }
 
 @media all and (max-width: 600px) {
-    .BookDisplay img {
-        width: 50%;
-    }
+  .BookDisplay img {
+    width: 50%;
+  }
 }

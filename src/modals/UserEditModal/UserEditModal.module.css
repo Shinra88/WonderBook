@@ -1,234 +1,244 @@
 .modalBackground {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modalContent {
-    background-image: url("../../images/backround.png");
-    border-radius: 30px;
-    padding: 25px;
-    width: 45%;
-    color: #D0BF67;
-    border: 4px solid #D0BF67;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    font-family: 'Itim', serif;
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .formGroup {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    width: 100%;
-    flex-wrap: wrap;
-  }
-  
-  .label {
-    font-size: 18px;
-    color: #D0BF67;
-    width: 30%;
-    text-align: left;
-  }
-  
-  .inputWrapper {
-    width: 65%;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .inputField,
-  .selectField {
-    width: 100%;
-    height: 42px;
-    font-size: 16px;
-    border-radius: 30px;
-    border: 2px solid #D0BF67;
-    padding: 0 15px;
-    font-family: 'Itim', serif;
-    color: black;
-    background-color: white;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6),
-                inset 4px 4px 8px rgba(0, 0, 0, 0.6);
-  }
-  
-  /* ✅ Zone AboutMe */
-  .textarea {
-    height: 80px;
-    resize: vertical;
-    width: 100%;
-    font-size: 16px;
-    font-family: 'Itim', serif;
-    border-radius: 20px;
-    border: 2px solid #D0BF67;
-    padding: 10px 15px;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6),
-                inset 4px 4px 8px rgba(0, 0, 0, 0.6);
-    color: black;
-    background: white;
-  }
-  
-  .notificationsGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-    width: 100%;
-  }
-  
-  .notificationToggle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .notificationToggle label {
-    color: #D0BF67;
-    font-size: 16px;
-  }
-  
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 24px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 34px;
-    transition: 0.4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    border-radius: 50%;
-    transition: 0.4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #D0BF67;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(24px);
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-  .buttonGroup {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
-  
-  .validate, .resetPass {
-    background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
-    color: black;
-    border: none;
-    padding: 10px 25px;
-    font-size: 16px;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6),
-                inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    transition: filter 0.3s ease;
-  }
-  
-  .validate:hover {
-    filter: brightness(0.9);
-  }
-  
-  .cancel {
-    background: radial-gradient(circle, #737373 0%, #959595 40%, #A8A8A8 59%, #B9B9B9 78%, #D9D9D9 100%);
-    color: black;
-    border: none;
-    padding: 10px 25px;
-    font-size: 16px;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6),
-                inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    transition: filter 0.3s ease;
-  }
-  
-  .cancel:hover {
-    filter: brightness(0.9);
-  }
+.modalContent {
+  background-image: url('../../images/backround.png');
+  border-radius: 30px;
+  padding: 25px;
+  width: 45%;
+  color: #d0bf67;
+  border: 4px solid #d0bf67;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Itim', serif;
+}
 
-  .avatarPreview {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #D0BF67;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-  }
-  
-  .avatarWrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .avatarPreview {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #D0BF67;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-  }
-  
-  .removeAvatarBtn {
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #d9534f;
-    color: white;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
-  }
-  .removeAvatarBtn:hover {
-    background-color: #c9302c;
-  }
-  
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.label {
+  font-size: 18px;
+  color: #d0bf67;
+  width: 30%;
+  text-align: left;
+}
+
+.inputWrapper {
+  width: 65%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.inputField,
+.selectField {
+  width: 100%;
+  height: 42px;
+  font-size: 16px;
+  border-radius: 30px;
+  border: 2px solid #d0bf67;
+  padding: 0 15px;
+  font-family: 'Itim', serif;
+  color: black;
+  background-color: white;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ✅ Zone AboutMe */
+.textarea {
+  height: 80px;
+  resize: vertical;
+  width: 100%;
+  font-size: 16px;
+  font-family: 'Itim', serif;
+  border-radius: 20px;
+  border: 2px solid #d0bf67;
+  padding: 10px 15px;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.6);
+  color: black;
+  background: white;
+}
+
+.notificationsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.notificationToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notificationToggle label {
+  color: #d0bf67;
+  font-size: 16px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #d0bf67;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.validate,
+.resetPass {
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  color: black;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.validate:hover {
+  filter: brightness(0.9);
+}
+
+.cancel {
+  background: radial-gradient(
+    circle,
+    #737373 0%,
+    #959595 40%,
+    #a8a8a8 59%,
+    #b9b9b9 78%,
+    #d9d9d9 100%
+  );
+  color: black;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.cancel:hover {
+  filter: brightness(0.9);
+}
+
+.avatarPreview {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d0bf67;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.avatarWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.avatarPreview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d0bf67;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.removeAvatarBtn {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d9534f;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+}
+.removeAvatarBtn:hover {
+  background-color: #c9302c;
+}

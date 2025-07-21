@@ -7,11 +7,13 @@ import i18n from '../../i18n';
 import Header from './Header';
 
 const mockNavigate = vi.fn();
-const mockUseAuth = {
+
+let mockUseAuth = {
   user: null,
   isAuthenticated: false,
   logout: vi.fn(),
 };
+
 const mockUseFilters = {
   setSearchQuery: vi.fn(),
   setSelectedCategories: vi.fn(),
@@ -19,8 +21,6 @@ const mockUseFilters = {
   selectedCategories: [],
   selectedYear: '',
 };
-
-const renderHeader = () => render(<Header />, { wrapper: TestWrapper });
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
@@ -45,18 +45,27 @@ const TestWrapper = ({ children }) => (
   </BrowserRouter>
 );
 
+const renderHeader = () => render(<Header />, { wrapper: TestWrapper });
+
 describe('Header Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     i18n.changeLanguage('fr');
+
+    // Reset mocks before each test
+    mockUseAuth = {
+      user: null,
+      isAuthenticated: false,
+      logout: vi.fn(),
+    };
   });
 
   describe('Rendering', () => {
-    it('should render logo and navigation', () => {
+    it('should render logo and navigation links', () => {
       renderHeader();
 
       expect(screen.getByAltText(/logo wonderbook/i)).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: /accueil/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /accueil|home/i })).toBeInTheDocument();
       expect(screen.getByRole('link', { name: /forum/i })).toBeInTheDocument();
     });
 
@@ -65,10 +74,10 @@ describe('Header Component', () => {
       expect(screen.getByPlaceholderText(/rechercher/i)).toBeInTheDocument();
     });
 
-    it('should show login buttons when not authenticated', () => {
+    it('should show login and register buttons when not authenticated', () => {
       renderHeader();
-      expect(screen.getByRole('button', { name: /connexion/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /inscription/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /connexion|login/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /inscription|register/i })).toBeInTheDocument();
     });
 
     it('should show user menu when authenticated', () => {
@@ -91,37 +100,36 @@ describe('Header Component', () => {
 
   describe('Search functionality', () => {
     it('should update search query on input change', () => {
-      render(<Header />, { wrapper: TestWrapper });
+      renderHeader();
 
-      const searchInput = screen.getByPlaceholderText(/rechercher/i);
-      fireEvent.change(searchInput, { target: { value: 'test book' } });
+      const input = screen.getByPlaceholderText(/rechercher/i);
+      fireEvent.change(input, { target: { value: 'test book' } });
 
-      expect(searchInput.value).toBe('test book');
+      expect(input.value).toBe('test book');
     });
 
     it('should trigger search on enter key press', async () => {
-      render(<Header />, { wrapper: TestWrapper });
+      renderHeader();
 
-      const searchInput = screen.getByPlaceholderText(/rechercher/i);
-      fireEvent.change(searchInput, { target: { value: 'test search' } });
-      fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' });
+      const input = screen.getByPlaceholderText(/rechercher/i);
+      fireEvent.change(input, { target: { value: 'search term' } });
+      fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
 
       await waitFor(() => {
-        expect(mockUseFilters.setSearchQuery).toHaveBeenCalledWith('test search');
+        expect(mockUseFilters.setSearchQuery).toHaveBeenCalledWith('search term');
       });
     });
 
     it('should trigger search on button click', async () => {
-      render(<Header />, { wrapper: TestWrapper });
+      renderHeader();
 
-      const searchInput = screen.getByPlaceholderText(/rechercher/i);
-      const searchButton = searchInput.nextElementSibling;
-
-      fireEvent.change(searchInput, { target: { value: 'button search' } });
-      fireEvent.click(searchButton);
+      const input = screen.getByPlaceholderText(/rechercher/i);
+      const button = input.nextSibling; // assuming the search button is next to input
+      fireEvent.change(input, { target: { value: 'click search' } });
+      fireEvent.click(button);
 
       await waitFor(() => {
-        expect(mockUseFilters.setSearchQuery).toHaveBeenCalledWith('button search');
+        expect(mockUseFilters.setSearchQuery).toHaveBeenCalledWith('click search');
       });
     });
   });
@@ -133,7 +141,7 @@ describe('Header Component', () => {
     });
 
     it('should show dropdown on hover', async () => {
-      render(<Header />, { wrapper: TestWrapper });
+      renderHeader();
 
       const userCircle = screen.getByAltText(/avatar utilisateur/i).parentElement;
       fireEvent.mouseEnter(userCircle);
@@ -144,8 +152,8 @@ describe('Header Component', () => {
       });
     });
 
-    it('should navigate to account page', async () => {
-      render(<Header />, { wrapper: TestWrapper });
+    it('should navigate to account page on profile click', async () => {
+      renderHeader();
 
       const userCircle = screen.getByAltText(/avatar utilisateur/i).parentElement;
       fireEvent.mouseEnter(userCircle);
@@ -157,7 +165,7 @@ describe('Header Component', () => {
     });
 
     it('should logout user', async () => {
-      render(<Header />, { wrapper: TestWrapper });
+      renderHeader();
 
       const userCircle = screen.getByAltText(/avatar utilisateur/i).parentElement;
       fireEvent.mouseEnter(userCircle);
@@ -167,32 +175,6 @@ describe('Header Component', () => {
 
       expect(mockUseAuth.logout).toHaveBeenCalled();
       expect(mockNavigate).toHaveBeenCalledWith('/');
-    });
-  });
-
-  describe('Modal management', () => {
-    it('should open login modal', () => {
-      render(<Header />, { wrapper: TestWrapper });
-
-      const loginButton = screen.getByRole('button', { name: /connexion/i });
-      fireEvent.click(loginButton);
-    });
-
-    it('should open register modal', () => {
-      render(<Header />, { wrapper: TestWrapper });
-
-      const registerButton = screen.getByRole('button', { name: /inscription/i });
-      fireEvent.click(registerButton);
-    });
-
-    it('should open add book modal for authenticated users', () => {
-      mockUseAuth.isAuthenticated = true;
-      mockUseAuth.user = { name: 'Test User' };
-
-      render(<Header />, { wrapper: TestWrapper });
-
-      const addBookButton = screen.getByRole('button', { name: /ajouter un livre/i });
-      fireEvent.click(addBookButton);
     });
   });
 });

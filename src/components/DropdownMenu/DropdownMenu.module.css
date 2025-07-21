@@ -1,114 +1,114 @@
 .dropdownContainer {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdownButton {
-    background-color: transparent;
-    border: none;
-    color: #e8d8a0;
-    font-size: 18px;
-    cursor: pointer;
-    text-decoration: none;
-    white-space: nowrap;
-    font-family: 'Itim', sans-serif;
-  }
-  
-  .dropdownMenu {
-    position: absolute;
-    top: 100%;
-    left: -155%;
-    background-image: url("../../images/backround.png");
-    color: #e8d8a0;
-    border-bottom: 4px solid #e8d8a0;
-    border-left: 4px solid #e8d8a0;
-    border-right: 4px solid #e8d8a0;
-    border-radius: 0px 0px 40px 40px;
-    padding: 10px;
-    width: 550px;
-    z-index: 900;
-  }
-  
-  .background {
-    background-image: url("../../images/backround.png");
-  }
-  
-  .backgroundWood {
-    background-image: url("../../images/wood-brown.jpg");
-  }
+  position: relative;
+  display: inline-block;
+}
 
-  .filterSection {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #e8d8a0;
-    padding-bottom: 5px;
-  }
-  
-  .filterToggle {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-family: 'Itim', sans-serif;
-    color: #e8d8a0;
-  }
-  
-  .filterToggle label {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-  }
-  
-  .filterToggle input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    background-color: #D9D9D9;
-    border: 2px solid #e8d8a0;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .filterToggle input[type="radio"]::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    background-image: url("../../images/backround.png");
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .filterToggle input[type="radio"]:checked::before {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  
-  .categoryList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .categoryItem {
-    width: 25%;
-    margin: 5px 0;
-    white-space: normal;
-  }
+.dropdownButton {
+  background-color: transparent;
+  border: none;
+  color: #e8d8a0;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: 'Itim', sans-serif;
+}
 
-.categoryItem input[type="checkbox"] {
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: -155%;
+  background-image: url('../../images/backround.png');
+  color: #e8d8a0;
+  border-bottom: 4px solid #e8d8a0;
+  border-left: 4px solid #e8d8a0;
+  border-right: 4px solid #e8d8a0;
+  border-radius: 0px 0px 40px 40px;
+  padding: 10px;
+  width: 550px;
+  z-index: 900;
+}
+
+.background {
+  background-image: url('../../images/backround.png');
+}
+
+.backgroundWood {
+  background-image: url('../../images/wood-brown.jpg');
+}
+
+.filterSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e8d8a0;
+  padding-bottom: 5px;
+}
+
+.filterToggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Itim', sans-serif;
+  color: #e8d8a0;
+}
+
+.filterToggle label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.filterToggle input[type='radio'] {
   appearance: none;
   -webkit-appearance: none;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
+  border: 2px solid #e8d8a0;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  cursor: pointer;
+}
+
+.filterToggle input[type='radio']::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-image: url('../../images/backround.png');
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.filterToggle input[type='radio']:checked::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.categoryList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categoryItem {
+  width: 25%;
+  margin: 5px 0;
+  white-space: normal;
+}
+
+.categoryItem input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #d9d9d9;
   border: 2px solid #e8d8a0;
   border-radius: 5px;
   width: 18px;
@@ -118,7 +118,7 @@
   position: relative;
 }
 
-.categoryItem input[type="checkbox"]:checked::before {
+.categoryItem input[type='checkbox']:checked::before {
   content: '✔';
   font-size: 14px;
   color: #4b2d75;
@@ -128,39 +128,38 @@
   transform: translate(-50%, -56%);
 }
 
-  .categoryList li {
-    padding: 8px 0;
-    cursor: pointer;
-  }
-  
-  .categoryList li:hover {
-    color: #ffffff;
-    background-color: #4b2d75;
-    border-radius: 4px;
-  }
+.categoryList li {
+  padding: 8px 0;
+  cursor: pointer;
+}
 
-  .categoryItem {
-    padding: 4px 0;
-  }
+.categoryList li:hover {
+  color: #ffffff;
+  background-color: #4b2d75;
+  border-radius: 4px;
+}
 
-  .categoryItem:hover {
-    color: #ffffff;
-    background-color: #4b2d75;
-    border-radius: 4px;
-  }
-  
-  .dropdownButton {
-    background: none;
-    border: none;
-    color: #e8d8a0;
-    font-family: 'Itim', serif;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  .activeFilter {
-    border: 2px solid #d4af37;
-    background-color: rgba(255, 215, 0, 0.2);
-    border-radius: 8px;
-  }
-  
+.categoryItem {
+  padding: 4px 0;
+}
+
+.categoryItem:hover {
+  color: #ffffff;
+  background-color: #4b2d75;
+  border-radius: 4px;
+}
+
+.dropdownButton {
+  background: none;
+  border: none;
+  color: #e8d8a0;
+  font-family: 'Itim', serif;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.activeFilter {
+  border: 2px solid #d4af37;
+  background-color: rgba(255, 215, 0, 0.2);
+  border-radius: 8px;
+}

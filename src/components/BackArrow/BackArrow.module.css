@@ -1,18 +1,19 @@
 .backArrow {
-        font-size: 48px;
-        font-family: 'Itim', serif;
-        border: none;
-        border-radius: 50%;
-        background: radial-gradient(circle, #c4ab5b 0%, #D0BF67 34%, #D2C675 79%, #e8d8a0 100%);
-        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-        color: rgb(77, 77, 77);
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        height: 100px;
-        text-align: center;
-        line-height: 1;
-      }
-      
+  font-size: 48px;
+  font-family: 'Itim', serif;
+  border: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  color: rgb(77, 77, 77);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  line-height: 1;
+}

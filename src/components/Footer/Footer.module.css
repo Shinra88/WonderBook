@@ -1,30 +1,30 @@
 .Footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    background-image: url("../../images/backround.png");
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: white;
-    border-top: 4px solid #e8d8a0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-image: url('../../images/backround.png');
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: white;
+  border-top: 4px solid #e8d8a0;
 }
 
 .MapBlock {
-    display: flex;
-    margin-block: 16px;
-    align-items: center;
+  display: flex;
+  margin-block: 16px;
+  align-items: center;
 }
 
 .MapBlock a {
-    color: #796157;
+  color: #796157;
 }
 
 .MapBlock img {
-    margin-right: 16px;
-    width: 40px;
+  margin-right: 16px;
+  width: 40px;
 }

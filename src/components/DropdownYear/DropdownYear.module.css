@@ -17,13 +17,13 @@
   position: absolute;
   top: 100%;
   left: -70%;
-  background-image: url("../../images/backround.png");
+  background-image: url('../../images/backround.png');
   color: #e8d8a0;
   border-bottom: 4px solid #e8d8a0;
   border-left: 4px solid #e8d8a0;
   border-right: 4px solid #e8d8a0;
   border-radius: 0 0 30px 30px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   padding: 10px 10px 15px 10px;
   width: 130px;
   z-index: 1000;
@@ -47,10 +47,10 @@
   color: #e8d8a0;
 }
 
-.filterToggle input[type="radio"] {
+.filterToggle input[type='radio'] {
   appearance: none;
   -webkit-appearance: none;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border: 2px solid #e8d8a0;
   border-radius: 50%;
   width: 18px;
@@ -59,20 +59,20 @@
   cursor: pointer;
 }
 
-.filterToggle input[type="radio"]::before {
+.filterToggle input[type='radio']::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   width: 10px;
   height: 10px;
-  background-image: url("../../images/backround.png");
+  background-image: url('../../images/backround.png');
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.2s ease-in-out;
 }
 
-.filterToggle input[type="radio"]:checked::before {
+.filterToggle input[type='radio']:checked::before {
   transform: translate(-50%, -50%) scale(1);
 }
 
@@ -93,7 +93,8 @@
   font-size: 16px;
 }
 
-.rangeInputs input, .inputWrapper input {
+.rangeInputs input,
+.inputWrapper input {
   height: 32px;
   width: 80%;
   font-size: 14px;
@@ -106,7 +107,7 @@
   font-family: 'Itim', sans-serif;
   display: flex;
   align-items: center;
-  border: 2px solid #D0BF67;
+  border: 2px solid #d0bf67;
   padding-inline: 2%;
 }
 

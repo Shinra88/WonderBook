@@ -1,19 +1,21 @@
 .spoiler {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle, #ca5d1d 0%, #d07b44 74%, #d4936a 89%, #e8b894 100%);
-    font-weight: bold;
-    border: none;
-    padding: 5px 12px;
-    font-size: 16px;
-    border-radius: 32px;
-    font-family: 'Itim', serif;
-    cursor: pointer;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-    transition: background-color 0.3s ease;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;  
-  }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #ca5d1d 0%, #d07b44 74%, #d4936a 89%, #e8b894 100%);
+  font-weight: bold;
+  border: none;
+  padding: 5px 12px;
+  font-size: 16px;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  cursor: pointer;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.3s ease;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
