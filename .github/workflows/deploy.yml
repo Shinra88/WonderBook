@@ -85,7 +85,7 @@ jobs:
           echo "✅ Build verification successful"
           
       - name: 📦 Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-files
           path: dist/
@@ -98,7 +98,7 @@ jobs:
     if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
     steps:
       - name: 📥 Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-files
           path: dist/
