@@ -64,8 +64,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
     <div
       className={styles.Login}
       onClick={e => e.target === e.currentTarget && onClose()}
-      role="presentation"
-    >
+      role="presentation">
       <div className={styles.Form}>
         <h2>{t('Login.Login')}</h2>
 
@@ -122,8 +121,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             onClick={() => {
               onClose();
               openForgetPassword();
-            }}
-          >
+            }}>
             {t('Login.ForgotPassword')}
           </button>
           <p>{t('Login.Or')}</p>
@@ -133,8 +131,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             onClick={() => {
               onClose();
               openRegister();
-            }}
-          >
+            }}>
             {t('Login.CreateAccount')}
           </button>
         </div>
@@ -147,8 +144,7 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
             type="submit"
             className={styles.Validate}
             onClick={handleLogin}
-            disabled={!isLoginValid || isLoading}
-          >
+            disabled={!isLoginValid || isLoading}>
             {isLoading ? t('Login.Loading') : t('Login.Validate')}
           </button>
         </div>

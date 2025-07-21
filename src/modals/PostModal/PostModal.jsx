@@ -85,36 +85,31 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
               <button
                 type="button"
                 className={styles.toolButton}
-                onClick={() => insertTag('spoiler', 'Texte caché')}
-              >
+                onClick={() => insertTag('spoiler', 'Texte caché')}>
                 🔒 {t('PostModal.Spoiler')}
               </button>
               <button
                 type="button"
                 className={styles.toolButton}
-                onClick={() => insertTag('b', 'Texte en gras')}
-              >
+                onClick={() => insertTag('b', 'Texte en gras')}>
                 🅱️ {t('PostModal.Bold')}
               </button>
               <button
                 type="button"
                 className={styles.toolButton}
-                onClick={() => insertTag('i', 'Texte en italique')}
-              >
+                onClick={() => insertTag('i', 'Texte en italique')}>
                 {t('PostModal.Italic')}
               </button>
               <button
                 type="button"
                 className={styles.toolButton}
-                onClick={() => insertTag('u', 'Texte souligné')}
-              >
+                onClick={() => insertTag('u', 'Texte souligné')}>
                 {t('PostModal.Underline')}
               </button>
               <button
                 type="button"
                 className={styles.toolButton}
-                onClick={() => insertTag('s', 'Texte barré')}
-              >
+                onClick={() => insertTag('s', 'Texte barré')}>
                 {t('PostModal.Strikethrough')}
               </button>
             </div>
@@ -142,8 +137,7 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={!content || !recaptchaToken || isSubmitting}
-            >
+              disabled={!content || !recaptchaToken || isSubmitting}>
               {isSubmitting ? t('PostModal.Sending') : t('PostModal.Publish')}
             </button>
           </div>

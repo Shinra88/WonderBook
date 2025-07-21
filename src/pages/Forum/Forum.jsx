@@ -111,8 +111,7 @@ function Forum() {
                 <li
                   key={topic._id}
                   className={styles.topicItem}
-                  onClick={() => handleTopicClick(topic._id)}
-                >
+                  onClick={() => handleTopicClick(topic._id)}>
                   <h3>{topic.title}</h3>
                 </li>
               ))
@@ -132,8 +131,7 @@ function Forum() {
                 <li
                   key={topic._id}
                   className={styles.topicItem}
-                  onClick={() => handleTopicClick(topic._id)}
-                >
+                  onClick={() => handleTopicClick(topic._id)}>
                   <h3>{topic.title}</h3>
                 </li>
               ))

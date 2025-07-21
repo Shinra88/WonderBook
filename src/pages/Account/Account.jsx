@@ -143,8 +143,7 @@ function Account() {
               <button
                 type="button"
                 className={styles.Button}
-                onClick={() => setShowChangePass(true)}
-              >
+                onClick={() => setShowChangePass(true)}>
                 {t('Account.ChangePassword')}
                 <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
               </button>

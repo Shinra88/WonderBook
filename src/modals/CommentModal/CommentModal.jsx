@@ -54,8 +54,7 @@ function CommentModal({ book, onClose }) {
               className={(hoverRating || rating) >= star ? styles.filledStar : styles.emptyStar}
               onClick={() => setRating(star)}
               onMouseEnter={() => setHoverRating(star)}
-              onMouseLeave={() => setHoverRating(0)}
-            >
+              onMouseLeave={() => setHoverRating(0)}>
               <FontAwesomeIcon icon={faStar} />
             </span>
           ))}

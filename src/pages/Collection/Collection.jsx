@@ -209,8 +209,7 @@ function Collection() {
                             setActiveUploadId(prev =>
                               prev === item.collectionId ? null : item.collectionId
                             )
-                          }
-                        >
+                          }>
                           {activeUploadId === item.collectionId
                             ? t('Collection.Cancel')
                             : t('Collection.UploadEbook')}
@@ -262,8 +261,7 @@ function Collection() {
                               rating: existingComment?.rating || 0,
                             });
                             setIsCommentModalOpen(true);
-                          }}
-                        >
+                          }}>
                           {item.books.comments?.some(comment => comment.userId === item.userId)
                             ? t('Collection.EditComment')
                             : t('Collection.Commenter')}
@@ -274,8 +272,7 @@ function Collection() {
                       <div className={styles.statusItem}>
                         <button
                           className={styles.commentButton}
-                          onClick={() => navigate(`/read/${item.books.bookId}`)}
-                        >
+                          onClick={() => navigate(`/read/${item.books.bookId}`)}>
                           {t('Collection.ReadEbook')}
                         </button>
                       </div>

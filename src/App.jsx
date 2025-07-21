@@ -37,8 +37,7 @@ function App() {
                 updateCategories={setSelectedCategories}
                 updateYear={setSelectedYear}
               />
-            }
-          >
+            }>
             <Route
               index
               element={

@@ -15,8 +15,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
     return (
       <Link
         to={`/livre/${encodeURIComponent(book.title)}`}
-        className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}
-      >
+        className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}>
         <img
           src={book.cover_url}
           alt={`${book.title}, ${book.author} - ${book.date || t('BookDisplay.UnknownDate')}`}
@@ -95,8 +94,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
                 <button
                   type="button"
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className={styles.ToggleButton}
-                >
+                  className={styles.ToggleButton}>
                   {isExpanded ? 'Lire moins ▲' : 'Lire plus ▼'}
                 </button>
               )}

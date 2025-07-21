@@ -72,15 +72,13 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
             <div
               className={styles.avatarWrapper}
               onMouseEnter={() => setShowRemoveAvatarBtn(true)}
-              onMouseLeave={() => setShowRemoveAvatarBtn(false)}
-            >
+              onMouseLeave={() => setShowRemoveAvatarBtn(false)}>
               <img src={form.avatar || Avatar} alt="avatar" className={styles.avatarPreview} />
               {form.avatar && showRemoveAvatarBtn && (
                 <button
                   type="button"
                   className={styles.removeAvatarBtn}
-                  onClick={() => setForm(prev => ({ ...prev, avatar: '' }))}
-                >
+                  onClick={() => setForm(prev => ({ ...prev, avatar: '' }))}>
                   {t('UserEditModal.Delete')}
                 </button>
               )}
@@ -121,8 +119,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                   name="role"
                   className={styles.inputField}
                   value={form.role}
-                  onChange={handleChange}
-                >
+                  onChange={handleChange}>
                   <option value="user">{t('UserEditModal.User')}</option>
                   <option value="moderator">{t('UserEditModal.Moderator')}</option>
                   <option value="admin">{t('UserEditModal.Admin')}</option>
@@ -138,8 +135,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                 name="status"
                 className={styles.inputField}
                 value={form.status}
-                onChange={handleChange}
-              >
+                onChange={handleChange}>
                 <option value="active">{t('UserEditModal.Active')}</option>
                 <option value="suspended">{t('UserEditModal.Suspended')}</option>
                 {isAdmin && <option value="banned">{t('UserEditModal.Banned')}</option>}
@@ -194,8 +190,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
                       alert(t('UserEditModal.ErrorSendingResetLink'));
                       console.error(err);
                     }
-                  }}
-                >
+                  }}>
                   {t('UserEditModal.SendResetLink')}
                 </button>
               </div>

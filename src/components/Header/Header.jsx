@@ -112,8 +112,7 @@ function Header() {
                     const el = document.getElementById('topPage');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }, 100);
-                }}
-              >
+                }}>
                 {t('Header.Home')}
               </NavLink>
             </li>
@@ -136,8 +135,7 @@ function Header() {
             <li>
               <NavLink
                 to="/Forum"
-                className={() => (isPath(['/Forum', '/topic']) ? styles.activeLink : undefined)}
-              >
+                className={() => (isPath(['/Forum', '/topic']) ? styles.activeLink : undefined)}>
                 Forum
               </NavLink>
             </li>
@@ -145,8 +143,7 @@ function Header() {
               <li>
                 <NavLink
                   to="/Collection"
-                  className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
-                >
+                  className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
                   {t('Header.Collection')}
                 </NavLink>
               </li>
@@ -155,8 +152,7 @@ function Header() {
               <li>
                 <NavLink
                   to="/Admin"
-                  className={() => (isPath(['/Admin']) ? styles.activeLink : undefined)}
-                >
+                  className={() => (isPath(['/Admin']) ? styles.activeLink : undefined)}>
                   Admin
                 </NavLink>
               </li>
@@ -167,8 +163,7 @@ function Header() {
                   type="button"
                   className={styles.Button}
                   aria-label="Ajouter un livre"
-                  onClick={() => setShowTestFormModal(true)}
-                >
+                  onClick={() => setShowTestFormModal(true)}>
                   {t('Header.AddBook')}
                   <img src={FeatherIcon} alt="Feather Icon" className={styles.icon} />
                 </button>
@@ -187,8 +182,7 @@ function Header() {
                 <div
                   className={styles.userCircle}
                   onMouseEnter={() => setShowUserDropdown(true)}
-                  onMouseLeave={() => setShowUserDropdown(false)}
-                >
+                  onMouseLeave={() => setShowUserDropdown(false)}>
                   <img
                     src={user?.avatar?.startsWith('http') ? user.avatar : Avatar}
                     alt="Avatar utilisateur"
@@ -201,8 +195,7 @@ function Header() {
                 <div
                   className={styles.userDropdown}
                   onMouseEnter={() => setShowUserDropdown(true)}
-                  onMouseLeave={() => setShowUserDropdown(false)}
-                >
+                  onMouseLeave={() => setShowUserDropdown(false)}>
                   <button type="button" onClick={() => navigate('/Account')}>
                     {t('Header.Profil')}
                   </button>

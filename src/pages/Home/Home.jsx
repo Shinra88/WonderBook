@@ -97,15 +97,13 @@ function Home() {
               <button
                 type="button"
                 className={selectedTab === 'LastBook' ? styles.active : styles.inactive}
-                onClick={() => handleTabClick('LastBook')}
-              >
+                onClick={() => handleTabClick('LastBook')}>
                 {t('HomePage.LastAdded')}
               </button>
               <button
                 type="button"
                 className={selectedTab === 'bestRated' ? styles.active : styles.inactive}
-                onClick={() => handleTabClick('bestRated')}
-              >
+                onClick={() => handleTabClick('bestRated')}>
                 {t('HomePage.BestRated')}
               </button>
             </div>

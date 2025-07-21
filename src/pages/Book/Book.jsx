@@ -114,8 +114,7 @@ function Book() {
                     <a
                       href={`https://www.fnac.com/SearchResult/ResultList.aspx?SCat=Livres__+BD__+Ebooks!1&SDM=list&Search=${encodeURIComponent(title)}`}
                       target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      rel="noopener noreferrer">
                       <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
                     </a>
                   </li>
@@ -123,8 +122,7 @@ function Book() {
                     <a
                       href={`https://www.amazon.fr/s?k=${encodeURIComponent(title)}`}
                       target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      rel="noopener noreferrer">
                       <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
                     </a>
                   </li>
@@ -132,8 +130,7 @@ function Book() {
                     <a
                       href={`https://www.cultura.com/search/results?search_query=${encodeURIComponent(title)}`}
                       target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      rel="noopener noreferrer">
                       <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
                     </a>
                   </li>
@@ -141,8 +138,7 @@ function Book() {
                     <a
                       href={`https://www.cdiscount.com/search/10/${encodeURIComponent(title)}.html`}
                       target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      rel="noopener noreferrer">
                       <img src={logoCdiscount} alt="Cdiscount" className={styles.logo} /> Cdiscount
                     </a>
                   </li>
@@ -150,8 +146,7 @@ function Book() {
                     <a
                       href={`https://www.ebay.fr/sch/267/i.html?_nkw=${encodeURIComponent(title)}`}
                       target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      rel="noopener noreferrer">
                       <img src={logoeBay} alt="eBay" className={styles.logo} /> eBay
                     </a>
                   </li>
@@ -163,8 +158,7 @@ function Book() {
               <button
                 className={styles.addButton}
                 onClick={handleAddToCollection}
-                disabled={buttonLoading}
-              >
+                disabled={buttonLoading}>
                 {buttonLoading ? t('Book.AddingToCollection') : t('Book.AddToCollection')}
               </button>
             )}
@@ -172,8 +166,7 @@ function Book() {
               <button
                 className={styles.removeButton}
                 onClick={handleRemoveFromCollection}
-                disabled={buttonLoading}
-              >
+                disabled={buttonLoading}>
                 {buttonLoading ? t('Book.RemovingFromCollection') : t('Book.RemoveFromCollection')}
               </button>
             )}
@@ -185,8 +178,7 @@ function Book() {
                 </button>
                 <button
                   className={styles.editButton}
-                  onClick={() => setShowCommentModerationModal(true)}
-                >
+                  onClick={() => setShowCommentModerationModal(true)}>
                   {t('Book.ManageComments')}{' '}
                   <img src={FeatherIcon} alt="" className={styles.icon} />
                 </button>
@@ -226,8 +218,7 @@ function Book() {
                 <button
                   type="button"
                   className={styles.toggleComments}
-                  onClick={() => setShowComments(prev => !prev)}
-                >
+                  onClick={() => setShowComments(prev => !prev)}>
                   {showComments
                     ? t('Book.HideComments')
                     : t('Book.ShowComments', { count: book.comments.length })}

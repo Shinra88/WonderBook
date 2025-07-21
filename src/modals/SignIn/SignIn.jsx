@@ -106,8 +106,7 @@ function SignIn({ onClose = null, openLogin }) {
       className={styles.modalBackground}
       onClick={e => {
         if (e.target.classList.contains(styles.modalBackground) && onClose) onClose();
-      }}
-    >
+      }}>
       {showToast && <ToastSuccess message={t('SignIn.RegisterSuccess')} />}
 
       <div className={styles.modalContent}>
@@ -190,8 +189,7 @@ function SignIn({ onClose = null, openLogin }) {
               <button
                 type="button"
                 className={styles.toggleBtn}
-                onClick={() => setShowPassword(prev => !prev)}
-              >
+                onClick={() => setShowPassword(prev => !prev)}>
                 {showPassword ? '🙈' : '👁️'}
               </button>
             </div>
@@ -203,8 +201,7 @@ function SignIn({ onClose = null, openLogin }) {
                     : passwordStrength === 'Moyen'
                       ? styles.medium
                       : styles.weak
-                }
-              >
+                }>
                 {t(`SignIn.PasswordStrength.${passwordStrength}`)}
               </small>
             )}
@@ -238,8 +235,7 @@ function SignIn({ onClose = null, openLogin }) {
             onClick={() => {
               onClose?.();
               openLogin();
-            }}
-          >
+            }}>
             {t('SignIn.AlreadyHaveAccount')}
           </button>
         </div>
@@ -252,8 +248,7 @@ function SignIn({ onClose = null, openLogin }) {
             type="button"
             className={styles.validateButton}
             onClick={handleRegister}
-            disabled={!isFormValid || isLoading}
-          >
+            disabled={!isFormValid || isLoading}>
             {isLoading ? t('SignIn.Loading') : t('SignIn.Validate')}
           </button>
         </div>

@@ -149,8 +149,7 @@ function Admin() {
                   <tr
                     key={u.userId}
                     onClick={() => isAdmin && handleEditUser(u)}
-                    className={isAdmin || user?.role === 'moderator' ? styles.clickableRow : ''}
-                  >
+                    className={isAdmin || user?.role === 'moderator' ? styles.clickableRow : ''}>
                     <td>
                       <img
                         src={u.avatar?.startsWith('http') ? u.avatar : Avatar}
@@ -174,8 +173,7 @@ function Admin() {
                             onClick={e => {
                               e.stopPropagation();
                               handleToggleStatus(u);
-                            }}
-                          >
+                            }}>
                             {u.status === 'suspended' ? t('Admin.Activate') : t('Admin.Suspend')}
                           </button>
                         )

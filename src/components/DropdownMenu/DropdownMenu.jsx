@@ -46,8 +46,7 @@ function DropdownMenu({ isActive = false }) {
       <button
         className={`${styles.dropdownButton} ${isActive ? styles.activeFilter : ''}`}
         type="button"
-        onClick={toggleDropdown}
-      >
+        onClick={toggleDropdown}>
         {t('DropdownMenu.Categories')}
       </button>
 

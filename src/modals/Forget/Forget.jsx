@@ -78,8 +78,7 @@ function Forget({ onClose }) {
         if ((e.key === 'Enter' || e.key === 'Escape') && onClose) {
           onClose();
         }
-      }}
-    >
+      }}>
       <div className={styles.modalContent}>
         <h2>{t('ForgetPassword.ResetTitle')}</h2>
 
@@ -119,8 +118,7 @@ function Forget({ onClose }) {
                 type="button"
                 className={styles.validateButton}
                 onClick={forget}
-                disabled={isLoading}
-              >
+                disabled={isLoading}>
                 {isLoading ? t('ForgetPassword.Loading') : t('ForgetPassword.Validate')}
               </button>
             </div>

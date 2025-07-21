@@ -109,8 +109,7 @@ function ForgetPassword({ token }) {
           type="button"
           onClick={handleResetPassword}
           className={styles.validateButton}
-          disabled={isLoading}
-        >
+          disabled={isLoading}>
           {isLoading ? t('ForgetPassword.Loading') : t('ForgetPassword.Validate')}
         </button>
       </div>

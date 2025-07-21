@@ -85,8 +85,7 @@ function EpubReader() {
   return (
     <div
       ref={wrapperRef}
-      className={`${styles.readerContainer} ${isFullscreen ? styles.fullscreen : styles.standard}`}
-    >
+      className={`${styles.readerContainer} ${isFullscreen ? styles.fullscreen : styles.standard}`}>
       {epubUrl ? (
         <>
           <button onClick={goFullscreen} className={styles.fullscreenButton}>

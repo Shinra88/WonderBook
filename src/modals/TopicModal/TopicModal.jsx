@@ -119,8 +119,7 @@ export default function TopicModal({ onClose, onSuccess }) {
                 <button
                   type="submit"
                   className={styles.submitButton}
-                  disabled={!title || !content || !recaptchaToken || isSubmitting}
-                >
+                  disabled={!title || !content || !recaptchaToken || isSubmitting}>
                   {isSubmitting ? t('TopicModal.Sending') : t('TopicModal.Submit')}
                 </button>
               </div>

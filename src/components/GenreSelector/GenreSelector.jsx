@@ -100,8 +100,7 @@ function GenreSelector({ onGenresSelect, initialGenres = [] }) {
             type="button"
             className={styles.applyButton}
             onClick={handleApply}
-            disabled={selected.length === 0}
-          >
+            disabled={selected.length === 0}>
             {t('BookFormModal.Submit')}
           </button>
         </div>

@@ -254,8 +254,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
             <label
               htmlFor="attachment"
               className={styles.imageUpload}
-              title={t('BookFormModal.ClickToAddCover')}
-            >
+              title={t('BookFormModal.ClickToAddCover')}>
               <div className={styles.imageContainer}>
                 {!coverPreviewUrl && formData.cover_url && isUpdate && (
                   <img
@@ -297,8 +296,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className={styles.inputField}
-                >
+                  className={styles.inputField}>
                   <option value="pending">{t('BookFormModal.Status.Pending')}</option>
                   <option value="validated">{t('BookFormModal.Status.Validated')}</option>
                 </select>
@@ -323,8 +321,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
               <select
                 className={styles.inputField}
                 value={selectedPublisher}
-                onChange={e => setSelectedPublisher(Number(e.target.value))}
-              >
+                onChange={e => setSelectedPublisher(Number(e.target.value))}>
                 <option value="">{t('BookFormModal.Publisher')}</option>
                 {publishers.map(pub => (
                   <option key={pub.id} value={pub.id}>

@@ -27,8 +27,7 @@ export function FilterProvider({ children }) {
         setSearchQuery,
         filterRead,
         setFilterRead,
-      }}
-    >
+      }}>
       {children}
     </FilterContext.Provider>
   );

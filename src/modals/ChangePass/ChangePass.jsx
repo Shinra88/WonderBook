@@ -115,8 +115,7 @@ function ChangePass({ onClose, onSuccess }) {
             <button
               type="button"
               className={styles.toggleBtn}
-              onClick={() => setShowPassword(prev => !prev)}
-            >
+              onClick={() => setShowPassword(prev => !prev)}>
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
@@ -143,8 +142,7 @@ function ChangePass({ onClose, onSuccess }) {
                 : passwordStrength === t('ChangePass.PasswordStrengthMedium')
                   ? styles.medium
                   : styles.weak
-            }
-          >
+            }>
             {t('ChangePass.PasswordStrength')} : {passwordStrength}
           </small>
         )}
@@ -156,8 +154,7 @@ function ChangePass({ onClose, onSuccess }) {
             type="submit"
             className={styles.confirmButton}
             onClick={handleSubmit}
-            disabled={!isFormValid || isLoading}
-          >
+            disabled={!isFormValid || isLoading}>
             {isLoading ? t('ChangePass.Loading') : t('ChangePass.Validate')}
           </button>
         </div>

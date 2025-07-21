@@ -207,8 +207,7 @@ function TopicDetail() {
                     } catch (err) {
                       alert(t('ErrorToggleLock', err));
                     }
-                  }}
-                >
+                  }}>
                   {topic.locked ? t('TopicDetail.Unlock') : t('TopicDetail.Lock')}
                 </button>
 
@@ -222,8 +221,7 @@ function TopicDetail() {
                       alert(t('ErrorTogglePin', err));
                       console.error(err);
                     }
-                  }}
-                >
+                  }}>
                   {topic.notice ? t('TopicDetail.Unpin') : t('TopicDetail.Pin')}
                 </button>
 
@@ -244,8 +242,7 @@ function TopicDetail() {
                     } catch (err) {
                       alert(t('TopicDetail.ErrorDelete', err));
                     }
-                  }}
-                >
+                  }}>
                   {t('TopicDetail.Delete')}
                 </button>
               </aside>
@@ -309,8 +306,7 @@ function TopicDetail() {
                           } catch {
                             alert('Erreur lors de la suppression.');
                           }
-                        }}
-                      >
+                        }}>
                         {t('TopicDetail.Delete')}
                       </button>
                     )}
