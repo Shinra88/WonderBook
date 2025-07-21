@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 
-function CommentModal({ book, userId, onClose }) {
+function CommentModal({ book, onClose }) {
   const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [rating, setRating] = useState(0);

@@ -297,7 +297,7 @@ function TopicDetail() {
                             setToastMessage("Post supprimé avec succès ✅");
                             setShowToast(true);
                             setTimeout(() => setShowToast(false), 2000);
-                          } catch (err) {
+                          } catch {
                             alert("Erreur lors de la suppression.");
                           }
                         }}

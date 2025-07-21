@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 
 
-function CommentModerationModal({ bookId, comments, onClose, onUpdate }) {
+function CommentModerationModal({ comments, onClose, onUpdate }) {
   const modalRef = useRef();
   const [showToast, setShowToast] = useState(false);
   const { t } = useTranslation();

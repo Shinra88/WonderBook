@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { register } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
-import ReCAPTCHA from "react-google-recaptcha";
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useTranslation } from 'react-i18next';
 import styles from './SignIn.module.css';
 
@@ -24,7 +24,7 @@ function SignIn({ onClose = null, openLogin }) {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = event => {
       if (event.key === 'Escape' && onClose) onClose();
     };
     document.addEventListener('keydown', handleEscape);
@@ -43,21 +43,21 @@ function SignIn({ onClose = null, openLogin }) {
 
     const pseudoRegex = /^[a-zA-Z0-9_-]{3,20}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={};':"\\|,.<>/?]).{8,}$/;
 
     const newErrors = {};
 
     if (!pseudoRegex.test(username)) {
-      newErrors.username = t('SignIn.UsernameInvalid'); // "Pseudo invalide. 3-20 caractères, lettres, chiffres, tirets et underscores."
+      newErrors.username = t('SignIn.UsernameInvalid'); // "Invalid username. 3-20 characters, letters, numbers, hyphens, and underscores."
     }
     if (!emailRegex.test(email)) {
-      newErrors.email = t('SignIn.EmailInvalid'); // "Adresse e-mail invalide."
+      newErrors.email = t('SignIn.EmailInvalid'); // "Invalid email address."
     }
     if (!passwordRegex.test(password)) {
-      newErrors.password = t('SignIn.PasswordInvalid'); // "8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial."
+      newErrors.password = t('SignIn.PasswordInvalid'); // "8+ characters, with uppercase, lowercase, number and special character."
     }
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = t('SignIn.ConfirmPasswordInvalid'); // "Les mots de passe ne correspondent pas."
+      newErrors.confirmPassword = t('SignIn.ConfirmPasswordInvalid'); // "Passwords do not match."
     }
 
     setErrors(newErrors);
@@ -86,7 +86,7 @@ function SignIn({ onClose = null, openLogin }) {
           navigate('/');
         }, 2000);
       }
-    } catch (err) {
+    } catch {
       setNotification({ error: true, message: t('SignIn.RegisterError') });
     } finally {
       setIsLoading(false);
@@ -103,7 +103,7 @@ function SignIn({ onClose = null, openLogin }) {
   return (
     <div
       className={styles.modalBackground}
-      onClick={(e) => {
+      onClick={e => {
         if (e.target.classList.contains(styles.modalBackground) && onClose) onClose();
       }}
     >
@@ -115,7 +115,7 @@ function SignIn({ onClose = null, openLogin }) {
         <div className={styles.recaptchaWrapper}>
           <ReCAPTCHA
             sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            onChange={(token) => setRecaptchaToken(token)}
+            onChange={token => setRecaptchaToken(token)}
           />
         </div>
 
@@ -138,7 +138,7 @@ function SignIn({ onClose = null, openLogin }) {
               type: 'text',
               value: username,
               id: 'username',
-              onChange: (v) => setUsername(v),
+              onChange: v => setUsername(v),
               error: errors.username,
             },
             {
@@ -146,10 +146,10 @@ function SignIn({ onClose = null, openLogin }) {
               type: 'email',
               value: email,
               id: 'email',
-              onChange: (v) => setEmail(v),
+              onChange: v => setEmail(v),
               error: errors.email,
             },
-          ].map((field) => (
+          ].map(field => (
             <div key={field.id} className={styles.formGroup}>
               <label htmlFor={field.id}>{field.label}</label>
               <div className={styles.inputWrapper}>
@@ -159,7 +159,7 @@ function SignIn({ onClose = null, openLogin }) {
                   type={field.type}
                   id={field.id}
                   value={field.value}
-                  onChange={(e) => {
+                  onChange={e => {
                     const newValue = e.target.value;
                     field.onChange(newValue);
                     validateForm({ ...getFormValues(), [field.id]: newValue });
@@ -179,17 +179,17 @@ function SignIn({ onClose = null, openLogin }) {
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 value={password}
-                onChange={(e) => {
+                onChange={e => {
                   const newValue = e.target.value;
                   setPassword(newValue);
                   validateForm({ ...getFormValues(), password: newValue });
-                  setPasswordStrength(getPasswordStrength(newValue));
+                  setPasswordStrength(newValue);
                 }}
               />
               <button
                 type="button"
                 className={styles.toggleBtn}
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={() => setShowPassword(prev => !prev)}
               >
                 {showPassword ? '🙈' : '👁️'}
               </button>
@@ -200,8 +200,8 @@ function SignIn({ onClose = null, openLogin }) {
                   passwordStrength === 'Fort'
                     ? styles.strong
                     : passwordStrength === 'Moyen'
-                    ? styles.medium
-                    : styles.weak
+                      ? styles.medium
+                      : styles.weak
                 }
               >
                 {t(`SignIn.PasswordStrength.${passwordStrength}`)}
@@ -219,7 +219,7 @@ function SignIn({ onClose = null, openLogin }) {
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
-                onChange={(e) => {
+                onChange={e => {
                   const newValue = e.target.value;
                   setConfirmPassword(newValue);
                   validateForm({ ...getFormValues(), confirmPassword: newValue });

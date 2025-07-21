@@ -1,15 +1,16 @@
 // src/test/setup.js
-import '@testing-library/jest-dom'
+/* eslint-env node, vitest */
+import '@testing-library/jest-dom';
 
 // Mock pour react-router-dom
-import { vi } from 'vitest'
+import { vi } from 'vitest';
 
 // Mock global pour les modules qui posent problème
-global.ResizeObserver = vi.fn(() => ({
+globalThis.ResizeObserver = vi.fn(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
-}))
+}));
 
 // Mock pour les images
 Object.defineProperty(window, 'matchMedia', {
@@ -24,4 +25,4 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-})
+});

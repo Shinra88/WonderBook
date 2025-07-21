@@ -17,9 +17,9 @@ import { normalize } from '../../utils/helpers';
 import BookFormModal from '../../modals/BookFormModal/BookFormModal';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
+import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 
 function Header() {
-  const [showAddBook, setShowAddBook] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showForgetPassword, setShowForgetPassword] = useState(false);
@@ -27,16 +27,12 @@ function Header() {
   const [inputValue, setInputValue] = useState('');
   const [showTestFormModal, setShowTestFormModal] = useState(false);
   const [book, setBook] = useState(null);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-  
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isPath = (prefixes) => prefixes.some((prefix) => location.pathname.startsWith(prefix));
+  const isPath = prefixes => prefixes.some(prefix => location.pathname.startsWith(prefix));
   const hideSearchBar = isPath(['/Forum', '/topic', '/Admin']);
 
   const { user, isAuthenticated, logout } = useAuth();
@@ -47,7 +43,7 @@ function Header() {
     setSelectedCategories,
     setSelectedYear,
     selectedCategories,
-    selectedYear
+    selectedYear,
   } = useFilters();
 
   const hasActiveFilter = selectedCategories.length > 0 || selectedYear !== '';
@@ -56,7 +52,6 @@ function Header() {
     setShowLogin(false);
     setShowRegister(false);
     setShowForgetPassword(false);
-    setShowAddBook(false);
   };
 
   const handleSearch = () => {
@@ -73,7 +68,7 @@ function Header() {
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter') {
       handleSearch();
     }
@@ -94,7 +89,7 @@ function Header() {
               <NavLink
                 to="/#topPage"
                 className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   setSearchQuery('');
                   setInputValue('');
@@ -107,7 +102,7 @@ function Header() {
                   }, 100);
                 }}
               >
-               {t('Header.Home')}
+                {t('Header.Home')}
               </NavLink>
             </li>
             {!isPath(['/Forum', '/topic']) && (
@@ -119,7 +114,8 @@ function Header() {
                   <DropdownYear
                     isActive={
                       (typeof selectedYear === 'string' && selectedYear !== '') ||
-                      (typeof selectedYear === 'object' && (selectedYear.start !== '' || selectedYear.end !== ''))
+                      (typeof selectedYear === 'object' &&
+                        (selectedYear.start !== '' || selectedYear.end !== ''))
                     }
                   />
                 </li>
@@ -135,7 +131,10 @@ function Header() {
             </li>
             {isAuthenticated && (
               <li>
-                <NavLink to="/Collection" className={({ isActive }) => (isActive ? styles.activeLink : undefined)}>
+                <NavLink
+                  to="/Collection"
+                  className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
+                >
                   {t('Header.Collection')}
                 </NavLink>
               </li>
@@ -169,28 +168,35 @@ function Header() {
         <div className={styles.content}>
           {isAuthenticated ? (
             <div className={styles.userMenuWrapper}>
-              <div><LanguageSwitcher /></div>
+              <div>
+                <LanguageSwitcher />
+              </div>
               <div className={styles.userIcon}>
                 <div
                   className={styles.userCircle}
                   onMouseEnter={() => setShowUserDropdown(true)}
                   onMouseLeave={() => setShowUserDropdown(false)}
                 >
-              <img
-                src={user?.avatar?.startsWith('http') ? user.avatar : Avatar}
-                alt="Avatar utilisateur"
-                className={styles.icon}
-              />
+                  <img
+                    src={user?.avatar?.startsWith('http') ? user.avatar : Avatar}
+                    alt="Avatar utilisateur"
+                    className={styles.icon}
+                  />
                 </div>
                 <p className={styles.userName}>{user?.name || 'User'}</p>
               </div>
               {showUserDropdown && (
-                <div className={styles.userDropdown}
+                <div
+                  className={styles.userDropdown}
                   onMouseEnter={() => setShowUserDropdown(true)}
                   onMouseLeave={() => setShowUserDropdown(false)}
                 >
-                  <button type="button" onClick={() => navigate('/Account')}>{t('Header.Profil')}</button>
-                  <button type="button" onClick={handleLogout}>{t('Header.Logout')}</button>
+                  <button type="button" onClick={() => navigate('/Account')}>
+                    {t('Header.Profil')}
+                  </button>
+                  <button type="button" onClick={handleLogout}>
+                    {t('Header.Logout')}
+                  </button>
                 </div>
               )}
             </div>
@@ -213,9 +219,9 @@ function Header() {
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={e => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder= {t('Header.SearchPlaceholder')}
+                  placeholder={t('Header.SearchPlaceholder')}
                 />
                 <button type="button" onClick={handleSearch}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -225,18 +231,18 @@ function Header() {
           )}
         </div>
       </div>
-            {showTestFormModal && (
-              <BookFormModal
-                mode="add"
-                book={book}
-                onSave={(updatedData) => {
-                  setBook({ ...book, ...updatedData });
-                  ToastSuccess(t('Header.book.updatedSuccess'));
-                  setShowTestFormModal(false);
-                }}
-                onClose={() => setShowTestFormModal(false)}
-              />
-            )}
+      {showTestFormModal && (
+        <BookFormModal
+          mode="add"
+          book={book}
+          onSave={updatedData => {
+            setBook({ ...book, ...updatedData });
+            ToastSuccess(t('Header.book.updatedSuccess'));
+            setShowTestFormModal(false);
+          }}
+          onClose={() => setShowTestFormModal(false)}
+        />
+      )}
       {showLogin && (
         <LoginModal
           onClose={closeAllModals}
@@ -250,7 +256,9 @@ function Header() {
           }}
         />
       )}
-      {showRegister && <RegisterModal onClose={closeAllModals} openLogin={() => setShowLogin(true)} />}
+      {showRegister && (
+        <RegisterModal onClose={closeAllModals} openLogin={() => setShowLogin(true)} />
+      )}
       {showForgetPassword && <ForgetModal onClose={closeAllModals} />}
     </header>
   );

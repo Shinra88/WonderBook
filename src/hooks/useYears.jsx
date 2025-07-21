@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 
 export function useYears() {
   const [minYear, setMinYear] = useState(1900);
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
     const fetchMinYear = async () => {
@@ -18,5 +17,5 @@ export function useYears() {
     fetchMinYear();
   }, []);
 
-  return { minYear, currentYear };
+  return { minYear };
 }

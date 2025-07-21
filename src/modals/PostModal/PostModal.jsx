@@ -14,26 +14,6 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const textareaRef = useRef();
   const { t } = useTranslation();
-  const insertSpoiler = () => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-  
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const before = content.slice(0, start);
-    const after = content.slice(end);
-  
-    const spoilerSyntax = '[spoiler]Texte caché[/spoiler]';
-    const newText = before + spoilerSyntax + after;
-  
-    setContent(newText);
-  
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start + 9, start + 20);
-    }, 0);
-  };
-  
 
   useEffect(() => {
     const handleEscape = (event) => {

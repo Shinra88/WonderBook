@@ -3,7 +3,7 @@
 const DEFAULT_COVER = "https://wonderbook-images.s3.eu-north-1.amazonaws.com/covers/default.webp";
 
 /** Formats an array of Prisma books for the API */
-function formatBooks(books) {
+export function formatBooks(books) {
   return books.map((book) => ({
     bookId: book.bookId,
     title: book.title || "Titre inconnu",
@@ -19,4 +19,3 @@ function formatBooks(books) {
   }));
 }
 
-module.exports = { formatBooks };

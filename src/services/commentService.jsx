@@ -24,7 +24,7 @@ export async function addOrUpdateComment(bookId, { content, rating }) {
 }
 
 // ➔ Deletes its own comment
-export async function deleteComment(bookId) {
+export async function deleteComment(commentId) {
   try {
     const { data } = await api.delete(`${API_ROUTES.COMMENTS.BASE}/admin/${commentId}`);
     return data;
