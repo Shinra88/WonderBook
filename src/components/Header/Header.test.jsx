@@ -75,9 +75,10 @@ describe('Header Component', () => {
     });
 
     it('should show login and register buttons when not authenticated', () => {
-      renderHeader();
-      expect(screen.getByRole('button', { name: /connexion|login/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /inscription|register/i })).toBeInTheDocument();
+    renderHeader();
+
+    expect(screen.getByRole('button', { name: /se connecter/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /inscription|register/i })).toBeInTheDocument();
     });
 
     it('should show user menu when authenticated', () => {
