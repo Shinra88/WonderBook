@@ -6,7 +6,15 @@
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint src --fix"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:run": "vitest run",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "type-check": "tsc --noEmit"  
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -27,9 +35,27 @@
     "react-router-dom": "^7.1.5"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@vitejs/plugin-react": "^4.1.1",
     "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "jsdom": "^22.1.0",
+    "prettier": "^3.0.3",
+    "bundlesize": "^0.18.1",
+    "vitest": "^0.34.6",
+    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/ui": "^0.34.6",
     "vite": "^6.2.2"
   },
+    "bundlesize": [
+    {
+      "path": "./dist/assets/*.js",
+      "maxSize": "500 KB"
+    }
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
