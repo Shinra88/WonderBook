@@ -3,7 +3,7 @@ import Avatar from '../../images/avatar.png';
 import { updateUserById } from '../../services/adminServices';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import { useTranslation } from 'react-i18next';
-import api from '../../services/api';
+import api from '../../services/api/api';
 import styles from './UserEditModal.module.css';
 
 function UserEditModal({ user, onClose, onSave, isAdmin }) {
