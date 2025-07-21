@@ -79,10 +79,6 @@ function Header() {
     }
   };
 
-  const toggleUserDropdown = () => {
-    setShowUserDropdown(!showUserDropdown);
-  };
-
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -177,8 +173,8 @@ function Header() {
               <div className={styles.userIcon}>
                 <div
                   className={styles.userCircle}
-                  onMouseEnter={toggleUserDropdown}
-                  onMouseLeave={toggleUserDropdown}
+                  onMouseEnter={() => setShowUserDropdown(true)}
+                  onMouseLeave={() => setShowUserDropdown(false)}
                 >
               <img
                 src={user?.avatar?.startsWith('http') ? user.avatar : Avatar}
@@ -189,7 +185,10 @@ function Header() {
                 <p className={styles.userName}>{user?.name || 'User'}</p>
               </div>
               {showUserDropdown && (
-                <div className={styles.userDropdown}>
+                <div className={styles.userDropdown}
+                  onMouseEnter={() => setShowUserDropdown(true)}
+                  onMouseLeave={() => setShowUserDropdown(false)}
+                >
                   <button type="button" onClick={() => navigate('/Account')}>{t('Header.Profil')}</button>
                   <button type="button" onClick={handleLogout}>{t('Header.Logout')}</button>
                 </div>
