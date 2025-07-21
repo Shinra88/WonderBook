@@ -12,49 +12,49 @@ on:
       - prod
 
 jobs:
-  # 🧪 JOB 1: Tests et Qualité du code
+  # 🧪 JOB 1: Tests and Quality code
   test-and-quality:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
-        
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
           cache: 'npm'
-          
+
       - name: 📦 Install dependencies
         run: npm ci
-        
+
       - name: 🔍 Run ESLint
         run: npm run lint
         continue-on-error: false
-        
+
       - name: 🎨 Check Prettier formatting
         run: npm run format:check
-        continue-on-error: true # Optionnel pour ne pas bloquer
-        
+        continue-on-error: true
+
       - name: 🧪 Run unit tests
         run: npm run test:run
         env:
           CI: true
-          
+
       - name: 📊 Generate coverage report
         run: npm run test:coverage
         continue-on-error: true
-          
+
       - name: 🔒 Security audit
         run: npm audit --audit-level moderate
-        continue-on-error: true # Les vulnérabilités peuvent être traitées séparément
-        
+        continue-on-error: true
+
       - name: 🏗️ Test build
         run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
 
-  # 🏗️ JOB 2: Build pour déploiement
+  # 🏗️ JOB 2: Build for deployment
   build-for-deploy:
     needs: test-and-quality
     runs-on: ubuntu-latest
@@ -62,28 +62,28 @@ jobs:
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
-        
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-          
+
       - name: 📦 Install dependencies
         run: npm ci
-        
+
       - name: 🏗️ Build project
         run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
-          
+
       - name: 🔍 Verify build output
         run: |
           ls -la dist/
           test -f dist/index.html || exit 1
           test -d dist/assets || exit 1
           echo "✅ Build verification successful"
-          
+
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -91,7 +91,7 @@ jobs:
           path: dist/
           retention-days: 1
 
-  # 🚀 JOB 3: Déploiement
+  # 🚀 JOB 3: DDeployment
   deploy:
     needs: build-for-deploy
     runs-on: ubuntu-latest
@@ -102,7 +102,7 @@ jobs:
         with:
           name: build-files
           path: dist/
-          
+
       - name: 🚀 Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -113,28 +113,28 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: eu-west-3
           SOURCE_DIR: dist
-          
+
       - name: ♻️ Invalidate CloudFront cache
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          PATHS: "/*"
+          PATHS: '/*'
           AWS_REGION: eu-west-3
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          
+
       - name: ✅ Deployment success
         run: |
           echo "✅ Deployment completed successfully!"
           echo "🌐 Application deployed to S3"
           echo "♻️ CloudFront cache invalidated"
-          
+
   # 🔄 JOB 4: Post-deployment verification
   verify-deployment:
     needs: deploy
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
-    steps:      
+    steps:
       - name: 🏥 Basic health check
         run: |
           echo "🔍 Performing post-deployment checks..."
