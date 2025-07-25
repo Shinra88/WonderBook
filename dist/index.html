@@ -10,7 +10,7 @@
     <meta name="author" content="WonderBook" />
     <meta name="robots" content="index, follow" />
     
-    <!-- Open Graph Meta Tags for social media -->
+    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="WonderBook - Votre plateforme littéraire" />
     <meta property="og:description" content="Découvrez et partagez vos livres préférés. Plateforme de recommandations littéraires et critiques de livres par la communauté." />
     <meta property="og:type" content="website" />
@@ -25,27 +25,38 @@
     <meta name="twitter:description" content="Découvrez et partagez vos livres préférés sur WonderBook" />
     <meta name="twitter:image" content="https://wonderbook.net/assets/Logo-CAy97JIp.png" />
    
-    <!-- Favicon et icônes -->
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/assets/Logo-CAy97JIp.png" />
     
     <!-- Title -->
     <title>WonderBook - Découvrez vos prochaines lectures</title>
     
-    <!-- 🚀 CSS critique inline pour un rendu immédiat -->
+    <!-- 🚀 PRELOAD du CSS principal pour éviter le blocage -->
+    <link rel="preload" href="/assets/css/style-m5ZOb0Y6.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/assets/css/style-m5ZOb0Y6.css"></noscript>
+    
+    <!-- 🚀 CSS CRITIQUE MINIMAL INLINE (seulement above-the-fold) -->
     <style>
-      /* Reset et styles critiques pour éviter FOUC */
-      * {
+      /* Reset minimal */
+      *, *::before, *::after {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Base styles critiques */
+      html {
+        font-size: 16px;
       }
       
       body {
-        margin: 0;
-        padding: 0;
         font-family: 'Itim', 'Comic Sans MS', cursive, system-ui;
         line-height: 1.6;
         color: #333;
         background-color: #fff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       
       #root {
@@ -54,12 +65,48 @@
         flex-direction: column;
       }
       
-      /* Skeleton loader pour le chargement initial */
+      /* Header critique (above-the-fold) */
+      ._Header_1odsr_1 {
+        height: 60px;
+        background: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      /* Navigation critique */
+      nav {
+        display: flex;
+        gap: 20px;
+      }
+      
+      nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+      }
+      
+      /* Container principal */
+      .main-content {
+        flex: 1;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      
+      /* Skeleton loader pour UX pendant chargement */
       .loading-skeleton {
         background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
         background-size: 200% 100%;
         animation: loading 1.5s infinite;
         border-radius: 4px;
+        height: 20px;
+        margin: 10px 0;
       }
       
       @keyframes loading {
@@ -67,18 +114,47 @@
         100% { background-position: -200% 0; }
       }
       
-      /* Styles critiques pour éviter le layout shift */
-      .header {
-        height: 60px; /* Ajustez selon votre header */
+      /* Performance: Preload layout pour éviter CLS */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
       }
       
-      .main-content {
-        flex: 1;
-        padding: 20px;
+      /* Images optimisées */
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      
+      /* Responsive critique */
+      @media (max-width: 768px) {
+        ._Header_1odsr_1 {
+          padding: 0 10px;
+        }
+        
+        .main-content {
+          padding: 10px;
+        }
+        
+        nav {
+          gap: 10px;
+        }
+      }
+      
+      /* Eviter FOUC pendant chargement JS */
+      .js-loading .main-content {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .js-loaded .main-content {
+        opacity: 1;
       }
     </style>
    
-    <!-- Structured Data (JSON-LD) for browser -->
+    <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -93,12 +169,23 @@
       }
     }
     </script>
-    <script type="module" crossorigin src="/assets/js/index-CtprS6pw.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/js/libs-BSjDHEdN.js">
-    <link rel="modulepreload" crossorigin href="/assets/js/vendor-BKRx86QZ.js">
-    <link rel="stylesheet" crossorigin href="/assets/css/style-m5ZOb0Y6.css">
+    <script type="module" crossorigin src="/assets/js/index-BxQ_FzHz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/style-ALCgRck3.css">
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="js-loading">
+    <div id="root">
+      <!-- Skeleton loader pendant le chargement JS -->
+      <div class="loading-skeleton"></div>
+      <div class="loading-skeleton"></div>
+      <div class="loading-skeleton"></div>
+    </div>
+    
+    
+    <!-- Performance: Supprimer classe loading quand JS est chargé -->
+    <script>
+      // Plus rapide que DOMContentLoaded
+      document.body.classList.remove('js-loading');
+      document.body.classList.add('js-loaded');
+    </script>
   </body>
 </html>

@@ -94,7 +94,7 @@ function Header() {
   return (
     <header className={styles.Header}>
       <div className={styles.container}>
-        <img className={styles.logo} src={Logo} alt="logo WonderBook" />
+        <img className={styles.logo} src={Logo} alt="logo WonderBook" fetchPriority="high" loading="eager"/>
         <nav className={styles.navBar}>
           <ul>
             <li>
