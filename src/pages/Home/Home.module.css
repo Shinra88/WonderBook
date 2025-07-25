@@ -200,25 +200,25 @@
   .Home {
     padding-top: 200px;
   }
-  
+
   .main {
     width: 95%;
   }
-  
+
   .filters {
     flex-direction: column;
     gap: 5px;
   }
-  
+
   .bookList {
     justify-content: center;
     padding: 10px;
   }
-  
+
   .menu {
     gap: 20px;
   }
-  
+
   .menu button {
     font-size: 1.1rem;
   }
@@ -226,11 +226,11 @@
 
 /* 🚀 Animations optimisées pour les performances */
 @keyframes loading {
-  0% { 
-    background-position: 200% 0; 
+  0% {
+    background-position: 200% 0;
   }
-  100% { 
-    background-position: -200% 0; 
+  100% {
+    background-position: -200% 0;
   }
 }
 
