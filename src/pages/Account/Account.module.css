@@ -149,7 +149,7 @@
 .buttonContainer {
   display: flex;
   justify-content: space-between;
-  background-image: url('../../images/wood-brown.jpg');
+  background-image: url('../../images/wood-brown.webp');
   border-bottom: 4px solid #e8d8a0;
   box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),

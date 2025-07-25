@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
+    "build:analyze": "vite build && npx vite-bundle-analyzer dist/stats.html",
+    "build:prod": "NODE_ENV=production vite build",
     "preview": "vite preview",
+    "preview:network": "vite preview --host 0.0.0.0",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",

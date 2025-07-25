@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: url('../../images/wood-brown.jpg');
+  background-image: url('../../images/wood-brown.webp');
 }
 
 .searchBar {
@@ -136,7 +136,7 @@
   align-items: center;
   text-align: center;
   height: 3.5rem;
-  background-image: url('../../images/wood.jpg');
+  background-image: url('../../images/wood.webp');
   background-position: center;
 }
 
@@ -146,7 +146,7 @@
   font-size: 18px;
   color: #e8d8a0;
   text-shadow: 2px 2px 4px #000000;
-  background-image: url('../../images/wood-brown.jpg');
+  background-image: url('../../images/wood-brown.webp');
   padding: 10px;
   border: 2px solid #b9b9b9;
   text-align: center;

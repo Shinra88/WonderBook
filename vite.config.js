@@ -12,17 +12,17 @@ const __dirname = dirname(__filename);
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname);
   const isProduction = mode === 'production';
-
+  
   return {
     base: '/',
     plugins: [react()],
-
+    
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
       },
     },
-
+    
     esbuild: {
       loader: 'jsx',
       include: /src\/.*\.(js|jsx)$/,
@@ -35,29 +35,33 @@ export default defineConfig(({ mode }) => {
         minifyWhitespace: true,
       }),
     },
-
+    
     // 🚀 Optimisations de build pour S3 + CloudFront
     build: {
       // Minification optimale
       minify: 'esbuild', // Plus rapide que terser pour SWC
       target: 'esnext',
-
+      
       // Gestion des chunks pour un cache optimal
       rollupOptions: {
         output: {
           // Chunks manuels pour optimiser le cache
-          manualChunks: {
-            // Vendor chunk séparé (change rarement)
-            vendor: ['react', 'react-dom', 'react-router-dom'],
-            // UI libraries séparées
-            ui: ['lucide-react'], // Ajustez selon vos dépendances UI
+          manualChunks: (id) => {
+            // Vendor chunk pour les dépendances principales
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'vendor';
+              }
+              // Autres dépendances npm dans un chunk séparé
+              return 'libs';
+            }
           },
-
+          
           // Nommage optimisé des assets pour le cache
-          assetFileNames: assetInfo => {
+          assetFileNames: (assetInfo) => {
             const info = assetInfo.name.split('.');
             const ext = info[info.length - 1];
-
+            
             // Images avec hash pour cache long terme
             if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext)) {
               return `assets/images/[name]-[hash][extname]`;
@@ -72,47 +76,44 @@ export default defineConfig(({ mode }) => {
             }
             return `assets/[name]-[hash][extname]`;
           },
-
+          
           // JS chunks avec hash
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
         },
       },
-
+      
       // Optimisations des assets
       assetsInlineLimit: 4096, // Inline des petits assets (<4KB)
-
+      
       // Optimisations CSS
       cssCodeSplit: true, // Split CSS par chunk
       cssMinify: true,
-
+      
       // Optimisations pour CloudFront
       sourcemap: false, // Pas de sourcemaps en prod pour économiser la bande passante
-
+      
       // Compression et optimisations
       chunkSizeWarningLimit: 1000, // Warning si chunk > 1MB
     },
-
+    
     // 🔧 Configuration serveur pour le développement
-    server:
-      mode === 'development'
-        ? {
-            host: true,
-            port: 3000,
-            watch: {
-              usePolling: true,
-            },
-            proxy: {
-              '/api': env.VITE_BACKEND_URL,
-            },
-            middlewareMode: false,
-            setupMiddlewares(middlewares) {
-              middlewares.unshift(history());
-              return middlewares;
-            },
-          }
-        : undefined,
-
+    server: mode === 'development' ? {
+      host: true,
+      port: 3000,
+      watch: {
+        usePolling: true,
+      },
+      proxy: {
+        '/api': env.VITE_BACKEND_URL,
+      },
+      middlewareMode: false,
+      setupMiddlewares(middlewares) {
+        middlewares.unshift(history());
+        return middlewares;
+      },
+    } : undefined,
+    
     // 🔬 Configuration des tests
     test: {
       environment: 'jsdom',
@@ -131,14 +132,20 @@ export default defineConfig(({ mode }) => {
         ],
       },
     },
-
+    
     // ⚡ Optimisations des dépendances
     optimizeDeps: {
-      include: ['react', 'react-dom', 'react-router-dom'],
-      // Exclure les dépendances problématiques
-      exclude: ['@vitejs/plugin-react-swc'], // Déjà optimisé
+      include: [
+        'react',
+        'react-dom',
+      ],
+      // Force la résolution des images
+      force: false,
     },
-
+    
+    // 🖼️ Configuration des assets
+    assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.webp', '**/*.gif', '**/*.svg'],
+    
     // 🎯 Optimisations CSS
     css: {
       devSourcemap: mode === 'development',
@@ -149,14 +156,14 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
+    
     // 📦 Configuration pour le déploiement S3
     define: {
       // Variables d'environnement pour la production
       __DEV__: mode === 'development',
       __PROD__: mode === 'production',
     },
-
+    
     // 🚀 Prévisualisation optimisée pour tester avant déploiement
     preview: {
       port: 4173,
