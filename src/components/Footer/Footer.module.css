@@ -11,7 +11,15 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: white;
-  text-shadow: #e8d8a0 0px 0px 5px, #FFF 0px 0px 10px, #e8d8a0 0px 0px 15px, #e8d8a0 0px 0px 20px, #e8d8a0 0px 0px 30px, #e8d8a0 0px 0px 40px, #e8d8a0 0px 0px 50px, #e8d8a0 0px 0px 75px;
+  text-shadow:
+    #e8d8a0 0px 0px 5px,
+    #fff 0px 0px 10px,
+    #e8d8a0 0px 0px 15px,
+    #e8d8a0 0px 0px 20px,
+    #e8d8a0 0px 0px 30px,
+    #e8d8a0 0px 0px 40px,
+    #e8d8a0 0px 0px 50px,
+    #e8d8a0 0px 0px 75px;
   border-top: 4px solid #e8d8a0;
 }
 
