@@ -187,27 +187,10 @@ jobs:
           echo "   📄 HTML files: 5 minutes cache"
           echo "♻️ CloudFront cache invalidated"
 
-      - name: 🧹 Cleanup artifacts
-        uses: actions/github-script@v7
-        with:
-          script: |
-            // Supprimer l'artifact après déploiement réussi
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: context.runId,
-            });
-
-            for (const artifact of artifacts.data.artifacts) {
-              if (artifact.name === 'build-files-${{ github.sha }}') {
-                await github.rest.actions.deleteArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: artifact.id,
-                });
-                console.log(`🧹 Deleted artifact: ${artifact.name}`);
-              }
-            }
+      - name: ✅ Cleanup notice
+        run: |
+          echo "🧹 Artifact cleanup not needed - retention is set to 1 day"
+          echo "📦 Artifact 'build-files-${{ github.sha }}' will auto-expire in 24h"
 
   # 🔄 JOB 4: Post-deployment verification
   verify-deployment:
