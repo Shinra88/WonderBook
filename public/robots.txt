@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+
+# Bloquer les fichiers sensibles et répertoires de développement
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /dist/
+
+# Permettre les assets, images et ressources statiques
+Allow: /assets/
+Allow: /images/
+Allow: /covers/
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.webp$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.svg$
+Allow: /favicon.ico
+
+# Sitemap (à créer plus tard)
+Sitemap: https://wonderbook.net/sitemap.xml
+
+# Délai entre les requêtes (optionnel, pour éviter la surcharge)
+Crawl-delay: 1

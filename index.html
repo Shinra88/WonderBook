@@ -2,8 +2,51 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>WonderBook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="WonderBook - Découvrez et partagez vos livres préférés. Plateforme de recommandations littéraires et critiques de livres par la communauté." />
+    <meta name="keywords" content="livres, lecture, recommandations, critiques, littérature, bibliothèque, WonderBook" />
+    <meta name="author" content="WonderBook" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph Meta Tags for social media -->
+    <meta property="og:title" content="WonderBook - Votre plateforme littéraire" />
+    <meta property="og:description" content="Découvrez et partagez vos livres préférés. Plateforme de recommandations littéraires et critiques de livres par la communauté." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wonderbook.net" />
+    <meta property="og:image" content="https://wonderbook.net/assets/Logo-CAy97JIp.png" />
+    <meta property="og:site_name" content="WonderBook" />
+    <meta property="og:locale" content="fr_FR" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WonderBook - Votre plateforme littéraire" />
+    <meta name="twitter:description" content="Découvrez et partagez vos livres préférés sur WonderBook" />
+    <meta name="twitter:image" content="https://wonderbook.net/assets/Logo-CAy97JIp.png" />
+    
+    <!-- Favicon et icônes -->
     <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/assets/Logo-CAy97JIp.png" />
+
+    <!-- Title -->
+    <title>WonderBook - Découvrez vos prochaines lectures</title>
+    
+    <!-- Structured Data (JSON-LD) for browser -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "WonderBook",
+      "url": "https://wonderbook.net",
+      "description": "Plateforme de recommandations littéraires et critiques de livres par la communauté",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://wonderbook.net/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
