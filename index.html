@@ -1,12 +1,14 @@
-<!-- 🚀 PRELOAD et optimisations critiques -->
-    <link rel="preload" href="/assets/css/index-DyzdohcX.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="/assets/js/index-CpliuVsh.js" as="script">
-    <link rel="preload" href="/assets/js/react-vendor-C913OtXS.js" as="script">
-    <noscript><link rel="stylesheet" href="/assets/css/index-DyzdohcX.css"></noscript><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   
+    <!-- 🚀 PRELOAD critiques pour les performances -->
+    <link rel="preload" href="/assets/css/index-DyzdohcX.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/assets/js/index-CpliuVsh.js" as="script">
+    <link rel="preload" href="/assets/js/react-vendor-C913OtXS.js" as="script">
+    <noscript><link rel="stylesheet" href="/assets/css/index-DyzdohcX.css"></noscript>
    
     <!-- SEO Meta Tags -->
     <meta name="description" content="WonderBook - Découvrez et partagez vos livres préférés. Plateforme de recommandations littéraires et critiques de livres par la communauté." />
@@ -36,9 +38,9 @@
     <!-- Title -->
     <title>WonderBook - Découvrez vos prochaines lectures</title>
     
-    <!-- 🚀 CSS CRITIQUE ÉTENDU INLINE (pour compenser le gros CSS) -->
+    <!-- 🚀 CSS CRITIQUE OPTIMISÉ INLINE -->
     <style>
-      /* Reset minimal */
+      /* Reset minimal et performant */
       *, *::before, *::after {
         box-sizing: border-box;
         margin: 0;
@@ -48,6 +50,7 @@
       /* Base styles critiques */
       html {
         font-size: 16px;
+        scroll-behavior: smooth;
       }
       
       body {
@@ -99,7 +102,7 @@
         background-color: #f5f5f5;
       }
       
-      /* Logo styles */
+      /* Logo critique */
       .logo {
         height: 40px;
         width: auto;
@@ -115,19 +118,20 @@
         width: 100%;
       }
       
-      /* Cards et layout critique */
+      /* Layout critique pour éviter CLS */
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+      
+      /* Cards et éléments critiques */
       .card {
         background: #fff;
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         margin-bottom: 20px;
-      }
-      
-      .grid {
-        display: grid;
-        gap: 20px;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       }
       
       /* Buttons critiques */
@@ -152,31 +156,22 @@
         background: #0056b3;
       }
       
-      /* Form styles critiques */
-      input, textarea, select {
-        font-family: inherit;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 8px 12px;
-        font-size: 14px;
-        width: 100%;
-        transition: border-color 0.2s ease;
-      }
-      
-      input:focus, textarea:focus, select:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-      }
-      
-      /* Images optimisées */
+      /* Images optimisées pour LCP */
       img {
         max-width: 100%;
         height: auto;
         display: block;
       }
       
-      /* Skeleton loader amélioré */
+      /* Optimisation spéciale pour images de fond lourdes */
+      .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 200px;
+      }
+      
+      /* Skeleton loader optimisé */
       .loading-skeleton {
         background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
         background-size: 200% 100%;
@@ -210,7 +205,7 @@
         }
       }
       
-      /* Performance optimizations */
+      /* Performance: éviter FOUC */
       .js-loading .main-content {
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -218,18 +213,6 @@
       
       .js-loaded .main-content {
         opacity: 1;
-      }
-      
-      /* Preload layout pour éviter CLS */
-      .book-card {
-        min-height: 200px;
-      }
-      
-      .book-cover {
-        width: 150px;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 4px;
       }
     </style>
    
@@ -259,19 +242,11 @@
     
     <script type="module" src="/src/index.jsx"></script>
     
-    <!-- 🚀 Chargement CSS asynchrone après JS -->
+    <!-- 🚀 Optimisation du chargement -->
     <script>
-      // Charger le CSS en différé pour ne pas bloquer
+      // Supprimer la classe loading immédiatement
       document.body.classList.remove('js-loading');
       document.body.classList.add('js-loaded');
-      
-      // Charger le CSS principal après le rendu initial
-      setTimeout(() => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = '/assets/css/index-DyzdohcX.css';
-        document.head.appendChild(link);
-      }, 100);
     </script>
   </body>
 </html>
