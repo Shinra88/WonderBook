@@ -159,8 +159,8 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
         <div className={styles.BookInfo}>
           <div className={styles.Rating}>{displayStars(book.averageRating)}</div>
           {title}
-          <p className={styles.Author}>{book.author}</p>
-          <p className={styles.Date}>{formatDate(book.date)}</p>
+          <p>{book.author}</p>
+          <p>{formatDate(book.date)}</p>
 
           {showDetails && book.editors?.length > 0 && (
             <p className={styles.Editors}>
