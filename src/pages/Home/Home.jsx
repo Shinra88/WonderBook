@@ -85,11 +85,28 @@ function Home() {
     ));
   };
 
-  const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
-
   return (
     <div id="topPage" className={styles.Home}>
-      <div className={styles.banner} style={backgroundImageStyle} />
+      {/* 🚀 OPTIMISATION LCP CRITIQUE - Image banner optimisée */}
+      <div className={styles.banner}>
+        <img
+          src={Banner}
+          alt="WonderBook - Bibliothèque de livres"
+          className={styles.bannerImage}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          width="1200"
+          height="400"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+        />
+      </div>
+
       <main className={styles.main}>
         {!isAdmin && (
           <header className={styles.head}>
@@ -138,13 +155,37 @@ function Home() {
         </section>
 
         <section className={styles.bookList}>
-          {booksLoading ? <h2>{t('HomePage.Loading')}...</h2> : displayBooks()}
+          {booksLoading ? (
+            <div className={styles.loadingContainer}>
+              <div
+                className="loading-skeleton"
+                style={{
+                  height: '20px',
+                  marginBottom: '10px',
+                  background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                  backgroundSize: '200% 100%',
+                  animation: 'loading 1.5s infinite',
+                  borderRadius: '4px',
+                }}></div>
+              <h2>{t('HomePage.Loading')}...</h2>
+            </div>
+          ) : (
+            displayBooks()
+          )}
         </section>
+
         <div className={styles.up_container}>
-          <a href="#" className={styles.up}>
+          <a
+            href="#topPage"
+            className={styles.up}
+            onClick={e => {
+              e.preventDefault();
+              document.getElementById('topPage')?.scrollIntoView({ behavior: 'smooth' });
+            }}>
             {t('HomePage.UpPage')}
           </a>
         </div>
+
         <div className={styles.paginationContainer}>
           <Pagination
             currentPage={currentPage}
