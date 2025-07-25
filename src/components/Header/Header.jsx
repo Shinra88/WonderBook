@@ -227,6 +227,7 @@ function Header() {
                   onChange={e => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={t('Header.SearchPlaceholder')}
+                  aria-label="Search books"
                 />
                 <button type="button" onClick={handleSearch} aria-label={t('Header.Search')}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
