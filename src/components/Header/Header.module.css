@@ -75,6 +75,9 @@
   box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),
     inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  text-shadow: 1px 1px 2px #271f34,
+               0 0 1em #271f34,
+               0 0 0.2em #271f34;
 }
 
 .login_menu {
