@@ -14,7 +14,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
     book.status === 'pending' ? t('BookDisplay.Pending') : t('BookDisplay.Validated');
 
   // 🚀 Définir les dimensions selon le size pour s'adapter à votre design
-  const getImageDimensions = (size) => {
+  const getImageDimensions = size => {
     switch (size) {
       case 1:
         return { width: 120, height: 160 }; // Plus petit
@@ -31,20 +31,19 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
 
   // 🚀 Composant image optimisé
   const OptimizedBookCover = ({ book, dimensions, isLazy = true }) => (
-    <div 
+    <div
       className={styles.BookImageContainer}
       style={{
         width: dimensions.width,
         height: dimensions.height,
         minWidth: dimensions.width,
-        minHeight: dimensions.height
-      }}
-    >
+        minHeight: dimensions.height,
+      }}>
       {!imageError ? (
         <>
           {/* Skeleton pendant le chargement */}
           {!imageLoaded && (
-            <div 
+            <div
               className={styles.ImageSkeleton}
               style={{
                 width: '100%',
@@ -53,18 +52,18 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
                 background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
                 backgroundSize: '200% 100%',
                 animation: 'loading 1.5s infinite',
-                borderRadius: '4px'
+                borderRadius: '4px',
               }}
             />
           )}
-          
+
           <img
             className={`${styles.BookImage} ${imageLoaded ? styles.ImageLoaded : styles.ImageLoading}`}
             src={book.cover_url}
             alt={`Couverture du livre ${book.title} par ${book.author}`}
             width={dimensions.width}
             height={dimensions.height}
-            loading={isLazy ? "lazy" : "eager"}
+            loading={isLazy ? 'lazy' : 'eager'}
             decoding="async"
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
@@ -75,13 +74,13 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
               objectPosition: 'center',
               borderRadius: '4px',
               opacity: imageLoaded ? 1 : 0,
-              transition: 'opacity 0.3s ease'
+              transition: 'opacity 0.3s ease',
             }}
           />
         </>
       ) : (
         // Fallback si l'image ne charge pas
-        <div 
+        <div
           className={styles.ImageFallback}
           style={{
             width: '100%',
@@ -96,9 +95,8 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
             fontSize: '12px',
             color: '#666',
             textAlign: 'center',
-            padding: '8px'
-          }}
-        >
+            padding: '8px',
+          }}>
           <div>📚</div>
           <div>{book.title}</div>
         </div>
@@ -111,9 +109,8 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       <Link
         to={`/livre/${encodeURIComponent(book.title)}`}
         className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}>
-        
         <OptimizedBookCover book={book} dimensions={{ width: 60, height: 90 }} />
-        
+
         <strong>{book.title}</strong>
         <em>{statusLabel}</em>
         <em>{t('BookDisplay.By', { user: book.validated_by || 'Bdd' })}</em>
@@ -125,29 +122,29 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
   let mainTitle = titleParts[0];
   let subTitle = titleParts[1]?.trim();
   let title;
-  
+
   switch (size) {
     case 2:
       title = (
         <>
-          <h2 className={styles.MainTitle}>{mainTitle || 'Titre manquant'}</h2>
-          {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+          <h2 className={styles.MainTitle}>{mainTitle || 'Missing title'}</h2>
+          {subTitle && <h5 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h5>}
         </>
       );
       break;
     case 3:
       title = (
         <>
-          <h3 className={styles.MainTitle}>{mainTitle || 'Titre manquant'}</h3>
-          {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+          <h3 className={styles.MainTitle}>{mainTitle || 'Missing title'}</h3>
+          {subTitle && <h5 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h5>}
         </>
       );
       break;
     default:
       title = (
         <>
-          <h2 className={styles.MainTitle}>{mainTitle || 'Titre manquant'}</h2>
-          {subTitle && <h5 className={styles.Subtitle}>{subTitle}</h5>}
+          <h2 className={styles.MainTitle}>{mainTitle || 'Missing title'}</h2>
+          {subTitle && <h5 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h5>}
         </>
       );
   }
@@ -156,13 +153,9 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
     <Link to={`/livre/${encodeURIComponent(book.title)}`} className={styles.BookDisplay}>
       <article className={styles.BookArticle}>
         {!hideImage && (
-          <OptimizedBookCover 
-            book={book} 
-            dimensions={imageDimensions}
-            isLazy={true}
-          />
+          <OptimizedBookCover book={book} dimensions={imageDimensions} isLazy={true} />
         )}
-        
+
         <div className={styles.BookInfo}>
           <div className={styles.Rating}>{displayStars(book.averageRating)}</div>
           {title}
@@ -189,7 +182,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
               {book.summary.length > 300 && (
                 <button
                   type="button"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.preventDefault();
                     setIsExpanded(!isExpanded);
                   }}
