@@ -83,18 +83,18 @@ export default defineConfig(({ mode }) => {
         },
       },
       
-      // Optimisations des assets
-      assetsInlineLimit: 4096, // Inline des petits assets (<4KB)
+      // 🔧 Optimisations pour éviter le blocage de rendu
+      assetsInlineLimit: 8192, // 🚀 Augmenté à 8KB pour inline plus d'assets (CSS, fonts)
       
-      // Optimisations CSS
-      cssCodeSplit: true, // Split CSS par chunk
+      // 🚀 CSS critique : inline dans le JS pour éviter le blocage
+      cssCodeSplit: false, // 🔧 CHANGEMENT CRITIQUE : inline le CSS dans le JS
       cssMinify: true,
       
       // Optimisations pour CloudFront
       sourcemap: false, // Pas de sourcemaps en prod pour économiser la bande passante
       
       // Compression et optimisations
-      chunkSizeWarningLimit: 1000, // Warning si chunk > 1MB
+      chunkSizeWarningLimit: 1200, // 🔧 Augmenté car CSS inline = JS plus gros
     },
     
     // 🔧 Configuration serveur pour le développement
@@ -138,6 +138,7 @@ export default defineConfig(({ mode }) => {
       include: [
         'react',
         'react-dom',
+        '@fontsource/itim', // 🚀 Ajout pour optimiser la font auto-hébergée
       ],
       // Force la résolution des images
       force: false,
@@ -146,9 +147,18 @@ export default defineConfig(({ mode }) => {
     // 🖼️ Configuration des assets
     assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.webp', '**/*.gif', '**/*.svg'],
     
-    // 🎯 Optimisations CSS
+    // 🎯 Optimisations CSS pour les performances
     css: {
       devSourcemap: mode === 'development',
+      // 🚀 Optimisations CSS critiques
+      postcss: {
+        plugins: isProduction ? [
+          // Plugin pour optimiser le CSS critique (optionnel)
+          // require('cssnano')({
+          //   preset: 'default',
+          // }),
+        ] : [],
+      },
       preprocessorOptions: {
         scss: {
           // Si vous utilisez SCSS
