@@ -44,6 +44,8 @@ jobs:
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
   # 🏗️ JOB 2: Build for deployment
+  # Ajoutez ces étapes à votre job "build-for-deploy"
+
   build-for-deploy:
     needs: test-and-quality
     runs-on: ubuntu-latest
@@ -51,29 +53,75 @@ jobs:
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
+
       - name: 📦 Install dependencies
-        run: npm ci
-      - name: 🏗️ Build project
-        run: npm run build
+        run: npm ci --only=production --ignore-scripts
+
+      # 🚀 Nouvelle étape: Optimisation des assets avant build
+      - name: 🎯 Optimize assets pre-build
+        run: |
+          echo "🔍 Analyzing bundle size before build..."
+          # Installer les outils d'analyse si nécessaire
+          npm install --no-save webpack-bundle-analyzer
+
+      - name: 🏗️ Build project with optimizations
+        run: |
+          echo "🚀 Building with production optimizations..."
+          NODE_ENV=production npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+          # Optimisations build
+          GENERATE_SOURCEMAP: false
+          INLINE_RUNTIME_CHUNK: false
+
+      # 🔍 Nouvelle étape: Analyse du bundle
+      - name: 📊 Analyze bundle size
+        run: |
+          echo "📊 Bundle analysis:"
+          du -sh dist/
+          echo "📦 Asset breakdown:"
+          find dist/ -name "*.js" -exec du -h {} \; | sort -hr | head -10
+          find dist/ -name "*.css" -exec du -h {} \; | sort -hr | head -5
+          echo "🖼️ Images breakdown:"
+          find dist/ -name "*.webp" -o -name "*.png" -o -name "*.jpg" | xargs du -h | sort -hr | head -10
+
+      # 🗜️ Nouvelle étape: Compression des assets
+      - name: 🗜️ Compress assets for better performance
+        run: |
+          echo "🗜️ Compressing assets..."
+          # Installer gzip et brotli
+          sudo apt-get update && sudo apt-get install -y gzip brotli
+
+          # Compresser les JS et CSS pour CloudFront
+          find dist/ -name "*.js" -exec gzip -k {} \;
+          find dist/ -name "*.css" -exec gzip -k {} \;
+          find dist/ -name "*.js" -exec brotli -k {} \;
+          find dist/ -name "*.css" -exec brotli -k {} \;
+
+          echo "✅ Assets compressed"
+
       - name: 🔍 Verify build output
         run: |
           ls -la dist/
           test -f dist/index.html || exit 1
           test -d dist/assets || exit 1
+
+          # Vérifications supplémentaires
+          echo "🔍 Checking critical files..."
+          test -f dist/robots.txt || echo "⚠️ robots.txt missing"
+          test -f dist/favicon.ico || echo "⚠️ favicon.ico missing"
+
+          # Vérifier que les assets ont bien des hash
+          ls dist/assets/js/ | grep -E '\-[a-f0-9]{8}\.js$' || echo "⚠️ JS files missing hash"
+          ls dist/assets/css/ | grep -E '\-[a-f0-9]{8}\.css$' || echo "⚠️ CSS files missing hash"
+
           echo "✅ Build verification successful"
-      - name: 📦 Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-          retention-days: 1
   # 🚀 JOB 3: Deployment with optimized caching
   deploy:
     needs: build-for-deploy
