@@ -15,7 +15,7 @@ import avatarDefault from '../../images/avatar.webp';
 import { displayStars } from '../../utils/helpers';
 import logoFnac from '../../images/logos/fnac.svg';
 import logoAmazon from '../../images/logos/amazon.svg';
-import logoCultura from '../../images/logos/cultura.webp';
+import logoCultura from '../../images/logos/cultura.svg';
 import logoCdiscount from '../../images/logos/cdiscount.svg';
 import logoeBay from '../../images/logos/ebay.svg';
 import FeatherIcon from '../../images/feather.webp';
