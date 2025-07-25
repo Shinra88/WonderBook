@@ -25,14 +25,51 @@
   margin-bottom: 10px;
 }
 
+/* 🚀 Images optimisées avec tailles responsives selon le size */
 .BookImage {
-  width: 206px;
-  height: 260px;
   object-fit: contain;
   object-position: center;
   background-color: transparent;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: opacity 0.3s ease;
+}
+
+/* 🚀 Container pour images avec dimensions fixes */
+.BookImageContainer {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 🚀 Skeleton loader pour le chargement */
+.ImageSkeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 4px;
+}
+
+/* 🚀 États de chargement */
+.ImageLoaded {
+  opacity: 1;
+}
+
+.ImageLoading {
+  opacity: 0;
+}
+
+/* 🚀 Fallback pour images cassées */
+.ImageFallback {
+  font-family: 'Itim', cursive;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .BookDisplay h3 {
@@ -75,9 +112,55 @@
   margin-bottom: 10px;
 }
 
+/* 🚀 Titres optimisés */
+.MainTitle {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 10px;
+  line-height: 1.3;
+  color: #333;
+}
+
+.Subtitle {
+  font-size: 14px;
+  color: #666;
+  font-weight: normal;
+  margin-bottom: 8px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.Author {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #796157;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.Date {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #796157;
+  margin-bottom: 10px;
+}
+
+.Editors, .Categories {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #796157;
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
 .Summary {
   overflow: hidden;
   transition: max-height 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #796157;
+  text-align: justify;
+  margin-bottom: 10px;
 }
 
 .Collapsed {
@@ -88,6 +171,10 @@
 
 .Expanded {
   max-height: 1000px;
+}
+
+.SummaryContainer {
+  width: 100%;
 }
 
 .ToggleButton {
@@ -107,8 +194,27 @@
   box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),
     inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
 }
 
+.ToggleButton:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    4px 4px 12px rgba(0, 0, 0, 0.7),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* 🚀 Layout article optimisé */
+.BookArticle {
+  display: flex;
+  align-items: center;
+  margin-top: 42px;
+  margin-bottom: 42px;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Mode admin */
 .BookDisplay.admin {
   display: grid;
   grid-template-columns: 60px 1fr 150px 150px;
@@ -169,8 +275,57 @@
   ) !important;
 }
 
+/* 🚀 Responsive optimisé */
+@media all and (max-width: 768px) {
+  .BookDisplay {
+    width: 95%;
+    max-width: none;
+  }
+  
+  .BookArticle {
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .BookInfo {
+    text-align: left;
+  }
+  
+  .Rating {
+    justify-content: flex-start;
+  }
+  
+  .MainTitle {
+    font-size: 16px;
+  }
+  
+  .BookDisplay.admin {
+    grid-template-columns: 50px 1fr 120px;
+    width: 95%;
+  }
+  
+  .BookDisplay.admin img {
+    width: 50px;
+  }
+}
+
 @media all and (max-width: 600px) {
-  .BookDisplay img {
-    width: 50%;
+  .BookDisplay {
+    width: 100%;
+  }
+  
+  .BookArticle {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .BookInfo {
+    text-align: center;
+  }
+  
+  .Rating {
+    justify-content: center;
   }
 }

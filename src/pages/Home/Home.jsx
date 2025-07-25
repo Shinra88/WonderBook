@@ -87,23 +87,26 @@ function Home() {
 
   return (
     <div id="topPage" className={styles.Home}>
-      {/* 🚀 OPTIMISATION LCP CRITIQUE - Image banner optimisée */}
-      <div className={styles.banner}>
+      {/* 🚀 Banner avec background-image (structure originale préservée) */}
+      <div className={styles.banner} style={{ backgroundImage: `url(${Banner})` }}>
+        {/* 🚀 Image invisible pour LCP optimization - SANS dimensions fixes */}
         <img
           src={Banner}
           alt="WonderBook - Bibliothèque de livres"
-          className={styles.bannerImage}
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-          width="1200"
-          height="400"
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
+            opacity: 0,
+            pointerEvents: 'none',
             objectFit: 'cover',
             objectPosition: 'center',
           }}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
       </div>
 
