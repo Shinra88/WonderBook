@@ -94,20 +94,7 @@ function Header() {
   return (
     <header className={styles.Header}>
       <div className={styles.container}>
-        <img
-          className={styles.logo}
-          src={Logo}
-          alt="logo WonderBook"
-          fetchPriority="high"
-          loading="eager"
-          width="1200"
-          height="600"
-          style={{
-            width: '100%',
-            height: 'auto',
-            maxWidth: '1200px',
-          }}
-        />
+        <img className={styles.logo} src={Logo} alt="logo WonderBook" />
         <nav className={styles.navBar}>
           <ul>
             <li>
