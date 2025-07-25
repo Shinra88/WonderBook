@@ -10,7 +10,7 @@ function BackArrow() {
     navigate(-1);
   };
   return (
-    <button onClick={handleBack} className={styles.backArrow}>
+    <button onClick={handleBack} aria-label="Back" className={styles.backArrow}>
       <FontAwesomeIcon icon={faChevronLeft} />
     </button>
   );

@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
   const currentLang = i18n.language.split('-')[0];
 
   return (
-    <select onChange={handleLanguageChange} value={currentLang} className={styles.select}>
+    <select onChange={handleLanguageChange} value={currentLang} className={styles.languageSwitcher}>
       {languages.map(lang => (
         <option key={lang.code} value={lang.code}>
           {lang.label}

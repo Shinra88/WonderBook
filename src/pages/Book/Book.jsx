@@ -115,7 +115,7 @@ function Book() {
                       href={`https://www.fnac.com/SearchResult/ResultList.aspx?SCat=Livres__+BD__+Ebooks!1&SDM=list&Search=${encodeURIComponent(title)}`}
                       target="_blank"
                       rel="noopener noreferrer">
-                      <img src={logoFnac} alt="Fnac" className={styles.logo} /> Fnac
+                      <img src={logoFnac} alt="Lien Fnac" className={styles.logo} /> Fnac
                     </a>
                   </li>
                   <li>
@@ -123,7 +123,7 @@ function Book() {
                       href={`https://www.amazon.fr/s?k=${encodeURIComponent(title)}`}
                       target="_blank"
                       rel="noopener noreferrer">
-                      <img src={logoAmazon} alt="Amazon" className={styles.logo} /> Amazon
+                      <img src={logoAmazon} alt="Lien Amazon" className={styles.logo} /> Amazon
                     </a>
                   </li>
                   <li>
@@ -131,7 +131,7 @@ function Book() {
                       href={`https://www.cultura.com/search/results?search_query=${encodeURIComponent(title)}`}
                       target="_blank"
                       rel="noopener noreferrer">
-                      <img src={logoCultura} alt="Cultura" className={styles.logo} /> Cultura
+                      <img src={logoCultura} alt="Lien Cultura" className={styles.logo} /> Cultura
                     </a>
                   </li>
                   <li>
@@ -139,7 +139,7 @@ function Book() {
                       href={`https://www.cdiscount.com/search/10/${encodeURIComponent(title)}.html`}
                       target="_blank"
                       rel="noopener noreferrer">
-                      <img src={logoCdiscount} alt="Cdiscount" className={styles.logo} /> Cdiscount
+                      <img src={logoCdiscount} alt="Lien Cdiscount" className={styles.logo} /> Cdiscount
                     </a>
                   </li>
                   <li>
@@ -147,7 +147,7 @@ function Book() {
                       href={`https://www.ebay.fr/sch/267/i.html?_nkw=${encodeURIComponent(title)}`}
                       target="_blank"
                       rel="noopener noreferrer">
-                      <img src={logoeBay} alt="eBay" className={styles.logo} /> eBay
+                      <img src={logoeBay} alt="Lien eBay" className={styles.logo} /> eBay
                     </a>
                   </li>
                 </ul>
