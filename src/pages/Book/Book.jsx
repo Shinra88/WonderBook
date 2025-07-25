@@ -139,7 +139,8 @@ function Book() {
                       href={`https://www.cdiscount.com/search/10/${encodeURIComponent(title)}.html`}
                       target="_blank"
                       rel="noopener noreferrer">
-                      <img src={logoCdiscount} alt="Lien Cdiscount" className={styles.logo} /> Cdiscount
+                      <img src={logoCdiscount} alt="Lien Cdiscount" className={styles.logo} />{' '}
+                      Cdiscount
                     </a>
                   </li>
                   <li>

@@ -5,19 +5,38 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "build:analyze": "vite build && npx vite-bundle-analyzer dist/stats.html",
+    "build:analyze": "vite build --mode production && npx vite-bundle-analyzer dist/",
     "build:prod": "NODE_ENV=production vite build",
+    "build:stats": "vite build --mode production --outDir dist-stats && npx webpack-bundle-analyzer dist-stats/stats.json",
     "preview": "vite preview",
     "preview:network": "vite preview --host 0.0.0.0",
+    "preview:prod": "npm run build && vite preview --host 0.0.0.0",
+    
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    
     "lint": "eslint src --max-warnings 0",
     "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "type-check": "tsc --noEmit"
+    "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --format @eslint/eslint-plugin-stylistic",
+    
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format:staged": "prettier --write",
+    
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    
+    "clean": "rm -rf dist/ node_modules/.vite/ node_modules/.cache/",
+    "clean:deps": "rm -rf node_modules package-lock.json && npm install",
+    
+    "ci": "npm run lint && npm run type-check && npm run test:run && npm run build",
+    "ci:full": "npm run clean && npm ci && npm run ci",
+    
+    "deploy:preview": "npm run build && npm run preview:network",
+    "size-check": "npm run build && du -sh dist/ && find dist/ -name '*.js' -exec du -h {} \\; | sort -hr"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",

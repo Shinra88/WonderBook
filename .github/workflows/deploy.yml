@@ -9,119 +9,106 @@ on:
     branches:
       - main
       - prod
+
 jobs:
   # 🧪 JOB 1: Tests and Quality code
   test-and-quality:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
           cache: 'npm'
+
       - name: 📦 Install dependencies
         run: npm ci
+
       - name: 🔍 Run ESLint
         run: npm run lint
         continue-on-error: false
+
       - name: 🎨 Check Prettier formatting
         run: npm run format:check
-        continue-on-error: true
+        continue-on-error: false
+
       - name: 🧪 Run unit tests
         run: npm run test:run
         env:
           CI: true
+
       - name: 📊 Generate coverage report
         run: npm run test:coverage
         continue-on-error: true
+
       - name: 🔒 Security audit
         run: npm audit --audit-level moderate
         continue-on-error: true
+
       - name: 🏗️ Test build
         run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
-  # 🏗️ JOB 2: Build for deployment
-  # Ajoutez ces étapes à votre job "build-for-deploy"
 
+  # 🏗️ JOB 2: Build for deployment
   build-for-deploy:
     needs: test-and-quality
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: npm ci --only=production --ignore-scripts
+        run: npm ci
 
-      # 🚀 Nouvelle étape: Optimisation des assets avant build
-      - name: 🎯 Optimize assets pre-build
+      - name: 🔍 Debug environment
         run: |
-          echo "🔍 Analyzing bundle size before build..."
-          # Installer les outils d'analyse si nécessaire
-          npm install --no-save webpack-bundle-analyzer
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "Current branch: ${{ github.ref }}"
+          echo "Event: ${{ github.event_name }}"
 
-      - name: 🏗️ Build project with optimizations
-        run: |
-          echo "🚀 Building with production optimizations..."
-          NODE_ENV=production npm run build
+      - name: 🏗️ Build project
+        run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
-          # Optimisations build
-          GENERATE_SOURCEMAP: false
-          INLINE_RUNTIME_CHUNK: false
-
-      # 🔍 Nouvelle étape: Analyse du bundle
-      - name: 📊 Analyze bundle size
-        run: |
-          echo "📊 Bundle analysis:"
-          du -sh dist/
-          echo "📦 Asset breakdown:"
-          find dist/ -name "*.js" -exec du -h {} \; | sort -hr | head -10
-          find dist/ -name "*.css" -exec du -h {} \; | sort -hr | head -5
-          echo "🖼️ Images breakdown:"
-          find dist/ -name "*.webp" -o -name "*.png" -o -name "*.jpg" | xargs du -h | sort -hr | head -10
-
-      # 🗜️ Nouvelle étape: Compression des assets
-      - name: 🗜️ Compress assets for better performance
-        run: |
-          echo "🗜️ Compressing assets..."
-          # Installer gzip et brotli
-          sudo apt-get update && sudo apt-get install -y gzip brotli
-
-          # Compresser les JS et CSS pour CloudFront
-          find dist/ -name "*.js" -exec gzip -k {} \;
-          find dist/ -name "*.css" -exec gzip -k {} \;
-          find dist/ -name "*.js" -exec brotli -k {} \;
-          find dist/ -name "*.css" -exec brotli -k {} \;
-
-          echo "✅ Assets compressed"
+          NODE_ENV: production
 
       - name: 🔍 Verify build output
         run: |
+          echo "📂 Build directory contents:"
           ls -la dist/
-          test -f dist/index.html || exit 1
-          test -d dist/assets || exit 1
 
-          # Vérifications supplémentaires
-          echo "🔍 Checking critical files..."
-          test -f dist/robots.txt || echo "⚠️ robots.txt missing"
-          test -f dist/favicon.ico || echo "⚠️ favicon.ico missing"
+          echo "📊 Build size analysis:"
+          du -sh dist/
+          find dist/ -name "*.js" -exec du -h {} \; | sort -hr | head -5
+          find dist/ -name "*.css" -exec du -h {} \; | sort -hr | head -3
 
-          # Vérifier que les assets ont bien des hash
-          ls dist/assets/js/ | grep -E '\-[a-f0-9]{8}\.js$' || echo "⚠️ JS files missing hash"
-          ls dist/assets/css/ | grep -E '\-[a-f0-9]{8}\.css$' || echo "⚠️ CSS files missing hash"
+          # Vérifications critiques
+          test -f dist/index.html || (echo "❌ index.html missing" && exit 1)
+          test -d dist/assets || (echo "❌ assets directory missing" && exit 1)
 
           echo "✅ Build verification successful"
+
+      - name: 📦 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files-${{ github.sha }}
+          path: dist/
+          retention-days: 1
+          compression-level: 6
+          if-no-files-found: error
+
   # 🚀 JOB 3: Deployment with optimized caching
   deploy:
     needs: build-for-deploy
@@ -131,14 +118,22 @@ jobs:
       - name: 📥 Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-files
+          name: build-files-${{ github.sha }}
           path: dist/
 
       - name: 🔍 Verify downloaded artifacts
         run: |
+          echo "📂 Downloaded artifacts:"
           ls -la dist/
-          echo "Assets directory contents:"
-          ls -la dist/assets/ || echo "No assets directory found"
+
+          echo "📊 Assets breakdown:"
+          if [ -d "dist/assets" ]; then
+            echo "Assets directory contents:"
+            ls -la dist/assets/
+          else
+            echo "❌ No assets directory found!"
+            exit 1
+          fi
 
       - name: 🚀 Deploy static assets with long cache to S3
         run: |
@@ -146,7 +141,8 @@ jobs:
           aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
             --cache-control "public, max-age=31536000, immutable" \
             --delete \
-            --region eu-west-3
+            --region eu-west-3 \
+            --exclude "*.map"
           echo "✅ Assets deployed with long-term cache"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -157,6 +153,7 @@ jobs:
           echo "📄 Deploying HTML and other files with 5 minutes cache..."
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
             --exclude "assets/*" \
+            --exclude "*.map" \
             --cache-control "public, max-age=300" \
             --delete \
             --region eu-west-3
@@ -168,7 +165,7 @@ jobs:
       - name: 🔍 Verify S3 deployment
         run: |
           echo "🔍 Verifying deployment..."
-          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize
+          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize | tail -10
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -190,22 +187,58 @@ jobs:
           echo "   📄 HTML files: 5 minutes cache"
           echo "♻️ CloudFront cache invalidated"
 
+      - name: 🧹 Cleanup artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Supprimer l'artifact après déploiement réussi
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId,
+            });
+
+            for (const artifact of artifacts.data.artifacts) {
+              if (artifact.name === 'build-files-${{ github.sha }}') {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id,
+                });
+                console.log(`🧹 Deleted artifact: ${artifact.name}`);
+              }
+            }
+
   # 🔄 JOB 4: Post-deployment verification
   verify-deployment:
     needs: deploy
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
     steps:
-      - name: 🏥 Basic health check
+      - name: 🏥 Health check
         run: |
           echo "🔍 Performing post-deployment checks..."
-          echo "✅ Pipeline completed successfully!"
-          # Ajoutez ici vos vérifications post-déploiement
-          # curl -f https://votre-domaine.com || exit 1
 
-      - name: 🔍 Verify cache headers (optional)
+          # Test basique de connectivité
+          if curl -f -s -o /dev/null https://wonderbook.net; then
+            echo "✅ Site accessible"
+          else
+            echo "❌ Site not accessible"
+            exit 1
+          fi
+
+      - name: 🔍 Verify cache headers
         run: |
           echo "🔍 Testing cache headers..."
-          echo "You can manually verify with:"
-          echo "curl -I https://wonderbook.net/assets/[your-asset-file]"
-          echo "Expected: cache-control: public, max-age=31536000, immutable"
+
+          # Test d'un asset JS
+          ASSET_RESPONSE=$(curl -I -s https://wonderbook.net/assets/js/ | head -n 20)
+          echo "📦 Asset headers sample:"
+          echo "$ASSET_RESPONSE"
+
+          # Test de l'index.html
+          HTML_RESPONSE=$(curl -I -s https://wonderbook.net/ | head -n 20)
+          echo "📄 HTML headers:"
+          echo "$HTML_RESPONSE"
+
+          echo "✅ Post-deployment verification completed!"
