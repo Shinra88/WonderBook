@@ -36,7 +36,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       title = (
         <>
           <h2>{mainTitle || 'Titre manquant'}</h2>
-          <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
+          <h5 className={styles.Subtitle}>{subTitle || 'sous-titre manquant'}</h5>
         </>
       );
       break;
@@ -44,7 +44,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       title = (
         <>
           <h3>{mainTitle || 'Titre manquant'}</h3>
-          <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
+          <h5 className={styles.Subtitle}>{subTitle || 'sous-titre manquant'}</h5>
         </>
       );
       break;
@@ -52,7 +52,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       title = (
         <>
           <h2>{mainTitle || 'Titre manquant'}</h2>
-          <h5 className={styles.Subtitle}>{subTitle || '\u00A0'}</h5>
+          <h5 className={styles.Subtitle}>{subTitle || 'sous-titre manquant'}</h5>
         </>
       );
   }
