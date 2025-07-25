@@ -32,11 +32,7 @@
     <!-- Title -->
     <title>WonderBook - Découvrez vos prochaines lectures</title>
     
-    <!-- 🚀 PRELOAD du CSS principal pour éviter le blocage -->
-    <link rel="preload" href="/assets/css/style-m5ZOb0Y6.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/assets/css/style-m5ZOb0Y6.css"></noscript>
-    
-    <!-- 🚀 CSS CRITIQUE MINIMAL INLINE (seulement above-the-fold) -->
+    <!-- 🚀 CSS CRITIQUE ÉTENDU INLINE (pour compenser le gros CSS) -->
     <style>
       /* Reset minimal */
       *, *::before, *::after {
@@ -66,7 +62,7 @@
       }
       
       /* Header critique (above-the-fold) */
-      ._Header_1odsr_1 {
+      ._Header_1odsr_1, .header {
         height: 60px;
         background: #fff;
         border-bottom: 1px solid #e0e0e0;
@@ -76,22 +72,38 @@
         position: sticky;
         top: 0;
         z-index: 100;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       }
       
       /* Navigation critique */
       nav {
         display: flex;
         gap: 20px;
+        align-items: center;
       }
       
       nav a {
         text-decoration: none;
         color: #333;
         font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+      }
+      
+      nav a:hover {
+        background-color: #f5f5f5;
+      }
+      
+      /* Logo styles */
+      .logo {
+        height: 40px;
+        width: auto;
+        margin-right: 20px;
       }
       
       /* Container principal */
-      .main-content {
+      .main-content, .container {
         flex: 1;
         padding: 20px;
         max-width: 1200px;
@@ -99,7 +111,68 @@
         width: 100%;
       }
       
-      /* Skeleton loader pour UX pendant chargement */
+      /* Cards et layout critique */
+      .card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+      }
+      
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+      
+      /* Buttons critiques */
+      .btn, button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        display: inline-block;
+        text-decoration: none;
+      }
+      
+      .btn-primary {
+        background: #007bff;
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background: #0056b3;
+      }
+      
+      /* Form styles critiques */
+      input, textarea, select {
+        font-family: inherit;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+        width: 100%;
+        transition: border-color 0.2s ease;
+      }
+      
+      input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
+      
+      /* Images optimisées */
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      
+      /* Skeleton loader amélioré */
       .loading-skeleton {
         background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
         background-size: 200% 100%;
@@ -114,36 +187,26 @@
         100% { background-position: -200% 0; }
       }
       
-      /* Performance: Preload layout pour éviter CLS */
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-      
-      /* Images optimisées */
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-      }
-      
       /* Responsive critique */
       @media (max-width: 768px) {
-        ._Header_1odsr_1 {
+        ._Header_1odsr_1, .header {
           padding: 0 10px;
         }
         
-        .main-content {
+        .main-content, .container {
           padding: 10px;
         }
         
         nav {
           gap: 10px;
         }
+        
+        .grid {
+          grid-template-columns: 1fr;
+        }
       }
       
-      /* Eviter FOUC pendant chargement JS */
+      /* Performance optimizations */
       .js-loading .main-content {
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -151,6 +214,18 @@
       
       .js-loaded .main-content {
         opacity: 1;
+      }
+      
+      /* Preload layout pour éviter CLS */
+      .book-card {
+        min-height: 200px;
+      }
+      
+      .book-cover {
+        width: 150px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
       }
     </style>
    
@@ -180,11 +255,19 @@
     
     <script type="module" src="/src/index.jsx"></script>
     
-    <!-- Performance: Supprimer classe loading quand JS est chargé -->
+    <!-- 🚀 Chargement CSS asynchrone après JS -->
     <script>
-      // Plus rapide que DOMContentLoaded
+      // Charger le CSS en différé pour ne pas bloquer
       document.body.classList.remove('js-loading');
       document.body.classList.add('js-loaded');
+      
+      // Charger le CSS principal après le rendu initial
+      setTimeout(() => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/assets/css/index-DyzdohcX.css';
+        document.head.appendChild(link);
+      }, 100);
     </script>
   </body>
 </html>

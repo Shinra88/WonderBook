@@ -27,7 +27,6 @@ export default defineConfig(({ mode }) => {
       loader: 'jsx',
       include: /src\/.*\.(js|jsx)$/,
       exclude: [],
-      // Optimisations pour la production
       ...(isProduction && {
         drop: ['console', 'debugger'],
         minifyIdentifiers: true,
@@ -36,17 +35,24 @@ export default defineConfig(({ mode }) => {
       }),
     },
 
-    // 🚀 Configuration BUILD ultra-optimisée
+    // 🚀 Configuration BUILD optimisée mais compatible
     build: {
       minify: 'esbuild',
       target: 'esnext',
 
       rollupOptions: {
         output: {
-          // 🔧 Un seul chunk pour éviter les requêtes en cascade
-          manualChunks: undefined,
+          // 🔧 Chunks optimisés pour les performances
+          manualChunks: id => {
+            // CSS modules et vendor séparés pour un meilleur cache
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'react-vendor';
+              }
+              return 'vendor';
+            }
+          },
 
-          // Nommage des assets
           assetFileNames: assetInfo => {
             const info = assetInfo.name.split('.');
             const ext = info[info.length - 1];
@@ -54,10 +60,12 @@ export default defineConfig(({ mode }) => {
             if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext)) {
               return `assets/images/[name]-[hash][extname]`;
             }
+            if (/css/i.test(ext)) {
+              return `assets/css/[name]-[hash][extname]`;
+            }
             if (/woff2?|eot|ttf|otf/i.test(ext)) {
               return `assets/fonts/[name]-[hash][extname]`;
             }
-            // CSS sera inline donc pas de fichier généré
             return `assets/[name]-[hash][extname]`;
           },
 
@@ -66,13 +74,13 @@ export default defineConfig(({ mode }) => {
         },
       },
 
-      // 🚀 CRITICAL: Inline TOUT pour éliminer les requêtes bloquantes
-      assetsInlineLimit: 100000, // 100KB - inline presque tout
-      cssCodeSplit: false, // CSS inline dans JS
+      // 🚀 Optimisations pour les performances de rendu
+      assetsInlineLimit: 8192, // 8KB inline
+      cssCodeSplit: true, // 🔧 GARDÉ pour CSS modules
       cssMinify: true,
 
       sourcemap: false,
-      chunkSizeWarningLimit: 2000, // Augmenté car tout est inline
+      chunkSizeWarningLimit: 1500,
     },
 
     server:
@@ -116,13 +124,21 @@ export default defineConfig(({ mode }) => {
       include: ['react', 'react-dom', '@fontsource/itim'],
     },
 
+    // 🔧 CSS configuration compatible avec modules
     css: {
       devSourcemap: mode === 'development',
-      // 🔧 Configuration CSS modules pour compatibilité avec cssCodeSplit: false
       modules: {
         localsConvention: 'camelCase',
         generateScopedName: isProduction ? '[hash:base64:5]' : '[name]__[local]___[hash:base64:5]',
       },
+      // Postcss pour PurgeCSS (si installé)
+      postcss: isProduction
+        ? {
+            plugins: [
+              // PurgeCSS sera configuré séparément si nécessaire
+            ],
+          }
+        : undefined,
     },
 
     define: {
