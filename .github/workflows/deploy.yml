@@ -1,5 +1,4 @@
 name: Frontend CI/CD Pipeline
-
 on:
   push:
     branches:
@@ -10,7 +9,6 @@ on:
     branches:
       - main
       - prod
-
 jobs:
   # 🧪 JOB 1: Tests and Quality code
   test-and-quality:
@@ -18,42 +16,33 @@ jobs:
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
-
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
           cache: 'npm'
-
       - name: 📦 Install dependencies
         run: npm ci
-
       - name: 🔍 Run ESLint
         run: npm run lint
         continue-on-error: false
-
       - name: 🎨 Check Prettier formatting
         run: npm run format:check
         continue-on-error: true
-
       - name: 🧪 Run unit tests
         run: npm run test:run
         env:
           CI: true
-
       - name: 📊 Generate coverage report
         run: npm run test:coverage
         continue-on-error: true
-
       - name: 🔒 Security audit
         run: npm audit --audit-level moderate
         continue-on-error: true
-
       - name: 🏗️ Test build
         run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
-
   # 🏗️ JOB 2: Build for deployment
   build-for-deploy:
     needs: test-and-quality
@@ -62,36 +51,30 @@ jobs:
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
-
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-
       - name: 📦 Install dependencies
         run: npm ci
-
       - name: 🏗️ Build project
         run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
-
       - name: 🔍 Verify build output
         run: |
           ls -la dist/
           test -f dist/index.html || exit 1
           test -d dist/assets || exit 1
           echo "✅ Build verification successful"
-
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
           path: dist/
           retention-days: 1
-
-  # 🚀 JOB 3: DDeployment
+  # 🚀 JOB 3: Deployment with optimized caching
   deploy:
     needs: build-for-deploy
     runs-on: ubuntu-latest
@@ -103,16 +86,44 @@ jobs:
           name: build-files
           path: dist/
 
-      - name: 🚀 Deploy to S3
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --delete --cache-control public, max-age=31536000, immutable
+      - name: 🔍 Verify downloaded artifacts
+        run: |
+          ls -la dist/
+          echo "Assets directory contents:"
+          ls -la dist/assets/ || echo "No assets directory found"
+
+      - name: 🚀 Deploy static assets with long cache to S3
+        run: |
+          echo "🎯 Deploying assets (JS, CSS, images) with 1 year cache..."
+          aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete \
+            --region eu-west-3
+          echo "✅ Assets deployed with long-term cache"
         env:
-          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: eu-west-3
-          SOURCE_DIR: dist
+
+      - name: 🚀 Deploy HTML and other files with short cache to S3
+        run: |
+          echo "📄 Deploying HTML and other files with 5 minutes cache..."
+          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
+            --exclude "assets/*" \
+            --cache-control "public, max-age=300" \
+            --delete \
+            --region eu-west-3
+          echo "✅ HTML and other files deployed with short-term cache"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: 🔍 Verify S3 deployment
+        run: |
+          echo "🔍 Verifying deployment..."
+          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: ♻️ Invalidate CloudFront cache
         uses: chetan/invalidate-cloudfront-action@v2
@@ -126,7 +137,9 @@ jobs:
       - name: ✅ Deployment success
         run: |
           echo "✅ Deployment completed successfully!"
-          echo "🌐 Application deployed to S3"
+          echo "🌐 Application deployed to S3 with optimized caching:"
+          echo "   📦 Assets (JS/CSS/Images): 1 year cache (immutable)"
+          echo "   📄 HTML files: 5 minutes cache"
           echo "♻️ CloudFront cache invalidated"
 
   # 🔄 JOB 4: Post-deployment verification
@@ -141,3 +154,10 @@ jobs:
           echo "✅ Pipeline completed successfully!"
           # Ajoutez ici vos vérifications post-déploiement
           # curl -f https://votre-domaine.com || exit 1
+
+      - name: 🔍 Verify cache headers (optional)
+        run: |
+          echo "🔍 Testing cache headers..."
+          echo "You can manually verify with:"
+          echo "curl -I https://wonderbook.net/assets/[your-asset-file]"
+          echo "Expected: cache-control: public, max-age=31536000, immutable"
