@@ -35,16 +35,15 @@ export default defineConfig(({ mode }) => {
       }),
     },
 
-    // 🚀 Configuration BUILD optimisée mais compatible
+    // 🚀 Configuration BUILD optimisée
     build: {
       minify: 'esbuild',
       target: 'esnext',
 
       rollupOptions: {
         output: {
-          // 🔧 Chunks optimisés pour les performances
+          // Chunks optimisés
           manualChunks: id => {
-            // CSS modules et vendor séparés pour un meilleur cache
             if (id.includes('node_modules')) {
               if (id.includes('react') || id.includes('react-dom')) {
                 return 'react-vendor';
@@ -61,7 +60,7 @@ export default defineConfig(({ mode }) => {
               return `assets/images/[name]-[hash][extname]`;
             }
             if (/css/i.test(ext)) {
-              return `assets/css/[name]-[hash][extname]`;
+              return `assets/[name]-[hash][extname]`;
             }
             if (/woff2?|eot|ttf|otf/i.test(ext)) {
               return `assets/fonts/[name]-[hash][extname]`;
@@ -74,9 +73,9 @@ export default defineConfig(({ mode }) => {
         },
       },
 
-      // 🚀 Optimisations pour les performances de rendu
+      // 🚀 Optimisations pour les performances
       assetsInlineLimit: 8192, // 8KB inline
-      cssCodeSplit: true, // 🔧 GARDÉ pour CSS modules
+      cssCodeSplit: true, // Garder pour CSS modules
       cssMinify: true,
 
       sourcemap: false,
@@ -124,21 +123,13 @@ export default defineConfig(({ mode }) => {
       include: ['react', 'react-dom', '@fontsource/itim'],
     },
 
-    // 🔧 CSS configuration compatible avec modules
+    // 🔧 CSS configuration simple et propre
     css: {
       devSourcemap: mode === 'development',
       modules: {
         localsConvention: 'camelCase',
         generateScopedName: isProduction ? '[hash:base64:5]' : '[name]__[local]___[hash:base64:5]',
       },
-      // Postcss pour PurgeCSS (si installé)
-      postcss: isProduction
-        ? {
-            plugins: [
-              // PurgeCSS sera configuré séparément si nécessaire
-            ],
-          }
-        : undefined,
     },
 
     define: {

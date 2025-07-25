@@ -100,6 +100,13 @@ function Header() {
           alt="logo WonderBook"
           fetchPriority="high"
           loading="eager"
+          width="1200"
+          height="600"
+          style={{
+            width: '100%',
+            height: 'auto',
+            maxWidth: '1200px',
+          }}
         />
         <nav className={styles.navBar}>
           <ul>
