@@ -1,4 +1,4 @@
-import Map from '../../images/map_footer.png';
+import Map from '../../images/map_footer.webp';
 import { useTranslation } from 'react-i18next';
 import styles from './Footer.module.css';
 

@@ -5,7 +5,7 @@ import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import CommentModal from '../../modals/CommentModal/CommentModal';
 import { addOrUpdateComment } from '../../services/commentService';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
-import Banner from '../../images/library.png';
+import Banner from '../../images/library.webp';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { uploadEbookToS3 } from '../../services/uploadServices';

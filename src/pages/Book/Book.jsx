@@ -7,18 +7,18 @@ import {
   getUserCollection,
 } from '../../services/collectionService';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
-import Banner from '../../images/library.png';
+import Banner from '../../images/library.webp';
 import { useAuth } from '../../hooks/useAuth';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import BackArrow from '../../components/BackArrow/BackArrow';
-import avatarDefault from '../../images/avatar.png';
+import avatarDefault from '../../images/avatar.webp';
 import { displayStars } from '../../utils/helpers';
 import logoFnac from '../../images/logos/fnac.svg';
 import logoAmazon from '../../images/logos/amazon.svg';
-import logoCultura from '../../images/logos/cultura.png';
+import logoCultura from '../../images/logos/cultura.webp';
 import logoCdiscount from '../../images/logos/cdiscount.svg';
 import logoeBay from '../../images/logos/ebay.svg';
-import FeatherIcon from '../../images/feather.png';
+import FeatherIcon from '../../images/feather.webp';
 import CommentModerationModal from '../../modals/CommentModerationModal/CommentModerationModal';
 import BookFormModal from '../../modals/BookFormModal/BookFormModal';
 import { useTranslation } from 'react-i18next';

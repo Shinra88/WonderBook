@@ -192,7 +192,7 @@
   left: 50%;
   width: 10px;
   height: 10px;
-  background-image: url('../../images/backround.png');
+  background-image: url('../../images/backround.webp');
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.2s ease-in-out;

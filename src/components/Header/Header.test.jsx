@@ -99,7 +99,7 @@ describe('Header Component', () => {
 
     it('should show user menu when authenticated', async () => {
       mockUseAuth.isAuthenticated = true;
-      mockUseAuth.user = { name: 'John Doe', avatar: 'avatar.png' };
+      mockUseAuth.user = { name: 'John Doe', avatar: 'avatar.webp' };
 
       renderHeader();
 

@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   z-index: 999;
-  background-image: url('../../images/backround.png');
+  background-image: url('../../images/backround.webp');
   display: flex;
   justify-content: space-evenly;
   align-items: center;

@@ -251,7 +251,7 @@ hr {
   content: '';
   height: 26px;
   width: 26px;
-  background-image: url('../../images/switch-book.png');
+  background-image: url('../../images/switch-book.webp');
   background-size: contain;
   background-repeat: no-repeat;
   transition: 0.4s;
@@ -310,7 +310,7 @@ input:checked + .slider:before {
   content: '';
   height: 26px;
   width: 26px;
-  background-image: url('../../images/switch-book.png');
+  background-image: url('../../images/switch-book.webp');
   background-size: contain;
   background-repeat: no-repeat;
   transition: 0.4s;

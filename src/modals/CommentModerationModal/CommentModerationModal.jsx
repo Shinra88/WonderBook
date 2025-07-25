@@ -1,10 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './CommentModerationModal.module.css';
-import avatarDefault from '../../images/avatar.png';
+import avatarDefault from '../../images/avatar.webp';
 import { displayStars } from '../../utils/helpers';
 import { deleteCommentAsAdmin } from '../../services/commentService';
-import FeatherIcon from '../../images/feather.png';
+import FeatherIcon from '../../images/feather.webp';
 import { useTranslation } from 'react-i18next';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 

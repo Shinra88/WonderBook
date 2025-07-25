@@ -1,5 +1,5 @@
 // 📁 src/pages/NotFound/NotFound.jsx
-import Banner from '../../images/library.png';
+import Banner from '../../images/library.webp';
 import { useTranslation } from 'react-i18next';
 import styles from './NotFound.module.css';
 

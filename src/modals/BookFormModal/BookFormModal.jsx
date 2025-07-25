@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import styles from './BookFormModal.module.css';
 import GenreSelector from '../../components/GenreSelector/GenreSelector';
-import UploadIcon from '../../images/photo.png';
+import UploadIcon from '../../images/photo.webp';
 import useCategories from '../../hooks/useCategories';
 import useEditors from '../../hooks/useEditors';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
@@ -282,7 +282,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
                 type="file"
                 id="attachment"
                 className={styles.fileInput}
-                accept=".png, .jpeg, .jpg, .webp"
+                accept=".webp, .jpeg, .jpg, .webp"
                 onChange={handleFileChange}
               />
             </label>

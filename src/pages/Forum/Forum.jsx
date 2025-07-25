@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import Banner from '../../images/library.png';
+import Banner from '../../images/library.webp';
 import { getTopics } from '../../services/topicsService';
 import TopicModal from '../../modals/TopicModal/TopicModal';
 import { useAuth } from '../../hooks/useAuth';

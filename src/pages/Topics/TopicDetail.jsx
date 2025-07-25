@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import Banner from '../../images/library.png';
+import Banner from '../../images/library.webp';
 import {
   getTopicById,
   updateTopicNotice,
@@ -12,7 +12,7 @@ import {
 } from '../../services/topicsService';
 import { getPostsByTopicId, deletePost } from '../../services/postsService';
 import BackArrow from '../../components/BackArrow/BackArrow';
-import avatarDefault from '../../images/avatar.png';
+import avatarDefault from '../../images/avatar.webp';
 import PostModal from '../../modals/PostModal/PostModal';
 import Pagination from '../../components/Pagination/Pagination';
 import { useAuth } from '../../hooks/useAuth';

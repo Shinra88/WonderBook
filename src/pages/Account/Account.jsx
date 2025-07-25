@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Banner from '../../images/library.png';
-import Avatar from '../../images/avatar.png';
-import FeatherIcon from '../../images/feather.png';
+import Banner from '../../images/library.webp';
+import Avatar from '../../images/avatar.webp';
+import FeatherIcon from '../../images/feather.webp';
 import styles from './Account.module.css';
 import ChangePass from '../../modals/ChangePass/ChangePass';
 import { useAuth } from '../../hooks/useAuth';
@@ -208,7 +208,7 @@ function Account() {
                 type="file"
                 id="attachment"
                 className={styles.FileInput}
-                accept=".png, .jpeg, .jpg, .webp"
+                accept=".webp, .jpeg, .jpg, .webp"
                 disabled={!isEditing}
                 onChange={handleAvatarChange} // When the image is chosen, it is displayed immediately
               />

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import BookDisplay from '../../components/Books/BookDisplay/BookDisplay';
 import BestRateBooks from '../../components/Books/BestRatedBooks/BestRatedBooks';
 import LastBook from '../../components/Books/LastBook/LastBook';
-import Banner from '../../images/library.png';
+import Banner from '../../images/library.webp';
 import styles from './Home.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import { useBestRatedBooks, useLastAddedBooks, useFilteredBooks } from '../../hooks/customHooks';

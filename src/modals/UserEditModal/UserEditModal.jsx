@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Avatar from '../../images/avatar.png';
+import Avatar from '../../images/avatar.webp';
 import { updateUserById } from '../../services/adminServices';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import { useTranslation } from 'react-i18next';

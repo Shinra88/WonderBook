@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Banner from '../../images/library.png';
-import Avatar from '../../images/avatar.png';
+import Banner from '../../images/library.webp';
+import Avatar from '../../images/avatar.webp';
 import styles from './Admin.module.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllUsers, updateUserStatus } from '../../services/adminServices';
