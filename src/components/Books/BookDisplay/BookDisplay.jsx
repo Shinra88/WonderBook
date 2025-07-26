@@ -128,7 +128,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       title = (
         <>
           <h2 className={styles.MainTitle}>{mainTitle || 'Missing title'}</h2>
-          {subTitle && <h5 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h5>}
+          {subTitle && <h4 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h4>}
         </>
       );
       break;
@@ -136,7 +136,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       title = (
         <>
           <h3 className={styles.MainTitle}>{mainTitle || 'Missing title'}</h3>
-          {subTitle && <h5 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h5>}
+          {subTitle && <h4 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h4>}
         </>
       );
       break;
@@ -144,7 +144,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
       title = (
         <>
           <h2 className={styles.MainTitle}>{mainTitle || 'Missing title'}</h2>
-          {subTitle && <h5 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h5>}
+          {subTitle && <h4 className={styles.Subtitle}>{subTitle || 'Missing subtitle'}</h4>}
         </>
       );
   }
