@@ -138,6 +138,7 @@
   height: 3.5rem;
   background-image: url('../../images/wood.webp');
   background-position: center;
+  margin-inline: auto;
 }
 
 .Notice h2,
