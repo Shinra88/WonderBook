@@ -5,22 +5,17 @@
   width: 100%;
   z-index: 999;
   background-image: url('../../images/backround.webp');
+  background-color: #271f34;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: white;
+  border-top: 4px solid black;
   text-shadow:
     #e8d8a0 0px 0px 5px,
-    #fff 0px 0px 10px,
-    #e8d8a0 0px 0px 15px,
-    #e8d8a0 0px 0px 20px,
-    #e8d8a0 0px 0px 30px,
-    #e8d8a0 0px 0px 40px,
-    #e8d8a0 0px 0px 50px,
-    #e8d8a0 0px 0px 75px;
-  border-top: 4px solid #e8d8a0;
+    #e8d8a0 0px 0px 15px;
 }
 
 .MapBlock {
@@ -30,7 +25,7 @@
 }
 
 .MapBlock a {
-  color: #796157;
+  color: #ffffff;
 }
 
 .MapBlock img {

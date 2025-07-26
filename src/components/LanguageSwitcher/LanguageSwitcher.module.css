@@ -5,6 +5,7 @@
   border: none;
   font-size: 14px;
   background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  background-color: #e8d8a0;
   box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),
     inset -4px -4px 8px rgba(0, 0, 0, 0.6);
