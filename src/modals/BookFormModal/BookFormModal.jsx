@@ -138,13 +138,13 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
       title: finalTitle,
       search_title: normalize(`${finalTitle} ${formData.author}`),
       author: formData.author,
-      year: formattedDate,
+      year: new Date(formattedDate).getFullYear(),
       summary: formData.summary,
       cover_url: coverUrl,
       status: formData.status,
       recaptchaToken,
       categories: selectedGenres,
-      editors: [Number(selectedPublisher)],
+      editor: [Number(selectedPublisher)],
     };
 
     try {
