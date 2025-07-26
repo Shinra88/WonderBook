@@ -269,7 +269,7 @@
       "AdditionFailed": "添加主题时出错。",
       "UnknownError": "发生未知错误。"
     },
-        "PostModal": {
+    "PostModal": {
       "Spoiler": "Spoiler",
       "Bold": "加粗",
       "Italic": "斜体",

@@ -269,7 +269,7 @@
       "AdditionFailed": "주제 추가 중 오류가 발생했습니다.",
       "UnknownError": "알 수 없는 오류가 발생했습니다."
     },
-        "PostModal": {
+    "PostModal": {
       "Spoiler": "스포일러",
       "Bold": "굵게",
       "Italic": "기울임",

@@ -270,7 +270,7 @@
       "AdditionFailed": "Erreur lors de l'ajout du sujet.",
       "UnknownError": "Une erreur inconnue est survenue."
     },
-        "PostModal": {
+    "PostModal": {
       "Spoiler": "Spoiler",
       "Bold": "Gras",
       "Italic": "Italique",

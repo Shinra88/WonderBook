@@ -269,7 +269,7 @@
       "AdditionFailed": "トピックの追加中にエラーが発生しました。",
       "UnknownError": "不明なエラーが発生しました。"
     },
-        "PostModal": {
+    "PostModal": {
       "Spoiler": "ネタバレ",
       "Bold": "太字",
       "Italic": "斜体",

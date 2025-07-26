@@ -269,7 +269,7 @@
       "AdditionFailed": "Ошибка при добавлении темы.",
       "UnknownError": "Произошла неизвестная ошибка."
     },
-        "PostModal": {
+    "PostModal": {
       "Spoiler": "Spoiler",
       "Bold": "Жирный",
       "Italic": "Курсив",

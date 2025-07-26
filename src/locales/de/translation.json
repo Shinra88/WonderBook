@@ -269,7 +269,7 @@
       "AdditionFailed": "Fehler beim Hinzufügen des Themas.",
       "UnknownError": "Ein unbekannter Fehler ist aufgetreten."
     },
-        "PostModal": {
+    "PostModal": {
       "Spoiler": "Spoiler",
       "Bold": "Fett",
       "Italic": "Kursiv",
