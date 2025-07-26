@@ -200,14 +200,27 @@ jobs:
           echo "🔍 Verifying deployment..."
           aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize | tail -10
 
-          echo "🔍 Testing MIME types..."
-          # Test du fichier CSS principal
-          echo "Testing CSS MIME type:"
-          aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/index-3mRPG_9E.css | grep ContentType || echo "CSS file not found"
+          echo "🔍 Checking specific files existence..."
+          # Vérifier l'existence des fichiers clés
+          if aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/assets/index-3mRPG_9E.css; then
+            echo "✅ CSS file exists"
+            aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/index-3mRPG_9E.css | grep ContentType || echo "No ContentType found"
+          else
+            echo "❌ CSS file NOT found on S3"
+          fi
 
-          # Test du fichier JS principal  
-          echo "Testing JS MIME type:"
-          aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/js/index-D5OH-pp8.js | grep ContentType || echo "JS file not found"
+          if aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/assets/js/index-D5OH-pp8.js; then
+            echo "✅ JS file exists"
+            aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/js/index-D5OH-pp8.js | grep ContentType || echo "No ContentType found"
+          else
+            echo "❌ JS file NOT found on S3"
+          fi
+
+          echo "📋 Listing all JS files in bucket:"
+          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/assets/js/ || echo "No JS directory found"
+
+          echo "📋 Listing all CSS files in bucket:"
+          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/assets/ | grep "\.css" || echo "No CSS files found"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -253,13 +266,23 @@ jobs:
         run: |
           echo "🔍 Testing MIME types in production..."
 
-          # Test du CSS
-          CSS_HEADER=$(curl -I -s https://wonderbook.net/assets/index-3mRPG_9E.css | grep -i content-type || echo "CSS not found")
-          echo "📄 CSS Content-Type: $CSS_HEADER"
+          # Test d'un fichier CSS récent (pas forcément le nom exact)
+          CSS_FILE=$(curl -s https://wonderbook.net/ | grep -o 'assets/index-[^"]*\.css' | head -1)
+          if [ -n "$CSS_FILE" ]; then
+            CSS_HEADER=$(curl -I -s "https://wonderbook.net/$CSS_FILE" | grep -i content-type || echo "CSS not found")
+            echo "📄 CSS Content-Type: $CSS_HEADER"
+          else
+            echo "📄 CSS file not found in HTML"
+          fi
 
-          # Test du JS
-          JS_HEADER=$(curl -I -s https://wonderbook.net/assets/js/index-D5OH-pp8.js | grep -i content-type || echo "JS not found")
-          echo "📦 JS Content-Type: $JS_HEADER"
+          # Test d'un fichier JS récent (pas forcément le nom exact)
+          JS_FILE=$(curl -s https://wonderbook.net/ | grep -o 'assets/js/index-[^"]*\.js' | head -1)
+          if [ -n "$JS_FILE" ]; then
+            JS_HEADER=$(curl -I -s "https://wonderbook.net/$JS_FILE" | grep -i content-type || echo "JS not found")
+            echo "📦 JS Content-Type: $JS_HEADER"
+          else
+            echo "📦 JS file not found in HTML"
+          fi
 
           # Test de l'index.html
           HTML_HEADER=$(curl -I -s https://wonderbook.net/ | grep -i content-type || echo "HTML not found")
