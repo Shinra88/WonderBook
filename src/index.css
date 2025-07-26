@@ -1,7 +1,3 @@
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-*/
-
 html,
 body,
 div,
@@ -83,6 +79,7 @@ mark,
 audio,
 video {
   font-family: 'Itim', sans-serif;
+  font-weight: bold;
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -101,6 +98,7 @@ section {
 }
 body {
   font-family: 'Itim', sans-serif;
+  font-weight: bold;
   line-height: 1;
 }
 ol,
@@ -154,6 +152,7 @@ code {
 
 h1 {
   font-family: 'Itim', sans-serif;
+  font-weight: bold;
   font-size: 44px;
   font-style: italic;
   color: #796157;
