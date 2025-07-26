@@ -177,7 +177,7 @@ jobs:
               --cache-control "public, max-age=31536000, immutable" \
               --region eu-west-3
           fi
-
+          
           # Images
           if [ -d "dist/assets/images" ]; then
             aws s3 sync dist/assets/images/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/images/ \
@@ -208,12 +208,12 @@ jobs:
         run: |
           echo "🔍 Verifying deployment..."
           aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize | tail -10
-
+          
           echo "🔍 Testing MIME types..."
           # Test du fichier CSS principal
           echo "Testing CSS MIME type:"
           aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/index-3mRPG_9E.css | grep ContentType || echo "CSS file not found"
-
+          
           # Test du fichier JS principal  
           echo "Testing JS MIME type:"
           aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/js/index-D5OH-pp8.js | grep ContentType || echo "JS file not found"
