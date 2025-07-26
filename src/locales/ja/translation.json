@@ -294,6 +294,11 @@
   "UserEditModal": {
     "Title": "ユーザーを編集",
     "Username": "ユーザー名",
+    "Avatar": "アバター",
+    "Role": "役割",
+    "User": "ユーザー",
+    "Admin": "管理者",
+    "Moderator": "モデレーター",
     "Email": "メール",
     "Status": "ステータス",
     "Active": "アクティブ",

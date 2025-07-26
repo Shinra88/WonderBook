@@ -294,6 +294,11 @@
   "UserEditModal": {
     "Title": "사용자 수정",
     "Username": "사용자 이름",
+    "Avatar": "아바타",
+    "Role": "역할",
+    "User": "사용자",
+    "Admin": "관리자",
+    "Moderator": "모더레이터",
     "Email": "이메일",
     "Status": "상태",
     "Active": "활성",

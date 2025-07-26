@@ -294,6 +294,11 @@
   "UserEditModal": {
     "Title": "Editar usuario",
     "Username": "Nombre de usuario",
+    "Avatar": "Avatar",
+    "Role": "Rol",
+    "User": "Usuario",
+    "Admin": "Administrador",
+    "Moderator": "Moderador",
     "Email": "Correo electrónico",
     "Status": "Estado",
     "Active": "Activo",

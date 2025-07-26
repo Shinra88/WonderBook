@@ -64,7 +64,7 @@ function UserEditModal({ user, onClose, onSave, isAdmin }) {
   return (
     <div className={styles.modalBackground} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <h2>{t('UserEditModal.EditUser', { name: user.name })}</h2>
+        <h2>{t('UserEditModal.Title', { name: user.name })}</h2>
         {showToast && <ToastSuccess message={t('UserEditModal.ChangesSaved')} />}
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>

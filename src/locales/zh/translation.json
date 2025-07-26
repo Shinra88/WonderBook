@@ -294,6 +294,11 @@
   "UserEditModal": {
     "Title": "编辑用户",
     "Username": "用户名",
+    "Avatar": "头像",
+    "Role": "角色",
+    "User": "用户",
+    "Admin": "管理员",
+    "Moderator": "版主",
     "Email": "电子邮件",
     "Status": "状态",
     "Active": "激活",
