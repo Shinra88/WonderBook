@@ -138,7 +138,7 @@ export default function PostModal({ topicId, onClose, onSuccess }) {
               type="submit"
               className={styles.submitButton}
               disabled={!content || !recaptchaToken || isSubmitting}>
-              {isSubmitting ? t('PostModal.Sending') : t('PostModal.Publish')}
+              {isSubmitting ? t('PostModal.Sending') : t('PostModal.Send')}
             </button>
           </div>
         </form>
