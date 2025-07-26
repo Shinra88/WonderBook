@@ -136,55 +136,46 @@ jobs:
             exit 1
           fi
 
-      # CORRECTION: Déploiement avec types MIME corrects
-      - name: 🚀 Deploy JavaScript files with correct MIME type
+      # CORRECTION: Déploiement normal puis correction des MIME types
+      - name: 🚀 Deploy all assets to S3 first
         run: |
-          echo "📦 Deploying JavaScript files with application/javascript MIME type..."
-          aws s3 sync dist/assets/js/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/js/ \
-            --content-type "application/javascript" \
+          echo "📦 Deploying all assets to S3..."
+          aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
             --cache-control "public, max-age=31536000, immutable" \
             --delete \
             --region eu-west-3 \
             --exclude "*.map"
-          echo "✅ JavaScript files deployed"
+          echo "✅ Assets deployed"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: 🎨 Deploy CSS files with correct MIME type
+      - name: 🔧 Fix MIME types for JavaScript files
         run: |
-          echo "🎨 Deploying CSS files with text/css MIME type..."
-          aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
+          echo "🔧 Fixing MIME types for JavaScript files..."
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/assets/js/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/js/ \
+            --recursive \
+            --metadata-directive REPLACE \
+            --content-type "application/javascript" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --region eu-west-3
+          echo "✅ JavaScript MIME types fixed"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: 🔧 Fix MIME types for CSS files
+        run: |
+          echo "🔧 Fixing MIME types for CSS files..."
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
+            --recursive \
+            --metadata-directive REPLACE \
             --content-type "text/css" \
             --cache-control "public, max-age=31536000, immutable" \
-            --delete \
-            --region eu-west-3 \
-            --exclude "js/*" \
-            --exclude "fonts/*" \
-            --exclude "images/*" \
-            --include "*.css"
-          echo "✅ CSS files deployed"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: 🖼️ Deploy other assets (fonts, images)
-        run: |
-          echo "🖼️ Deploying fonts and images..."
-          # Fonts
-          if [ -d "dist/assets/fonts" ]; then
-            aws s3 sync dist/assets/fonts/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/fonts/ \
-              --cache-control "public, max-age=31536000, immutable" \
-              --region eu-west-3
-          fi
-          
-          # Images
-          if [ -d "dist/assets/images" ]; then
-            aws s3 sync dist/assets/images/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/images/ \
-              --cache-control "public, max-age=31536000, immutable" \
-              --region eu-west-3
-          fi
-          echo "✅ Other assets deployed"
+            --exclude "*" \
+            --include "*.css" \
+            --region eu-west-3
+          echo "✅ CSS MIME types fixed"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -208,12 +199,12 @@ jobs:
         run: |
           echo "🔍 Verifying deployment..."
           aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize | tail -10
-          
+
           echo "🔍 Testing MIME types..."
           # Test du fichier CSS principal
           echo "Testing CSS MIME type:"
           aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/index-3mRPG_9E.css | grep ContentType || echo "CSS file not found"
-          
+
           # Test du fichier JS principal  
           echo "Testing JS MIME type:"
           aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/js/index-D5OH-pp8.js | grep ContentType || echo "JS file not found"
