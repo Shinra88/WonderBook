@@ -79,6 +79,7 @@
   font-size: 14px;
   color: #312621;
   margin-bottom: 10px;
+  text-align: center;
   font-weight: 600;
 }
 
@@ -119,7 +120,7 @@
 .Subtitle {
   font-size: 14px;
   color: #271f34;
-  font-weight: 900;
+  font-weight: 700;
   margin-bottom: 8px;
   font-family: 'DM Sans', sans-serif;
 }
