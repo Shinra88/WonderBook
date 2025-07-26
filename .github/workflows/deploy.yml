@@ -109,7 +109,7 @@ jobs:
           compression-level: 6
           if-no-files-found: error
 
-  # 🚀 JOB 3: Deployment with optimized caching
+  # 🚀 JOB 3: Deployment with optimized caching and MIME types
   deploy:
     needs: build-for-deploy
     runs-on: ubuntu-latest
@@ -130,42 +130,93 @@ jobs:
           if [ -d "dist/assets" ]; then
             echo "Assets directory contents:"
             ls -la dist/assets/
+            ls -la dist/assets/js/ 2>/dev/null || echo "No JS folder"
           else
             echo "❌ No assets directory found!"
             exit 1
           fi
 
-      - name: 🚀 Deploy static assets with long cache to S3
+      # CORRECTION: Déploiement avec types MIME corrects
+      - name: 🚀 Deploy JavaScript files with correct MIME type
         run: |
-          echo "🎯 Deploying assets (JS, CSS, images) with 1 year cache..."
-          aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
+          echo "📦 Deploying JavaScript files with application/javascript MIME type..."
+          aws s3 sync dist/assets/js/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/js/ \
+            --content-type "application/javascript" \
             --cache-control "public, max-age=31536000, immutable" \
             --delete \
             --region eu-west-3 \
             --exclude "*.map"
-          echo "✅ Assets deployed with long-term cache"
+          echo "✅ JavaScript files deployed"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: 🚀 Deploy HTML and other files with short cache to S3
+      - name: 🎨 Deploy CSS files with correct MIME type
+        run: |
+          echo "🎨 Deploying CSS files with text/css MIME type..."
+          aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
+            --content-type "text/css" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete \
+            --region eu-west-3 \
+            --exclude "js/*" \
+            --exclude "fonts/*" \
+            --exclude "images/*" \
+            --include "*.css"
+          echo "✅ CSS files deployed"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: 🖼️ Deploy other assets (fonts, images)
+        run: |
+          echo "🖼️ Deploying fonts and images..."
+          # Fonts
+          if [ -d "dist/assets/fonts" ]; then
+            aws s3 sync dist/assets/fonts/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/fonts/ \
+              --cache-control "public, max-age=31536000, immutable" \
+              --region eu-west-3
+          fi
+
+          # Images
+          if [ -d "dist/assets/images" ]; then
+            aws s3 sync dist/assets/images/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/images/ \
+              --cache-control "public, max-age=31536000, immutable" \
+              --region eu-west-3
+          fi
+          echo "✅ Other assets deployed"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: 📄 Deploy HTML and other files with short cache
         run: |
           echo "📄 Deploying HTML and other files with 5 minutes cache..."
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
             --exclude "assets/*" \
             --exclude "*.map" \
+            --content-type "text/html" \
             --cache-control "public, max-age=300" \
             --delete \
             --region eu-west-3
-          echo "✅ HTML and other files deployed with short-term cache"
+          echo "✅ HTML and other files deployed"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: 🔍 Verify S3 deployment
+      - name: 🔍 Verify S3 deployment and MIME types
         run: |
           echo "🔍 Verifying deployment..."
           aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive --human-readable --summarize | tail -10
+
+          echo "🔍 Testing MIME types..."
+          # Test du fichier CSS principal
+          echo "Testing CSS MIME type:"
+          aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/index-3mRPG_9E.css | grep ContentType || echo "CSS file not found"
+
+          # Test du fichier JS principal  
+          echo "Testing JS MIME type:"
+          aws s3api head-object --bucket ${{ secrets.S3_BUCKET_NAME }} --key assets/js/index-D5OH-pp8.js | grep ContentType || echo "JS file not found"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -182,15 +233,12 @@ jobs:
       - name: ✅ Deployment success
         run: |
           echo "✅ Deployment completed successfully!"
-          echo "🌐 Application deployed to S3 with optimized caching:"
-          echo "   📦 Assets (JS/CSS/Images): 1 year cache (immutable)"
-          echo "   📄 HTML files: 5 minutes cache"
+          echo "🌐 Application deployed to S3 with optimized caching and correct MIME types:"
+          echo "   📦 JavaScript files: application/javascript (1 year cache)"
+          echo "   🎨 CSS files: text/css (1 year cache)"
+          echo "   🖼️ Assets (fonts/images): appropriate MIME types (1 year cache)"
+          echo "   📄 HTML files: text/html (5 minutes cache)"
           echo "♻️ CloudFront cache invalidated"
-
-      - name: ✅ Cleanup notice
-        run: |
-          echo "🧹 Artifact cleanup not needed - retention is set to 1 day"
-          echo "📦 Artifact 'build-files-${{ github.sha }}' will auto-expire in 24h"
 
   # 🔄 JOB 4: Post-deployment verification
   verify-deployment:
@@ -210,12 +258,30 @@ jobs:
             exit 1
           fi
 
+      - name: 🔍 Verify MIME types in production
+        run: |
+          echo "🔍 Testing MIME types in production..."
+
+          # Test du CSS
+          CSS_HEADER=$(curl -I -s https://wonderbook.net/assets/index-3mRPG_9E.css | grep -i content-type || echo "CSS not found")
+          echo "📄 CSS Content-Type: $CSS_HEADER"
+
+          # Test du JS
+          JS_HEADER=$(curl -I -s https://wonderbook.net/assets/js/index-D5OH-pp8.js | grep -i content-type || echo "JS not found")
+          echo "📦 JS Content-Type: $JS_HEADER"
+
+          # Test de l'index.html
+          HTML_HEADER=$(curl -I -s https://wonderbook.net/ | grep -i content-type || echo "HTML not found")
+          echo "🏠 HTML Content-Type: $HTML_HEADER"
+
+          echo "✅ MIME type verification completed!"
+
       - name: 🔍 Verify cache headers
         run: |
           echo "🔍 Testing cache headers..."
 
           # Test d'un asset JS
-          ASSET_RESPONSE=$(curl -I -s https://wonderbook.net/assets/js/ | head -n 20)
+          ASSET_RESPONSE=$(curl -I -s https://wonderbook.net/assets/js/index-D5OH-pp8.js | head -n 20)
           echo "📦 Asset headers sample:"
           echo "$ASSET_RESPONSE"
 
