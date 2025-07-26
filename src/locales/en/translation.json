@@ -269,6 +269,21 @@
       "AdditionFailed": "Error adding subject.",
       "UnknownError": "An unknown error occurred."
     },
+    "PostModal": {
+      "Spoiler": "Spoiler",
+      "Bold": "Bold",
+      "Italic": "Italic",
+      "Underline": "Underline",
+      "Strikethrough": "Strikethrough",
+      "MessagePlaceholder": "Enter your message",
+      "Send": "Send",
+      "Cancel": "Cancel",
+      "Error": {
+        "EmptyMessage": "Message cannot be empty.",
+        "SubmissionFailed": "Error submitting message.",
+        "UnknownError": "An unknown error occurred."
+      }
+    },
     "Loading": "Submitting...",
     "NoticeTooltip": "Pin this subject to the top of the forum.",
     "TitlePlaceholder": "Enter the subject title",

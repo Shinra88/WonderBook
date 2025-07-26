@@ -270,6 +270,21 @@
       "AdditionFailed": "Erreur lors de l'ajout du sujet.",
       "UnknownError": "Une erreur inconnue est survenue."
     },
+        "PostModal": {
+      "Spoiler": "Spoiler",
+      "Bold": "Gras",
+      "Italic": "Italique",
+      "Underline": "Souligné",
+      "Strikethrough": "Barré",
+      "MessagePlaceholder": "Entrez votre message",
+      "Send": "Envoyer",
+      "Cancel": "Annuler",
+      "Error": {
+        "EmptyMessage": "Le message ne peut pas être vide.",
+        "SubmissionFailed": "Erreur lors de l'envoi du message.",
+        "UnknownError": "Une erreur inconnue est survenue."
+      }
+    },
     "Loading": "Soumission...",
     "NoticeTooltip": "Épingler ce sujet en haut du forum.",
     "TitlePlaceholder": "Entrez le titre du sujet",
