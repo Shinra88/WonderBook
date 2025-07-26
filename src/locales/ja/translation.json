@@ -269,21 +269,6 @@
       "AdditionFailed": "トピックの追加中にエラーが発生しました。",
       "UnknownError": "不明なエラーが発生しました。"
     },
-    "PostModal": {
-      "Spoiler": "ネタバレ",
-      "Bold": "太字",
-      "Italic": "斜体",
-      "Underline": "下線",
-      "Strikethrough": "取り消し線",
-      "MessagePlaceholder": "メッセージを入力",
-      "Send": "送信",
-      "Cancel": "キャンセル",
-      "Error": {
-        "EmptyMessage": "メッセージは空にできません。",
-        "SubmissionFailed": "メッセージの送信中にエラーが発生しました。",
-        "UnknownError": "不明なエラーが発生しました。"
-      }
-    },
     "Loading": "送信中...",
     "NoticeTooltip": "このトピックをフォーラムのトップにピン留めします。",
     "TitlePlaceholder": "トピックタイトルを入力",
@@ -305,6 +290,22 @@
     "Delete": "削除",
     "Close": "閉じる",
     "ErrorFetchingComments": "コメントの取得中にエラーが発生しました。"
+  },
+  "PostModal": {
+    "AnswerToTopic": "トピックに回答",
+    "Spoiler": "ネタバレ",
+    "Bold": "太字",
+    "Italic": "斜体",
+    "Underline": "下線",
+    "Strikethrough": "取り消し線",
+    "MessagePlaceholder": "メッセージを入力",
+    "Send": "送信",
+    "Cancel": "キャンセル",
+    "Error": {
+      "EmptyMessage": "メッセージは空にできません。",
+      "SubmissionFailed": "メッセージの送信中にエラーが発生しました。",
+      "UnknownError": "不明なエラーが発生しました。"
+    }
   },
   "UserEditModal": {
     "Title": "ユーザーを編集",

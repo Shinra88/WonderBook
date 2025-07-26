@@ -269,21 +269,6 @@
       "AdditionFailed": "Error adding subject.",
       "UnknownError": "An unknown error occurred."
     },
-    "PostModal": {
-      "Spoiler": "Spoiler",
-      "Bold": "Bold",
-      "Italic": "Italic",
-      "Underline": "Underline",
-      "Strikethrough": "Strikethrough",
-      "MessagePlaceholder": "Enter your message",
-      "Send": "Send",
-      "Cancel": "Cancel",
-      "Error": {
-        "EmptyMessage": "Message cannot be empty.",
-        "SubmissionFailed": "Error submitting message.",
-        "UnknownError": "An unknown error occurred."
-      }
-    },
     "Loading": "Submitting...",
     "NoticeTooltip": "Pin this subject to the top of the forum.",
     "TitlePlaceholder": "Enter the subject title",
@@ -305,6 +290,25 @@
     "Delete": "Delete",
     "Close": "Close",
     "ErrorFetchingComments": "Error fetching comments."
+  },
+  "PostModal": {
+    "AnswerToTopic": "Answer to Topic",
+    "Spoiler": "Spoiler",
+    "Bold": "Bold",
+    "Italic": "Italic",
+    "Underline": "Underline",
+    "Strikethrough": "Strikethrough",
+    "MessagePlaceholder": "Enter your message",
+    "Send": "Send",
+    "Cancel": "Cancel",
+    "Error": {
+      "EmptyMessage": "Message cannot be empty.",
+      "SubmissionFailed": "Error submitting message.",
+      "UnknownError": "An unknown error occurred.",
+      "RequiredField": "This field is required.",
+      "CaptchaRequired": "Please validate the CAPTCHA before submitting.",
+      "AdditionFailed": "Error adding post."
+    }
   },
   "UserEditModal": {
     "Title": "Edit User",

@@ -269,21 +269,6 @@
       "AdditionFailed": "Ошибка при добавлении темы.",
       "UnknownError": "Произошла неизвестная ошибка."
     },
-    "PostModal": {
-      "Spoiler": "Spoiler",
-      "Bold": "Жирный",
-      "Italic": "Курсив",
-      "Underline": "Подчёркнутый",
-      "Strikethrough": "Зачёркнутый",
-      "MessagePlaceholder": "Введите ваше сообщение",
-      "Send": "Отправить",
-      "Cancel": "Отмена",
-      "Error": {
-        "EmptyMessage": "Сообщение не может быть пустым.",
-        "SubmissionFailed": "Ошибка при отправке сообщения.",
-        "UnknownError": "Произошла неизвестная ошибка."
-      }
-    },
     "Loading": "Отправка...",
     "NoticeTooltip": "Закрепить эту тему вверху форума.",
     "TitlePlaceholder": "Введите название темы",
@@ -305,6 +290,22 @@
     "Delete": "Удалить",
     "Close": "Закрыть",
     "ErrorFetchingComments": "Ошибка при получении комментариев."
+  },
+  "PostModal": {
+    "AnswerToTopic": "Ответить на тему",
+    "Spoiler": "Spoiler",
+    "Bold": "Жирный",
+    "Italic": "Курсив",
+    "Underline": "Подчёркнутый",
+    "Strikethrough": "Зачёркнутый",
+    "MessagePlaceholder": "Введите ваше сообщение",
+    "Send": "Отправить",
+    "Cancel": "Отмена",
+    "Error": {
+      "EmptyMessage": "Сообщение не может быть пустым.",
+      "SubmissionFailed": "Ошибка при отправке сообщения.",
+      "UnknownError": "Произошла неизвестная ошибка."
+    }
   },
   "UserEditModal": {
     "Title": "Редактировать пользователя",

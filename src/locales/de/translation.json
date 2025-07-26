@@ -269,21 +269,6 @@
       "AdditionFailed": "Fehler beim Hinzufügen des Themas.",
       "UnknownError": "Ein unbekannter Fehler ist aufgetreten."
     },
-    "PostModal": {
-      "Spoiler": "Spoiler",
-      "Bold": "Fett",
-      "Italic": "Kursiv",
-      "Underline": "Unterstrichen",
-      "Strikethrough": "Durchgestrichen",
-      "MessagePlaceholder": "Geben Sie Ihre Nachricht ein",
-      "Send": "Senden",
-      "Cancel": "Abbrechen",
-      "Error": {
-        "EmptyMessage": "Die Nachricht darf nicht leer sein.",
-        "SubmissionFailed": "Fehler beim Senden der Nachricht.",
-        "UnknownError": "Ein unbekannter Fehler ist aufgetreten."
-      }
-    },
     "Loading": "Wird gesendet...",
     "NoticeTooltip": "Dieses Thema an die Spitze des Forums anheften.",
     "TitlePlaceholder": "Geben Sie den Titel des Themas ein",
@@ -305,6 +290,22 @@
     "Delete": "Löschen",
     "Close": "Schließen",
     "ErrorFetchingComments": "Fehler beim Abrufen der Kommentare."
+  },
+  "PostModal": {
+    "AnswerToTopic": "Antworten auf Thema",
+    "Spoiler": "Spoiler",
+    "Bold": "Fett",
+    "Italic": "Kursiv",
+    "Underline": "Unterstrichen",
+    "Strikethrough": "Durchgestrichen",
+    "MessagePlaceholder": "Geben Sie Ihre Nachricht ein",
+    "Send": "Senden",
+    "Cancel": "Abbrechen",
+    "Error": {
+      "EmptyMessage": "Die Nachricht darf nicht leer sein.",
+      "SubmissionFailed": "Fehler beim Senden der Nachricht.",
+      "UnknownError": "Ein unbekannter Fehler ist aufgetreten."
+    }
   },
   "UserEditModal": {
     "Title": "Benutzer bearbeiten",

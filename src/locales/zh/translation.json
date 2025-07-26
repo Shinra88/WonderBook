@@ -269,21 +269,6 @@
       "AdditionFailed": "添加主题时出错。",
       "UnknownError": "发生未知错误。"
     },
-    "PostModal": {
-      "Spoiler": "Spoiler",
-      "Bold": "加粗",
-      "Italic": "斜体",
-      "Underline": "下划线",
-      "Strikethrough": "删除线",
-      "MessagePlaceholder": "输入您的消息",
-      "Send": "发送",
-      "Cancel": "取消",
-      "Error": {
-        "EmptyMessage": "消息不能为空。",
-        "SubmissionFailed": "提交消息时出错。",
-        "UnknownError": "发生未知错误。"
-      }
-    },
     "Loading": "提交中...",
     "NoticeTooltip": "将此主题置顶到论坛顶部。",
     "TitlePlaceholder": "输入主题标题",
@@ -305,6 +290,22 @@
     "Delete": "删除",
     "Close": "关闭",
     "ErrorFetchingComments": "获取评论时出错。"
+  },
+  "PostModal": {
+    "AnswerToTopic": "回复主题",
+    "Spoiler": "Spoiler",
+    "Bold": "加粗",
+    "Italic": "斜体",
+    "Underline": "下划线",
+    "Strikethrough": "删除线",
+    "MessagePlaceholder": "输入您的消息",
+    "Send": "发送",
+    "Cancel": "取消",
+    "Error": {
+      "EmptyMessage": "消息不能为空。",
+      "SubmissionFailed": "提交消息时出错。",
+      "UnknownError": "发生未知错误。"
+    }
   },
   "UserEditModal": {
     "Title": "编辑用户",

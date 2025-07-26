@@ -269,21 +269,6 @@
       "AdditionFailed": "Error al añadir el tema.",
       "UnknownError": "Se produjo un error desconocido."
     },
-    "PostModal": {
-      "Spoiler": "Spoiler",
-      "Bold": "Negrita",
-      "Italic": "Cursiva",
-      "Underline": "Subrayado",
-      "Strikethrough": "Tachado",
-      "MessagePlaceholder": "Introduce tu mensaje",
-      "Send": "Enviar",
-      "Cancel": "Cancelar",
-      "Error": {
-        "EmptyMessage": "El mensaje no puede estar vacío.",
-        "SubmissionFailed": "Error al enviar el mensaje.",
-        "UnknownError": "Se produjo un error desconocido."
-      }
-    },
     "Loading": "Enviando...",
     "NoticeTooltip": "Fijar este tema en la parte superior del foro.",
     "TitlePlaceholder": "Introduce el título del tema",
@@ -305,6 +290,22 @@
     "Delete": "Eliminar",
     "Close": "Cerrar",
     "ErrorFetchingComments": "Error al obtener comentarios."
+  },
+  "PostModal": {
+    "AnswerToTopic": "Responder al tema",
+    "Spoiler": "Spoiler",
+    "Bold": "Negrita",
+    "Italic": "Cursiva",
+    "Underline": "Subrayado",
+    "Strikethrough": "Tachado",
+    "MessagePlaceholder": "Introduce tu mensaje",
+    "Send": "Enviar",
+    "Cancel": "Cancelar",
+    "Error": {
+      "EmptyMessage": "El mensaje no puede estar vacío.",
+      "SubmissionFailed": "Error al enviar el mensaje.",
+      "UnknownError": "Se produjo un error desconocido."
+    }
   },
   "UserEditModal": {
     "Title": "Editar usuario",

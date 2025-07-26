@@ -269,21 +269,6 @@
       "AdditionFailed": "حدث خطأ أثناء إضافة الموضوع.",
       "UnknownError": "حدث خطأ غير معروف."
     },
-    "PostModal": {
-      "Spoiler": "محتوى مخفي",
-      "Bold": "عريض",
-      "Italic": "مائل",
-      "Underline": "تسطير",
-      "Strikethrough": "شطب",
-      "MessagePlaceholder": "أدخل رسالتك",
-      "Send": "إرسال",
-      "Cancel": "إلغاء",
-      "Error": {
-        "EmptyMessage": "لا يمكن أن تكون الرسالة فارغة.",
-        "SubmissionFailed": "حدث خطأ أثناء إرسال الرسالة.",
-        "UnknownError": "حدث خطأ غير معروف."
-      }
-    },
     "Loading": "جارٍ الإرسال...",
     "NoticeTooltip": "تثبيت هذا الموضوع في أعلى المنتدى.",
     "TitlePlaceholder": "أدخل عنوان الموضوع",
@@ -305,6 +290,22 @@
     "Delete": "حذف",
     "Close": "إغلاق",
     "ErrorFetchingComments": "حدث خطأ أثناء جلب التعليقات."
+  },
+  "PostModal": {
+    "AnswerToTopic": "الرد على الموضوع",
+    "Spoiler": "محتوى مخفي",
+    "Bold": "عريض",
+    "Italic": "مائل",
+    "Underline": "تسطير",
+    "Strikethrough": "شطب",
+    "MessagePlaceholder": "أدخل رسالتك",
+    "Send": "إرسال",
+    "Cancel": "إلغاء",
+    "Error": {
+      "EmptyMessage": "لا يمكن أن تكون الرسالة فارغة.",
+      "SubmissionFailed": "حدث خطأ أثناء إرسال الرسالة.",
+      "UnknownError": "حدث خطأ غير معروف."
+    }
   },
   "UserEditModal": {
     "Title": "تعديل المستخدم",
