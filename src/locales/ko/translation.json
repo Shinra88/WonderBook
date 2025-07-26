@@ -373,6 +373,8 @@
     "Summary": "요약",
     "YourRating": "귀하의 평가",
     "RateThisBook": "이 책 평가하기",
-    "Validate": "검증"
+    "Validate": "검증",
+    "ReadMore": "더 읽기 ▼",
+    "ReadLess": "덜 읽기 ▲"
   }
 }

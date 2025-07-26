@@ -373,6 +373,8 @@
     "Summary": "要約",
     "YourRating": "あなたの評価",
     "RateThisBook": "この本を評価",
-    "Validate": "検証"
+    "Validate": "検証",
+    "ReadMore": "続きを読む ▼",
+    "ReadLess": "続きを読む ▲"
   }
 }

@@ -376,6 +376,8 @@
     "Summary": "Summary",
     "YourRating": "Your Rating",
     "RateThisBook": "Rate this book",
-    "Validate": "Validate"
+    "Validate": "Validate",
+    "ReadMore": "Read More ▼",
+    "ReadLess": "Read Less ▲"
   }
 }

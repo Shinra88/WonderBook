@@ -373,6 +373,8 @@
     "Summary": "الملخص",
     "YourRating": "تقييمك",
     "RateThisBook": "قيم هذا الكتاب",
-    "Validate": "تحقق"
+    "Validate": "تحقق",
+    "ReadMore": "اقرأ المزيد ▼",
+    "ReadLess": "اقرأ أقل ▲"
   }
 }

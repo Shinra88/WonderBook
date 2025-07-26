@@ -373,6 +373,8 @@
     "Summary": "Zusammenfassung",
     "YourRating": "Ihre Bewertung",
     "RateThisBook": "Bewerten Sie dieses Buch",
-    "Validate": "Validieren"
+    "Validate": "Validieren",
+    "ReadMore": "Mehr lesen ▼",
+    "ReadLess": "Weniger lesen ▲"
   }
 }

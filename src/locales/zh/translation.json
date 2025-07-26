@@ -373,6 +373,8 @@
     "Summary": "摘要",
     "YourRating": "您的评分",
     "RateThisBook": "对这本书评分",
-    "Validate": "验证"
+    "Validate": "验证",
+    "ReadMore": "阅读更多 ▼",
+    "ReadLess": "阅读更少 ▲"
   }
 }

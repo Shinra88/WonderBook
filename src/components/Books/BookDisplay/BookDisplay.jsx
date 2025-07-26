@@ -187,7 +187,7 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
                     setIsExpanded(!isExpanded);
                   }}
                   className={styles.ToggleButton}>
-                  {isExpanded ? 'Lire moins ▲' : 'Lire plus ▼'}
+                  {isExpanded ? t('BookDisplay.ReadLess') : t('BookDisplay.ReadMore')}
                 </button>
               )}
             </div>
