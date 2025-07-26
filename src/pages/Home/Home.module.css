@@ -9,7 +9,6 @@
   position: relative;
 }
 
-/* 🚀 Banner optimisé pour LCP - Image element au lieu de background */
 .banner {
   position: fixed;
   top: 0;
@@ -20,16 +19,13 @@
   overflow: hidden;
 }
 
-/* 🚀 Image banner optimisée pour les performances */
 .bannerImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   display: block;
-  /* Performance: éviter les repaints */
   will-change: transform;
-  /* Performance: GPU acceleration */
   transform: translateZ(0);
 }
 
@@ -47,7 +43,6 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* Performance: éviter les layout shifts */
   min-height: 600px;
 }
 
@@ -71,7 +66,6 @@
   position: relative;
   color: #444;
   outline: none;
-  /* Performance: optimiser les transitions */
   will-change: transform, opacity;
 }
 
@@ -119,23 +113,18 @@
   display: flex;
   justify-content: center;
   gap: 10px;
-  /* Performance: responsive flexible */
   flex-wrap: wrap;
 }
 
-/* 🚀 BookList optimisé pour éviter les layout shifts */
 .bookList {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   padding: 20px;
-  /* Performance: hauteur minimum pour éviter CLS */
   min-height: 400px;
-  /* Performance: grille pour layout stable */
   gap: 20px;
 }
 
-/* 🚀 Loading container optimisé */
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -150,7 +139,6 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 50px;
-  /* Performance: éviter les reflows */
   margin-top: auto;
 }
 
@@ -180,7 +168,6 @@
   box-shadow:
     4px 4px 8px rgba(0, 0, 0, 0.6),
     inset -4px -4px 8px rgba(0, 0, 0, 0.6);
-  /* Performance: optimiser les transformations */
   will-change: transform, box-shadow;
   transition: all 0.3s ease-in-out;
 }
@@ -195,7 +182,6 @@
   cursor: pointer;
 }
 
-/* 🚀 Optimisations responsive pour les performances */
 @media (max-width: 768px) {
   .Home {
     padding-top: 200px;
@@ -224,7 +210,6 @@
   }
 }
 
-/* 🚀 Animations optimisées pour les performances */
 @keyframes loading {
   0% {
     background-position: 200% 0;
@@ -234,12 +219,10 @@
   }
 }
 
-/* 🚀 Performance: smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* 🚀 Performance: éviter les repaints sur scroll */
 .banner,
 .bannerImage {
   backface-visibility: hidden;

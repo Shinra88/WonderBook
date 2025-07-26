@@ -138,7 +138,13 @@ function Home() {
         )}
 
         <section id="filters" className={styles.filters_container}>
-          <h3>{t('HomePage.Filter')} :</h3>
+          {/* 🚀 CORRECTION: Ajout du h1 manquant */}
+          <h1 className={styles.mainTitle}>
+            {t('HomePage.Title', 'WonderBook - Découvrez vos prochaines lectures')}
+          </h1>
+
+          {/* 🚀 CORRECTION: h2 au lieu de h3 pour la hiérarchie */}
+          <h2>{t('HomePage.Filter')} :</h2>
           <div className={styles.filters}>
             <p>
               <strong>{t('HomePage.Categories')} :</strong>{' '}
