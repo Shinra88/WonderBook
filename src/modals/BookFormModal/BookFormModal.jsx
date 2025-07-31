@@ -298,7 +298,7 @@ function BookFormModal({ mode = 'add', book = {}, onClose, onSave }) {
                   onChange={handleChange}
                   className={styles.inputField}>
                   <option value="pending">{t('BookFormModal.StatusOptions.Pending')}</option>
-                  <option value="validated">{t('BookFormModal.StatusOptions.Validated')}</option>
+                  <option value="validated">{t('BookFormModal.StatusOptions.Reading')}</option>
                 </select>
               </div>
             </div>

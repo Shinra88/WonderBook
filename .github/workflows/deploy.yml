@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
+        with:
+          # Important: permet de push les changements
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -27,12 +30,35 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
+      # ✨ NOUVEAU: Auto-format avec Prettier
+      - name: 🎨 Auto-format code with Prettier
+        id: prettier-format
+        run: |
+          echo "🔧 Application du formatage Prettier..."
+          npm run format
+          
+          # Vérifier s'il y a des changements
+          if git diff --quiet; then
+            echo "✅ Aucun changement de formatage nécessaire"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "📝 Fichiers formatés automatiquement"
+            echo "changed=true" >> $GITHUB_OUTPUT
+            git diff --name-only
+          fi
+
+      - name: 💾 Commit formatting changes
+        if: steps.prettier-format.outputs.changed == 'true' && github.event_name == 'push'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "🎨 Auto-format code with Prettier [skip ci]"
+          git push
+          echo "✅ Changements de formatage committé"
+
       - name: 🔍 Run ESLint
         run: npm run lint
-        continue-on-error: false
-
-      - name: 🎨 Check Prettier formatting
-        run: npm run format:check
         continue-on-error: false
 
       - name: 🧪 Run unit tests
@@ -52,6 +78,15 @@ jobs:
         run: npm run build
         env:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+
+      - name: ✅ Tests Summary
+        run: |
+          echo "🎉 Tests réussis: Tous les tests passent!"
+          echo "✅ Build de test réussi"
+          echo "✅ ESLint validé"
+          if [ "${{ steps.prettier-format.outputs.changed }}" == "true" ]; then
+            echo "🎨 Code automatiquement formaté"
+          fi
 
   # 🏗️ JOB 2: Build for deployment
   build-for-deploy:
@@ -136,7 +171,6 @@ jobs:
             exit 1
           fi
 
-      # CORRECTION: Déploiement normal puis correction des MIME types
       - name: 🚀 Deploy all assets to S3 first
         run: |
           echo "📦 Deploying all assets to S3..."
