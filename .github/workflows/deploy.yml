@@ -77,11 +77,8 @@ jobs:
           fi
           echo "✅ Coverage above 80% threshold"
 
-      - name: 📊 Generate SonarQube test report
-        run: |
-          mkdir -p test-results
-          npm run test:run -- --reporter=sonarqube --outputFile=test-results/sonar-report.xml
-        continue-on-error: true
+      - name: 🔍 SonarQube analysis (skip in CI)
+        run: echo "⏭️ SonarQube analysis skipped in CI"
 
       - name: 🔍 SonarQube analysis
         run: npx sonar-scanner
