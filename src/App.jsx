@@ -26,6 +26,7 @@ const ChangePass = lazy(() => import('./modals/ChangePass/ChangePass.jsx'));
 // 🚀 Composant de loading optimisé
 const LoadingFallback = ({ message = 'Chargement...' }) => (
   <div
+    data-testid="loading-fallback"
     className="loading-container"
     style={{
       display: 'flex',

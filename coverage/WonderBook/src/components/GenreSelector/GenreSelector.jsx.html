@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.7% </span>
+                <span class="strong">10.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/94</span>
+                <span class='fraction'>11/103</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.7% </span>
+                <span class="strong">10.67% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/94</span>
+                <span class='fraction'>11/103</span>
             </div>
         
             
@@ -257,37 +257,37 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -374,7 +374,7 @@ import { useTranslation } from 'react-i18next';
 <span class="cstat-no" title="statement not covered" >        {selected.length &gt; 0</span>
 <span class="cstat-no" title="statement not covered" >          ? selected.map(id =&gt; categories.find(c =&gt; c.id === id)?.name).join(', ')</span>
 <span class="cstat-no" title="statement not covered" >          : t('GenreSelector.SelectGenres')}</span>
-      &lt;/button&gt;
+<span class="cstat-no" title="statement not covered" >      &lt;/button&gt;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      {isOpen &amp;&amp; (</span>
 <span class="cstat-no" title="statement not covered" >        &lt;div className={styles.dropdownMenu}&gt;</span>
@@ -389,22 +389,22 @@ import { useTranslation } from 'react-i18next';
 <span class="cstat-no" title="statement not covered" >                    checked={selected.includes(cat.id)}</span>
 <span class="cstat-no" title="statement not covered" >                    onChange={() =&gt; handleGenreToggle(cat.id)}</span>
 <span class="cstat-no" title="statement not covered" >                    disabled={!selected.includes(cat.id) &amp;&amp; selected.length &gt;= 2}</span>
-                  /&gt;
+<span class="cstat-no" title="statement not covered" >                  /&gt;</span>
 <span class="cstat-no" title="statement not covered" >                  {cat.name}</span>
-                &lt;/label&gt;
-              &lt;/li&gt;
-            ))}
-          &lt;/ul&gt;
+<span class="cstat-no" title="statement not covered" >                &lt;/label&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;/li&gt;</span>
+<span class="cstat-no" title="statement not covered" >            ))}</span>
+<span class="cstat-no" title="statement not covered" >          &lt;/ul&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;button</span>
 <span class="cstat-no" title="statement not covered" >            type="button"</span>
 <span class="cstat-no" title="statement not covered" >            className={styles.applyButton}</span>
 <span class="cstat-no" title="statement not covered" >            onClick={handleApply}</span>
 <span class="cstat-no" title="statement not covered" >            disabled={selected.length === 0}&gt;</span>
 <span class="cstat-no" title="statement not covered" >            {t('BookFormModal.Submit')}</span>
-          &lt;/button&gt;
-        &lt;/div&gt;
+<span class="cstat-no" title="statement not covered" >          &lt;/button&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
       )}
-    &lt;/div&gt;
+<span class="cstat-no" title="statement not covered" >    &lt;/div&gt;</span>
   );
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
@@ -421,7 +421,7 @@ export default GenreSelector;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-29T20:09:30.203Z
+                at 2025-08-03T07:59:20.972Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

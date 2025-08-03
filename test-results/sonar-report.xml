@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="src\modals\ForgetPassword\ForgetPassword.test.jsx">
+    <testCase name="ForgetPassword Component - Rendu initial - affiche tous les éléments du formulaire" duration="69" />
+    <testCase name="ForgetPassword Component - Rendu initial - affiche le recaptcha avec la bonne clé de site" duration="6" />
+    <testCase name="ForgetPassword Component - Rendu initial - n&apos;affiche pas de notification au démarrage" duration="5" />
+    <testCase name="ForgetPassword Component - Rendu initial - utilise les traductions correctement" duration="12" />
+    <testCase name="ForgetPassword Component - Validation des mots de passe - affiche une erreur si les mots de passe ne correspondent pas" duration="25" />
+    <testCase name="ForgetPassword Component - Validation des mots de passe - affiche une erreur si le mot de passe est trop court" duration="13" />
+    <testCase name="ForgetPassword Component - Validation des mots de passe - affiche une erreur si le captcha n&apos;est pas complété" duration="16" />
+    <testCase name="ForgetPassword Component - Soumission du formulaire - soumet avec succès et redirige" duration="17">
+      <failure message="expected &quot;wrap&quot; to be called with arguments: [ …(2) ][90m
+
+Number of calls: [1m0[22m
+[39m">
+        <![CDATA[AssertionError: expected &quot;wrap&quot; to be called with arguments: [ …(2) ][90m
+
+Number of calls: [1m0[22m
+[39m
+    at Proxy.&lt;anonymous&gt; (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/expect/dist/index.js:1355:10)
+    at Proxy.&lt;anonymous&gt; (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/expect/dist/index.js:1029:14)
+    at Proxy.toHaveBeenCalledWith (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/chai/chai.js:1706:25)
+    at C:\Users\chokd\Documents\P3\wonderbook pour aws\WonderBook\src\modals\ForgetPassword\ForgetPassword.test.jsx:197:24
+    at file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20]]>
+      </failure>
+    </testCase>
+    <testCase name="ForgetPassword Component - Soumission du formulaire - gère les erreurs de l&apos;API avec message personnalisé" duration="13" />
+    <testCase name="ForgetPassword Component - Soumission du formulaire - gère les erreurs de l&apos;API sans message personnalisé" duration="10" />
+    <testCase name="ForgetPassword Component - Soumission du formulaire - gère une réponse d&apos;échec de l&apos;API" duration="11" />
+    <testCase name="ForgetPassword Component - Interface utilisateur - désactive le bouton pendant le chargement" duration="18" />
+    <testCase name="ForgetPassword Component - Interface utilisateur - met à jour les valeurs des champs de saisie" duration="6" />
+    <testCase name="ForgetPassword Component - Interface utilisateur - affiche les messages d&apos;erreur avec le bon style" duration="10016">
+      <error message="Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;.">
+        <![CDATA[Error: STACK_TRACE_ERROR
+    at task (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:638:27)
+    at Object.&lt;anonymous&gt; (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:662:16)
+    at Object.&lt;anonymous&gt; (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:458:28)
+    at it (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:369:14)
+    at C:\Users\chokd\Documents\P3\wonderbook pour aws\WonderBook\src\modals\ForgetPassword\ForgetPassword.test.jsx:363:5
+    at file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:734:40
+    at runWithSuite (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:1849:8)
+    at Object.collect (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:734:10)
+    at Object.collect (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:738:54)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.collect (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:738:46)
+    at collectTests (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:1179:25)
+    at startTests (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/@vitest/runner/dist/chunk-hooks.js:1817:17)
+    at file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:117:26
+    at withEnv (file:///C:/Users/chokd/Documents/P3/wonderbook%20pour%20aws/WonderBook/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:84:3)]]>
+      </error>
+    </testCase>
+    <testCase name="ForgetPassword Component - PropTypes - accepte la prop token correctement" duration="8" />
+    <testCase name="ForgetPassword Component - Internationalisation - change de langue dynamiquement" duration="16" />
+    <testCase name="ForgetPassword Component - Internationalisation - gère les clés de traduction manquantes" duration="6" />
+    <testCase name="ForgetPassword Component - Accessibilité - associe correctement les labels aux inputs" duration="7" />
+    <testCase name="ForgetPassword Component - Accessibilité - utilise les types d&apos;input appropriés" duration="6" />
+  </file>
+</testExecutions>

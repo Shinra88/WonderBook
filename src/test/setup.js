@@ -1,18 +1,34 @@
 // src/test/setup.js
-/* eslint-env node, vitest */
-import '@testing-library/jest-dom';
+import { expect, afterEach, vi } from 'vitest';
+import { cleanup, configure } from '@testing-library/react';
+import * as matchers from '@testing-library/jest-dom/matchers';
 
-// Mock pour react-router-dom
-import { vi } from 'vitest';
+// Étendre expect avec les matchers jest-dom
+expect.extend(matchers);
 
-// Mock global pour les modules qui posent problème
+// Cleanup après chaque test
+afterEach(() => {
+  cleanup();
+});
+
+configure({
+  testIdAttribute: 'data-testid',
+});
+
+const originalError = console.error;
+console.error = (...args) => {
+  if (args[0]?.includes?.('ReactDOMTestUtils.act')) return;
+  originalError(...args);
+};
+
+// Mock global pour ResizeObserver
 globalThis.ResizeObserver = vi.fn(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
 
-// Mock pour les images
+// Mock pour matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation(query => ({
