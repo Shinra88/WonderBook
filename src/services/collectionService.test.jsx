@@ -6,7 +6,7 @@ import {
   getUserCollection,
   updateBookReadStatus,
   getReadingProgress,
-  saveReadingProgress
+  saveReadingProgress,
 } from './collectionService';
 
 // Mock de l'API
@@ -15,8 +15,8 @@ vi.mock('./api/api', () => ({
     post: vi.fn(),
     delete: vi.fn(),
     get: vi.fn(),
-    patch: vi.fn()
-  }
+    patch: vi.fn(),
+  },
 }));
 
 // Mock des constantes
@@ -24,13 +24,13 @@ vi.mock('../utils/constants', () => ({
   API_ROUTES: {
     COLLECTION: {
       ADD: '/collection/add',
-      REMOVE: (bookId) => `/collection/remove/${bookId}`,
+      REMOVE: bookId => `/collection/remove/${bookId}`,
       GET_USER_COLLECTION: '/collection',
-      UPDATE_READ: (bookId) => `/collection/${bookId}/read`,
-      GET_PROGRESS: (bookId) => `/collection/${bookId}/progress`,
-      SAVE_PROGRESS: (bookId) => `/collection/${bookId}/progress`
-    }
-  }
+      UPDATE_READ: bookId => `/collection/${bookId}/read`,
+      GET_PROGRESS: bookId => `/collection/${bookId}/progress`,
+      SAVE_PROGRESS: bookId => `/collection/${bookId}/progress`,
+    },
+  },
 }));
 
 import api from './api/api';
@@ -110,7 +110,7 @@ describe('collectionService', () => {
     it('should get user collection without filters', async () => {
       const mockCollection = [
         { id: 1, title: 'Book 1', is_read: false },
-        { id: 2, title: 'Book 2', is_read: true }
+        { id: 2, title: 'Book 2', is_read: true },
       ];
       api.get.mockResolvedValue({ data: mockCollection });
 
@@ -127,15 +127,15 @@ describe('collectionService', () => {
       const result = await getUserCollection({
         read: true,
         noted: true,
-        commented: true
+        commented: true,
       });
 
       expect(api.get).toHaveBeenCalledWith('/collection', {
         params: {
           is_read: true,
           is_noted: true,
-          is_commented: true
-        }
+          is_commented: true,
+        },
       });
       expect(result).toEqual(mockCollection);
     });
@@ -147,7 +147,7 @@ describe('collectionService', () => {
       await getUserCollection({ read: true, noted: false });
 
       expect(api.get).toHaveBeenCalledWith('/collection', {
-        params: { is_read: true }
+        params: { is_read: true },
       });
     });
 
@@ -180,7 +180,7 @@ describe('collectionService', () => {
       const result = await updateBookReadStatus(123, true);
 
       expect(api.patch).toHaveBeenCalledWith('/collection/123/read', {
-        is_read: true
+        is_read: true,
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -192,7 +192,7 @@ describe('collectionService', () => {
       const result = await updateBookReadStatus(123, false);
 
       expect(api.patch).toHaveBeenCalledWith('/collection/123/read', {
-        is_read: false
+        is_read: false,
       });
       expect(result).toEqual(mockResponse.data);
     });

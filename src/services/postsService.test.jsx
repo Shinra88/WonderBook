@@ -1,18 +1,14 @@
 // 📁 __tests__/services/postService.test.js
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import {
-  getPostsByTopicId,
-  addPost,
-  deletePost
-} from './postsService';
+import { getPostsByTopicId, addPost, deletePost } from './postsService';
 
 // Mock de l'API
 vi.mock('./api/api', () => ({
   default: {
     get: vi.fn(),
     post: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }));
 
 // Mock des constantes
@@ -20,9 +16,9 @@ vi.mock('../utils/constants', () => ({
   API_ROUTES: {
     POSTS: {
       BASE: '/api/posts',
-      GET_BY_TOPIC: (topicId) => `/api/posts/topic/${topicId}`
-    }
-  }
+      GET_BY_TOPIC: topicId => `/api/posts/topic/${topicId}`,
+    },
+  },
 }));
 
 import api from './api/api';
@@ -41,7 +37,7 @@ describe('postService', () => {
     it('should get posts by topic ID successfully', async () => {
       const mockPosts = [
         { id: 1, content: 'First post', topicId: 123, userId: 1 },
-        { id: 2, content: 'Second post', topicId: 123, userId: 2 }
+        { id: 2, content: 'Second post', topicId: 123, userId: 2 },
       ];
       api.get.mockResolvedValue({ data: mockPosts });
 
@@ -94,7 +90,7 @@ describe('postService', () => {
         id: 1,
         content: 'New post content',
         topicId: 123,
-        userId: 1
+        userId: 1,
       };
       api.post.mockResolvedValue({ data: mockResponse });
 
@@ -106,8 +102,8 @@ describe('postService', () => {
         { topicId: 123, content: 'New post content' },
         {
           headers: {
-            Authorization: 'Bearer test-token-123'
-          }
+            Authorization: 'Bearer test-token-123',
+          },
         }
       );
       expect(result).toEqual(mockResponse);
@@ -134,7 +130,7 @@ describe('postService', () => {
         '/api/posts/add',
         { topicId: 456, content: 'Different topic post' },
         expect.objectContaining({
-          headers: { Authorization: 'Bearer test-token-123' }
+          headers: { Authorization: 'Bearer test-token-123' },
         })
       );
     });
@@ -150,7 +146,7 @@ describe('postService', () => {
         '/api/posts/add',
         { topicId: 123, content: '' },
         expect.objectContaining({
-          headers: { Authorization: 'Bearer test-token-123' }
+          headers: { Authorization: 'Bearer test-token-123' },
         })
       );
     });
@@ -164,15 +160,11 @@ describe('postService', () => {
 
       await addPost(postData, differentToken);
 
-      expect(api.post).toHaveBeenCalledWith(
-        '/api/posts/add',
-        expect.anything(),
-        {
-          headers: {
-            Authorization: 'Bearer different-token-456'
-          }
-        }
-      );
+      expect(api.post).toHaveBeenCalledWith('/api/posts/add', expect.anything(), {
+        headers: {
+          Authorization: 'Bearer different-token-456',
+        },
+      });
     });
 
     it('should handle long content', async () => {
@@ -188,7 +180,7 @@ describe('postService', () => {
         '/api/posts/add',
         { topicId: 123, content: longContent },
         expect.objectContaining({
-          headers: { Authorization: 'Bearer test-token-123' }
+          headers: { Authorization: 'Bearer test-token-123' },
         })
       );
     });
@@ -205,8 +197,8 @@ describe('postService', () => {
 
       expect(api.delete).toHaveBeenCalledWith('/api/posts/123', {
         headers: {
-          Authorization: 'Bearer test-token-123'
-        }
+          Authorization: 'Bearer test-token-123',
+        },
       });
       expect(result).toEqual(mockResponse);
     });
@@ -227,8 +219,8 @@ describe('postService', () => {
 
       expect(api.delete).toHaveBeenCalledWith('/api/posts/456', {
         headers: {
-          Authorization: 'Bearer test-token-123'
-        }
+          Authorization: 'Bearer test-token-123',
+        },
       });
     });
 
@@ -241,8 +233,8 @@ describe('postService', () => {
 
       expect(api.delete).toHaveBeenCalledWith('/api/posts/123', {
         headers: {
-          Authorization: 'Bearer admin-token-789'
-        }
+          Authorization: 'Bearer admin-token-789',
+        },
       });
     });
 
@@ -254,8 +246,8 @@ describe('postService', () => {
 
       expect(api.delete).toHaveBeenCalledWith('/api/posts/789', {
         headers: {
-          Authorization: 'Bearer test-token-123'
-        }
+          Authorization: 'Bearer test-token-123',
+        },
       });
     });
   });
@@ -263,11 +255,11 @@ describe('postService', () => {
   describe('Integration tests', () => {
     it('should handle complete post workflow', async () => {
       const mockToken = 'workflow-token';
-      
+
       // Mock responses for all operations
       const getResponse = { data: [] };
-      const addResponse = { 
-        data: { id: 1, content: 'New post', topicId: 123 } 
+      const addResponse = {
+        data: { id: 1, content: 'New post', topicId: 123 },
       };
       const deleteResponse = { data: { success: true } };
 
@@ -277,10 +269,7 @@ describe('postService', () => {
 
       // Test workflow
       const initialPosts = await getPostsByTopicId(123);
-      const newPost = await addPost(
-        { topicId: 123, content: 'New post' }, 
-        mockToken
-      );
+      const newPost = await addPost({ topicId: 123, content: 'New post' }, mockToken);
       const deleteResult = await deletePost(1, mockToken);
 
       expect(initialPosts).toEqual([]);
@@ -295,7 +284,7 @@ describe('postService', () => {
         { headers: { Authorization: 'Bearer workflow-token' } }
       );
       expect(api.delete).toHaveBeenCalledWith('/api/posts/1', {
-        headers: { Authorization: 'Bearer workflow-token' }
+        headers: { Authorization: 'Bearer workflow-token' },
       });
     });
 

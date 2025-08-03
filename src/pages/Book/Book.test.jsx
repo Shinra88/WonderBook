@@ -140,7 +140,7 @@ describe('Book Page', () => {
   test('shows "not found" if no book', async () => {
     const { getBookByTitle } = await import('../../services/bookService');
     vi.mocked(getBookByTitle).mockResolvedValueOnce(null);
-    
+
     renderPage();
     await waitFor(() => {
       expect(screen.getByText('Book.NotFound')).toBeInTheDocument();
@@ -150,12 +150,12 @@ describe('Book Page', () => {
   test('handles error in fetch gracefully', async () => {
     // Mock console.error pour éviter les logs d'erreur dans les tests
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     const { getBookByTitle } = await import('../../services/bookService');
     vi.mocked(getBookByTitle).mockRejectedValueOnce(new Error('fail'));
-    
+
     renderPage();
-    
+
     await waitFor(() => {
       expect(screen.getByText('Book.NotFound')).toBeInTheDocument();
     });

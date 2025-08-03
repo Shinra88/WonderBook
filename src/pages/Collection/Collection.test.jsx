@@ -30,7 +30,7 @@ vi.mock('../../hooks/filterContext', () => ({
 // Mock i18n qui renvoie la clé sans traduction pour ne pas matcher sur un texte exact
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => key,
+    t: key => key,
   }),
 }));
 
@@ -49,7 +49,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { addOrUpdateComment } from '../../services/commentService';
 
 // Helpers pour mocks utilisateurs et livres
-const mockUseAuth = (user) => {
+const mockUseAuth = user => {
   useAuth.mockReturnValue({ user });
 };
 

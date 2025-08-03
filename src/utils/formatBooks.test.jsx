@@ -14,18 +14,15 @@ describe('formatBooks', () => {
         author: 'John Doe',
         date: 2023,
         summary: 'A great test book',
-        book_categories: [
-          { categories: { name: 'Fiction' } },
-          { categories: { name: 'Drama' } }
-        ],
+        book_categories: [{ categories: { name: 'Fiction' } }, { categories: { name: 'Drama' } }],
         book_publishers: [
           { publishers: { name: 'Test Publisher' } },
-          { publishers: { name: 'Second Publisher' } }
+          { publishers: { name: 'Second Publisher' } },
         ],
         cover_url: 'https://example.com/cover.jpg',
         ebook_url: 'https://example.com/book.epub',
-        averageRating: 4.5
-      }
+        averageRating: 4.5,
+      },
     ];
 
     const result = formatBooks(books);
@@ -42,23 +39,23 @@ describe('formatBooks', () => {
         editors: ['Test Publisher', 'Second Publisher'],
         cover_url: 'https://example.com/cover.jpg',
         ebook_url: 'https://example.com/book.epub',
-        averageRating: 4.5
-      }
+        averageRating: 4.5,
+      },
     ]);
   });
 
   it('should handle empty array', () => {
     const result = formatBooks([]);
-    
+
     expect(result).toEqual([]);
   });
 
   it('should handle book with missing fields', () => {
     const books = [
       {
-        bookId: 1
+        bookId: 1,
         // All other fields missing
-      }
+      },
     ];
 
     const result = formatBooks(books);
@@ -75,8 +72,8 @@ describe('formatBooks', () => {
         editors: [],
         cover_url: DEFAULT_COVER,
         ebook_url: null,
-        averageRating: 0
-      }
+        averageRating: 0,
+      },
     ]);
   });
 
@@ -93,8 +90,8 @@ describe('formatBooks', () => {
         book_publishers: null,
         cover_url: null,
         ebook_url: null,
-        averageRating: null
-      }
+        averageRating: null,
+      },
     ];
 
     const result = formatBooks(books);
@@ -111,8 +108,8 @@ describe('formatBooks', () => {
         editors: [],
         cover_url: DEFAULT_COVER,
         ebook_url: null,
-        averageRating: 0
-      }
+        averageRating: 0,
+      },
     ]);
   });
 
@@ -124,8 +121,8 @@ describe('formatBooks', () => {
         author: 'Test Author',
         book_categories: [],
         book_publishers: [],
-        averageRating: 0
-      }
+        averageRating: 0,
+      },
     ];
 
     const result = formatBooks(books);
@@ -141,14 +138,14 @@ describe('formatBooks', () => {
         bookId: 1,
         title: 'Book One',
         author: 'Author One',
-        averageRating: 3.5
+        averageRating: 3.5,
       },
       {
         bookId: 2,
         title: 'Book Two',
         author: 'Author Two',
-        averageRating: 4.0
-      }
+        averageRating: 4.0,
+      },
     ];
 
     const result = formatBooks(books);
@@ -163,13 +160,9 @@ describe('formatBooks', () => {
       {
         bookId: 4,
         title: 'Single Relations Book',
-        book_categories: [
-          { categories: { name: 'Science Fiction' } }
-        ],
-        book_publishers: [
-          { publishers: { name: 'Amazing Publisher' } }
-        ]
-      }
+        book_categories: [{ categories: { name: 'Science Fiction' } }],
+        book_publishers: [{ publishers: { name: 'Amazing Publisher' } }],
+      },
     ];
 
     const result = formatBooks(books);
@@ -183,8 +176,8 @@ describe('formatBooks', () => {
       {
         bookId: 5,
         title: 'No Rating Book',
-        averageRating: undefined
-      }
+        averageRating: undefined,
+      },
     ];
 
     const result = formatBooks(books);
@@ -197,8 +190,8 @@ describe('formatBooks', () => {
       {
         bookId: 6,
         title: 'Zero Rating Book',
-        averageRating: 0
-      }
+        averageRating: 0,
+      },
     ];
 
     const result = formatBooks(books);
@@ -215,8 +208,8 @@ describe('formatBooks', () => {
         author: '',
         summary: '',
         cover_url: '',
-        ebook_url: ''
-      }
+        ebook_url: '',
+      },
     ];
 
     const result = formatBooks(books);
@@ -233,8 +226,8 @@ describe('formatBooks', () => {
         editors: [],
         cover_url: DEFAULT_COVER,
         ebook_url: null,
-        averageRating: 0
-      }
+        averageRating: 0,
+      },
     ]);
   });
 
@@ -246,15 +239,15 @@ describe('formatBooks', () => {
         book_categories: [
           { categories: { name: 'Fantasy' } },
           { categories: { name: 'Adventure' } },
-          { categories: { name: 'Young Adult' } }
+          { categories: { name: 'Young Adult' } },
         ],
         book_publishers: [
           { publishers: { name: 'Publisher A' } },
           { publishers: { name: 'Publisher B' } },
-          { publishers: { name: 'Publisher C' } }
+          { publishers: { name: 'Publisher C' } },
         ],
-        averageRating: 4.7
-      }
+        averageRating: 4.7,
+      },
     ];
 
     const result = formatBooks(books);
@@ -268,8 +261,8 @@ describe('formatBooks', () => {
     const books = [
       {
         bookId: 9,
-        title: 'Complete Fields Test'
-      }
+        title: 'Complete Fields Test',
+      },
     ];
 
     const result = formatBooks(books);
@@ -294,9 +287,7 @@ describe('formatBooks', () => {
         bookId: 10,
         title: 'Valid Book',
         author: 'Valid Author',
-        book_categories: [
-          { categories: { name: 'Valid Category' } }
-        ]
+        book_categories: [{ categories: { name: 'Valid Category' } }],
       },
       {
         bookId: 11,
@@ -307,8 +298,8 @@ describe('formatBooks', () => {
         title: null,
         author: '',
         book_categories: [],
-        book_publishers: null
-      }
+        book_publishers: null,
+      },
     ];
 
     const result = formatBooks(books);
@@ -325,8 +316,8 @@ describe('formatBooks', () => {
       {
         bookId: 13,
         title: 'Decimal Rating Book',
-        averageRating: 3.14159
-      }
+        averageRating: 3.14159,
+      },
     ];
 
     const result = formatBooks(books);
@@ -339,8 +330,8 @@ describe('formatBooks', () => {
       {
         bookId: 14,
         title: 'String Date Book',
-        date: '2023'
-      }
+        date: '2023',
+      },
     ];
 
     const result = formatBooks(books);

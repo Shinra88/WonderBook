@@ -10,7 +10,7 @@ import {
   updateBook,
   rateBook,
   getBookByTitle,
-  updateBookInfo
+  updateBookInfo,
 } from './bookService';
 
 // Mock de l'API
@@ -19,8 +19,8 @@ vi.mock('../services/api/api', () => ({
     get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }));
 
 // Mock des constantes
@@ -29,19 +29,19 @@ vi.mock('../utils/constants', () => ({
     BOOKS: {
       BASE: '/api/books',
       BEST_RATED: '/api/books/best-rated',
-      LAST_ADDED: '/api/books/last-added'
-    }
-  }
+      LAST_ADDED: '/api/books/last-added',
+    },
+  },
 }));
 
 // Mock de localStorage
 const mockLocalStorage = {
   getItem: vi.fn(),
-  setItem: vi.fn()
+  setItem: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
-  writable: true
+  writable: true,
 });
 
 import api from '../services/api/api';
@@ -60,7 +60,7 @@ describe('bookService', () => {
   describe('getBooks', () => {
     it('should fetch books with filters and pagination', async () => {
       const mockResponse = {
-        data: { books: [{ id: 1, title: 'Test Book' }], total: 1 }
+        data: { books: [{ id: 1, title: 'Test Book' }], total: 1 },
       };
       api.get.mockResolvedValue(mockResponse);
 
@@ -71,7 +71,7 @@ describe('bookService', () => {
         categories: ['fiction', 'drama'],
         type: 'novel',
         search: 'test',
-        pendingFirst: true
+        pendingFirst: true,
       };
 
       const result = await getBooks(filters, 2, 20);
@@ -134,9 +134,7 @@ describe('bookService', () => {
       const filters = { categories: ['fiction'], year: 2023 };
       const result = await getBestRatedBooks(filters);
 
-      expect(api.get).toHaveBeenCalledWith(
-        '/api/books/best-rated?year=2023&categories=fiction'
-      );
+      expect(api.get).toHaveBeenCalledWith('/api/books/best-rated?year=2023&categories=fiction');
       expect(result).toEqual(mockBooks);
     });
 
@@ -201,7 +199,7 @@ describe('bookService', () => {
         year: 2023,
         editor: 'Publisher',
         rating: '4',
-        file: [new File([''], 'image.jpg')]
+        file: [new File([''], 'image.jpg')],
       };
 
       const result = await addBook(bookData);
@@ -218,7 +216,7 @@ describe('bookService', () => {
         title: 'Book',
         author: 'Author',
         year: 2023,
-        editor: 'Publisher'
+        editor: 'Publisher',
       };
 
       await addBook(bookData);
@@ -233,7 +231,7 @@ describe('bookService', () => {
 
       expect(result).toEqual({
         error: true,
-        message: 'Add failed'
+        message: 'Add failed',
       });
     });
   });
@@ -248,7 +246,7 @@ describe('bookService', () => {
         author: 'Author',
         year: 2023,
         editor: 'Publisher',
-        file: [new File([''], 'new-image.jpg')]
+        file: [new File([''], 'new-image.jpg')],
       };
 
       const result = await updateBook(bookData, 1);
@@ -265,7 +263,7 @@ describe('bookService', () => {
         title: 'Updated Book',
         author: 'Author',
         year: 2023,
-        editor: 'Publisher'
+        editor: 'Publisher',
       };
 
       const result = await updateBook(bookData, 1);
@@ -275,7 +273,7 @@ describe('bookService', () => {
         title: 'Updated Book',
         author: 'Author',
         date: 2023,
-        editor: 'Publisher'
+        editor: 'Publisher',
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -287,7 +285,7 @@ describe('bookService', () => {
 
       expect(result).toEqual({
         error: true,
-        message: 'Update failed'
+        message: 'Update failed',
       });
     });
   });
@@ -301,7 +299,7 @@ describe('bookService', () => {
 
       expect(api.post).toHaveBeenCalledWith('/api/books/1/rating', {
         userId: 'user123',
-        rating: 4
+        rating: 4,
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -366,7 +364,7 @@ describe('bookService', () => {
 
       expect(result).toEqual({
         error: true,
-        message: 'Update failed'
+        message: 'Update failed',
       });
     });
   });
@@ -374,7 +372,7 @@ describe('bookService', () => {
   describe('appendFiltersToParams', () => {
     it('should handle empty categories array', async () => {
       const filters = { categories: [] };
-      
+
       const mockResponse = { data: { books: [] } };
       api.get.mockResolvedValue(mockResponse);
 
@@ -385,7 +383,7 @@ describe('bookService', () => {
 
     it('should handle filters with start but no end', async () => {
       const filters = { start: '2023-01-01' };
-      
+
       const mockResponse = { data: { books: [] } };
       api.get.mockResolvedValue(mockResponse);
 
@@ -396,7 +394,7 @@ describe('bookService', () => {
 
     it('should handle multiple categories', async () => {
       const filters = { categories: ['fiction', 'romance', 'mystery'] };
-      
+
       const mockResponse = { data: { books: [] } };
       api.get.mockResolvedValue(mockResponse);
 

@@ -5,8 +5,8 @@ import { renderHook, waitFor } from '@testing-library/react';
 // Mock de l'API
 vi.mock('../services/api/api', () => ({
   default: {
-    get: vi.fn()
-  }
+    get: vi.fn(),
+  },
 }));
 
 import useCategories from './useCategories';
@@ -24,9 +24,9 @@ describe('useCategories', () => {
 
   it('should initialize with default values', () => {
     api.get.mockResolvedValue({ data: [] });
-    
+
     const { result } = renderHook(() => useCategories());
-    
+
     expect(result.current.categories).toEqual([]);
     expect(result.current.loading).toBe(true);
     expect(result.current.error).toBeNull();
@@ -37,24 +37,24 @@ describe('useCategories', () => {
       data: [
         { categoryId: 1, name: 'Fiction' },
         { categoryId: 2, name: 'Science' },
-        { categoryId: 3, name: 'History' }
-      ]
+        { categoryId: 3, name: 'History' },
+      ],
     };
-    
+
     const expectedCategories = [
       { id: 1, name: 'Fiction' },
       { id: 2, name: 'Science' },
-      { id: 3, name: 'History' }
+      { id: 3, name: 'History' },
     ];
-    
+
     api.get.mockResolvedValue(mockApiResponse);
-    
+
     const { result } = renderHook(() => useCategories());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.categories).toEqual(expectedCategories);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
@@ -63,13 +63,13 @@ describe('useCategories', () => {
 
   it('should handle empty categories response', async () => {
     api.get.mockResolvedValue({ data: [] });
-    
+
     const { result } = renderHook(() => useCategories());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.categories).toEqual([]);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
@@ -78,13 +78,13 @@ describe('useCategories', () => {
   it('should handle API error', async () => {
     const mockError = new Error('Network error');
     api.get.mockRejectedValue(mockError);
-    
+
     const { result } = renderHook(() => useCategories());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.categories).toEqual([]);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBe(mockError);
@@ -99,23 +99,23 @@ describe('useCategories', () => {
       data: [
         { categoryId: 1 }, // Missing name
         { name: 'Science' }, // Missing categoryId
-        { categoryId: 3, name: 'History' } // Valid
-      ]
+        { categoryId: 3, name: 'History' }, // Valid
+      ],
     };
-    
+
     api.get.mockResolvedValue(mockApiResponse);
-    
+
     const { result } = renderHook(() => useCategories());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     // Le hook devrait gérer les données malformées
     expect(result.current.categories).toEqual([
       { id: 1, name: undefined },
       { id: undefined, name: 'Science' },
-      { id: 3, name: 'History' }
+      { id: 3, name: 'History' },
     ]);
   });
 });

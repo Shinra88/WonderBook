@@ -5,8 +5,8 @@ import { renderHook, waitFor } from '@testing-library/react';
 // Mock de l'API
 vi.mock('../services/api/api', () => ({
   default: {
-    get: vi.fn()
-  }
+    get: vi.fn(),
+  },
 }));
 
 import useEditors from './useEditors';
@@ -24,9 +24,9 @@ describe('useEditors', () => {
 
   it('should initialize with default values', () => {
     api.get.mockResolvedValue({ data: [] });
-    
+
     const { result } = renderHook(() => useEditors());
-    
+
     expect(result.current.editors).toEqual([]);
     expect(result.current.loading).toBe(true);
     expect(result.current.error).toBeNull();
@@ -37,24 +37,24 @@ describe('useEditors', () => {
       data: [
         { publisherId: 1, name: 'Penguin Books' },
         { publisherId: 2, name: 'Random House' },
-        { publisherId: 3, name: 'HarperCollins' }
-      ]
+        { publisherId: 3, name: 'HarperCollins' },
+      ],
     };
-    
+
     const expectedEditors = [
       { id: 1, name: 'Penguin Books' },
       { id: 2, name: 'Random House' },
-      { id: 3, name: 'HarperCollins' }
+      { id: 3, name: 'HarperCollins' },
     ];
-    
+
     api.get.mockResolvedValue(mockApiResponse);
-    
+
     const { result } = renderHook(() => useEditors());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.editors).toEqual(expectedEditors);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
@@ -63,13 +63,13 @@ describe('useEditors', () => {
 
   it('should handle empty editors response', async () => {
     api.get.mockResolvedValue({ data: [] });
-    
+
     const { result } = renderHook(() => useEditors());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.editors).toEqual([]);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
@@ -78,13 +78,13 @@ describe('useEditors', () => {
   it('should handle API error', async () => {
     const mockError = new Error('Network error');
     api.get.mockRejectedValue(mockError);
-    
+
     const { result } = renderHook(() => useEditors());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.editors).toEqual([]);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBe(mockError);
@@ -99,22 +99,22 @@ describe('useEditors', () => {
       data: [
         { publisherId: 1 }, // Missing name
         { name: 'Random House' }, // Missing publisherId
-        { publisherId: 3, name: 'HarperCollins' } // Valid
-      ]
+        { publisherId: 3, name: 'HarperCollins' }, // Valid
+      ],
     };
-    
+
     api.get.mockResolvedValue(mockApiResponse);
-    
+
     const { result } = renderHook(() => useEditors());
-    
+
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-    
+
     expect(result.current.editors).toEqual([
       { id: 1, name: undefined },
       { id: undefined, name: 'Random House' },
-      { id: 3, name: 'HarperCollins' }
+      { id: 3, name: 'HarperCollins' },
     ]);
   });
 });

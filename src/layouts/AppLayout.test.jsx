@@ -10,13 +10,11 @@ vi.mock('../components/Header/Header', () => ({
       <span>Header - User: {user ? user.name : 'No user'}</span>
       <button onClick={() => setUser && setUser(null)}>Logout</button>
     </header>
-  )
+  ),
 }));
 
 vi.mock('../components/Footer/Footer', () => ({
-  default: () => (
-    <footer data-testid="footer">Footer Component</footer>
-  )
+  default: () => <footer data-testid="footer">Footer Component</footer>,
 }));
 
 // Mock react-router-dom Outlet
@@ -24,16 +22,12 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    Outlet: () => <div data-testid="outlet">Page Content</div>
+    Outlet: () => <div data-testid="outlet">Page Content</div>,
   };
 });
 
 // Wrapper pour les tests
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
-    {children}
-  </BrowserRouter>
-);
+const TestWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
 
 describe('AppLayout Component', () => {
   const mockSetUser = vi.fn();
@@ -44,7 +38,7 @@ describe('AppLayout Component', () => {
         <AppLayout setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(document.body).toBeInTheDocument();
   });
 
@@ -54,7 +48,7 @@ describe('AppLayout Component', () => {
         <AppLayout setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByTestId('header')).toBeInTheDocument();
   });
 
@@ -64,7 +58,7 @@ describe('AppLayout Component', () => {
         <AppLayout setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByRole('main')).toBeInTheDocument();
     expect(screen.getByTestId('outlet')).toBeInTheDocument();
   });
@@ -75,19 +69,19 @@ describe('AppLayout Component', () => {
         <AppLayout setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByTestId('footer')).toBeInTheDocument();
   });
 
   test('should pass user prop to Header', () => {
     const mockUser = { name: 'John Doe' };
-    
+
     render(
       <TestWrapper>
         <AppLayout user={mockUser} setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByText('Header - User: John Doe')).toBeInTheDocument();
   });
 
@@ -97,7 +91,7 @@ describe('AppLayout Component', () => {
         <AppLayout setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument();
   });
 
@@ -107,7 +101,7 @@ describe('AppLayout Component', () => {
         <AppLayout user={null} setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByText('Header - User: No user')).toBeInTheDocument();
   });
 
@@ -117,7 +111,7 @@ describe('AppLayout Component', () => {
         <AppLayout setUser={mockSetUser} />
       </TestWrapper>
     );
-    
+
     expect(screen.getByText('Header - User: No user')).toBeInTheDocument();
   });
 });

@@ -22,7 +22,7 @@ const mockTopic = {
   authorAvatar: 'https://example.com/avatar.jpg',
   created_at: '2024-01-15T10:30:00Z',
   locked: false,
-  notice: false
+  notice: false,
 };
 
 const mockPosts = [
@@ -31,29 +31,29 @@ const mockPosts = [
     content: 'Premier commentaire\nAvec du contenu [b]gras[/b]',
     userName: 'User1',
     userAvatar: 'https://example.com/user1.jpg',
-    created_at: '2024-01-15T11:00:00Z'
+    created_at: '2024-01-15T11:00:00Z',
   },
   {
     _id: 'post-2',
     content: 'Deuxième commentaire avec [spoiler]contenu caché[/spoiler]',
     userName: 'User2',
     userAvatar: null,
-    created_at: '2024-01-15T12:00:00Z'
-  }
+    created_at: '2024-01-15T12:00:00Z',
+  },
 ];
 
 const mockUser = {
   id: 'user-123',
   name: 'Test User',
   role: 'user',
-  token: 'test-token'
+  token: 'test-token',
 };
 
 const mockAdmin = {
   id: 'admin-123',
   name: 'Admin User',
   role: 'admin',
-  token: 'admin-token'
+  token: 'admin-token',
 };
 
 // Mock des services
@@ -61,17 +61,17 @@ vi.mock('../../services/topicsService', () => ({
   getTopicById: vi.fn(() => Promise.resolve(mockTopic)),
   updateTopicNotice: vi.fn(() => Promise.resolve()),
   deleteTopic: vi.fn(() => Promise.resolve()),
-  toggleTopicLock: vi.fn(() => Promise.resolve({ locked: true }))
+  toggleTopicLock: vi.fn(() => Promise.resolve({ locked: true })),
 }));
 
 vi.mock('../../services/postsService', () => ({
   getPostsByTopicId: vi.fn(() => Promise.resolve(mockPosts)),
-  deletePost: vi.fn(() => Promise.resolve())
+  deletePost: vi.fn(() => Promise.resolve()),
 }));
 
 // Mock du hook useAuth
 vi.mock('../../hooks/useAuth', () => ({
-  useAuth: vi.fn(() => ({ user: mockUser }))
+  useAuth: vi.fn(() => ({ user: mockUser })),
 }));
 
 // Mock de useParams
@@ -79,23 +79,27 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useParams: vi.fn(() => ({ topicId: 'topic-123' }))
+    useParams: vi.fn(() => ({ topicId: 'topic-123' })),
   };
 });
 
 // Mock des composants
 vi.mock('../../components/BackArrow/BackArrow', () => ({
-  default: () => <button data-testid="back-arrow">Retour</button>
+  default: () => <button data-testid="back-arrow">Retour</button>,
 }));
 
 vi.mock('../../modals/PostModal/PostModal', () => ({
   default: ({ topicId, onClose, onSuccess }) => (
     <div data-testid="post-modal">
       <span data-testid="modal-topic-id">{topicId}</span>
-      <button onClick={onClose} data-testid="modal-close">Fermer</button>
-      <button onClick={onSuccess} data-testid="modal-success">Succès</button>
+      <button onClick={onClose} data-testid="modal-close">
+        Fermer
+      </button>
+      <button onClick={onSuccess} data-testid="modal-success">
+        Succès
+      </button>
     </div>
-  )
+  ),
 }));
 
 vi.mock('../../components/Pagination/Pagination', () => ({
@@ -104,78 +108,72 @@ vi.mock('../../components/Pagination/Pagination', () => ({
       <button onClick={() => onPageChange(currentPage - 1)} data-testid="prev-page">
         Précédent
       </button>
-      <span data-testid="page-info">{currentPage} / {totalPages}</span>
+      <span data-testid="page-info">
+        {currentPage} / {totalPages}
+      </span>
       <button onClick={() => onPageChange(currentPage + 1)} data-testid="next-page">
         Suivant
       </button>
     </div>
-  )
+  ),
 }));
 
 vi.mock('../../components/ToastSuccess/ToastSuccess', () => ({
-  default: ({ message }) => (
-    <div data-testid="toast-success">{message}</div>
-  )
+  default: ({ message }) => <div data-testid="toast-success">{message}</div>,
 }));
 
 vi.mock('../../components/Spoiler/Spoiler', () => ({
-  default: ({ content }) => (
-    <span data-testid="spoiler">{content}</span>
-  )
+  default: ({ content }) => <span data-testid="spoiler">{content}</span>,
 }));
 
 // Mock de react-i18next
 const mockT = vi.fn();
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: mockT
-  })
+    t: mockT,
+  }),
 }));
 
 // Mock des images
 vi.mock('../../images/library.webp', () => ({
-  default: '/mocked-banner.webp'
+  default: '/mocked-banner.webp',
 }));
 
 vi.mock('../../images/avatar.webp', () => ({
-  default: '/mocked-avatar.webp'
+  default: '/mocked-avatar.webp',
 }));
 
 // Mock de window.confirm et window.location
 Object.defineProperty(window, 'confirm', {
   value: vi.fn(() => true),
-  writable: true
+  writable: true,
 });
 
 Object.defineProperty(window, 'location', {
   value: {
     href: '',
-    assign: vi.fn()
+    assign: vi.fn(),
   },
-  writable: true
+  writable: true,
 });
 
 // Wrapper pour les tests
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
-    {children}
-  </BrowserRouter>
-);
+const TestWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
 
 describe('TopicDetail Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Configuration par défaut des mocks
     vi.mocked(useAuth).mockReturnValue({ user: mockUser });
     vi.mocked(useParams).mockReturnValue({ topicId: 'topic-123' });
     vi.mocked(getTopicById).mockResolvedValue(mockTopic);
     vi.mocked(getPostsByTopicId).mockResolvedValue(mockPosts);
-    
-    mockT.mockImplementation((key) => {
+
+    mockT.mockImplementation(key => {
       const translations = {
-        'ErrorFetchingDatas': 'Erreur lors du chargement des données',
-        'ErrorRefreshTopics': 'Erreur lors du rafraîchissement',
+        ErrorFetchingDatas: 'Erreur lors du chargement des données',
+        ErrorRefreshTopics: 'Erreur lors du rafraîchissement',
         'TopicDetail.AnswerTopic': 'Répondre au sujet',
         'TopicDetail.LockedMessage': 'Ce sujet est verrouillé',
         'TopicDetail.SearchPlaceholder': 'Rechercher dans les réponses...',
@@ -191,9 +189,9 @@ describe('TopicDetail Component', () => {
         'TopicDetail.Replies': 'Réponses',
         'TopicDetail.NoReplies': 'Aucune réponse',
         'TopicDetail.BackToTop': 'Retour en haut',
-        'ErrorToggleLock': 'Erreur lors du verrouillage',
-        'ErrorTogglePin': 'Erreur lors de l\'épinglage',
-        'TopicDetail.ErrorDelete': 'Erreur lors de la suppression'
+        ErrorToggleLock: 'Erreur lors du verrouillage',
+        ErrorTogglePin: "Erreur lors de l'épinglage",
+        'TopicDetail.ErrorDelete': 'Erreur lors de la suppression',
       };
       return translations[key] || key;
     });
@@ -203,7 +201,7 @@ describe('TopicDetail Component', () => {
     it('doit afficher le message de chargement avant de charger les données', () => {
       // Mock pour simuler un topic non chargé
       vi.mocked(getTopicById).mockImplementation(() => new Promise(() => {}));
-      
+
       render(
         <TestWrapper>
           <TopicDetail />
@@ -242,9 +240,7 @@ describe('TopicDetail Component', () => {
       );
 
       await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Erreur lors du chargement des données'
-        );
+        expect(consoleSpy).toHaveBeenCalledWith('Erreur lors du chargement des données');
       });
 
       consoleSpy.mockRestore();
@@ -267,7 +263,7 @@ describe('TopicDetail Component', () => {
     it('doit afficher le message de verrouillage pour un topic verrouillé', async () => {
       vi.mocked(getTopicById).mockResolvedValueOnce({
         ...mockTopic,
-        locked: true
+        locked: true,
       });
 
       render(
@@ -284,7 +280,7 @@ describe('TopicDetail Component', () => {
   });
 
   describe('Interface utilisateur non connecté', () => {
-    it('ne doit pas afficher les boutons d\'action', async () => {
+    it("ne doit pas afficher les boutons d'action", async () => {
       vi.mocked(useAuth).mockReturnValue({ user: null });
 
       render(
@@ -371,11 +367,11 @@ describe('TopicDetail Component', () => {
 
       const deleteButtons = screen.getAllByText('Supprimer');
       const topicDeleteButton = deleteButtons[0]; // Premier bouton = suppression du topic
-      
+
       fireEvent.click(topicDeleteButton);
 
       expect(window.confirm).toHaveBeenCalledWith('Êtes-vous sûr de vouloir supprimer ce sujet ?');
-      
+
       await waitFor(() => {
         expect(deleteTopic).toHaveBeenCalledWith('topic-123', 'admin-token');
       });
@@ -394,7 +390,7 @@ describe('TopicDetail Component', () => {
 
       const deleteButtons = screen.getAllByText('Supprimer');
       const postDeleteButton = deleteButtons[1]; // Deuxième bouton = suppression du post
-      
+
       fireEvent.click(postDeleteButton);
 
       await waitFor(() => {
@@ -472,7 +468,7 @@ describe('TopicDetail Component', () => {
       });
     });
 
-    it('doit réinitialiser la pagination lors d\'une recherche', async () => {
+    it("doit réinitialiser la pagination lors d'une recherche", async () => {
       render(
         <TestWrapper>
           <TopicDetail />
@@ -510,14 +506,14 @@ describe('TopicDetail Component', () => {
   });
 
   describe('Pagination', () => {
-    it('doit afficher la pagination s\'il y a plus d\'une page', async () => {
+    it("doit afficher la pagination s'il y a plus d'une page", async () => {
       // Mock avec plus de 10 posts
       const manyPosts = Array.from({ length: 15 }, (_, i) => ({
         _id: `post-${i}`,
         content: `Post ${i}`,
         userName: `User${i}`,
         userAvatar: null,
-        created_at: '2024-01-15T12:00:00Z'
+        created_at: '2024-01-15T12:00:00Z',
       }));
 
       vi.mocked(getPostsByTopicId).mockResolvedValueOnce(manyPosts);
@@ -535,7 +531,7 @@ describe('TopicDetail Component', () => {
   });
 
   describe('Gestion des images', () => {
-    it('doit utiliser l\'avatar par défaut si pas d\'avatar', async () => {
+    it("doit utiliser l'avatar par défaut si pas d'avatar", async () => {
       render(
         <TestWrapper>
           <TopicDetail />
@@ -549,7 +545,7 @@ describe('TopicDetail Component', () => {
       });
     });
 
-    it('doit appliquer le style d\'image de fond', async () => {
+    it("doit appliquer le style d'image de fond", async () => {
       const { container } = render(
         <TestWrapper>
           <TopicDetail />
@@ -595,7 +591,7 @@ describe('TopicDetail Component', () => {
 
       const deleteButtons = screen.getAllByText('Supprimer');
       const postDeleteButton = deleteButtons[1];
-      
+
       fireEvent.click(postDeleteButton);
 
       await waitFor(() => {

@@ -6,7 +6,7 @@ import {
   getTopicById,
   updateTopicNotice,
   deleteTopic,
-  toggleTopicLock
+  toggleTopicLock,
 } from './topicsService';
 
 // Mock de l'API
@@ -15,8 +15,8 @@ vi.mock('./api/api', () => ({
     get: vi.fn(),
     post: vi.fn(),
     patch: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }));
 
 // Mock des constantes
@@ -25,10 +25,10 @@ vi.mock('../utils/constants', () => ({
     FORUM: {
       BASE: '/api/forum',
       ADD_TOPIC: '/api/forum/add',
-      UPDATE_NOTICE: (id) => `/api/forum/${id}/notice`,
-      LOCK_TOPIC: (id) => `/api/forum/${id}/lock`
-    }
-  }
+      UPDATE_NOTICE: id => `/api/forum/${id}/notice`,
+      LOCK_TOPIC: id => `/api/forum/${id}/lock`,
+    },
+  },
 }));
 
 import api from './api/api';
@@ -47,7 +47,7 @@ describe('topicsService', () => {
     it('should get all topics successfully', async () => {
       const mockTopics = [
         { id: 1, title: 'Topic 1', content: 'Content 1', notice: false },
-        { id: 2, title: 'Topic 2', content: 'Content 2', notice: true }
+        { id: 2, title: 'Topic 2', content: 'Content 2', notice: true },
       ];
       api.get.mockResolvedValue({ data: mockTopics });
 
@@ -83,7 +83,7 @@ describe('topicsService', () => {
         title: 'New Topic',
         content: 'Topic content',
         notice: true,
-        userId: 1
+        userId: 1,
       };
       api.post.mockResolvedValue({ data: mockResponse });
 
@@ -91,7 +91,7 @@ describe('topicsService', () => {
         title: 'New Topic',
         content: 'Topic content',
         recaptchaToken: 'recaptcha-123',
-        notice: true
+        notice: true,
       };
 
       const result = await addTopic(topicData, mockToken);
@@ -102,12 +102,12 @@ describe('topicsService', () => {
           title: 'New Topic',
           content: 'Topic content',
           recaptchaToken: 'recaptcha-123',
-          notice: true
+          notice: true,
         },
         {
           headers: {
-            Authorization: 'Bearer test-token-123'
-          }
+            Authorization: 'Bearer test-token-123',
+          },
         }
       );
       expect(result).toEqual(mockResponse);
@@ -120,7 +120,7 @@ describe('topicsService', () => {
       const topicData = {
         title: 'Simple Topic',
         content: 'Simple content',
-        recaptchaToken: 'recaptcha-456'
+        recaptchaToken: 'recaptcha-456',
       };
 
       await addTopic(topicData, mockToken);
@@ -131,10 +131,10 @@ describe('topicsService', () => {
           title: 'Simple Topic',
           content: 'Simple content',
           recaptchaToken: 'recaptcha-456',
-          notice: undefined
+          notice: undefined,
         },
         expect.objectContaining({
-          headers: { Authorization: 'Bearer test-token-123' }
+          headers: { Authorization: 'Bearer test-token-123' },
         })
       );
     });
@@ -146,7 +146,7 @@ describe('topicsService', () => {
       const topicData = {
         title: 'Test Topic',
         content: 'Test content',
-        recaptchaToken: 'token'
+        recaptchaToken: 'token',
       };
 
       await expect(addTopic(topicData, mockToken)).rejects.toThrow('Add topic failed');
@@ -160,21 +160,17 @@ describe('topicsService', () => {
       const topicData = {
         title: 'Topic',
         content: 'Content',
-        recaptchaToken: 'token'
+        recaptchaToken: 'token',
       };
       const differentToken = 'admin-token-456';
 
       await addTopic(topicData, differentToken);
 
-      expect(api.post).toHaveBeenCalledWith(
-        '/api/forum/add',
-        expect.anything(),
-        {
-          headers: {
-            Authorization: 'Bearer admin-token-456'
-          }
-        }
-      );
+      expect(api.post).toHaveBeenCalledWith('/api/forum/add', expect.anything(), {
+        headers: {
+          Authorization: 'Bearer admin-token-456',
+        },
+      });
     });
 
     it('should handle long content', async () => {
@@ -185,7 +181,7 @@ describe('topicsService', () => {
       const topicData = {
         title: 'Long Topic',
         content: longContent,
-        recaptchaToken: 'token'
+        recaptchaToken: 'token',
       };
 
       await addTopic(topicData, mockToken);
@@ -193,7 +189,7 @@ describe('topicsService', () => {
       expect(api.post).toHaveBeenCalledWith(
         '/api/forum/add',
         expect.objectContaining({
-          content: longContent
+          content: longContent,
         }),
         expect.anything()
       );
@@ -206,7 +202,7 @@ describe('topicsService', () => {
         id: 123,
         title: 'Topic Title',
         content: 'Topic content',
-        posts: []
+        posts: [],
       };
       api.get.mockResolvedValue({ data: mockTopic });
 
@@ -257,8 +253,8 @@ describe('topicsService', () => {
         {},
         {
           headers: {
-            Authorization: 'Bearer test-token-123'
-          }
+            Authorization: 'Bearer test-token-123',
+          },
         }
       );
       expect(result).toEqual(mockResponse);
@@ -293,8 +289,8 @@ describe('topicsService', () => {
         {},
         {
           headers: {
-            Authorization: 'Bearer admin-token-789'
-          }
+            Authorization: 'Bearer admin-token-789',
+          },
         }
       );
     });
@@ -311,8 +307,8 @@ describe('topicsService', () => {
 
       expect(api.delete).toHaveBeenCalledWith('/api/forum/123', {
         headers: {
-          Authorization: 'Bearer test-token-123'
-        }
+          Authorization: 'Bearer test-token-123',
+        },
       });
       expect(result).toEqual(mockResponse);
     });
@@ -332,7 +328,7 @@ describe('topicsService', () => {
       await deleteTopic(789, mockToken);
 
       expect(api.delete).toHaveBeenCalledWith('/api/forum/789', {
-        headers: { Authorization: 'Bearer test-token-123' }
+        headers: { Authorization: 'Bearer test-token-123' },
       });
     });
 
@@ -344,7 +340,7 @@ describe('topicsService', () => {
       await deleteTopic(123, moderatorToken);
 
       expect(api.delete).toHaveBeenCalledWith('/api/forum/123', {
-        headers: { Authorization: 'Bearer mod-token-456' }
+        headers: { Authorization: 'Bearer mod-token-456' },
       });
     });
   });
@@ -363,8 +359,8 @@ describe('topicsService', () => {
         {},
         {
           headers: {
-            Authorization: 'Bearer test-token-123'
-          }
+            Authorization: 'Bearer test-token-123',
+          },
         }
       );
       expect(result).toEqual(mockResponse);
@@ -399,8 +395,8 @@ describe('topicsService', () => {
         {},
         {
           headers: {
-            Authorization: 'Bearer admin-token-999'
-          }
+            Authorization: 'Bearer admin-token-999',
+          },
         }
       );
     });
@@ -409,14 +405,14 @@ describe('topicsService', () => {
   describe('Integration tests', () => {
     it('should handle complete topic management workflow', async () => {
       const mockToken = 'workflow-token';
-      
+
       // Mock responses for all operations
       const getTopicsResponse = { data: [] };
-      const addTopicResponse = { 
-        data: { id: 1, title: 'New Topic', notice: false, locked: false } 
+      const addTopicResponse = {
+        data: { id: 1, title: 'New Topic', notice: false, locked: false },
       };
-      const getTopicResponse = { 
-        data: { id: 1, title: 'New Topic', posts: [] } 
+      const getTopicResponse = {
+        data: { id: 1, title: 'New Topic', posts: [] },
       };
       const updateNoticeResponse = { data: { id: 1, notice: true } };
       const toggleLockResponse = { data: { id: 1, locked: true } };
@@ -431,11 +427,14 @@ describe('topicsService', () => {
 
       // Test workflow
       const topics = await getTopics();
-      const newTopic = await addTopic({
-        title: 'New Topic',
-        content: 'Topic content',
-        recaptchaToken: 'token'
-      }, mockToken);
+      const newTopic = await addTopic(
+        {
+          title: 'New Topic',
+          content: 'Topic content',
+          recaptchaToken: 'token',
+        },
+        mockToken
+      );
       const topicDetails = await getTopicById(1);
       const noticeUpdate = await updateTopicNotice(1, mockToken);
       const lockToggle = await toggleTopicLock(1, mockToken);
@@ -456,11 +455,11 @@ describe('topicsService', () => {
 
       const specialTitle = 'Tópic with émojis 🎉 and "quotes"!';
       const specialContent = 'Content with <HTML> & symbols';
-      
+
       const topicData = {
         title: specialTitle,
         content: specialContent,
-        recaptchaToken: 'token'
+        recaptchaToken: 'token',
       };
 
       await addTopic(topicData, mockToken);
@@ -469,7 +468,7 @@ describe('topicsService', () => {
         '/api/forum/add',
         expect.objectContaining({
           title: specialTitle,
-          content: specialContent
+          content: specialContent,
         }),
         expect.anything()
       );

@@ -4,7 +4,7 @@ import {
   storeInLocalStorage,
   getFromLocalStorage,
   removeFromLocalStorage,
-  clearLocalStorage
+  clearLocalStorage,
 } from './localStorage';
 
 // Mock de localStorage
@@ -13,20 +13,20 @@ const mockLocalStorage = {
   setItem: vi.fn((key, value) => {
     mockLocalStorage.store[key] = value;
   }),
-  getItem: vi.fn((key) => {
+  getItem: vi.fn(key => {
     return mockLocalStorage.store[key] || null;
   }),
-  removeItem: vi.fn((key) => {
+  removeItem: vi.fn(key => {
     delete mockLocalStorage.store[key];
   }),
   clear: vi.fn(() => {
     mockLocalStorage.store = {};
-  })
+  }),
 };
 
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
-  writable: true
+  writable: true,
 });
 
 describe('localStorage utilities', () => {
@@ -65,7 +65,10 @@ describe('localStorage utilities', () => {
       const testObject = { name: 'John', age: 30, active: true };
       storeInLocalStorage('objectKey', testObject);
 
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('objectKey', JSON.stringify(testObject));
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        'objectKey',
+        JSON.stringify(testObject)
+      );
       expect(mockLocalStorage.store.objectKey).toBe('{"name":"John","age":30,"active":true}');
     });
 
@@ -104,15 +107,18 @@ describe('localStorage utilities', () => {
           name: 'John',
           preferences: {
             theme: 'dark',
-            notifications: true
-          }
+            notifications: true,
+          },
         },
-        data: [1, 2, { nested: true }]
+        data: [1, 2, { nested: true }],
       };
-      
+
       storeInLocalStorage('complexKey', complexObject);
 
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('complexKey', JSON.stringify(complexObject));
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        'complexKey',
+        JSON.stringify(complexObject)
+      );
     });
   });
 
@@ -212,10 +218,10 @@ describe('localStorage utilities', () => {
           name: 'John',
           preferences: {
             theme: 'dark',
-            notifications: true
-          }
+            notifications: true,
+          },
         },
-        data: [1, 2, { nested: true }]
+        data: [1, 2, { nested: true }],
       };
       mockLocalStorage.store.complexKey = JSON.stringify(complexObject);
 
@@ -317,7 +323,7 @@ describe('localStorage utilities', () => {
         { key: 'boolean', value: true },
         { key: 'object', value: { name: 'test' } },
         { key: 'array', value: [1, 2, 3] },
-        { key: 'null', value: null }
+        { key: 'null', value: null },
       ];
 
       testCases.forEach(({ key, value }) => {

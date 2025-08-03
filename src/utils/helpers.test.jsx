@@ -1,33 +1,27 @@
 // 📁 __tests__/utils/helpers.test.js
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '@testing-library/react';
-import {
-  displayStars,
-  normalize,
-  capitalize,
-  generateStarsInputs,
-  formatDate
-} from './helpers';
+import { displayStars, normalize, capitalize, generateStarsInputs, formatDate } from './helpers';
 
 // Mock FontAwesome
 vi.mock('@fortawesome/react-fontawesome', () => ({
   FontAwesomeIcon: ({ icon, className }) => (
     <i data-testid="star" className={className} data-icon={icon.iconName} />
-  )
+  ),
 }));
 
 vi.mock('@fortawesome/free-solid-svg-icons', () => ({
-  faStar: { iconName: 'star' }
+  faStar: { iconName: 'star' },
 }));
 
 // Mock CSS modules
 vi.mock('../components/Books/BookDisplay/BookDisplay.module.css', () => ({
   default: {
     full: 'full-star',
-    empty: 'empty-star'
+    empty: 'empty-star',
   },
   full: 'full-star',
-  empty: 'empty-star'
+  empty: 'empty-star',
 }));
 
 describe('helpers', () => {
@@ -35,7 +29,7 @@ describe('helpers', () => {
     it('should display 5 full stars for rating 5', () => {
       const { container } = render(<div>{displayStars(5)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       expect(stars).toHaveLength(5);
       stars.forEach(star => {
         expect(star).toHaveClass('full-star');
@@ -45,7 +39,7 @@ describe('helpers', () => {
     it('should display 0 full stars for rating 0', () => {
       const { container } = render(<div>{displayStars(0)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       expect(stars).toHaveLength(5);
       stars.forEach(star => {
         expect(star).toHaveClass('empty-star');
@@ -55,7 +49,7 @@ describe('helpers', () => {
     it('should display 3 full stars for rating 3', () => {
       const { container } = render(<div>{displayStars(3)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       expect(stars).toHaveLength(5);
       for (let i = 0; i < 3; i++) {
         expect(stars[i]).toHaveClass('full-star');
@@ -68,10 +62,10 @@ describe('helpers', () => {
     it('should round rating to nearest integer', () => {
       const { container: container1 } = render(<div>{displayStars(3.4)}</div>);
       const { container: container2 } = render(<div>{displayStars(3.6)}</div>);
-      
+
       const stars1 = container1.querySelectorAll('.full-star');
       const stars2 = container2.querySelectorAll('.full-star');
-      
+
       expect(stars1).toHaveLength(3); // 3.4 rounds to 3
       expect(stars2).toHaveLength(4); // 3.6 rounds to 4
     });
@@ -79,7 +73,7 @@ describe('helpers', () => {
     it('should handle negative ratings', () => {
       const { container } = render(<div>{displayStars(-1)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       stars.forEach(star => {
         expect(star).toHaveClass('empty-star');
       });
@@ -88,7 +82,7 @@ describe('helpers', () => {
     it('should handle ratings over 5', () => {
       const { container } = render(<div>{displayStars(7)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       expect(stars).toHaveLength(5);
       stars.forEach(star => {
         expect(star).toHaveClass('full-star');
@@ -200,13 +194,13 @@ describe('helpers', () => {
 
     it('should generate 5 interactive star inputs', () => {
       const { container } = render(<div>{generateStarsInputs(3, mockRegister, false)}</div>);
-      
+
       const labels = container.querySelectorAll('label');
       const inputs = container.querySelectorAll('input[type="radio"]');
-      
+
       expect(labels).toHaveLength(5);
       expect(inputs).toHaveLength(5);
-      
+
       inputs.forEach((input, index) => {
         expect(input).toHaveAttribute('value', String(index + 1));
         expect(input).toHaveAttribute('id', `rating${index + 1}`);
@@ -215,10 +209,10 @@ describe('helpers', () => {
 
     it('should generate 5 read-only star spans', () => {
       const { container } = render(<div>{generateStarsInputs(3, mockRegister, true)}</div>);
-      
+
       const spans = container.querySelectorAll('span');
       const inputs = container.querySelectorAll('input');
-      
+
       expect(spans).toHaveLength(5);
       expect(inputs).toHaveLength(0);
     });
@@ -226,7 +220,7 @@ describe('helpers', () => {
     it('should apply correct star classes based on rating', () => {
       const { container } = render(<div>{generateStarsInputs(3, mockRegister, true)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       expect(stars).toHaveLength(5);
       for (let i = 0; i < 3; i++) {
         expect(stars[i]).toHaveClass('full-star');
@@ -238,20 +232,20 @@ describe('helpers', () => {
 
     it('should call register function for interactive mode', () => {
       render(<div>{generateStarsInputs(3, mockRegister, false)}</div>);
-      
+
       expect(mockRegister).toHaveBeenCalledWith('rating');
     });
 
     it('should not call register function for read-only mode', () => {
       render(<div>{generateStarsInputs(3, mockRegister, true)}</div>);
-      
+
       expect(mockRegister).not.toHaveBeenCalled();
     });
 
     it('should handle rating 0', () => {
       const { container } = render(<div>{generateStarsInputs(0, mockRegister, true)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       stars.forEach(star => {
         expect(star).toHaveClass('empty-star');
       });
@@ -260,7 +254,7 @@ describe('helpers', () => {
     it('should handle rating 5', () => {
       const { container } = render(<div>{generateStarsInputs(5, mockRegister, true)}</div>);
       const stars = container.querySelectorAll('[data-testid="star"]');
-      
+
       stars.forEach(star => {
         expect(star).toHaveClass('full-star');
       });

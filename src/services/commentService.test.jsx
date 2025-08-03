@@ -4,7 +4,7 @@ import {
   getComments,
   addOrUpdateComment,
   deleteComment,
-  deleteCommentAsAdmin
+  deleteCommentAsAdmin,
 } from './commentService';
 
 // Mock de l'API
@@ -12,17 +12,17 @@ vi.mock('./api/api', () => ({
   default: {
     get: vi.fn(),
     post: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }));
 
 // Mock des constantes
 vi.mock('../utils/constants', () => ({
   API_ROUTES: {
     COMMENTS: {
-      BASE: '/api/comments'
-    }
-  }
+      BASE: '/api/comments',
+    },
+  },
 }));
 
 import api from './api/api';
@@ -41,7 +41,7 @@ describe('commentService', () => {
     it('should get comments for a book successfully', async () => {
       const mockComments = [
         { id: 1, content: 'Great book!', rating: 5, userId: 1 },
-        { id: 2, content: 'Good read', rating: 4, userId: 2 }
+        { id: 2, content: 'Good read', rating: 4, userId: 2 },
       ];
       api.get.mockResolvedValue({ data: mockComments });
 
@@ -79,11 +79,11 @@ describe('commentService', () => {
 
   describe('addOrUpdateComment', () => {
     it('should add comment with content and rating', async () => {
-      const mockResponse = { 
-        id: 1, 
-        content: 'Amazing book!', 
-        rating: 5, 
-        userId: 1 
+      const mockResponse = {
+        id: 1,
+        content: 'Amazing book!',
+        rating: 5,
+        userId: 1,
       };
       api.post.mockResolvedValue({ data: mockResponse });
 
@@ -92,7 +92,7 @@ describe('commentService', () => {
 
       expect(api.post).toHaveBeenCalledWith('/api/comments/123', {
         content: 'Amazing book!',
-        rating: 5
+        rating: 5,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -106,7 +106,7 @@ describe('commentService', () => {
 
       expect(api.post).toHaveBeenCalledWith('/api/comments/123', {
         content: 'Good book!',
-        rating: undefined
+        rating: undefined,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -120,7 +120,7 @@ describe('commentService', () => {
 
       expect(api.post).toHaveBeenCalledWith('/api/comments/123', {
         content: undefined,
-        rating: 4
+        rating: 4,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -143,7 +143,7 @@ describe('commentService', () => {
 
       expect(api.post).toHaveBeenCalledWith('/api/comments/789', {
         content: 'Test comment',
-        rating: undefined
+        rating: undefined,
       });
     });
 
@@ -155,7 +155,7 @@ describe('commentService', () => {
 
       expect(api.post).toHaveBeenCalledWith('/api/comments/123', {
         content: undefined,
-        rating: undefined
+        rating: undefined,
       });
     });
   });
@@ -245,9 +245,9 @@ describe('commentService', () => {
 
       // Test workflow
       const initialComments = await getComments(123);
-      const newComment = await addOrUpdateComment(123, { 
-        content: 'New comment', 
-        rating: 5 
+      const newComment = await addOrUpdateComment(123, {
+        content: 'New comment',
+        rating: 5,
       });
       const deleteResult = await deleteComment(1);
 
@@ -257,20 +257,20 @@ describe('commentService', () => {
     });
 
     it('should handle comment update workflow', async () => {
-      const getResponse = { 
-        data: [{ id: 1, content: 'Original comment', rating: 3 }] 
+      const getResponse = {
+        data: [{ id: 1, content: 'Original comment', rating: 3 }],
       };
-      const updateResponse = { 
-        data: { id: 1, content: 'Updated comment', rating: 5 } 
+      const updateResponse = {
+        data: { id: 1, content: 'Updated comment', rating: 5 },
       };
 
       api.get.mockResolvedValueOnce(getResponse);
       api.post.mockResolvedValueOnce(updateResponse);
 
       const comments = await getComments(123);
-      const updatedComment = await addOrUpdateComment(123, { 
-        content: 'Updated comment', 
-        rating: 5 
+      const updatedComment = await addOrUpdateComment(123, {
+        content: 'Updated comment',
+        rating: 5,
       });
 
       expect(comments[0].content).toBe('Original comment');

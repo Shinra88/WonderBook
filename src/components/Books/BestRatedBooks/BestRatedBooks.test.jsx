@@ -5,24 +5,25 @@ import BestRatedBooks from './BestRatedBooks';
 
 // Mocks
 vi.mock('../../../hooks/customHooks', () => ({
-  useBestRatedBooks: vi.fn()
+  useBestRatedBooks: vi.fn(),
 }));
 vi.mock('../../../hooks/filterContext', () => ({
-  useFilters: vi.fn()
+  useFilters: vi.fn(),
 }));
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => ({
-      'BookDisplay.Loading': 'Loading...',
-      'BookDisplay.NoBooksFound': 'No books found'
-    }[key] || key)
-  })
+    t: key =>
+      ({
+        'BookDisplay.Loading': 'Loading...',
+        'BookDisplay.NoBooksFound': 'No books found',
+      })[key] || key,
+  }),
 }));
 
 // Mock du composant BookDisplay
 vi.mock('../BookDisplay/BookDisplay', () => ({
   __esModule: true,
-  default: ({ book }) => <div data-testid="book-display">{book.title}</div>
+  default: ({ book }) => <div data-testid="book-display">{book.title}</div>,
 }));
 
 // Références aux hooks
@@ -36,14 +37,14 @@ describe('BestRatedBooks', () => {
     useFilters.mockReturnValue({
       selectedCategories: [],
       selectedYear: '',
-      selectedType: 'et'
+      selectedType: 'et',
     });
   });
 
   test('affiche le message de chargement', () => {
     useBestRatedBooks.mockReturnValue({
       bestRatedBooks: [],
-      loading: true
+      loading: true,
     });
 
     render(<BestRatedBooks />);
@@ -52,8 +53,11 @@ describe('BestRatedBooks', () => {
 
   test('affiche les livres quand ils sont chargés', () => {
     useBestRatedBooks.mockReturnValue({
-      bestRatedBooks: [{ bookId: 1, title: 'Book One' }, { bookId: 2, title: 'Book Two' }],
-      loading: false
+      bestRatedBooks: [
+        { bookId: 1, title: 'Book One' },
+        { bookId: 2, title: 'Book Two' },
+      ],
+      loading: false,
     });
 
     render(<BestRatedBooks />);
@@ -66,7 +70,7 @@ describe('BestRatedBooks', () => {
   test('affiche le message "No books found" si aucun livre', () => {
     useBestRatedBooks.mockReturnValue({
       bestRatedBooks: [],
-      loading: false
+      loading: false,
     });
 
     render(<BestRatedBooks />);

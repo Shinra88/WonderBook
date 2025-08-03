@@ -8,7 +8,7 @@ export function useUser() {
   const [connectedUser, setConnectedUser] = useState(null);
   const [auth, setAuth] = useState(false);
   const [userLoading, setUserLoading] = useState(true);
-  
+
   useEffect(() => {
     async function getUserDetails() {
       try {
@@ -25,7 +25,7 @@ export function useUser() {
     }
     getUserDetails();
   }, []);
-  
+
   return { connectedUser, auth, userLoading };
 }
 

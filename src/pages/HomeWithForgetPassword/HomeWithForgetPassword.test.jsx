@@ -7,7 +7,7 @@ import styles from './HomeWithForgetPassword.module.css';
 
 // Mock du composant Home
 vi.mock('../Home/Home', () => ({
-  default: () => <div data-testid="home-component">Home Component</div>
+  default: () => <div data-testid="home-component">Home Component</div>,
 }));
 
 // Mock du composant ForgetPassword
@@ -16,7 +16,7 @@ vi.mock('../../modals/ForgetPassword/ForgetPassword', () => ({
     <div data-testid="forget-password-modal">
       <span data-testid="token-value">{token}</span>
     </div>
-  )
+  ),
 }));
 
 // Mock de useParams
@@ -24,16 +24,12 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useParams: vi.fn()
+    useParams: vi.fn(),
   };
 });
 
 // Wrapper pour les tests avec Router
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
-    {children}
-  </BrowserRouter>
-);
+const TestWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
 
 describe('HomeWithForgetPassword Component', () => {
   beforeEach(() => {
@@ -53,7 +49,7 @@ describe('HomeWithForgetPassword Component', () => {
 
       // Vérifier que le composant Home est présent
       expect(screen.getByTestId('home-component')).toBeInTheDocument();
-      
+
       // Vérifier que le composant ForgetPassword est présent
       expect(screen.getByTestId('forget-password-modal')).toBeInTheDocument();
     });
@@ -106,7 +102,7 @@ describe('HomeWithForgetPassword Component', () => {
       // Vérifier que le composant fonctionne même sans token
       expect(screen.getByTestId('home-component')).toBeInTheDocument();
       expect(screen.getByTestId('forget-password-modal')).toBeInTheDocument();
-      
+
       // Le token devrait être undefined (rendu comme chaîne vide)
       expect(screen.getByTestId('token-value')).toBeEmptyDOMElement();
     });
@@ -189,13 +185,13 @@ describe('HomeWithForgetPassword Component', () => {
 
       // Vérifier que Home est dans background
       expect(backgroundDiv).toContainElement(screen.getByTestId('home-component'));
-      
+
       // Vérifier que ForgetPassword est dans modalOverlay
       expect(modalOverlay).toContainElement(screen.getByTestId('forget-password-modal'));
     });
   });
 
-  describe('Tests d\'intégration', () => {
+  describe("Tests d'intégration", () => {
     it('doit fonctionner avec différents types de tokens', () => {
       const testCases = [
         'simple-token',
@@ -203,7 +199,7 @@ describe('HomeWithForgetPassword Component', () => {
         'token-with-dashes',
         '123456789',
         'very-long-token-with-many-characters-and-numbers-123456789',
-        'a'
+        'a',
       ];
 
       testCases.forEach(token => {
@@ -253,7 +249,7 @@ describe('HomeWithForgetPassword Component', () => {
       const pageContainer = container.firstChild;
       expect(pageContainer.tagName).toBe('DIV');
       expect(pageContainer).toHaveClass(styles.pageContainer);
-      
+
       const children = Array.from(pageContainer.children);
       expect(children).toHaveLength(2);
       expect(children[0]).toHaveClass(styles.background);

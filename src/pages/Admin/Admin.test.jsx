@@ -57,9 +57,7 @@ vi.mock('../../modals/UserEditModal/UserEditModal', () => {
   return {
     default: ({ onClose, onSave }) => (
       <div data-testid="edit-modal">
-        <button onClick={() => onSave({ userId: '1', name: 'Updated' })}>
-          Admin.Save
-        </button>
+        <button onClick={() => onSave({ userId: '1', name: 'Updated' })}>Admin.Save</button>
         <button onClick={onClose}>Close</button>
       </div>
     ),
@@ -113,12 +111,12 @@ describe('Page Admin', () => {
     expect(radio).toBeChecked();
   });
 
-    test('affiche la pagination s’il y a plus d’une page', async () => {
+  test('affiche la pagination s’il y a plus d’une page', async () => {
     renderPage();
 
     const nextBtn = await screen.findByRole('button', { name: /Pagination.Next/i });
     expect(nextBtn).toBeInTheDocument();
-    });
+  });
 
   test('affiche le lien retour en haut de page', async () => {
     renderPage();

@@ -10,68 +10,72 @@ const mockTopics = [
   {
     _id: '1',
     title: 'Notice importante',
-    notice: true
+    notice: true,
   },
   {
     _id: '2',
     title: 'Sujet de discussion',
-    notice: false
+    notice: false,
   },
   {
     _id: '3',
     title: 'Autre sujet',
-    notice: false
-  }
+    notice: false,
+  },
 ];
 
 // Mock du service topics
 vi.mock('../../services/topicsService', () => ({
-  getTopics: vi.fn(() => Promise.resolve(mockTopics))
+  getTopics: vi.fn(() => Promise.resolve(mockTopics)),
 }));
 
 // Mock du hook useAuth
 const mockUser = { id: '123', name: 'Test User' };
 vi.mock('../../hooks/useAuth', () => ({
-  useAuth: vi.fn(() => ({ user: mockUser }))
+  useAuth: vi.fn(() => ({ user: mockUser })),
 }));
 
 // Mock du modal TopicModal
 vi.mock('../../modals/TopicModal/TopicModal', () => ({
   default: ({ onClose, onSuccess }) => (
     <div data-testid="topic-modal">
-      <button onClick={onClose} data-testid="modal-close">Close</button>
-      <button onClick={onSuccess} data-testid="modal-success">Success</button>
+      <button onClick={onClose} data-testid="modal-close">
+        Close
+      </button>
+      <button onClick={onSuccess} data-testid="modal-success">
+        Success
+      </button>
     </div>
-  )
+  ),
 }));
 
 // Mock du composant Pagination
 vi.mock('../../components/Pagination/Pagination', () => ({
   default: ({ currentPage, totalPages, onPageChange }) => (
     <div data-testid="pagination">
-      <button 
+      <button
         onClick={() => onPageChange(currentPage - 1)}
         data-testid="prev-page"
-        disabled={currentPage === 1}
-      >
+        disabled={currentPage === 1}>
         Précédent
       </button>
-      <span data-testid="page-info">{currentPage} / {totalPages}</span>
-      <button 
+      <span data-testid="page-info">
+        {currentPage} / {totalPages}
+      </span>
+      <button
         onClick={() => onPageChange(currentPage + 1)}
         data-testid="next-page"
-        disabled={currentPage === totalPages}
-      >
+        disabled={currentPage === totalPages}>
         Suivant
       </button>
     </div>
-  )
+  ),
 }));
 
 // Mock de react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => {
+    t: key => {
       const translations = {
         'ErrorFetchingTopics:': 'Erreur lors du chargement des sujets :',
         'Forum.CreateTopic': 'Créer un sujet',
@@ -79,11 +83,11 @@ vi.mock('react-i18next', () => ({
         'Forum.Notices': 'Annonces',
         'Forum.Subjects': 'Sujets',
         'Forum.NoTopicsFound': 'Aucun sujet trouvé',
-        'Forum.BackToTop': 'Retour en haut'
+        'Forum.BackToTop': 'Retour en haut',
       };
       return translations[key] || key;
-    }
-  })
+    },
+  }),
 }));
 
 // Mock de react-router-dom navigate
@@ -92,24 +96,20 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: () => mockNavigate
+    useNavigate: () => mockNavigate,
   };
 });
 
 // Mock du reload de window.location
 Object.defineProperty(window, 'location', {
   value: {
-    reload: vi.fn()
+    reload: vi.fn(),
   },
-  writable: true
+  writable: true,
 });
 
 // Wrapper pour les tests avec Router
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
-    {children}
-  </BrowserRouter>
-);
+const TestWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
 
 describe('Forum Component', () => {
   beforeEach(() => {
@@ -129,7 +129,7 @@ describe('Forum Component', () => {
       // Vérifier que les sections principales sont présentes
       expect(screen.getByText('Annonces')).toBeInTheDocument();
       expect(screen.getByText('Sujets')).toBeInTheDocument();
-      
+
       // Vérifier la présence de la barre de recherche
       expect(screen.getByPlaceholderText('Rechercher un sujet...')).toBeInTheDocument();
 
@@ -300,12 +300,12 @@ describe('Forum Component', () => {
   });
 
   describe('Pagination', () => {
-    it('doit afficher la pagination quand il y a plus d\'une page', async () => {
+    it("doit afficher la pagination quand il y a plus d'une page", async () => {
       // Mock avec plus de 10 sujets pour tester la pagination
       const manyTopics = Array.from({ length: 15 }, (_, i) => ({
         _id: `topic-${i}`,
         title: `Sujet ${i}`,
-        notice: false
+        notice: false,
       }));
 
       vi.mocked(getTopics).mockResolvedValueOnce(manyTopics);
@@ -326,7 +326,7 @@ describe('Forum Component', () => {
       const manyTopics = Array.from({ length: 15 }, (_, i) => ({
         _id: `topic-${i}`,
         title: `Sujet ${i}`,
-        notice: false
+        notice: false,
       }));
 
       vi.mocked(getTopics).mockResolvedValueOnce(manyTopics);
@@ -353,7 +353,7 @@ describe('Forum Component', () => {
   describe('Gestion des erreurs', () => {
     it('doit gérer les erreurs de chargement des topics', async () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
+
       vi.mocked(getTopics).mockRejectedValueOnce(new Error('Erreur réseau'));
 
       render(

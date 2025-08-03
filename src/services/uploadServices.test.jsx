@@ -1,17 +1,13 @@
 // 📁 __tests__/services/uploadServices.test.js
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import {
-  uploadImageToS3,
-  updateAvatarOnS3,
-  uploadEbookToS3
-} from './uploadServices';
+import { uploadImageToS3, updateAvatarOnS3, uploadEbookToS3 } from './uploadServices';
 
 // Mock de l'API
 vi.mock('./api/api', () => ({
   default: {
     post: vi.fn(),
-    put: vi.fn()
-  }
+    put: vi.fn(),
+  },
 }));
 
 // Mock des constantes
@@ -20,14 +16,14 @@ vi.mock('../utils/constants', () => ({
     AUTH: {
       UPLOAD_IMAGE: '/api/upload/image',
       UPDATE_AVATAR: '/api/upload/avatar',
-      UPLOAD_EBOOK: '/api/upload/ebook'
-    }
-  }
+      UPLOAD_EBOOK: '/api/upload/ebook',
+    },
+  },
 }));
 
 // Mock du localStorage utilities
 vi.mock('../utils/localStorage', () => ({
-  getFromLocalStorage: vi.fn()
+  getFromLocalStorage: vi.fn(),
 }));
 
 import api from './api/api';
@@ -51,13 +47,9 @@ describe('uploadServices', () => {
 
       const result = await uploadImageToS3(mockFile);
 
-      expect(api.post).toHaveBeenCalledWith(
-        '/api/upload/image',
-        expect.any(FormData),
-        {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }
-      );
+      expect(api.post).toHaveBeenCalledWith('/api/upload/image', expect.any(FormData), {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       expect(result).toBe('https://s3.amazonaws.com/bucket/image.jpg');
 
       // Vérifier le contenu du FormData
@@ -108,19 +100,15 @@ describe('uploadServices', () => {
     it('should update avatar successfully', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/new-avatar.jpg' } };
-      
+
       getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
       api.put.mockResolvedValue(mockResponse);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-avatar-url');
 
-      expect(api.put).toHaveBeenCalledWith(
-        '/api/upload/avatar',
-        expect.any(FormData),
-        {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }
-      );
+      expect(api.put).toHaveBeenCalledWith('/api/upload/avatar', expect.any(FormData), {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       expect(result).toBe('https://s3.amazonaws.com/bucket/new-avatar.jpg');
 
       // Vérifier le contenu du FormData
@@ -135,7 +123,7 @@ describe('uploadServices', () => {
       const userWithoutName = { id: 123 };
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/avatar.jpg' } };
-      
+
       getFromLocalStorage.mockReturnValue(JSON.stringify(userWithoutName));
       api.put.mockResolvedValue(mockResponse);
 
@@ -148,7 +136,7 @@ describe('uploadServices', () => {
     it('should handle empty oldUrl', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/avatar.jpg' } };
-      
+
       getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
       api.put.mockResolvedValue(mockResponse);
 
@@ -160,7 +148,7 @@ describe('uploadServices', () => {
 
     it('should handle user not found in localStorage', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
-      
+
       getFromLocalStorage.mockReturnValue(null);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
@@ -172,7 +160,7 @@ describe('uploadServices', () => {
 
     it('should handle invalid JSON in localStorage', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
-      
+
       getFromLocalStorage.mockReturnValue('invalid-json');
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
@@ -185,7 +173,7 @@ describe('uploadServices', () => {
     it('should handle API error', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockError = new Error('Avatar update failed');
-      
+
       getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
       api.put.mockRejectedValue(mockError);
 
@@ -198,7 +186,7 @@ describe('uploadServices', () => {
     it('should handle unexpected API response', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { success: true } }; // Missing imageUrl
-      
+
       getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
       api.put.mockResolvedValue(mockResponse);
 
@@ -211,7 +199,7 @@ describe('uploadServices', () => {
     it('should handle user as object instead of string', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/avatar.jpg' } };
-      
+
       getFromLocalStorage.mockReturnValue(mockUser); // Direct object instead of JSON string
       api.put.mockResolvedValue(mockResponse);
 
@@ -229,13 +217,9 @@ describe('uploadServices', () => {
 
       const result = await uploadEbookToS3(mockFile, 123);
 
-      expect(api.put).toHaveBeenCalledWith(
-        '/api/upload/ebook',
-        expect.any(FormData),
-        {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }
-      );
+      expect(api.put).toHaveBeenCalledWith('/api/upload/ebook', expect.any(FormData), {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       expect(result).toBe('https://s3.amazonaws.com/bucket/book.epub');
 
       // Vérifier le contenu du FormData
@@ -324,7 +308,7 @@ describe('uploadServices', () => {
       const imageFile = new File(['image'], 'image.jpg', { type: 'image/jpeg' });
       const avatarFile = new File(['avatar'], 'avatar.jpg', { type: 'image/jpeg' });
       const ebookFile = new File(['ebook'], 'book.epub', { type: 'application/epub+zip' });
-      
+
       const imageResponse = { data: { imageUrl: 'https://s3.com/image.jpg' } };
       const avatarResponse = { data: { imageUrl: 'https://s3.com/avatar.jpg' } };
       const ebookResponse = { data: { ebook_url: 'https://s3.com/book.epub' } };
@@ -350,8 +334,8 @@ describe('uploadServices', () => {
 
     it('should handle large files', async () => {
       const largeFileContent = 'A'.repeat(10000); // 10KB
-      const largeFile = new File([largeFileContent], 'large-book.epub', { 
-        type: 'application/epub+zip' 
+      const largeFile = new File([largeFileContent], 'large-book.epub', {
+        type: 'application/epub+zip',
       });
       const mockResponse = { data: { ebook_url: 'https://s3.com/large-book.epub' } };
       api.put.mockResolvedValue(mockResponse);
@@ -359,11 +343,9 @@ describe('uploadServices', () => {
       const result = await uploadEbookToS3(largeFile, 123);
 
       expect(result).toBe('https://s3.com/large-book.epub');
-      expect(api.put).toHaveBeenCalledWith(
-        '/api/upload/ebook',
-        expect.any(FormData),
-        { headers: { 'Content-Type': 'multipart/form-data' } }
-      );
+      expect(api.put).toHaveBeenCalledWith('/api/upload/ebook', expect.any(FormData), {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
     });
   });
 });

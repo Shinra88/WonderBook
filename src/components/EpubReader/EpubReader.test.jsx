@@ -7,9 +7,9 @@ const mockCollection = [
   {
     books: {
       bookId: 123,
-      ebook_url: 'https://example.com/book.epub'
-    }
-  }
+      ebook_url: 'https://example.com/book.epub',
+    },
+  },
 ];
 
 const mockProgress = 'epubcfi(/6/4[chap01ref]!/4[body01]/10[para05]/3:10)';
@@ -18,7 +18,7 @@ const mockProgress = 'epubcfi(/6/4[chap01ref]!/4[body01]/10[para05]/3:10)';
 vi.mock('../../services/collectionService', () => ({
   getUserCollection: vi.fn(() => Promise.resolve(mockCollection)),
   getReadingProgress: vi.fn(() => Promise.resolve(mockProgress)),
-  saveReadingProgress: vi.fn(() => Promise.resolve())
+  saveReadingProgress: vi.fn(() => Promise.resolve()),
 }));
 
 // Mock de react-router-dom
@@ -26,7 +26,7 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useParams: () => ({ bookId: '123' })
+    useParams: () => ({ bookId: '123' }),
   };
 });
 
@@ -35,18 +35,17 @@ vi.mock('react-reader', () => ({
   ReactReader: ({ url, locationChanged, getRendition }) => (
     <div data-testid="react-reader">
       <span>MockedReader: {url}</span>
-      <button 
+      <button
         onClick={() => locationChanged && locationChanged('test-location')}
-        data-testid="mock-location-change"
-      >
+        data-testid="mock-location-change">
         Change Location
       </button>
-      <button 
+      <button
         onClick={() => {
           if (getRendition) {
             const mockRendition = {
               themes: {
-                default: vi.fn()
+                default: vi.fn(),
               },
               book: {
                 ready: Promise.resolve(),
@@ -54,44 +53,39 @@ vi.mock('react-reader', () => ({
                   generate: vi.fn(() => Promise.resolve()),
                   percentageFromCfi: vi.fn(() => 0.5),
                   cfiFromPercentage: vi.fn(() => 'test-cfi'),
-                  ready: Promise.resolve()
-                }
+                  ready: Promise.resolve(),
+                },
               },
-              display: vi.fn(() => Promise.resolve())
+              display: vi.fn(() => Promise.resolve()),
             };
             getRendition(mockRendition);
           }
         }}
-        data-testid="mock-get-rendition"
-      >
+        data-testid="mock-get-rendition">
         Get Rendition
       </button>
     </div>
-  )
+  ),
 }));
 
 // Mock de localStorage
 const mockLocalStorage = {
   getItem: vi.fn(),
-  setItem: vi.fn()
+  setItem: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
-  writable: true
+  writable: true,
 });
 
 // Mock de document.fullscreenElement
 Object.defineProperty(document, 'fullscreenElement', {
   value: null,
-  writable: true
+  writable: true,
 });
 
 // Wrapper pour les tests
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
-    {children}
-  </BrowserRouter>
-);
+const TestWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
 
 // Mock COMPLET du composant pour éviter les problèmes de useEffect
 vi.mock('./EpubReader', () => ({
@@ -99,16 +93,16 @@ vi.mock('./EpubReader', () => ({
     <div data-testid="epub-reader">
       <button data-testid="fullscreen-btn">🖥️ Plein écran</button>
       <div data-testid="react-reader">MockedReader: https://example.com/book.epub</div>
-      <input 
+      <input
         data-testid="progress-slider"
-        type="range" 
-        min="0" 
-        max="1" 
-        step="0.01" 
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
         defaultValue="0"
       />
     </div>
-  )
+  ),
 }));
 
 // Import après le mock
@@ -121,7 +115,7 @@ describe('EpubReader Component', () => {
         <EpubReader />
       </TestWrapper>
     );
-    
+
     expect(screen.getByTestId('epub-reader')).toBeInTheDocument();
   });
 
@@ -131,7 +125,7 @@ describe('EpubReader Component', () => {
         <EpubReader />
       </TestWrapper>
     );
-    
+
     expect(screen.getByTestId('fullscreen-btn')).toBeInTheDocument();
   });
 
@@ -141,7 +135,7 @@ describe('EpubReader Component', () => {
         <EpubReader />
       </TestWrapper>
     );
-    
+
     expect(screen.getByTestId('progress-slider')).toBeInTheDocument();
   });
 
@@ -151,7 +145,7 @@ describe('EpubReader Component', () => {
         <EpubReader />
       </TestWrapper>
     );
-    
+
     expect(screen.getByTestId('react-reader')).toBeInTheDocument();
   });
 });

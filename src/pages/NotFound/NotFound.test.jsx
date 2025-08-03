@@ -8,23 +8,23 @@ import Banner from '../../images/library.webp';
 const mockT = vi.fn();
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: mockT
-  })
+    t: mockT,
+  }),
 }));
 
 // Mock de l'image Banner
 vi.mock('../../images/library.webp', () => ({
-  default: '/mocked-banner-path.webp'
+  default: '/mocked-banner-path.webp',
 }));
 
 describe('NotFound Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Configuration par défaut du mock de traduction
-    mockT.mockImplementation((key) => {
+    mockT.mockImplementation(key => {
       const translations = {
         'NotFound.Error404': '404 - Erreur',
-        'NotFound.PageNotFound': 'Page non trouvée'
+        'NotFound.PageNotFound': 'Page non trouvée',
       };
       return translations[key] || key;
     });
@@ -75,15 +75,15 @@ describe('NotFound Component', () => {
 
       const bannerDiv = container.querySelector(`.${styles.banner}`);
       expect(bannerDiv).toHaveStyle({
-        backgroundImage: `url(${Banner})`
+        backgroundImage: `url(${Banner})`,
       });
     });
 
-    it('doit utiliser l\'image Banner importée', () => {
+    it("doit utiliser l'image Banner importée", () => {
       const { container } = render(<NotFound />);
 
       const bannerDiv = container.querySelector(`.${styles.banner}`);
-      
+
       // Vérifier que le style contient le chemin de l'image mockée
       expect(bannerDiv.style.backgroundImage).toBe('url(/mocked-banner-path.webp)');
     });
@@ -100,7 +100,7 @@ describe('NotFound Component', () => {
 
     it('doit gérer le cas où les traductions ne sont pas trouvées', () => {
       // Redéfinir temporairement le mock pour retourner les clés
-      mockT.mockImplementation((key) => key);
+      mockT.mockImplementation(key => key);
 
       render(<NotFound />);
 
@@ -163,7 +163,7 @@ describe('NotFound Component', () => {
       expect(container.querySelector(`.${styles.errorNotice}`)).toBeInTheDocument();
     });
 
-    it('doit avoir l\'attribut id sur l\'élément racine', () => {
+    it("doit avoir l'attribut id sur l'élément racine", () => {
       const { container } = render(<NotFound />);
 
       const rootElement = container.firstChild;
@@ -180,7 +180,9 @@ describe('NotFound Component', () => {
 
       // Vérifier que les titres sont accessibles
       expect(screen.getByRole('heading', { level: 2, name: '404 - Erreur' })).toBeInTheDocument();
-      expect(screen.getByRole('heading', { level: 4, name: 'Page non trouvée' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { level: 4, name: 'Page non trouvée' })
+      ).toBeInTheDocument();
     });
 
     it('doit avoir des titres avec un contenu descriptif', () => {
@@ -198,10 +200,10 @@ describe('NotFound Component', () => {
   });
 
   describe('Robustesse', () => {
-    it('doit fonctionner même si l\'image Banner est indisponible', () => {
-      // Mock temporaire avec image indisponible  
+    it("doit fonctionner même si l'image Banner est indisponible", () => {
+      // Mock temporaire avec image indisponible
       vi.doMock('../../images/library.webp', () => ({
-        default: undefined
+        default: undefined,
       }));
 
       const { container } = render(<NotFound />);
@@ -219,7 +221,7 @@ describe('NotFound Component', () => {
       const { container } = render(<NotFound />);
 
       const bannerDiv = container.querySelector(`.${styles.banner}`);
-      
+
       // Vérifier que le style inline est appliqué
       expect(bannerDiv).toHaveAttribute('style');
       expect(bannerDiv.getAttribute('style')).toContain('background-image');
