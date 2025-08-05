@@ -194,9 +194,8 @@
   width: 100%;
 }
 
-.BookDisplay.admin {
-  display: grid;
-  grid-template-columns: 60px 1fr 150px 150px;
+BookDisplay.admin {
+  display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.6rem 1rem;
@@ -211,6 +210,18 @@
 
 .BookDisplay.admin:hover {
   background-color: #f0e9c9;
+}
+
+.adminInfo {
+  width: 100%;
+}
+
+.adminTitle {
+  width: 100%;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+  padding-bottom: 0.6rem;
 }
 
 .BookDisplay.admin img {

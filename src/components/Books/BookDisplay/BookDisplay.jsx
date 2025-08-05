@@ -111,11 +111,16 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
         className={`${styles.BookDisplay} ${styles.admin} ${book.status === 'pending' ? styles.pendingRow : ''}`}>
         <OptimizedBookCover book={book} dimensions={{ width: 60, height: 90 }} />
 
-        <strong>{book.title}</strong>
-        <em>{statusLabel}</em>
-        <em>
-          {t('BookDisplay.By')} {book.validated_by || 'Bdd'}
-        </em>
+        <div className={styles.adminInfo}>
+          <div className={styles.adminTitle}>{book.title}</div>
+          {book.status === 'pending' ? (
+            <em>{statusLabel}</em>
+          ) : (
+            <em>
+              {t('BookDisplay.By')} {book.validated_by || 'Bdd'}
+            </em>
+          )}
+        </div>
       </Link>
     );
   }

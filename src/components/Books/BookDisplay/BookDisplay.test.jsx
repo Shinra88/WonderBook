@@ -130,16 +130,19 @@ describe('BookDisplay Component', () => {
       </RouterWrapper>
     );
 
+    // Le titre complet est affiché
     expect(screen.getByText('Test Book: A Subtitle')).toBeInTheDocument();
-    expect(screen.getByText('Validated')).toBeInTheDocument();
 
-    // ✅ Chercher l'élément <em> qui contient "By Admin User"
+    // Pour un livre validé, on affiche "By [utilisateur]" au lieu de "Validated"
     const byElement = screen.getByText((content, element) => {
       return (
         element?.tagName.toLowerCase() === 'em' && element.textContent.trim() === 'By Admin User'
       );
     });
     expect(byElement).toBeInTheDocument();
+
+    // On ne devrait PAS voir "Validated" car le livre est validé
+    expect(screen.queryByText('Validated')).not.toBeInTheDocument();
   });
 
   test('should render pending status in admin view', () => {
@@ -151,7 +154,11 @@ describe('BookDisplay Component', () => {
       </RouterWrapper>
     );
 
+    // Pour un livre pending, on affiche le statut "Pending"
     expect(screen.getByText('Pending')).toBeInTheDocument();
+
+    // Et on ne devrait PAS voir "By [utilisateur]"
+    expect(screen.queryByText(/By/)).not.toBeInTheDocument();
   });
 
   test('should hide image when hideImage prop is true', () => {
