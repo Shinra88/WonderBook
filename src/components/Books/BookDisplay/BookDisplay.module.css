@@ -212,10 +212,10 @@
 }
 
 .adminInfo {
-width: 100%;
+  width: 100%;
 }
 
- .adminTitle {
+.adminTitle {
   width: 100%;
   font-size: 1rem;
   color: #333;
