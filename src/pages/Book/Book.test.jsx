@@ -12,6 +12,9 @@ const mockBook = {
   bookId: '123',
   title: 'Test Book',
   cover_url: 'test.jpg',
+  // ✅ Ajouter les propriétés manquantes pour les boutons de collection
+  status: 'validated',
+  validated_by: 'Test Admin',
   comments: [
     {
       commentId: '1',
@@ -168,5 +171,35 @@ describe('Book Page', () => {
     renderPage();
     await screen.findByTestId('book-display');
     expect(screen.queryByText('Book.EditBook')).not.toBeInTheDocument();
+  });
+
+  test('does not show collection buttons for pending books', async () => {
+    const { getBookByTitle } = await import('../../services/bookService');
+
+    // Mock d'un livre pending
+    const pendingBook = {
+      ...mockBook,
+      status: 'pending',
+    };
+
+    vi.mocked(getBookByTitle).mockResolvedValueOnce(pendingBook);
+
+    renderPage();
+
+    await screen.findByTestId('book-display');
+
+    // Les boutons de collection ne devraient pas être présents
+    expect(screen.queryByRole('button', { name: /Book.AddToCollection/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Book.RemoveFromCollection/i })
+    ).not.toBeInTheDocument();
+  });
+
+  test('shows add to collection button when book not in collection', async () => {
+    const { getUserCollection } = await import('../../services/collectionService');
+    vi.mocked(getUserCollection).mockResolvedValueOnce([]);
+    renderPage();
+    await screen.findByTestId('book-display');
+    expect(screen.getByRole('button', { name: /Book.AddToCollection/i })).toBeInTheDocument();
   });
 });

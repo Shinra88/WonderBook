@@ -155,7 +155,7 @@ function Book() {
               </section>
             )}
 
-            {user && !inCollection && (
+            {user && !inCollection && book.status === 'validated' && (
               <button
                 className={styles.addButton}
                 onClick={handleAddToCollection}
@@ -163,7 +163,7 @@ function Book() {
                 {buttonLoading ? t('Book.AddingToCollection') : t('Book.AddToCollection')}
               </button>
             )}
-            {user && inCollection && (
+            {user && inCollection && book.status === 'validated' && (
               <button
                 className={styles.removeButton}
                 onClick={handleRemoveFromCollection}
