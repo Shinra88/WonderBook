@@ -113,7 +113,9 @@ function BookDisplay({ book, size, showDetails = false, hideImage = false, admin
 
         <strong>{book.title}</strong>
         <em>{statusLabel}</em>
-        <em>{t('BookDisplay.By', { user: book.validated_by || 'Bdd' })}</em>
+        <em>
+          {t('BookDisplay.By')} {book.validated_by || 'Bdd'}
+        </em>
       </Link>
     );
   }
