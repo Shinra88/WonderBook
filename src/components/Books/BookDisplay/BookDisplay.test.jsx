@@ -7,11 +7,11 @@ import BookDisplay from './BookDisplay';
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key, params) => {
+    t: key => {
       const translations = {
         'BookDisplay.Pending': 'Pending',
         'BookDisplay.Validated': 'Validated',
-        'BookDisplay.By': `By ${params?.user}`,
+        'BookDisplay.By': 'By', // ✅ Corrigé - juste "By" sans interpolation
         'BookDisplay.Editors': 'Editors',
         'BookDisplay.Categories': 'Categories',
         'BookDisplay.Summary': 'Summary',
@@ -132,7 +132,14 @@ describe('BookDisplay Component', () => {
 
     expect(screen.getByText('Test Book: A Subtitle')).toBeInTheDocument();
     expect(screen.getByText('Validated')).toBeInTheDocument();
-    expect(screen.getByText('By Admin User')).toBeInTheDocument();
+
+    // ✅ Chercher l'élément <em> qui contient "By Admin User"
+    const byElement = screen.getByText((content, element) => {
+      return (
+        element?.tagName.toLowerCase() === 'em' && element.textContent.trim() === 'By Admin User'
+      );
+    });
+    expect(byElement).toBeInTheDocument();
   });
 
   test('should render pending status in admin view', () => {
@@ -169,9 +176,6 @@ describe('BookDisplay Component', () => {
     expect(image).toBeInTheDocument();
     expect(image.src).toBe('https://example.com/cover.jpg');
   });
-
-  // Test supprimé car problématique en environnement de test
-  // La gestion d'images fonctionne en vrai mais pose problème dans vitest
 
   test('should handle image error and show fallback', async () => {
     render(
@@ -376,6 +380,7 @@ describe('BookDisplay Component', () => {
     expect(image.getAttribute('height')).toBe('200');
   });
 
+  // ✅ Test corrigé pour la nouvelle logique
   test('should handle default validated_by in admin view', () => {
     const bookWithoutValidator = {
       ...mockBook,
@@ -388,6 +393,28 @@ describe('BookDisplay Component', () => {
       </RouterWrapper>
     );
 
-    expect(screen.getByText('By Bdd')).toBeInTheDocument();
+    // ✅ Chercher l'élément <em> qui contient "By Bdd"
+    const byElement = screen.getByText((content, element) => {
+      return element?.tagName.toLowerCase() === 'em' && element.textContent.trim() === 'By Bdd';
+    });
+    expect(byElement).toBeInTheDocument();
+  });
+
+  // ✅ Test plus robuste avec une fonction matcher
+  test('should display validated_by correctly in admin view', () => {
+    render(
+      <RouterWrapper>
+        <BookDisplay {...defaultProps} adminView={true} />
+      </RouterWrapper>
+    );
+
+    // ✅ Utiliser getByText avec une fonction matcher personnalisée
+    const byElement = screen.getByText((content, element) => {
+      return (
+        element?.tagName.toLowerCase() === 'em' && element.textContent.trim() === 'By Admin User'
+      );
+    });
+
+    expect(byElement).toBeInTheDocument();
   });
 });
