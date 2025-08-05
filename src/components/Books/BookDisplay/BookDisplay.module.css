@@ -79,7 +79,6 @@
   font-size: 14px;
   color: #312621;
   margin-bottom: 10px;
-  text-align: center;
   font-weight: 600;
 }
 
@@ -120,7 +119,7 @@
 .Subtitle {
   font-size: 14px;
   color: #271f34;
-  font-weight: 700;
+  font-weight: 900;
   margin-bottom: 8px;
   font-family: 'DM Sans', sans-serif;
 }
@@ -194,7 +193,7 @@
   width: 100%;
 }
 
-BookDisplay.admin {
+.BookDisplay.admin {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -213,10 +212,10 @@ BookDisplay.admin {
 }
 
 .adminInfo {
-  width: 100%;
+width: 100%;
 }
 
-.adminTitle {
+ .adminTitle {
   width: 100%;
   font-size: 1rem;
   color: #333;
@@ -230,11 +229,6 @@ BookDisplay.admin {
   object-fit: cover;
   border-radius: 4px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.BookDisplay.admin strong {
-  font-size: 1rem;
-  color: #333;
 }
 
 .BookDisplay.admin em {
