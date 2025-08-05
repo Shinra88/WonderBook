@@ -22,6 +22,8 @@ describe('formatBooks', () => {
         cover_url: 'https://example.com/cover.jpg',
         ebook_url: 'https://example.com/book.epub',
         averageRating: 4.5,
+        status: 'validated',
+        validated_by: 'Shrina88',
       },
     ];
 
@@ -40,6 +42,8 @@ describe('formatBooks', () => {
         cover_url: 'https://example.com/cover.jpg',
         ebook_url: 'https://example.com/book.epub',
         averageRating: 4.5,
+        status: 'validated',
+        validated_by: 'Shrina88',
       },
     ]);
   });
@@ -73,6 +77,8 @@ describe('formatBooks', () => {
         cover_url: DEFAULT_COVER,
         ebook_url: null,
         averageRating: 0,
+        status: 'validated',
+        validated_by: null,
       },
     ]);
   });
@@ -91,6 +97,8 @@ describe('formatBooks', () => {
         cover_url: null,
         ebook_url: null,
         averageRating: null,
+        status: null,
+        validated_by: null,
       },
     ];
 
@@ -109,6 +117,8 @@ describe('formatBooks', () => {
         cover_url: DEFAULT_COVER,
         ebook_url: null,
         averageRating: 0,
+        status: 'validated',
+        validated_by: null,
       },
     ]);
   });
@@ -122,6 +132,8 @@ describe('formatBooks', () => {
         book_categories: [],
         book_publishers: [],
         averageRating: 0,
+        status: 'pending',
+        validated_by: '',
       },
     ];
 
@@ -130,6 +142,8 @@ describe('formatBooks', () => {
     expect(result[0].categories).toEqual([]);
     expect(result[0].editors).toEqual([]);
     expect(result[0].averageRating).toBe(0);
+    expect(result[0].status).toBe('pending');
+    expect(result[0].validated_by).toBe(null); // Empty string becomes null
   });
 
   it('should handle multiple books', () => {
@@ -139,12 +153,16 @@ describe('formatBooks', () => {
         title: 'Book One',
         author: 'Author One',
         averageRating: 3.5,
+        status: 'validated',
+        validated_by: 'Admin1',
       },
       {
         bookId: 2,
         title: 'Book Two',
         author: 'Author Two',
         averageRating: 4.0,
+        status: 'pending',
+        validated_by: null,
       },
     ];
 
@@ -152,7 +170,11 @@ describe('formatBooks', () => {
 
     expect(result).toHaveLength(2);
     expect(result[0].title).toBe('Book One');
+    expect(result[0].status).toBe('validated');
+    expect(result[0].validated_by).toBe('Admin1');
     expect(result[1].title).toBe('Book Two');
+    expect(result[1].status).toBe('pending');
+    expect(result[1].validated_by).toBe(null);
   });
 
   it('should handle book with single category and publisher', () => {
@@ -162,6 +184,8 @@ describe('formatBooks', () => {
         title: 'Single Relations Book',
         book_categories: [{ categories: { name: 'Science Fiction' } }],
         book_publishers: [{ publishers: { name: 'Amazing Publisher' } }],
+        status: 'validated',
+        validated_by: 'Editor123',
       },
     ];
 
@@ -169,6 +193,8 @@ describe('formatBooks', () => {
 
     expect(result[0].categories).toEqual(['Science Fiction']);
     expect(result[0].editors).toEqual(['Amazing Publisher']);
+    expect(result[0].status).toBe('validated');
+    expect(result[0].validated_by).toBe('Editor123');
   });
 
   it('should handle book with undefined averageRating', () => {
@@ -183,6 +209,8 @@ describe('formatBooks', () => {
     const result = formatBooks(books);
 
     expect(result[0].averageRating).toBe(0);
+    expect(result[0].status).toBe('validated'); // Default value
+    expect(result[0].validated_by).toBe(null); // Default value
   });
 
   it('should handle book with zero averageRating', () => {
@@ -209,6 +237,8 @@ describe('formatBooks', () => {
         summary: '',
         cover_url: '',
         ebook_url: '',
+        status: '',
+        validated_by: '',
       },
     ];
 
@@ -227,6 +257,8 @@ describe('formatBooks', () => {
         cover_url: DEFAULT_COVER,
         ebook_url: null,
         averageRating: 0,
+        status: 'validated', // Empty string becomes default
+        validated_by: null, // Empty string becomes null
       },
     ]);
   });
@@ -247,6 +279,8 @@ describe('formatBooks', () => {
           { publishers: { name: 'Publisher C' } },
         ],
         averageRating: 4.7,
+        status: 'validated',
+        validated_by: 'SuperAdmin',
       },
     ];
 
@@ -255,6 +289,8 @@ describe('formatBooks', () => {
     expect(result[0].categories).toEqual(['Fantasy', 'Adventure', 'Young Adult']);
     expect(result[0].editors).toEqual(['Publisher A', 'Publisher B', 'Publisher C']);
     expect(result[0].averageRating).toBe(4.7);
+    expect(result[0].status).toBe('validated');
+    expect(result[0].validated_by).toBe('SuperAdmin');
   });
 
   it('should preserve all required fields in output', () => {
@@ -279,6 +315,8 @@ describe('formatBooks', () => {
     expect(book).toHaveProperty('cover_url');
     expect(book).toHaveProperty('ebook_url');
     expect(book).toHaveProperty('averageRating');
+    expect(book).toHaveProperty('status');
+    expect(book).toHaveProperty('validated_by');
   });
 
   it('should handle mixed valid and invalid data', () => {
@@ -288,6 +326,8 @@ describe('formatBooks', () => {
         title: 'Valid Book',
         author: 'Valid Author',
         book_categories: [{ categories: { name: 'Valid Category' } }],
+        status: 'validated',
+        validated_by: 'ValidUser',
       },
       {
         bookId: 11,
@@ -299,6 +339,8 @@ describe('formatBooks', () => {
         author: '',
         book_categories: [],
         book_publishers: null,
+        status: 'pending',
+        validated_by: null,
       },
     ];
 
@@ -306,9 +348,15 @@ describe('formatBooks', () => {
 
     expect(result).toHaveLength(3);
     expect(result[0].title).toBe('Valid Book');
+    expect(result[0].status).toBe('validated');
+    expect(result[0].validated_by).toBe('ValidUser');
     expect(result[1].title).toBe('Titre inconnu');
+    expect(result[1].status).toBe('validated'); // Default
+    expect(result[1].validated_by).toBe(null); // Default
     expect(result[2].title).toBe('Titre inconnu');
     expect(result[2].author).toBe('Auteur inconnu');
+    expect(result[2].status).toBe('pending');
+    expect(result[2].validated_by).toBe(null);
   });
 
   it('should handle decimal averageRating values', () => {
@@ -337,5 +385,54 @@ describe('formatBooks', () => {
     const result = formatBooks(books);
 
     expect(result[0].date).toBe('2023');
+  });
+
+  // ✅ Tests spécifiques pour les nouveaux champs
+  it('should handle pending status correctly', () => {
+    const books = [
+      {
+        bookId: 15,
+        title: 'Pending Book',
+        status: 'pending',
+        validated_by: null,
+      },
+    ];
+
+    const result = formatBooks(books);
+
+    expect(result[0].status).toBe('pending');
+    expect(result[0].validated_by).toBe(null);
+  });
+
+  it('should handle different status values', () => {
+    const books = [
+      {
+        bookId: 16,
+        title: 'Status Test Book',
+        status: 'rejected',
+        validated_by: 'ModeratorX',
+      },
+    ];
+
+    const result = formatBooks(books);
+
+    expect(result[0].status).toBe('rejected');
+    expect(result[0].validated_by).toBe('ModeratorX');
+  });
+
+  it('should convert empty strings to appropriate defaults for status and validated_by', () => {
+    const books = [
+      {
+        bookId: 17,
+        title: 'Empty Fields Book',
+        status: '',
+        validated_by: '',
+      },
+    ];
+
+    const result = formatBooks(books);
+
+    expect(result[0].status).toBe('validated'); // Empty string becomes default
+    expect(result[0].validated_by).toBe(null); // Empty string becomes null
   });
 });
