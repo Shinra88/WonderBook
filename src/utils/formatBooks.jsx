@@ -16,5 +16,7 @@ export function formatBooks(books) {
     cover_url: book.cover_url || DEFAULT_COVER,
     ebook_url: book.ebook_url || null,
     averageRating: book.averageRating ?? 0,
+    status: book.status || 'validated',
+    validated_by: book.validated_by || null,
   }));
 }
