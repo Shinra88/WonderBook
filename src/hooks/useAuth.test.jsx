@@ -1,20 +1,14 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { AuthProvider, useAuth } from './useAuth';
+// src/hooks/useAuth.test.jsx - VERSION SÉCURISÉE ET CORRECTE
 
-// Mock de localStorage
-const mockLocalStorage = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-};
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { renderHook, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { useAuth, AuthProvider } from './useAuth';
 
-Object.defineProperty(window, 'localStorage', {
-  value: mockLocalStorage,
-  writable: true,
-});
+// ✅ Mock fetch global
+global.fetch = vi.fn();
 
-// Composant de test pour utiliser le hook
+// ✅ Composant de test simple
 function TestComponent() {
   const { user, isAuthenticated, login, logout } = useAuth();
 
@@ -24,9 +18,7 @@ function TestComponent() {
         {isAuthenticated ? `Logged in: ${user?.name}` : 'Not logged in'}
       </div>
       <div data-testid="user-data">{user ? JSON.stringify(user) : 'No user'}</div>
-      <button
-        data-testid="login-btn"
-        onClick={() => login({ name: 'John Doe', email: 'john@test.com' }, 'test-token')}>
+      <button data-testid="login-btn" onClick={() => login({ name: 'John Doe' }, 'test-token')}>
         Login
       </button>
       <button data-testid="logout-btn" onClick={logout}>
@@ -36,243 +28,277 @@ function TestComponent() {
   );
 }
 
-// Helper pour render avec le provider
-const renderWithAuth = component => {
+function renderWithAuth(component) {
   return render(<AuthProvider>{component}</AuthProvider>);
-};
+}
 
-describe('useAuth Hook', () => {
+describe('useAuth Hook - VERSION SÉCURISÉE', () => {
   beforeEach(() => {
+    fetch.mockClear();
     vi.clearAllMocks();
-    // Reset localStorage mocks
-    mockLocalStorage.getItem.mockReturnValue(null);
-    mockLocalStorage.setItem.mockClear();
-    mockLocalStorage.removeItem.mockClear();
-
-    // Mock Date.now pour contrôler le temps
-    vi.spyOn(Date, 'now').mockReturnValue(1000000000); // Timestamp fixe
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    fetch.mockRestore?.();
   });
 
-  describe('Rendu initial', () => {
-    test('should render AuthProvider without crashing', () => {
-      renderWithAuth(<TestComponent />);
-
-      expect(screen.getByTestId('user-status')).toBeInTheDocument();
-    });
-
-    test('should start with no authenticated user', () => {
-      renderWithAuth(<TestComponent />);
-
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
-      expect(screen.getByTestId('user-data')).toHaveTextContent('No user');
-    });
-  });
-
-  describe('Restauration depuis localStorage', () => {
-    test('should restore valid user from localStorage', () => {
-      const mockUser = { name: 'John Doe', email: 'john@test.com' };
-      const validExpiry = (Date.now() + 1000000).toString(); // Future
-
-      mockLocalStorage.getItem.mockImplementation(key => {
-        switch (key) {
-          case 'token':
-            return 'stored-token';
-          case 'token_expiry':
-            return validExpiry;
-          case 'user':
-            return JSON.stringify(mockUser);
-          default:
-            return null;
-        }
+  describe('Initialisation sécurisée', () => {
+    it('should check auth status via API on mount', async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ name: 'John Doe', userId: 1, mail: 'john@test.com' }),
       });
 
       renderWithAuth(<TestComponent />);
 
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
-    });
-
-    test('should logout if token is expired', () => {
-      const mockUser = { name: 'John Doe', email: 'john@test.com' };
-      const expiredExpiry = (Date.now() - 1000).toString(); // Past
-
-      mockLocalStorage.getItem.mockImplementation(key => {
-        switch (key) {
-          case 'token':
-            return 'expired-token';
-          case 'token_expiry':
-            return expiredExpiry;
-          case 'user':
-            return JSON.stringify(mockUser);
-          default:
-            return null;
-        }
+      await waitFor(() => {
+        expect(fetch).toHaveBeenCalledWith('/api/auth/me', {
+          method: 'GET',
+          credentials: 'include',
+        });
       });
 
-      renderWithAuth(<TestComponent />);
-
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('token');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('token_expiry');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('user');
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
+      });
     });
 
-    test('should logout if no token in localStorage', () => {
-      mockLocalStorage.getItem.mockReturnValue(null);
+    it('should handle failed auth check', async () => {
+      fetch.mockResolvedValueOnce({ ok: false, status: 401 });
 
       renderWithAuth(<TestComponent />);
 
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('token');
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      });
+    });
+
+    it('should handle API errors gracefully', async () => {
+      fetch.mockRejectedValueOnce(new Error('Network error'));
+
+      renderWithAuth(<TestComponent />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      });
     });
   });
 
-  describe('Fonction login', () => {
-    test('should login user and store in localStorage', () => {
+  describe('Fonction login locale (sans fetch)', () => {
+    it('should login user without API call', async () => {
+      fetch.mockResolvedValueOnce({ ok: false }); // Auth check échoue
+
       renderWithAuth(<TestComponent />);
 
-      const loginBtn = screen.getByTestId('login-btn');
-      act(() => {
-        fireEvent.click(loginBtn);
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
       });
 
-      // Vérifier que l'utilisateur est connecté
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
+      screen.getByTestId('login-btn').click();
 
-      // Vérifier les appels localStorage
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('token', 'test-token');
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('token_expiry', expect.any(String));
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'user',
-        JSON.stringify({
-          name: 'John Doe',
-          email: 'john@test.com',
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
+      });
+
+      // ✅ fetch n’est pas appelé pour le login
+      expect(fetch).not.toHaveBeenCalledWith('/api/auth/login', expect.anything());
+    });
+  });
+
+  describe('Fonction logout sécurisée', () => {
+    it('should logout user and call API', async () => {
+      fetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ name: 'John Doe' }),
         })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ message: 'Déconnexion réussie' }),
+        });
+
+      renderWithAuth(<TestComponent />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
+      });
+
+      screen.getByTestId('logout-btn').click();
+
+      await waitFor(() => {
+        expect(fetch).toHaveBeenCalledWith('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include',
+        });
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      });
+    });
+  });
+
+  describe('Register function', () => {
+    it('should register user via API', async () => {
+      fetch
+        .mockResolvedValueOnce({ ok: false }) // Initial auth check
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            success: true,
+            user: { name: 'New User', userId: 3 },
+          }),
+        });
+
+      const { result } = renderHook(() => useAuth(), {
+        wrapper: AuthProvider,
+      });
+
+      const registerResult = await result.current.register(
+        'newuser',
+        'new@test.com',
+        'Password123!',
+        'captcha-token'
       );
-    });
 
-    test('should set correct token expiry (3 hours)', () => {
-      renderWithAuth(<TestComponent />);
-
-      const loginBtn = screen.getByTestId('login-btn');
-      act(() => {
-        fireEvent.click(loginBtn);
+      expect(fetch).toHaveBeenCalledWith('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name: 'newuser',
+          mail: 'new@test.com',
+          password: 'Password123!',
+          recaptchaToken: 'captcha-token',
+          website: '',
+        }),
       });
 
-      // Vérifier que l'expiry est 3h dans le futur
-      const expectedExpiry = (Date.now() + 3 * 60 * 60 * 1000).toString();
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('token_expiry', expectedExpiry);
-    });
-
-    test('should include token in user object', () => {
-      renderWithAuth(<TestComponent />);
-
-      const loginBtn = screen.getByTestId('login-btn');
-      act(() => {
-        fireEvent.click(loginBtn);
-      });
-
-      const userData = screen.getByTestId('user-data').textContent;
-      const userObj = JSON.parse(userData);
-
-      expect(userObj).toEqual({
-        name: 'John Doe',
-        email: 'john@test.com',
-        token: 'test-token',
-      });
+      expect(registerResult.success).toBe(true);
     });
   });
 
-  describe('Fonction logout', () => {
-    test('should logout user and clear localStorage', () => {
-      // D'abord se connecter
-      renderWithAuth(<TestComponent />);
+  describe('updateUserProfile', () => {
+    it('should update user profile via API', async () => {
+      fetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ name: 'John Doe' }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            user: { name: 'John Updated', userId: 1 },
+          }),
+        });
 
-      const loginBtn = screen.getByTestId('login-btn');
-      act(() => {
-        fireEvent.click(loginBtn);
+      const { result } = renderHook(() => useAuth(), {
+        wrapper: AuthProvider,
       });
 
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
-
-      // Puis se déconnecter
-      const logoutBtn = screen.getByTestId('logout-btn');
-      act(() => {
-        fireEvent.click(logoutBtn);
+      await waitFor(() => {
+        expect(result.current.user).toBeTruthy();
       });
 
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
-      expect(screen.getByTestId('user-data')).toHaveTextContent('No user');
+      const updateResult = await result.current.updateUserProfile({
+        name: 'John Updated',
+        mail: 'john@test.com',
+      });
 
-      // Vérifier que localStorage est nettoyé
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('token');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('token_expiry');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('user');
+      expect(fetch).toHaveBeenCalledWith('/api/auth/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name: 'John Updated',
+          mail: 'john@test.com',
+          repForum: 0,
+          addCom: 0,
+          addBook: 0,
+          news: 0,
+        }),
+      });
+
+      expect(updateResult.success).toBe(true);
     });
   });
 
-  describe('Propriété isAuthenticated', () => {
-    test('should return false when not logged in', () => {
-      renderWithAuth(<TestComponent />);
+  describe('changePassword', () => {
+    it('should change password via API', async () => {
+      fetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ name: 'John Doe' }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ message: 'Password changed' }),
+        });
 
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
-    });
-
-    test('should return true when logged in', () => {
-      renderWithAuth(<TestComponent />);
-
-      const loginBtn = screen.getByTestId('login-btn');
-      act(() => {
-        fireEvent.click(loginBtn);
+      const { result } = renderHook(() => useAuth(), {
+        wrapper: AuthProvider,
       });
 
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
+      await waitFor(() => {
+        expect(result.current.user).toBeTruthy();
+      });
+
+      const resultChange = await result.current.changePassword('oldPass', 'newPass');
+
+      expect(fetch).toHaveBeenCalledWith('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          oldPassword: 'oldPass',
+          newPassword: 'newPass',
+        }),
+      });
+
+      expect(resultChange.success).toBe(true);
     });
   });
 
-  describe('Cas limites', () => {
-    test('should handle missing user data in localStorage', () => {
-      mockLocalStorage.getItem.mockImplementation(key => {
-        switch (key) {
-          case 'token':
-            return 'valid-token';
-          case 'token_expiry':
-            return (Date.now() + 1000000).toString();
-          case 'user':
-            return null; // Pas de données user
-          default:
-            return null;
-        }
+  describe('Edge cases', () => {
+    it('should handle malformed API response', async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => {
+          throw new Error('Invalid JSON');
+        },
       });
 
       renderWithAuth(<TestComponent />);
 
-      // Le composant accepte quand même avec token valide, même si user est null
-      // JSON.parse(null) retourne null, et {...null, token} donne {token}
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: undefined');
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      });
     });
 
-    test('should handle invalid expiry format', () => {
-      mockLocalStorage.getItem.mockImplementation(key => {
-        switch (key) {
-          case 'token':
-            return 'valid-token';
-          case 'token_expiry':
-            return 'invalid-number';
-          case 'user':
-            return JSON.stringify({ name: 'Test' });
-          default:
-            return null;
-        }
+    it('should handle timeout/network errors', async () => {
+      fetch.mockImplementationOnce(
+        () => new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 50))
+      );
+
+      renderWithAuth(<TestComponent />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      });
+    });
+
+    it('should handle server error (500)', async () => {
+      fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        json: async () => ({ error: 'Internal Server Error' }),
       });
 
       renderWithAuth(<TestComponent />);
 
-      // Devrait se déconnecter car l'expiry est invalide
-      expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
+      });
     });
   });
 });

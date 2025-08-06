@@ -3,7 +3,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Account from './Account';
 
-// Mock des services et hooks AVANT les variables
+// ✅ CHANGEMENT : Mock useAuth au lieu d'authService
+const mockLogin = vi.fn();
+const mockUpdateUserProfile = vi.fn();
+
 vi.mock('../../hooks/useAuth', () => ({
   useAuth: vi.fn(),
 }));
@@ -16,15 +19,16 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('../../services/authService', () => ({
-  updateUserProfile: vi.fn(),
-}));
+// ✅ SUPPRIMÉ : Plus de mock d'authService
+// vi.mock('../../services/authService', () => ({
+//   updateUserProfile: vi.fn(),
+// }));
 
 vi.mock('../../services/uploadServices', () => ({
   updateAvatarOnS3: vi.fn(),
 }));
 
-// Mock des images
+// Mock des images (inchangé)
 vi.mock('../../images/library.webp', () => ({
   default: '/mocked-library.webp',
 }));
@@ -37,7 +41,7 @@ vi.mock('../../images/feather.webp', () => ({
   default: '/mocked-feather.webp',
 }));
 
-// Mock du composant ChangePass
+// Mock du composant ChangePass (inchangé)
 vi.mock('../../modals/ChangePass/ChangePass', () => ({
   default: ({ onClose, onSuccess }) => (
     <div data-testid="change-pass-modal">
@@ -51,7 +55,7 @@ vi.mock('../../modals/ChangePass/ChangePass', () => ({
   ),
 }));
 
-// Mock des données utilisateur APRÈS les mocks
+// Mock des données utilisateur (inchangé)
 const mockUser = {
   name: 'John Doe',
   mail: 'john@example.com',
@@ -65,12 +69,13 @@ const mockUser = {
   news: false,
 };
 
-// Import des mocks APRÈS les avoir définis
+// ✅ CHANGEMENT : Import des mocks adaptés
 const { useAuth } = await import('../../hooks/useAuth');
-const { updateUserProfile } = await import('../../services/authService');
+// ✅ SUPPRIMÉ : Plus d'import d'authService
+// const { updateUserProfile } = await import('../../services/authService');
 const { updateAvatarOnS3 } = await import('../../services/uploadServices');
 
-// Mock des fonctions globales
+// Mock des fonctions globales (inchangé)
 Object.defineProperty(window, 'confirm', {
   value: vi.fn(() => true),
   writable: true,
@@ -88,20 +93,23 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 
-// Wrapper pour les tests
+// Wrapper pour les tests (inchangé)
 const TestWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
 
 describe('Account Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Configuration par défaut des mocks
+    // ✅ CHANGEMENT : Configuration du mock useAuth
     vi.mocked(useAuth).mockReturnValue({
       user: mockUser,
-      login: vi.fn(),
+      login: mockLogin,
+      updateUserProfile: mockUpdateUserProfile, // ✅ NOUVEAU : Via useAuth
     });
 
-    vi.mocked(updateUserProfile).mockResolvedValue({
+    // ✅ CHANGEMENT : Mock de updateUserProfile via useAuth
+    mockUpdateUserProfile.mockResolvedValue({
+      success: true,
       user: { ...mockUser, name: 'Updated Name' },
     });
 
@@ -130,7 +138,8 @@ describe('Account Page', () => {
     test("doit rediriger vers la page d'accueil si aucun utilisateur n'est connecté", () => {
       vi.mocked(useAuth).mockReturnValue({
         user: null,
-        login: vi.fn(),
+        login: mockLogin,
+        updateUserProfile: mockUpdateUserProfile,
       });
 
       render(
@@ -226,7 +235,8 @@ describe('Account Page', () => {
 
       await waitFor(() => {
         expect(window.confirm).toHaveBeenCalledWith('Account.ConfirmProfileUpdate');
-        expect(vi.mocked(updateUserProfile)).toHaveBeenCalled();
+        // ✅ CHANGEMENT : Vérifie mockUpdateUserProfile au lieu de updateUserProfile
+        expect(mockUpdateUserProfile).toHaveBeenCalled();
       });
     });
 
@@ -348,7 +358,8 @@ describe('Account Page', () => {
   describe('Gestion des erreurs', () => {
     test('doit gérer les erreurs de mise à jour du profil', async () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      vi.mocked(updateUserProfile).mockRejectedValueOnce(new Error('Update failed'));
+      // ✅ CHANGEMENT : Mock d'erreur via mockUpdateUserProfile
+      mockUpdateUserProfile.mockRejectedValueOnce(new Error('Update failed'));
 
       render(
         <TestWrapper>
@@ -423,6 +434,38 @@ describe('Account Page', () => {
       await waitFor(() => {
         const avatarImg = screen.getByAltText('Avatar utilisateur');
         expect(avatarImg).toHaveAttribute('src', 'https://example.com/avatar.jpg');
+      });
+    });
+  });
+
+  // ✅ NOUVEAU : Test spécifique pour la gestion des réponses d'erreur
+  describe('Gestion des erreurs de réponse', () => {
+    test('doit gérer les erreurs de mise à jour avec message personnalisé', async () => {
+      // Mock d'une réponse d'erreur avec message
+      mockUpdateUserProfile.mockResolvedValueOnce({
+        success: false,
+        error: 'Email already exists',
+      });
+
+      render(
+        <TestWrapper>
+          <Account />
+        </TestWrapper>
+      );
+
+      // Passer en mode édition et modifier quelque chose
+      const editButton = screen.getByRole('button', { name: /Account\.EditProfile/i });
+      fireEvent.click(editButton);
+
+      const nameInput = screen.getByDisplayValue('John Doe');
+      fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
+
+      // Essayer de sauvegarder
+      const finishButton = screen.getByRole('button', { name: /Account\.Finish/i });
+      fireEvent.click(finishButton);
+
+      await waitFor(() => {
+        expect(window.alert).toHaveBeenCalledWith('Email already exists');
       });
     });
   });

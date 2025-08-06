@@ -1,25 +1,28 @@
-// src/modals/SignIn/SignIn.test.jsx
+// src/modals/SignIn/SignIn.test.jsx - VERSION SÉCURISÉE
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import SignIn from './SignIn';
 
-// Mock authService
-vi.mock('../../services/authService', () => ({
-  register: vi.fn(),
+// ✅ CHANGEMENT : Mock useAuth au lieu d'authService
+const mockRegister = vi.fn();
+vi.mock('../../hooks/useAuth', () => ({
+  useAuth: () => ({
+    register: mockRegister,
+  }),
 }));
 
-// Mock react-router-dom
+// Mock react-router-dom (inchangé)
 vi.mock('react-router-dom', () => ({
   useNavigate: () => vi.fn(),
 }));
 
-// Mock ToastSuccess
+// Mock ToastSuccess (inchangé)
 vi.mock('../../components/ToastSuccess/ToastSuccess', () => ({
   default: ({ message }) => <div data-testid="toast">{message}</div>,
 }));
 
-// Mock ReCAPTCHA
+// Mock ReCAPTCHA (inchangé)
 vi.mock('react-google-recaptcha', () => ({
   default: ({ onChange }) => (
     <div data-testid="recaptcha">
@@ -28,14 +31,15 @@ vi.mock('react-google-recaptcha', () => ({
   ),
 }));
 
-// Mock i18n
+// Mock i18n (inchangé)
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: key => key,
   }),
 }));
 
-import { register } from '../../services/authService';
+// ✅ SUPPRIMÉ : Plus d'import d'authService
+// import { register } from '../../services/authService';
 
 describe('SignIn Component', () => {
   const mockOnClose = vi.fn();
@@ -208,7 +212,8 @@ describe('SignIn Component', () => {
   });
 
   test('should handle successful registration', async () => {
-    vi.mocked(register).mockResolvedValue({ success: true });
+    // ✅ CHANGEMENT : Utilise mockRegister au lieu de vi.mocked(register)
+    mockRegister.mockResolvedValue({ success: true });
 
     render(<SignIn onClose={mockOnClose} openLogin={mockOpenLogin} />);
 
@@ -228,7 +233,8 @@ describe('SignIn Component', () => {
       fireEvent.click(screen.getByRole('button', { name: /validate/i }));
     });
 
-    expect(register).toHaveBeenCalledWith(
+    // ✅ CHANGEMENT : Vérifie mockRegister au lieu de register
+    expect(mockRegister).toHaveBeenCalledWith(
       'testuser',
       'test@example.com',
       'Password123!',
@@ -237,7 +243,8 @@ describe('SignIn Component', () => {
   });
 
   test('should handle registration error', async () => {
-    vi.mocked(register).mockResolvedValue({ success: false, error: 'Registration failed' });
+    // ✅ CHANGEMENT : Utilise mockRegister au lieu de vi.mocked(register)
+    mockRegister.mockResolvedValue({ success: false, error: 'Registration failed' });
 
     render(<SignIn onClose={mockOnClose} openLogin={mockOpenLogin} />);
 
@@ -262,7 +269,8 @@ describe('SignIn Component', () => {
   });
 
   test('should show loading state during registration', async () => {
-    vi.mocked(register).mockImplementation(
+    // ✅ CHANGEMENT : Utilise mockRegister au lieu de vi.mocked(register)
+    mockRegister.mockImplementation(
       () => new Promise(resolve => setTimeout(() => resolve({ success: true }), 100))
     );
 

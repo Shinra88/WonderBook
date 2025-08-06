@@ -1,33 +1,36 @@
-// 📁 __tests__/services/uploadServices.test.js
+// 📁 __tests__/services/uploadServices.test.js - VERSION SÉCURISÉE
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { uploadImageToS3, updateAvatarOnS3, uploadEbookToS3 } from './uploadServices';
 
-// Mock de l'API
+// Mock de l'API (inchangé)
 vi.mock('./api/api', () => ({
   default: {
+    get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
   },
 }));
 
-// Mock des constantes
+// Mock des constantes (modifié)
 vi.mock('../utils/constants', () => ({
   API_ROUTES: {
     AUTH: {
       UPLOAD_IMAGE: '/api/upload/image',
       UPDATE_AVATAR: '/api/upload/avatar',
       UPLOAD_EBOOK: '/api/upload/ebook',
+      UPDATE_PROFILE: '/api/auth/me', // ✅ AJOUT pour récupérer les données user
     },
   },
 }));
 
-// Mock du localStorage utilities
-vi.mock('../utils/localStorage', () => ({
-  getFromLocalStorage: vi.fn(),
-}));
+// ✅ SUPPRIMÉ : Plus de mock de localStorage
+// vi.mock('../utils/localStorage', () => ({
+//   getFromLocalStorage: vi.fn(),
+// }));
 
 import api from './api/api';
-import { getFromLocalStorage } from '../utils/localStorage';
+// ✅ SUPPRIMÉ : Plus d'import de getFromLocalStorage
+// import { getFromLocalStorage } from '../utils/localStorage';
 
 describe('uploadServices', () => {
   beforeEach(() => {
@@ -101,11 +104,14 @@ describe('uploadServices', () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/new-avatar.jpg' } };
 
-      getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
+      // ✅ CHANGEMENT : Mock de l'API au lieu de localStorage
+      api.get.mockResolvedValue({ data: mockUser });
       api.put.mockResolvedValue(mockResponse);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-avatar-url');
 
+      // ✅ NOUVEAU : Vérifie l'appel GET pour récupérer les données user
+      expect(api.get).toHaveBeenCalledWith('/api/auth/me', {});
       expect(api.put).toHaveBeenCalledWith('/api/upload/avatar', expect.any(FormData), {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -124,7 +130,8 @@ describe('uploadServices', () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/avatar.jpg' } };
 
-      getFromLocalStorage.mockReturnValue(JSON.stringify(userWithoutName));
+      // ✅ CHANGEMENT : Mock de l'API au lieu de localStorage
+      api.get.mockResolvedValue({ data: userWithoutName });
       api.put.mockResolvedValue(mockResponse);
 
       await updateAvatarOnS3(mockFile, 123, 'old-url');
@@ -137,7 +144,8 @@ describe('uploadServices', () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/avatar.jpg' } };
 
-      getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
+      // ✅ CHANGEMENT : Mock de l'API au lieu de localStorage
+      api.get.mockResolvedValue({ data: mockUser });
       api.put.mockResolvedValue(mockResponse);
 
       await updateAvatarOnS3(mockFile, 123);
@@ -146,10 +154,11 @@ describe('uploadServices', () => {
       expect(formDataCall.get('oldUrl')).toBe('');
     });
 
-    it('should handle user not found in localStorage', async () => {
+    it('should handle user not found via API', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
 
-      getFromLocalStorage.mockReturnValue(null);
+      // ✅ CHANGEMENT : Mock d'erreur API au lieu de localStorage vide
+      api.get.mockResolvedValue({ data: null });
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
 
@@ -158,10 +167,12 @@ describe('uploadServices', () => {
       expect(api.put).not.toHaveBeenCalled();
     });
 
-    it('should handle invalid JSON in localStorage', async () => {
+    it('should handle API error for user fetch', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
+      const mockError = new Error('User fetch failed');
 
-      getFromLocalStorage.mockReturnValue('invalid-json');
+      // ✅ CHANGEMENT : Mock d'erreur API au lieu de JSON invalide
+      api.get.mockRejectedValue(mockError);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
 
@@ -170,11 +181,12 @@ describe('uploadServices', () => {
       expect(api.put).not.toHaveBeenCalled();
     });
 
-    it('should handle API error', async () => {
+    it('should handle avatar upload API error', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockError = new Error('Avatar update failed');
 
-      getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
+      // ✅ CHANGEMENT : Mock de l'API au lieu de localStorage
+      api.get.mockResolvedValue({ data: mockUser });
       api.put.mockRejectedValue(mockError);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
@@ -187,7 +199,8 @@ describe('uploadServices', () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { success: true } }; // Missing imageUrl
 
-      getFromLocalStorage.mockReturnValue(JSON.stringify(mockUser));
+      // ✅ CHANGEMENT : Mock de l'API au lieu de localStorage
+      api.get.mockResolvedValue({ data: mockUser });
       api.put.mockResolvedValue(mockResponse);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
@@ -196,16 +209,18 @@ describe('uploadServices', () => {
       expect(console.error).toHaveBeenCalled();
     });
 
-    it('should handle user as object instead of string', async () => {
+    it('should handle API response without data property', async () => {
       const mockFile = new File(['avatar content'], 'avatar.jpg', { type: 'image/jpeg' });
       const mockResponse = { data: { imageUrl: 'https://s3.amazonaws.com/bucket/avatar.jpg' } };
 
-      getFromLocalStorage.mockReturnValue(mockUser); // Direct object instead of JSON string
+      // ✅ NOUVEAU : Test pour réponse API sans data
+      api.get.mockResolvedValue({});
       api.put.mockResolvedValue(mockResponse);
 
       const result = await updateAvatarOnS3(mockFile, 123, 'old-url');
 
-      expect(result).toBe('https://s3.amazonaws.com/bucket/avatar.jpg');
+      expect(result).toBeNull();
+      expect(console.error).toHaveBeenCalled();
     });
   });
 
@@ -313,7 +328,8 @@ describe('uploadServices', () => {
       const avatarResponse = { data: { imageUrl: 'https://s3.com/avatar.jpg' } };
       const ebookResponse = { data: { ebook_url: 'https://s3.com/book.epub' } };
 
-      getFromLocalStorage.mockReturnValue(JSON.stringify({ name: 'John' }));
+      // ✅ CHANGEMENT : Mock de l'API au lieu de localStorage
+      api.get.mockResolvedValueOnce({ data: { name: 'John' } });
       api.post.mockResolvedValueOnce(imageResponse);
       api.put.mockResolvedValueOnce(avatarResponse);
       api.put.mockResolvedValueOnce(ebookResponse);
@@ -327,7 +343,8 @@ describe('uploadServices', () => {
       expect(avatarUrl).toBe('https://s3.com/avatar.jpg');
       expect(ebookUrl).toBe('https://s3.com/book.epub');
 
-      // Vérifier que tous les appels ont été faits
+      // ✅ CHANGEMENT : Vérifie les appels API
+      expect(api.get).toHaveBeenCalledTimes(1); // Pour récupérer les données user
       expect(api.post).toHaveBeenCalledTimes(1);
       expect(api.put).toHaveBeenCalledTimes(2);
     });

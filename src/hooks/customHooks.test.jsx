@@ -1,19 +1,24 @@
-// 📁 __tests__/hooks/customHooks.test.jsx
+// 📁 __tests__/hooks/customHooks.test.jsx - VERSION SÉCURISÉE
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
+import React from 'react';
 
-// Mock des services AVANT les imports
-vi.mock('../services/authService', () => ({
-  getAuthenticatedUser: vi.fn(),
+// ✅ CHANGEMENT : Mock useAuth au lieu d'authService
+const mockGetAuthenticatedUser = vi.fn();
+vi.mock('./useAuth', () => ({
+  useAuth: () => ({
+    getAuthenticatedUser: mockGetAuthenticatedUser,
+  }),
 }));
 
+// Mock des services de livres (inchangé)
 vi.mock('../services/bookService', () => ({
   getBestRatedBooks: vi.fn(),
   getLastAddedBooks: vi.fn(),
   getBooks: vi.fn(),
 }));
 
-// Import des hooks et services APRÈS les mocks
+// Import des hooks APRÈS les mocks
 import {
   useUser,
   useBestRatedBooks,
@@ -22,7 +27,6 @@ import {
   useFilteredBooks,
 } from './customHooks';
 
-import { getAuthenticatedUser } from '../services/authService';
 import { getBestRatedBooks, getLastAddedBooks, getBooks } from '../services/bookService';
 
 // Mock de URL.createObjectURL et URL.revokeObjectURL
@@ -36,6 +40,11 @@ Object.defineProperty(window, 'URL', {
   },
 });
 
+// ✅ NOUVEAU : Wrapper pour fournir le contexte Auth aux tests
+const AuthContextWrapper = ({ children }) => {
+  return <div>{children}</div>; // Simple wrapper pour les tests
+};
+
 describe('customHooks', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -48,9 +57,11 @@ describe('customHooks', () => {
 
   describe('useUser', () => {
     it('should initialize with default values', () => {
-      getAuthenticatedUser.mockResolvedValue({ authenticated: false, user: null });
+      mockGetAuthenticatedUser.mockResolvedValue({ authenticated: false, user: null });
 
-      const { result } = renderHook(() => useUser());
+      const { result } = renderHook(() => useUser(), {
+        wrapper: AuthContextWrapper,
+      });
 
       expect(result.current.connectedUser).toBeNull();
       expect(result.current.auth).toBe(false);
@@ -59,9 +70,11 @@ describe('customHooks', () => {
 
     it('should set authenticated user successfully', async () => {
       const mockUser = { id: 1, name: 'John Doe', email: 'john@example.com' };
-      getAuthenticatedUser.mockResolvedValue({ authenticated: true, user: mockUser });
+      mockGetAuthenticatedUser.mockResolvedValue({ authenticated: true, user: mockUser });
 
-      const { result } = renderHook(() => useUser());
+      const { result } = renderHook(() => useUser(), {
+        wrapper: AuthContextWrapper,
+      });
 
       await waitFor(() => {
         expect(result.current.userLoading).toBe(false);
@@ -73,9 +86,11 @@ describe('customHooks', () => {
     });
 
     it('should handle unauthenticated user', async () => {
-      getAuthenticatedUser.mockResolvedValue({ authenticated: false, user: null });
+      mockGetAuthenticatedUser.mockResolvedValue({ authenticated: false, user: null });
 
-      const { result } = renderHook(() => useUser());
+      const { result } = renderHook(() => useUser(), {
+        wrapper: AuthContextWrapper,
+      });
 
       await waitFor(() => {
         expect(result.current.userLoading).toBe(false);
@@ -88,9 +103,11 @@ describe('customHooks', () => {
 
     it('should handle authentication service error', async () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      getAuthenticatedUser.mockRejectedValue(new Error('Auth service error'));
+      mockGetAuthenticatedUser.mockRejectedValue(new Error('Auth service error'));
 
-      const { result } = renderHook(() => useUser());
+      const { result } = renderHook(() => useUser(), {
+        wrapper: AuthContextWrapper,
+      });
 
       // Attendre que l'effet se termine même en cas d'erreur
       await waitFor(

@@ -1,17 +1,22 @@
-// 📁 hooks/customHooks.jsx
+// 📁 hooks/customHooks.jsx - VERSION SÉCURISÉE
 import { useState, useEffect } from 'react';
-import { getAuthenticatedUser } from '../services/authService';
+// ✅ CHANGEMENT : Remplacé authService par useAuth
+import { useAuth } from './useAuth';
 import { getBestRatedBooks, getLastAddedBooks, getBooks } from '../services/bookService';
 
-/** ✅ Retrieves the logged in user */
+/** ✅ Retrieves the logged in user - VERSION SÉCURISÉE */
 export function useUser() {
   const [connectedUser, setConnectedUser] = useState(null);
   const [auth, setAuth] = useState(false);
   const [userLoading, setUserLoading] = useState(true);
 
+  // ✅ CHANGEMENT : Utilise useAuth au lieu d'importer getAuthenticatedUser
+  const { getAuthenticatedUser } = useAuth();
+
   useEffect(() => {
     async function getUserDetails() {
       try {
+        // ✅ IDENTIQUE : Même logique, mais via useAuth sécurisé
         const { authenticated, user } = await getAuthenticatedUser();
         setConnectedUser(user);
         setAuth(authenticated);
@@ -24,7 +29,7 @@ export function useUser() {
       }
     }
     getUserDetails();
-  }, []);
+  }, [getAuthenticatedUser]); // ✅ AJOUT : Dépendance pour éviter les warnings
 
   return { connectedUser, auth, userLoading };
 }

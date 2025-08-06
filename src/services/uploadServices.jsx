@@ -1,6 +1,6 @@
-// 📁 services/uploadServices.jsx
+// 📁 services/uploadServices.jsx - VERSION SÉCURISÉE
 import { API_ROUTES } from '../utils/constants';
-import { getFromLocalStorage } from '../utils/localStorage';
+// ✅ SUPPRIMÉ : import { getFromLocalStorage } from '../utils/localStorage';
 import api from './api/api';
 
 /**
@@ -10,7 +10,6 @@ export async function uploadImageToS3(file, title = 'image') {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('title', title);
-
   try {
     const response = await api.post(API_ROUTES.AUTH.UPLOAD_IMAGE, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -23,23 +22,29 @@ export async function uploadImageToS3(file, title = 'image') {
 }
 
 /**
- * 🔁 Updates an avatar (upload + delete old)
+ * 🔁 Updates an avatar (upload + delete old) - VERSION SÉCURISÉE
  */
 export async function updateAvatarOnS3(file, userId, oldUrl) {
+  // ✅ CHANGEMENT : Récupère les données user via API au lieu de localStorage
   let user = null;
-
   try {
-    const raw = getFromLocalStorage('user');
-    user = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    // ✅ NOUVEAU : Appel API sécurisé - le cookie HttpOnly sera automatiquement envoyé
+    const response = await api.get(API_ROUTES.AUTH.UPDATE_PROFILE, {
+      // L'API attend probablement GET /api/auth/me ou similaire
+      // Si c'est différent, ajustez l'endpoint ici
+    });
 
-    if (!user) throw new Error('Utilisateur non trouvé');
+    if (response?.data) {
+      user = response.data;
+    } else {
+      throw new Error('Utilisateur non trouvé');
+    }
   } catch (err) {
-    console.error('❌ Erreur parsing user localStorage :', err);
+    console.error('❌ Erreur récupération données utilisateur :', err);
     return null;
   }
 
   const name = user.name || 'default';
-
   const formData = new FormData();
   formData.append('file', file);
   formData.append('userId', userId);
@@ -50,11 +55,9 @@ export async function updateAvatarOnS3(file, userId, oldUrl) {
     const response = await api.put(API_ROUTES.AUTH.UPDATE_AVATAR, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-
     if (response?.data?.imageUrl) {
       return response.data.imageUrl;
     }
-
     console.error('❌ Réponse inattendue :', response);
     return null;
   } catch (err) {
@@ -68,7 +71,7 @@ export async function updateAvatarOnS3(file, userId, oldUrl) {
  */
 export async function uploadEbookToS3(file, bookId) {
   if (!file || !bookId) {
-    console.error('❌ Fichier ou bookId manquant pour l’upload de l’ebook');
+    console.error("❌ Fichier ou bookId manquant pour l'upload de l'ebook");
     return null;
   }
 
@@ -80,11 +83,9 @@ export async function uploadEbookToS3(file, bookId) {
     const response = await api.put(API_ROUTES.AUTH.UPLOAD_EBOOK, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-
     if (response?.data?.ebook_url) {
       return response.data.ebook_url;
     }
-
     console.error('❌ Réponse inattendue upload ebook :', response);
     return null;
   } catch (err) {

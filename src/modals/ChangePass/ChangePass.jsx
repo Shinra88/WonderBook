@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ChangePass.module.css';
-import { changePassword } from '../../services/authService';
+// ✅ CHANGEMENT : Remplacé authService par useAuth
+import { useAuth } from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 
 function ChangePass({ onClose, onSuccess }) {
@@ -15,6 +16,10 @@ function ChangePass({ onClose, onSuccess }) {
   const [passwordStrength, setPasswordStrength] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { t } = useTranslation();
+
+  // ✅ CHANGEMENT : Récupère changePassword via useAuth
+  const { changePassword } = useAuth();
+
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={};':"\\|,.<>/?]).{8,}$/;
 
@@ -66,6 +71,7 @@ function ChangePass({ onClose, onSuccess }) {
     if (!isFormValid) return;
 
     setIsLoading(true);
+    // ✅ IDENTIQUE : Même appel, mais via useAuth sécurisé
     const result = await changePassword(oldPassword, newPassword);
 
     if (result.success) {

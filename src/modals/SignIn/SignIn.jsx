@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { register } from '../../services/authService';
+// ✅ CHANGEMENT : Remplacé authService par useAuth
+import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -10,6 +11,9 @@ import styles from './SignIn.module.css';
 function SignIn({ onClose = null, openLogin }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  // ✅ CHANGEMENT : Récupère register via useAuth
+  const { register } = useAuth();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -76,6 +80,7 @@ function SignIn({ onClose = null, openLogin }) {
 
     setIsLoading(true);
     try {
+      // ✅ IDENTIQUE : Même appel, mais via useAuth sécurisé
       const result = await register(username, email, password, recaptchaToken);
       if (!result.success) {
         setNotification({ error: true, message: result.error });

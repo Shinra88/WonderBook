@@ -1,15 +1,18 @@
-// src/components/ChangePass/ChangePass.test.jsx
+// src/components/ChangePass/ChangePass.test.jsx - VERSION SÉCURISÉE
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { act as reactAct } from 'react';
 import ChangePass from './ChangePass';
 
-// Mock authService
-vi.mock('../../services/authService', () => ({
-  changePassword: vi.fn(),
+// ✅ CHANGEMENT : Mock useAuth au lieu d'authService
+const mockChangePassword = vi.fn();
+vi.mock('../../hooks/useAuth', () => ({
+  useAuth: () => ({
+    changePassword: mockChangePassword,
+  }),
 }));
 
-// Mock react-i18next
+// Mock react-i18next (inchangé)
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: key => {
@@ -34,7 +37,8 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
-import { changePassword } from '../../services/authService';
+// ✅ SUPPRIMÉ : Plus d'import d'authService
+// import { changePassword } from '../../services/authService';
 
 describe('ChangePass Component', () => {
   const mockOnClose = vi.fn();
@@ -262,7 +266,8 @@ describe('ChangePass Component', () => {
 
   // Tests de soumission du formulaire
   test('should handle successful password change', async () => {
-    vi.mocked(changePassword).mockResolvedValue({
+    // ✅ CHANGEMENT : Utilise mockChangePassword au lieu de vi.mocked(changePassword)
+    mockChangePassword.mockResolvedValue({
       success: true,
       message: 'Password changed successfully',
     });
@@ -290,7 +295,8 @@ describe('ChangePass Component', () => {
       expect(screen.getByText('Password changed successfully')).toBeInTheDocument();
     });
 
-    expect(changePassword).toHaveBeenCalledWith('oldpassword', 'ValidPassword123!');
+    // ✅ CHANGEMENT : Vérifie mockChangePassword au lieu de changePassword
+    expect(mockChangePassword).toHaveBeenCalledWith('oldpassword', 'ValidPassword123!');
 
     // Wait for auto close
     await reactAct(async () => {
@@ -304,7 +310,8 @@ describe('ChangePass Component', () => {
   });
 
   test('should handle failed password change', async () => {
-    vi.mocked(changePassword).mockResolvedValue({
+    // ✅ CHANGEMENT : Utilise mockChangePassword au lieu de vi.mocked(changePassword)
+    mockChangePassword.mockResolvedValue({
       success: false,
       message: 'Old password is incorrect',
     });
@@ -434,7 +441,7 @@ describe('ChangePass Component', () => {
       fireEvent.click(submitButton);
     });
 
-    // Should not call API
-    expect(changePassword).not.toHaveBeenCalled();
+    // ✅ CHANGEMENT : Vérifie mockChangePassword au lieu de changePassword
+    expect(mockChangePassword).not.toHaveBeenCalled();
   });
 });
