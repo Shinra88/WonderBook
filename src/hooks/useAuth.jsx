@@ -1,50 +1,48 @@
 // useAuth.jsx - VERSION SÉCURISÉE et COMPATIBLE avec SonarQube
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { loginUser, logoutUser, fetchAuthenticatedUser } from '../services/authService';
 import PropTypes from 'prop-types';
 
 // Crée le contexte d'authentification
 const AuthContext = createContext(null);
+
 /**
  * @param {{ children: React.ReactNode }} props
  */
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
-
-  const checkAuthStatus = async () => {
+  // Déclare checkAuthStatus AVANT useEffect
+  const checkAuthStatus = useCallback(async () => {
     try {
-      const response = await fetch('/api/auth/me', {
-        method: 'GET',
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-      } else {
-        setUser(null);
-      }
+      const userData = await fetchAuthenticatedUser();
+      setUser(userData);
     } catch {
       console.error('Erreur vérification auth:');
       setUser(null);
     }
-  };
+  }, []);
 
-  const login = useCallback((userData, token) => {
-    setUser({ ...userData, token });
+  // Appelle checkAuthStatus au montage
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  const login = useCallback(async (mail, password) => {
+    try {
+      const data = await loginUser(mail, password);
+      setUser(data.user);
+      return { success: true, user: data.user };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   }, []);
 
   const logout = useCallback(async () => {
     try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await logoutUser();
     } catch {
-      console.error('Erreur logout:');
+      console.error('Erreur logout');
     } finally {
       setUser(null);
     }
@@ -159,7 +157,7 @@ export function AuthProvider({ children }) {
       changePassword,
       getAuthenticatedUser,
     }),
-    [user]
+    [user, login, logout, register, updateUserProfile, changePassword, getAuthenticatedUser]
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
