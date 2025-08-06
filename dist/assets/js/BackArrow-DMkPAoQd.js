@@ -1,0 +1,1 @@
+import{a as s,j as a,F as t}from"./react-vendor-CHNrpsCK.js";import{d as n}from"./vendor-DsLnOOP7.js";const c="VIDhY",e={backArrow:c};function l(){const o=s(),r=()=>{o(-1)};return a.jsx("button",{onClick:r,"aria-label":"Back",className:e.backArrow,children:a.jsx(t,{icon:n})})}export{l as B};

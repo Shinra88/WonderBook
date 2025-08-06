@@ -1,0 +1,1 @@
+import{j as e,k as n}from"./index-HN6HrZ4S.js";async function d(a,{content:t,rating:o}){try{const{data:r}=await e.post(`${n.COMMENTS.BASE}/${a}`,{content:t,rating:o});return r}catch(r){throw r}}async function s(a){try{const{data:t}=await e.delete(`${n.COMMENTS.BASE}/admin/${a}`);return t}catch(t){throw t}}export{d as a,s as d};
