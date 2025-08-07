@@ -28,9 +28,9 @@ export function AuthProvider({ children }) {
     checkAuthStatus();
   }, [checkAuthStatus]);
 
-  const login = useCallback(async (mail, password) => {
+  const login = useCallback(async (mail, password, recaptchaToken) => {
     try {
-      const data = await loginUser(mail, password);
+      const data = await loginUser(mail, password, recaptchaToken);
       setUser(data.user);
       return { success: true, user: data.user };
     } catch (error) {

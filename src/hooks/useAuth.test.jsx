@@ -37,7 +37,7 @@ function TestComponent() {
       <button
         data-testid="login-btn"
         onClick={async () => {
-          const result = await login('john@test.com', 'password123');
+          const result = await login('john@test.com', 'password123', 'recaptcha-token');
           if (!result.success) {
             console.error(result.error);
           }
@@ -161,7 +161,7 @@ describe('useAuth Hook', () => {
       });
 
       await waitFor(() => {
-        expect(loginUser).toHaveBeenCalledWith('john@test.com', 'password123');
+        expect(loginUser).toHaveBeenCalledWith('john@test.com', 'password123', 'recaptcha-token');
         expect(screen.getByTestId('user-status')).toHaveTextContent('Logged in: John Doe');
       });
     });
@@ -178,7 +178,7 @@ describe('useAuth Hook', () => {
       });
 
       await waitFor(() => {
-        expect(loginUser).toHaveBeenCalledWith('john@test.com', 'password123');
+        expect(loginUser).toHaveBeenCalledWith('john@test.com', 'password123', 'recaptcha-token');
         expect(screen.getByTestId('user-status')).toHaveTextContent('Not logged in');
       });
     });

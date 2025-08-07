@@ -1,449 +1,400 @@
-// src/modals/Login/Login.test.jsx
-import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { act } from 'react';
-import LoginModal from '../../modals/Login/Login_modal';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, waitFor, cleanup, act } from '@testing-library/react';
+import LoginModal from './Login_modal';
+import { useAuth } from '../../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
-// Mock API
-vi.mock('../../services/api/api', () => ({
-  default: { post: vi.fn() },
-}));
-
-// Mock useAuth
-const mockLogin = vi.fn();
+// Mock du hook useAuth
 vi.mock('../../hooks/useAuth', () => ({
-  useAuth: () => ({
-    login: mockLogin,
-  }),
+  useAuth: vi.fn(),
 }));
 
-// Mock ReCAPTCHA
+// Mock de useTranslation
+vi.mock('react-i18next', () => ({
+  useTranslation: vi.fn(),
+}));
+
+// Mock de react-google-recaptcha
 vi.mock('react-google-recaptcha', () => ({
   default: ({ onChange }) => (
-    <div data-testid="recaptcha">
-      <button onClick={() => onChange('fake-token')}>Verify</button>
+    <div data-testid="recaptcha" onClick={() => onChange('mock-recaptcha-token')}>
+      Mock ReCAPTCHA
     </div>
   ),
 }));
 
-// Mock i18n
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: key => {
-      const translations = {
-        'Login.Login': 'Login',
-        'Login.Email': 'Email',
-        'Login.Password': 'Password',
-        'Login.Cancel': 'Cancel',
-        'Login.Validate': 'Login',
-        'Login.Loading': 'Loading...',
-        'Login.CaptchaRequired': 'Please complete the captcha',
-        'Login.ForgotPassword': 'Forgot Password',
-        'Login.Or': 'Or',
-        'Login.CreateAccount': 'Create Account',
-      };
-      return translations[key] || key;
+// Mock des variables d'environnement
+vi.mock(
+  'import.meta',
+  () => ({
+    env: {
+      VITE_RECAPTCHA_SITE_KEY: 'mock-site-key',
     },
   }),
-}));
-
-import api from '../../services/api/api';
+  { virtual: true }
+);
 
 describe('LoginModal Component', () => {
+  const mockLogin = vi.fn();
   const mockOnClose = vi.fn();
   const mockOpenRegister = vi.fn();
   const mockOpenForgetPassword = vi.fn();
+  const mockT = vi.fn(key => key);
+
+  const defaultProps = {
+    onClose: mockOnClose,
+    openRegister: mockOpenRegister,
+    openForgetPassword: mockOpenForgetPassword,
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    Object.defineProperty(import.meta, 'env', {
-      value: { VITE_RECAPTCHA_SITE_KEY: 'test-key' },
-      writable: true,
-    });
-    mockLogin.mockClear();
-  });
+    vi.clearAllTimers();
+    vi.useRealTimers(); // S'assurer qu'on utilise les vrais timers par défaut
 
-  test('should render form elements', () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
-    expect(screen.getByText('Cancel')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
-  });
-
-  test('should handle email input', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    const emailInput = screen.getByLabelText('Email');
-
-    await act(async () => {
-      fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    // Configuration par défaut du mock useAuth
+    useAuth.mockReturnValue({
+      login: mockLogin,
     });
 
-    expect(emailInput.value).toBe('test@example.com');
+    // Configuration par défaut du mock useTranslation
+    useTranslation.mockReturnValue({
+      t: mockT,
+    });
   });
 
-  test('should handle password input', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    const passwordInput = screen.getByLabelText('Password');
-
+  afterEach(async () => {
+    // Attendre que tous les micro-tasks se terminent
     await act(async () => {
-      fireEvent.change(passwordInput, { target: { value: 'password123' } });
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    expect(passwordInput.value).toBe('password123');
+    cleanup();
+    vi.restoreAllMocks();
+    vi.clearAllTimers();
+    vi.useRealTimers();
   });
 
-  test('should call onClose when cancel clicked', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
+  describe('Rendu initial', () => {
+    test('should render login modal correctly', () => {
+      render(<LoginModal {...defaultProps} />);
 
-    await act(async () => {
-      fireEvent.click(screen.getByText('Cancel'));
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+      expect(screen.getByRole('textbox', { name: /email/i })).toBeInTheDocument();
+      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
 
-    expect(mockOnClose).toHaveBeenCalled();
-  });
+    test('should disable form inputs when recaptcha is not validated', () => {
+      render(<LoginModal {...defaultProps} />);
 
-  test('should call openRegister when create account clicked', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
+      const emailInput = screen.getByRole('textbox', { name: /email/i });
+      const passwordInput = screen.getByLabelText(/password/i);
 
-    await act(async () => {
-      fireEvent.click(screen.getByText('Create Account'));
+      expect(emailInput).toBeDisabled();
+      expect(passwordInput).toBeDisabled();
     });
 
-    expect(mockOnClose).toHaveBeenCalled();
-    expect(mockOpenRegister).toHaveBeenCalled();
+    test('should show captcha required message when recaptcha is not validated', () => {
+      render(<LoginModal {...defaultProps} />);
+
+      expect(screen.getByText('Login.CaptchaRequired')).toBeInTheDocument();
+    });
   });
 
-  test('should call openForgetPassword when forgot password clicked', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
+  describe('Validation ReCAPTCHA', () => {
+    test('should enable form inputs after recaptcha validation', async () => {
+      render(<LoginModal {...defaultProps} />);
 
-    await act(async () => {
-      fireEvent.click(screen.getByText('Forgot Password'));
+      const recaptcha = screen.getByTestId('recaptcha');
+      fireEvent.click(recaptcha);
+
+      await waitFor(() => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+
+        expect(emailInput).not.toBeDisabled();
+        expect(passwordInput).not.toBeDisabled();
+      });
     });
 
-    expect(mockOnClose).toHaveBeenCalled();
-    expect(mockOpenForgetPassword).toHaveBeenCalled();
+    test('should hide captcha required message after validation', async () => {
+      render(<LoginModal {...defaultProps} />);
+
+      const recaptcha = screen.getByTestId('recaptcha');
+      fireEvent.click(recaptcha);
+
+      await waitFor(() => {
+        expect(screen.queryByText('Login.CaptchaRequired')).not.toBeInTheDocument();
+      });
+    });
   });
 
-  test('should close on Escape key', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
+  describe('Gestion des formulaires', () => {
+    test('should update email and password fields', async () => {
+      render(<LoginModal {...defaultProps} />);
 
-    await act(async () => {
-      fireEvent.keyDown(document, { key: 'Escape' });
+      // Valider le recaptcha d'abord
+      const recaptcha = screen.getByTestId('recaptcha');
+      fireEvent.click(recaptcha);
+
+      await waitFor(() => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+        expect(emailInput.value).toBe('test@example.com');
+        expect(passwordInput.value).toBe('password123');
+      });
     });
 
-    expect(mockOnClose).toHaveBeenCalled();
+    test('should disable login button when form is invalid', async () => {
+      render(<LoginModal {...defaultProps} />);
+
+      const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+      expect(loginButton).toBeDisabled();
+    });
+
+    test('should enable login button when form is valid', async () => {
+      render(<LoginModal {...defaultProps} />);
+
+      // Valider le recaptcha
+      const recaptcha = screen.getByTestId('recaptcha');
+      fireEvent.click(recaptcha);
+
+      await waitFor(() => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+        const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+        expect(loginButton).not.toBeDisabled();
+      });
+    });
   });
 
-  test('should close on background click', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
+  describe('Protection anti-bot (Honeypot)', () => {
+    test('should prevent login when honeypot is filled', async () => {
+      const { container } = render(<LoginModal {...defaultProps} />);
 
-    const modalBackground = document.querySelector('[role="presentation"]');
+      // Valider le recaptcha
+      const recaptcha = screen.getByTestId('recaptcha');
+      fireEvent.click(recaptcha);
 
-    await act(async () => {
+      await waitFor(() => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+        // Utiliser querySelector pour trouver le champ honeypot par son name
+        const honeypotInput = container.querySelector('input[name="website"]');
+        const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(honeypotInput, { target: { value: 'bot-content' } });
+
+        // Le bouton devrait être désactivé quand le honeypot est rempli
+        expect(loginButton).toBeDisabled();
+      });
+    });
+  });
+
+  describe('Processus de connexion', () => {
+    test('should handle successful login', async () => {
+      mockLogin.mockResolvedValueOnce({ success: true, user: { name: 'John Doe' } });
+
+      render(<LoginModal {...defaultProps} />);
+
+      // Valider le recaptcha
+      const recaptcha = screen.getByTestId('recaptcha');
+      await act(async () => {
+        fireEvent.click(recaptcha);
+      });
+
+      // Remplir le formulaire et soumettre
+      await act(async () => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+        const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+        fireEvent.click(loginButton);
+      });
+
+      // Attendre que toutes les promesses se résolvent
+      await waitFor(() => {
+        expect(mockLogin).toHaveBeenCalledWith(
+          'test@example.com',
+          'password123',
+          'mock-recaptcha-token'
+        );
+      });
+
+      await waitFor(() => {
+        expect(mockOnClose).toHaveBeenCalled();
+      });
+    });
+
+    test('should handle login failure', async () => {
+      mockLogin.mockResolvedValueOnce({ success: false, error: 'Invalid credentials' });
+
+      // Mock alert
+      const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+      render(<LoginModal {...defaultProps} />);
+
+      // Valider le recaptcha
+      const recaptcha = screen.getByTestId('recaptcha');
+      await act(async () => {
+        fireEvent.click(recaptcha);
+      });
+
+      // Remplir et soumettre le formulaire
+      await act(async () => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+        const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+        fireEvent.click(loginButton);
+      });
+
+      // Attendre que toutes les promesses se résolvent
+      await waitFor(() => {
+        expect(mockLogin).toHaveBeenCalledWith(
+          'test@example.com',
+          'password123',
+          'mock-recaptcha-token'
+        );
+      });
+
+      await waitFor(() => {
+        expect(alertSpy).toHaveBeenCalledWith('Invalid credentials');
+        expect(mockOnClose).not.toHaveBeenCalled();
+      });
+
+      alertSpy.mockRestore();
+    });
+
+    test('should show loading state during login', async () => {
+      // Utiliser les vrais timers pour cette promesse spécifique
+      let resolveLogin;
+      mockLogin.mockImplementationOnce(
+        () =>
+          new Promise(resolve => {
+            resolveLogin = () => resolve({ success: true });
+          })
+      );
+
+      render(<LoginModal {...defaultProps} />);
+
+      // Valider le recaptcha
+      const recaptcha = screen.getByTestId('recaptcha');
+      await act(async () => {
+        fireEvent.click(recaptcha);
+      });
+
+      // Remplir et soumettre le formulaire
+      await act(async () => {
+        const emailInput = screen.getByRole('textbox', { name: /email/i });
+        const passwordInput = screen.getByLabelText(/password/i);
+        const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+        fireEvent.click(loginButton);
+      });
+
+      // Vérifier l'état de chargement
+      await waitFor(() => {
+        expect(screen.getByText('Login.Loading')).toBeInTheDocument();
+      });
+
+      // Résoudre la promesse et attendre la fin
+      await act(async () => {
+        resolveLogin();
+      });
+
+      // Attendre que le loading disparaisse
+      await waitFor(() => {
+        expect(screen.queryByText('Login.Loading')).not.toBeInTheDocument();
+      });
+    });
+
+    test('should prevent login without recaptcha', () => {
+      render(<LoginModal {...defaultProps} />);
+
+      // Essayer de se connecter sans valider le recaptcha
+      const loginButton = screen.getByRole('button', { name: /Login.Validate/i });
+
+      // Le bouton doit être désactivé si pas de recaptcha
+      expect(loginButton).toBeDisabled();
+
+      // Si on force le clic, ça devrait afficher l'alerte
+      fireEvent.click(loginButton);
+
+      // Dans ce cas, l'alerte ne sera pas appelée car le bouton est disabled
+      // mais on peut tester que le login n'est pas appelé
+      expect(mockLogin).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Navigation entre modales', () => {
+    test('should open register modal', () => {
+      render(<LoginModal {...defaultProps} />);
+
+      const registerButton = screen.getByRole('button', { name: /Login.CreateAccount/i });
+      fireEvent.click(registerButton);
+
+      expect(mockOnClose).toHaveBeenCalled();
+      expect(mockOpenRegister).toHaveBeenCalled();
+    });
+
+    test('should open forgot password modal', () => {
+      render(<LoginModal {...defaultProps} />);
+
+      const forgotButton = screen.getByRole('button', { name: /Login.ForgotPassword/i });
+      fireEvent.click(forgotButton);
+
+      expect(mockOnClose).toHaveBeenCalled();
+      expect(mockOpenForgetPassword).toHaveBeenCalled();
+    });
+
+    test('should close modal when cancel is clicked', () => {
+      render(<LoginModal {...defaultProps} />);
+
+      const cancelButton = screen.getByRole('button', { name: /Login.Cancel/i });
+      fireEvent.click(cancelButton);
+
+      expect(mockOnClose).toHaveBeenCalled();
+    });
+
+    test('should close modal when clicking outside', () => {
+      render(<LoginModal {...defaultProps} />);
+
+      const modalBackground = screen.getByRole('presentation');
       fireEvent.click(modalBackground);
-    });
 
-    expect(mockOnClose).toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalled();
+    });
   });
 
-  test('should not close when clicking modal content', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
+  describe('Gestion clavier', () => {
+    test('should close modal on Escape key', () => {
+      render(<LoginModal {...defaultProps} />);
 
-    const emailInput = screen.getByLabelText('Email');
+      // Simuler la pression de la touche Escape
+      const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+      document.dispatchEvent(escapeEvent);
 
-    await act(async () => {
-      fireEvent.click(emailInput);
+      expect(mockOnClose).toHaveBeenCalled();
     });
-
-    expect(mockOnClose).not.toHaveBeenCalled();
-  });
-
-  test('should show captcha required message when no captcha', () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    expect(screen.getByText('Please complete the captcha')).toBeInTheDocument();
-  });
-
-  test('should disable inputs when no captcha token', () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    expect(screen.getByLabelText('Email')).toBeDisabled();
-    expect(screen.getByLabelText('Password')).toBeDisabled();
-  });
-
-  test('should enable inputs after captcha verification', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    await act(async () => {
-      fireEvent.click(screen.getByText('Verify'));
-    });
-
-    expect(screen.getByLabelText('Email')).not.toBeDisabled();
-    expect(screen.getByLabelText('Password')).not.toBeDisabled();
-  });
-
-  test('should disable login button when form invalid', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    const submitButton = screen.getByRole('button', { name: 'Login' });
-    expect(submitButton).toBeDisabled();
-  });
-
-  test('should enable login button when form valid', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    // Complete captcha first
-    await act(async () => {
-      fireEvent.click(screen.getByText('Verify'));
-    });
-
-    // Fill form
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@example.com' } });
-      fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'password123' } });
-    });
-
-    const submitButton = screen.getByRole('button', { name: 'Login' });
-    expect(submitButton).not.toBeDisabled();
-  });
-
-  test('should handle successful login', async () => {
-    vi.mocked(api.post).mockResolvedValue({
-      data: {
-        token: 'fake-jwt-token',
-        user: { id: 1, email: 'test@example.com' },
-      },
-    });
-
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    // Complete captcha
-    await act(async () => {
-      fireEvent.click(screen.getByText('Verify'));
-    });
-
-    // Fill form
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@example.com' } });
-      fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'password123' } });
-    });
-
-    // Submit
-    const submitButton = screen.getByRole('button', { name: 'Login' });
-    await act(async () => {
-      fireEvent.click(submitButton);
-    });
-
-    expect(api.post).toHaveBeenCalledWith('/auth/login', {
-      mail: 'test@example.com',
-      password: 'password123',
-      recaptchaToken: 'fake-token',
-    });
-
-    expect(mockLogin).toHaveBeenCalledWith({ id: 1, email: 'test@example.com' }, 'fake-jwt-token');
-    expect(mockOnClose).toHaveBeenCalled();
-  });
-
-  test('should handle login without captcha token', async () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    // Try to login without captcha - button should be disabled
-    const submitButton = screen.getByRole('button', { name: 'Login' });
-    expect(submitButton).toBeDisabled();
-  });
-
-  test('should handle API error during login', async () => {
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-
-    vi.mocked(api.post).mockRejectedValue({
-      response: { data: { error: 'Invalid credentials' } },
-    });
-
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    // Complete captcha
-    await act(async () => {
-      fireEvent.click(screen.getByText('Verify'));
-    });
-
-    // Fill form
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@example.com' } });
-      fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'wrong-password' } });
-    });
-
-    // Submit
-    const submitButton = screen.getByRole('button', { name: 'Login' });
-    await act(async () => {
-      fireEvent.click(submitButton);
-    });
-
-    expect(alertSpy).toHaveBeenCalledWith('Invalid credentials');
-
-    alertSpy.mockRestore();
-  });
-
-  test('should show loading state during login', async () => {
-    // Mock a delayed API response
-    vi.mocked(api.post).mockImplementation(
-      () =>
-        new Promise(resolve =>
-          setTimeout(
-            () =>
-              resolve({
-                data: { token: 'fake-token', user: { id: 1 } },
-              }),
-            100
-          )
-        )
-    );
-
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    // Complete captcha
-    await act(async () => {
-      fireEvent.click(screen.getByText('Verify'));
-    });
-
-    // Fill form
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@example.com' } });
-      fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'password123' } });
-    });
-
-    // Submit
-    const submitButton = screen.getByRole('button', { name: 'Login' });
-    await act(async () => {
-      fireEvent.click(submitButton);
-    });
-
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
-  });
-
-  test('should render captcha component', () => {
-    render(
-      <LoginModal
-        onClose={mockOnClose}
-        openRegister={mockOpenRegister}
-        openForgetPassword={mockOpenForgetPassword}
-      />
-    );
-
-    expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
-    expect(screen.getByText('Verify')).toBeInTheDocument();
   });
 });

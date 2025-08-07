@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useAuth } from '../../hooks/useAuth';
-import api from '../../services/api/api';
 import { useTranslation } from 'react-i18next';
 import styles from './Login.module.css';
 
@@ -39,22 +38,17 @@ function LoginModal({ onClose, openRegister, openForgetPassword }) {
     try {
       setIsLoading(true);
 
-      const res = await api.post('/auth/login', {
-        mail: email,
-        password,
-        recaptchaToken,
-      });
+      // Utiliser directement le hook useAuth qui gère tout
+      const result = await login(email, password, recaptchaToken);
 
-      if (!res?.data?.token) {
-        alert('Une erreur est survenue');
-        return;
+      if (result.success) {
+        onClose();
+      } else {
+        alert(result.error || 'Erreur lors de la connexion');
       }
-
-      login(res.data.user, res.data.token);
-      onClose();
     } catch (err) {
-      console.error('Erreur de login :', err?.response?.data || err.message || err);
-      alert(err?.response?.data?.error || 'Erreur lors de la connexion');
+      console.error('Erreur de login :', err);
+      alert('Erreur lors de la connexion');
     } finally {
       setIsLoading(false);
     }

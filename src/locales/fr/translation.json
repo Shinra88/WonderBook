@@ -104,7 +104,7 @@
     "Status": "Statut",
     "StatusOptions": {
       "Pending": "En attente",
-      "Reading": "En cours de lecture",
+      "Reading": "Validé",
       "Read": "Lu"
     },
     "Submit": "Valider",
