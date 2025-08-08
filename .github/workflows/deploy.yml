@@ -1,4 +1,8 @@
 name: Frontend CI/CD Pipeline
+
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -36,7 +40,7 @@ jobs:
         run: |
           echo "🔧 Application du formatage Prettier..."
           npm run format
-          
+
           # Vérifier s'il y a des changements
           if git diff --quiet; then
             echo "✅ Aucun changement de formatage nécessaire"
@@ -73,7 +77,7 @@ jobs:
         run: |
           echo "🔍 Checking coverage files generated..."
           ls -la coverage/ || echo "No coverage directory found"
-          
+
           if [ -f "coverage/coverage-summary.json" ]; then
             echo "📊 Found coverage-summary.json"
             COVERAGE=$(grep -o '"pct":[0-9]*\.[0-9]*' coverage/coverage-summary.json | head -1 | cut -d: -f2)
@@ -97,9 +101,9 @@ jobs:
             echo "✅ Coverage above 80% threshold based on test output"
             exit 0
           fi
-          
+
           echo "📊 Current coverage: ${COVERAGE}%"
-          
+
           COVERAGE_INT=$(echo "$COVERAGE" | cut -d. -f1)
           if [ "$COVERAGE_INT" -lt 80 ]; then
             echo "❌ Coverage ${COVERAGE}% is below 80% threshold"
