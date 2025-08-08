@@ -12,7 +12,6 @@ const __dirname = dirname(__filename);
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname);
   const isProduction = mode === 'production';
-
   return {
     base: '/',
     plugins: [react()],
@@ -91,7 +90,22 @@ export default defineConfig(({ mode }) => {
               usePolling: true,
             },
             proxy: {
-              '/api': env.VITE_BACKEND_URL,
+              '/api': {
+                target: env.VITE_BACKEND_URL || 'http://backend:5000',
+                changeOrigin: true,
+                secure: false,
+                configure: (proxy) => {
+                  proxy.on('error', (err) => {
+                    console.log('❌ Proxy error:', err.message);
+                  });
+                  proxy.on('proxyReq', (proxyReq, req) => {
+                    console.log('🔄 Proxying:', req.method, req.url, '→', proxyReq.path);
+                  });
+                  proxy.on('proxyRes', (proxyRes, req) => {
+                    console.log('✅ Proxy response:', proxyRes.statusCode, req.url);
+                  });
+                },
+              },
             },
             middlewareMode: false,
             setupMiddlewares(middlewares) {

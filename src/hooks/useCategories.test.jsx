@@ -58,7 +58,7 @@ describe('useCategories', () => {
     expect(result.current.categories).toEqual(expectedCategories);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
-    expect(api.get).toHaveBeenCalledWith('/categories');
+    expect(api.get).toHaveBeenCalledWith('api/categories');
   });
 
   it('should handle empty categories response', async () => {

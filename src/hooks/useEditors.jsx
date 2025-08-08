@@ -10,7 +10,7 @@ export default function useEditors() {
   useEffect(() => {
     async function fetchEditors() {
       try {
-        const res = await api.get('/publishers');
+        const res = await api.get('/api/publishers');
         const formatted = res.data.map(pub => ({
           id: pub.publisherId,
           name: pub.name,

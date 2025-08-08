@@ -5,13 +5,11 @@ import FeatherIcon from '../../images/feather.webp';
 import styles from './Account.module.css';
 import ChangePass from '../../modals/ChangePass/ChangePass';
 import { useAuth } from '../../hooks/useAuth';
-// ✅ CHANGEMENT : Plus d'import d'authService
 import { updateAvatarOnS3 } from '../../services/uploadServices';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 function Account() {
-  // ✅ CHANGEMENT : Récupère updateUserProfile via useAuth
   const { user, login, updateUserProfile } = useAuth();
   const token = user?.token;
   const [showChangePass, setShowChangePass] = useState(false);
@@ -72,11 +70,8 @@ function Account() {
     if (!confirmed) return;
 
     try {
-      // ✅ IDENTIQUE : Même appel, mais via useAuth sécurisé
       const response = await updateUserProfile(form);
       if (response.success && response.user) {
-        // ✅ CHANGEMENT : Plus besoin de passer le token manuellement
-        login(response.user, token);
         setOriginalForm(form);
         alert(t('Account.ProfileUpdated'));
       } else {
@@ -104,7 +99,6 @@ function Account() {
     // Immediate update of the avatar in the form
     setForm(prev => ({ ...prev, avatar: newUrl }));
 
-    // ✅ CHANGEMENT : Plus besoin de passer le token manuellement
     await login({ ...user, avatar: newUrl }, token);
 
     // Add a delay of 2 to 3 seconds before reloading the page

@@ -104,7 +104,6 @@ function Home() {
             objectFit: 'cover',
             objectPosition: 'center',
           }}
-          fetchPriority="high"
           loading="eager"
           decoding="async"
         />

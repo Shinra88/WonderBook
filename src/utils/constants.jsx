@@ -1,69 +1,68 @@
 //constants.js
-const API_URL = import.meta.env.VITE_BACKEND_URL || 'https://wonderbook.net';
 
 export const API_ROUTES = {
   AUTH: {
-    SIGN_UP: `${API_URL}/api/auth/signup`,
-    SIGN_IN: `${API_URL}/api/auth/singin`,
-    LOGIN: `${API_URL}/api/auth/login`,
-    REGISTER: `${API_URL}/api/auth/register`,
-    FORGET: `${API_URL}/api/auth/forget`,
-    CHANGE_PASS: `${API_URL}/api/auth/change-password`,
-    UPDATE_PROFILE: `${API_URL}/api/auth/profile`,
-    UPDATE_AVATAR: `${API_URL}/api/upload/update-avatar`,
-    UPLOAD_IMAGE: `${API_URL}/api/upload/cover`,
-    UPLOAD_EBOOK: `${API_URL}/api/upload/ebook`,
+    SIGN_UP: `/api/auth/signup`,
+    SIGN_IN: `/api/auth/singin`,
+    LOGIN: `/api/auth/login`,
+    REGISTER: `/api/auth/register`,
+    FORGET: `/api/auth/forget`,
+    CHANGE_PASS: `/api/auth/change-password`,
+    UPDATE_PROFILE: `/api/auth/profile`,
+    UPDATE_AVATAR: `/api/upload/update-avatar`,
+    UPLOAD_IMAGE: `/api/upload/cover`,
+    UPLOAD_EBOOK: `/api/upload/ebook`,
   },
 
   CATEGORIES: {
-    GET_ALL: `${API_URL}/api/categories`,
+    GET_ALL: `/api/categories`,
   },
 
   PUBLISHERS: {
-    GET_ALL: `${API_URL}/api/publishers`,
+    GET_ALL: `/api/publishers`,
   },
 
   BOOKS: {
-    BASE: `${API_URL}/api/books`,
-    ADD_BOOK: `${API_URL}/api/books`,
-    BEST_RATED: `${API_URL}/api/books/bestrating`,
-    LAST_ADDED: `${API_URL}/api/books/lastadded`,
-    UPDATE_COVER: `${API_URL}/api/books/:id/cover`,
+    BASE: `/api/books`,
+    ADD_BOOK: `/api/books`,
+    BEST_RATED: `/api/books/bestrating`,
+    LAST_ADDED: `/api/books/lastadded`,
+    UPDATE_COVER: `/api/books/:id/cover`,
   },
 
   FORUM: {
-    BASE: `${API_URL}/api/topics`,
-    GET_ALL_TOPICS: `${API_URL}/api/topics`,
-    ADD_TOPIC: `${API_URL}/api/topics`,
-    UPDATE_NOTICE: id => `${API_URL}/api/topics/${id}/pin`,
-    LOCK_TOPIC: id => `${API_URL}/api/topics/${id}/lock`,
+    BASE: `/api/topics`,
+    GET_ALL_TOPICS: `/api/topics`,
+    ADD_TOPIC: `/api/topics`,
+    UPDATE_NOTICE: id => `/api/topics/${id}/pin`,
+    LOCK_TOPIC: id => `/api/topics/${id}/lock`,
   },
 
   POSTS: {
-    BASE: `${API_URL}/api/posts`,
-    GET_BY_TOPIC: id => `${API_URL}/api/posts/${id}`,
-    DELETE_POST: id => `${API_URL}/api/posts/${id}`,
+    BASE: `/api/posts`,
+    GET_BY_TOPIC: id => `/api/posts/${id}`,
+    DELETE_POST: id => `/api/posts/${id}`,
   },
 
   COLLECTION: {
-    BASE: `${API_URL}/api/collection`,
-    ADD: `${API_URL}/api/collection/add`,
-    REMOVE: bookId => `${API_URL}/api/collection/${bookId}`,
-    UPDATE_READ: bookId => `${API_URL}/api/collection/${bookId}`,
-    GET_USER_COLLECTION: `${API_URL}/api/collection`,
-    GET_PROGRESS: bookId => `${API_URL}/api/collection/progress/${bookId}`,
-    SAVE_PROGRESS: bookId => `${API_URL}/api/collection/progress/${bookId}`,
+    BASE: `/api/collection`,
+    ADD: `/api/collection/add`,
+    REMOVE: bookId => `/api/collection/${bookId}`,
+    UPDATE_READ: bookId => `/api/collection/${bookId}`,
+    GET_USER_COLLECTION: `/api/collection`,
+    GET_PROGRESS: bookId => `/api/collection/progress/${bookId}`,
+    SAVE_PROGRESS: bookId => `/api/collection/progress/${bookId}`,
   },
 
   COMMENTS: {
-    BASE: `${API_URL}/api/comments`,
+    BASE: `/api/comments`,
   },
 
   ADMIN: {
-    GET_USERS: `${API_URL}/api/admin/users`,
-    UPDATE_USER: id => `${API_URL}/api/admin/users/${id}`,
-    DELETE_USER: id => `${API_URL}/api/admin/users/${id}`,
-    UPDATE_USER_STATUS: id => `${API_URL}/api/admin/users/${id}/status`,
+    GET_USERS: `/api/admin/users`,
+    UPDATE_USER: id => `/api/admin/users/${id}`,
+    DELETE_USER: id => `/api/admin/users/${id}`,
+    UPDATE_USER_STATUS: id => `/api/admin/users/${id}/status`,
   },
 };
 

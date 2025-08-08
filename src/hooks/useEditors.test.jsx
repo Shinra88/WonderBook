@@ -58,7 +58,7 @@ describe('useEditors', () => {
     expect(result.current.editors).toEqual(expectedEditors);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
-    expect(api.get).toHaveBeenCalledWith('/publishers');
+    expect(api.get).toHaveBeenCalledWith('/api/publishers');
   });
 
   it('should handle empty editors response', async () => {
