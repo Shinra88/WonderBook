@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 
-function CommentModal({ book, onClose }) {
+function CommentModal({ book, onClose, onSubmit }) {
   const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [rating, setRating] = useState(0);
@@ -27,7 +27,10 @@ function CommentModal({ book, onClose }) {
     try {
       setLoading(true);
       await addOrUpdateComment(book.bookId, { content, rating });
-      onClose();
+      if (onSubmit) {
+        await onSubmit(content, rating);
+      }
+      onClose(); // onClose peut rester ici si onSubmit ne le gère pas déjà
     } catch (error) {
       console.error(t('CommentModal.ErrorSubmittingComment'), error);
     } finally {
