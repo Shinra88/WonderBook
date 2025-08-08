@@ -27,6 +27,20 @@ function Collection() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const fetchCollection = async () => {
+  try {
+    const query = { commented: filterCommented };
+    if (filterReadStatus === 'read') query.read = true;
+    if (filterReadStatus === 'unread') query.read = false;
+    const data = await getUserCollection(query);
+    setAllBooks(data);
+  } catch (error) {
+    console.error(t('Collection.Error'), error);
+  } finally {
+    setLoading(false);
+  }
+};
+
   useEffect(() => {
     if (!user) {
       navigate('/');
@@ -36,19 +50,6 @@ function Collection() {
   const isAdmin = user?.role === 'admin' || user?.role === 'prenium';
 
   useEffect(() => {
-    async function fetchCollection() {
-      try {
-        const query = { commented: filterCommented };
-        if (filterReadStatus === 'read') query.read = true;
-        if (filterReadStatus === 'unread') query.read = false;
-        const data = await getUserCollection(query);
-        setAllBooks(data);
-      } catch (error) {
-        console.error(t('Collection.Error'), error);
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchCollection();
   }, [filterReadStatus, filterCommented]);
 
@@ -296,6 +297,7 @@ function Collection() {
             onSubmit={async (content, rating) => {
               try {
                 await addOrUpdateComment(selectedBook.bookId, { content, rating });
+                await fetchCollection();
                 setToastMessage(t('Collection.CommentSuccess'));
                 setIsCommentModalOpen(false);
                 setSelectedBook(null);
