@@ -1,7 +1,10 @@
 // src/pages/Logs/LogsPage.test.jsx
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import LogsPage from './LogsPage';
+import { getAllLogs } from '../../services/logsService';
 
+vi.mock('./LogsPage.module.css', () => ({}));
 // Mock toutes les images
 vi.mock('../../images/library.webp', () => ({ default: 'library.webp' }));
 
@@ -38,9 +41,6 @@ vi.mock('../../components/Pagination/Pagination', () => ({
 vi.mock('../../components/ToastSuccess/ToastSuccess', () => ({
   default: ({ message }) => <div data-testid="toast">{message}</div>,
 }));
-
-import LogsPage from './LogsPage';
-import { getAllLogs } from '../../services/logsService';
 
 // Données de test
 const mockLogs = [
