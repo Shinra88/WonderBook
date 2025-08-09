@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Banner from '../../images/library.webp';
-import styles from './Logspage.module.css';
+import styles from './LogsPage.module.css';
 import { useAuth } from '../../hooks/useAuth';
 import { getAllLogs } from '../../services/logsService';
 import ToastSuccess from '../../components/ToastSuccess/ToastSuccess';
