@@ -18,7 +18,7 @@
   position: absolute;
   top: 100%;
   left: -155%;
-  background-image: url('../../images/backround.webp');
+  background-image: url('../../images/backround.jpg');
   color: #e8d8a0;
   border-bottom: 4px solid #e8d8a0;
   border-left: 4px solid #e8d8a0;
@@ -30,7 +30,7 @@
 }
 
 .background {
-  background-image: url('../../images/backround.webp');
+  background-image: url('../../images/backround.jpg');
 }
 
 .backgroundWood {
@@ -80,7 +80,7 @@
   left: 50%;
   width: 10px;
   height: 10px;
-  background-image: url('../../images/backround.webp');
+  background-image: url('../../images/backround.jpg');
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.2s ease-in-out;

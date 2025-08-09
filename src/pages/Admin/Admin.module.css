@@ -219,7 +219,7 @@
   transition: background-color 0.2s ease;
 }
 .radioGroup input[type='radio']:checked::before {
-  background-image: url('../../images/backround.webp');
+  background-image: url('../../images/backround.jpg');
 }
 
 .up_container {
