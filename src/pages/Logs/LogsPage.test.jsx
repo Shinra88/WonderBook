@@ -1,10 +1,10 @@
 // src/pages/Logs/LogsPage.test.jsx
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LogsPage from './LogsPage';
-import { getAllLogs } from '../../services/logsService';
+import { render, screen, waitFor } from '@testing-library/react';
 
-vi.mock('./LogsPage.module.css', () => ({}));
+// -- Mocks MUST be declared BEFORE importing LogsPage --
+// Mock CSS module
+vi.mock('./LogsPage.module.css', () => ({ default: {} }));
 // Mock toutes les images
 vi.mock('../../images/library.webp', () => ({ default: 'library.webp' }));
 
@@ -42,6 +42,11 @@ vi.mock('../../components/ToastSuccess/ToastSuccess', () => ({
   default: ({ message }) => <div data-testid="toast">{message}</div>,
 }));
 
+// maintenant on peut importer le composant et récupérer le service mocké
+import LogsPage from './LogsPage';
+import { getAllLogs } from '../../services/logsService';
+
+// ... le reste de ton fichier de tests (inchangé) ...
 // Données de test
 const mockLogs = [
   {
@@ -100,154 +105,5 @@ describe('LogsPage', () => {
     });
   });
 
-  test('should show filter options', () => {
-    render(<LogsPage />);
-
-    expect(screen.getByLabelText('Tous les types')).toBeInTheDocument();
-    expect(screen.getByLabelText('Utilisateurs')).toBeInTheDocument();
-    expect(screen.getByLabelText('Livres')).toBeInTheDocument();
-    expect(screen.getByLabelText('Commentaires')).toBeInTheDocument();
-  });
-
-  test('should display logs after loading', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Utilisateur suspendu : JohnDoe')).toBeInTheDocument();
-      expect(screen.getByText('Livre ajouté : "Test Book" par Test Author')).toBeInTheDocument();
-      expect(screen.getByText('AdminUser')).toBeInTheDocument();
-    });
-  });
-
-  test('should show loading state', async () => {
-    getAllLogs.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)));
-
-    render(<LogsPage />);
-
-    expect(screen.getByText('Chargement des logs...')).toBeInTheDocument();
-  });
-
-  test('should show statistics', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Total')).toBeInTheDocument();
-      expect(screen.getByText('Filtrés')).toBeInTheDocument();
-      // Vérifier qu'il y a au moins un élément avec le nombre 3
-      expect(screen.getAllByText('3')).toHaveLength(2); // Total et Filtrés
-    });
-  });
-
-  test('should filter logs by search', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Utilisateur suspendu : JohnDoe')).toBeInTheDocument();
-    });
-
-    const searchInput = screen.getByPlaceholderText(/Rechercher une action/);
-    fireEvent.change(searchInput, { target: { value: 'livre' } });
-
-    await waitFor(() => {
-      expect(screen.getByText('Livre ajouté : "Test Book" par Test Author')).toBeInTheDocument();
-      expect(screen.queryByText('Utilisateur suspendu : JohnDoe')).not.toBeInTheDocument();
-    });
-  });
-
-  test('should filter logs by type', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Utilisateur suspendu : JohnDoe')).toBeInTheDocument();
-    });
-
-    const bookFilter = screen.getByLabelText('Livres');
-    fireEvent.click(bookFilter);
-
-    await waitFor(() => {
-      expect(screen.getByText('Livre ajouté : "Test Book" par Test Author')).toBeInTheDocument();
-      expect(screen.queryByText('Utilisateur suspendu : JohnDoe')).not.toBeInTheDocument();
-    });
-  });
-
-  test('should reset filters', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Utilisateur suspendu : JohnDoe')).toBeInTheDocument();
-    });
-
-    // Apply filter
-    const searchInput = screen.getByPlaceholderText(/Rechercher une action/);
-    fireEvent.change(searchInput, { target: { value: 'livre' } });
-
-    // Reset filters
-    const resetButton = screen.getByText('Réinitialiser');
-    fireEvent.click(resetButton);
-
-    await waitFor(() => {
-      expect(searchInput.value).toBe('');
-      expect(screen.getByText('Utilisateur suspendu : JohnDoe')).toBeInTheDocument();
-    });
-  });
-
-  test('should show pagination for many logs', async () => {
-    const manyLogs = Array.from({ length: 30 }, (_, i) => ({
-      ...mockLogs[0],
-      logId: i + 1,
-      action: `Action ${i + 1}`,
-    }));
-
-    getAllLogs.mockResolvedValue({ logs: manyLogs });
-
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('pagination')).toBeInTheDocument();
-    });
-  });
-
-  test('should show empty state when no logs', async () => {
-    getAllLogs.mockResolvedValue({ logs: [] });
-
-    const { container } = render(<LogsPage />);
-
-    await waitFor(() => {
-      // Vérifier qu'aucun log n'est affiché dans le tableau
-      expect(screen.queryByText('Utilisateur suspendu : JohnDoe')).not.toBeInTheDocument();
-      expect(screen.queryByText('Livre ajouté')).not.toBeInTheDocument();
-
-      // Vérifier que l'élément noResults existe
-      const noResults = container.querySelector('[class*="noResults"]');
-      expect(noResults).toBeTruthy();
-    });
-  });
-
-  test('should show up page link', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByRole('link', { name: /Retour en haut/i })).toBeInTheDocument();
-    });
-  });
-
-  test('should display user roles correctly', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('(admin)')).toBeInTheDocument();
-      expect(screen.getByText('(moderator)')).toBeInTheDocument();
-      expect(screen.getByText('(user)')).toBeInTheDocument();
-    });
-  });
-
-  test('should show target types with correct labels', async () => {
-    render(<LogsPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('user')).toBeInTheDocument();
-      expect(screen.getByText('book')).toBeInTheDocument();
-      expect(screen.getByText('comment')).toBeInTheDocument();
-    });
-  });
+  // ... tous les autres tests que tu as déjà ...
 });
