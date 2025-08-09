@@ -72,7 +72,7 @@ const mockLogs = [
 describe('LogsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers(); 
+    vi.useFakeTimers();
     getAllLogs.mockResolvedValue({ logs: mockLogs });
   });
 
