@@ -29,7 +29,6 @@ function LogsPage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-
   const logsPerPage = 25;
 
   useEffect(() => {
