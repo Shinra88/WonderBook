@@ -33,7 +33,7 @@ function Header() {
   const location = useLocation();
 
   const isPath = prefixes => prefixes.some(prefix => location.pathname.startsWith(prefix));
-  const hideSearchBar = isPath(['/Forum', '/topic', '/Admin']);
+  const hideSearchBar = isPath(['/Forum', '/topic', '/Admin', '/admin/logs', '/Account']);
 
   const { user, isAuthenticated, logout } = useAuth();
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
@@ -116,7 +116,7 @@ function Header() {
                 {t('Header.Home')}
               </NavLink>
             </li>
-            {!isPath(['/Forum', '/topic']) && (
+            {!isPath(['/Forum', '/topic', '/Admin', '/admin/logs', '/Account']) && (
               <>
                 <li>
                   <DropdownMenu isActive={hasActiveFilter} />
@@ -154,6 +154,15 @@ function Header() {
                   to="/Admin"
                   className={() => (isPath(['/Admin']) ? styles.activeLink : undefined)}>
                   Admin
+                </NavLink>
+              </li>
+            )}
+            {isAdmin && (
+              <li>
+                <NavLink
+                  to="/admin/logs"
+                  className={() => (isPath(['/admin/logs']) ? styles.activeLink : undefined)}>
+                  Logs
                 </NavLink>
               </li>
             )}

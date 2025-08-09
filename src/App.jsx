@@ -16,6 +16,7 @@ const TopicDetail = lazy(() => import('./pages/Topics/TopicDetail'));
 const Admin = lazy(() => import('./pages/Admin/Admin'));
 const EpubReader = lazy(() => import('./components/EpubReader/EpubReader'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
+const LogPage = lazy(() => import('./pages/Logs/LogsPage'));
 const HomeWithForgetPassword = lazy(
   () => import('./pages/HomeWithForgetPassword/HomeWithForgetPassword')
 );
@@ -140,6 +141,15 @@ function App() {
               element={
                 <Suspense fallback={<LoadingFallback message="Chargement de l'admin..." />}>
                   <Admin />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path={APP_ROUTES.LOGS}
+              element={
+                <Suspense fallback={<LoadingFallback message="Chargement des journaux..." />}>
+                  <LogPage />
                 </Suspense>
               }
             />

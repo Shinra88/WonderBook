@@ -1,0 +1,518 @@
+/* LogsPage.module.css - Basé sur Admin.module.css */
+
+.LogsPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 250px;
+  padding-bottom: 160px;
+  position: relative;
+}
+
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+}
+
+.main {
+  width: 95%;
+  max-width: 1400px;
+  background-color: #d9d9d9;
+  border-radius: 15px;
+  border: 4px solid #e8d8a0;
+  margin: auto;
+  box-shadow:
+    inset 0 0 20px 10px rgba(98, 98, 98, 0.8),
+    inset 0 0 40px 30px #d9d9d9;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.headContainer {
+  min-height: 125px;
+  padding-inline: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url('../../images/wood-brown.webp');
+  border-bottom: 4px solid #e8d8a0;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.headContainer h2 {
+  color: #e8d8a0;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* Statistiques */
+.statsContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(203, 203, 203, 0.9);
+  border: 2px solid #e8d8a0;
+  border-radius: 12px;
+  padding: 0.8rem;
+  min-width: 80px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.statNumber {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+}
+
+.searchBar {
+  display: flex;
+  flex-direction: column;
+  background-color: #cbcbcb;
+  border-radius: 32px;
+  border: 2px solid #e8d8a0;
+  height: 2.4rem;
+  width: 25rem;
+  box-shadow: 4px 4px 8px black;
+}
+
+.inputSearch {
+  display: flex;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.inputSearch input {
+  font-size: 0.8rem;
+  color: var(--text-color);
+  border: none;
+  background-color: #cbcbcb;
+  padding: 1rem;
+  width: 100%;
+  box-shadow: inset 2px 2px 15px rgba(0, 0, 0, 0.6);
+  outline: none;
+}
+
+.inputSearch button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  border: none;
+  padding: 15px;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset 1px 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Filtres avancés */
+.filtersContainer {
+  background-image: url('../../images/wood-brown.webp');
+  border-bottom: 2px solid #e8d8a0;
+  padding: 1.5rem 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: 'Itim', cursive;
+  font-size: 1rem;
+}
+
+.radioGroup label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #e8d8a0;
+}
+
+.radioGroup input[type='radio'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e8d8a0;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  position: relative;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radioGroup input[type='radio']::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.radioGroup input[type='radio']:checked::before {
+  background-image: url('../../images/backround.jpg');
+}
+
+.additionalFilters {
+  display: flex;
+  gap: 1.5rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.filterGroup label {
+  color: #e8d8a0;
+  font-family: 'Itim', cursive;
+  font-size: 0.9rem;
+}
+
+.filterInput {
+  padding: 0.5rem;
+  border: 2px solid #e8d8a0;
+  border-radius: 8px;
+  background-color: #cbcbcb;
+  color: #333;
+  font-size: 0.8rem;
+  min-width: 120px;
+  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.filterInput:focus {
+  outline: none;
+  box-shadow:
+    inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 0 2px rgba(232, 216, 160, 0.5);
+}
+
+.resetButton {
+  padding: 0.5rem 1.5rem;
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  border: none;
+  color: black;
+  border-radius: 8px;
+  font-family: 'Itim', serif;
+  cursor: pointer;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  transition: filter 0.2s ease;
+  height: fit-content;
+}
+
+.resetButton:hover {
+  filter: brightness(0.9);
+}
+
+/* Container de table */
+.tableContainer {
+  width: 100%;
+  flex: 1;
+  padding-bottom: 150px; /* ✅ Plus d'espace pour éviter le footer */
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.2rem;
+  font-family: 'Itim', cursive;
+}
+
+.noResults {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+  font-family: 'Itim', cursive;
+}
+
+.logsTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.logsTable th,
+.logsTable td {
+  padding: 15px 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.logsTable th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.logsTable tbody tr:nth-child(odd) {
+  background-color: #d9d9d9;
+}
+
+.logsTable tbody tr:nth-child(even) {
+  background-color: #aebac2;
+}
+
+.logsTable tbody tr:hover {
+  background-color: #d0bf67 !important;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Colonnes spécifiques */
+.logDate {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #555;
+  width: 130px;
+}
+
+.logUser {
+  width: 180px;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.userName {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.userRole {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.logAction {
+  font-size: 0.85rem;
+  color: #333;
+  word-break: break-word;
+  max-width: 300px;
+}
+
+.logType {
+  width: 120px;
+}
+
+.typeIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.logTarget {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+  width: 80px;
+}
+
+/* Navigation */
+.up_container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.up {
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 32px;
+  font-family: 'Itim', serif;
+  cursor: pointer;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.up:hover {
+  background-color: #d6c570;
+}
+
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+}
+
+/* Page d'accès non autorisé */
+.unauthorized {
+  text-align: center;
+  padding: 3rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  margin: 2rem;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.unauthorized h2 {
+  color: #d32f2f;
+  margin-bottom: 1rem;
+  font-family: 'Itim', cursive;
+}
+
+.unauthorized p {
+  color: #666;
+  font-family: 'Itim', cursive;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .main {
+    width: 98%;
+  }
+
+  .headContainer {
+    flex-direction: column;
+    gap: 1rem;
+    min-height: auto;
+    padding: 1.5rem;
+  }
+
+  .searchBar {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .LogsPage {
+    padding-top: 200px;
+    padding-bottom: 40px;
+  }
+
+  .filtersContainer {
+    padding: 1rem;
+  }
+
+  .radioGroup {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .additionalFilters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterInput {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .statsContainer {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  /* Table responsive */
+  .logsTable {
+    font-size: 0.8rem;
+  }
+
+  .logsTable th,
+  .logsTable td {
+    padding: 8px 6px;
+  }
+
+  .logDate,
+  .logUser,
+  .logType,
+  .logTarget {
+    width: auto;
+  }
+
+  .logAction {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logsTable th,
+  .logsTable td {
+    padding: 6px 4px;
+    font-size: 0.75rem;
+  }
+
+  .logAction {
+    max-width: 150px;
+  }
+
+  .userInfo {
+    gap: 0.1rem;
+  }
+
+  .userName {
+    font-size: 0.8rem;
+  }
+
+  .userRole {
+    font-size: 0.7rem;
+  }
+}

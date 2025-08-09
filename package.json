@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "preview:network": "vite preview --host 0.0.0.0",
     "preview:prod": "npm run build && vite preview --host 0.0.0.0",
-    "test": "vitest",
+    "test":  "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:memory": "node --max-old-space-size=8192 npx vitest --run --coverage",

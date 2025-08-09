@@ -16,35 +16,48 @@ function Admin() {
   const isAdmin = user?.role === 'admin';
   const { t } = useTranslation();
 
-  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]); // Tous les utilisateurs
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [totalUsers, setTotalUsers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const usersPerPage = 10;
-  const totalPages = Math.ceil(totalUsers / usersPerPage);
 
+  // Récupérer TOUS les utilisateurs une seule fois
   useEffect(() => {
     if (isAdmin) {
       getAllUsers({
-        page: currentPage,
-        limit: usersPerPage,
-        search: searchQuery,
-        status: statusFilter,
+        page: 1,
+        limit: 1000, // Récupérer un grand nombre pour avoir tous les utilisateurs
+        search: '',
+        status: '',
       })
-        .then(({ users, total }) => {
-          setUsers(users);
-          setTotalUsers(total);
+        .then(({ users }) => {
+          setAllUsers(users || []);
         })
         .catch(() => alert(t('Admin.ErrorFetchingUsers')));
     }
-  }, [user, currentPage, searchQuery, statusFilter]);
+  }, [isAdmin, t]);
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
+
+  // Filtrage côté client (comme dans Forum)
+  const filteredUsers = allUsers.filter(user => {
+    const matchesSearch =
+      user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.mail?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  // Pagination côté client (comme dans Forum)
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   const handleEditUser = target => {
     if (!isAdmin && user?.role !== 'moderator') return;
@@ -58,7 +71,7 @@ function Admin() {
 
     try {
       const updated = await updateUserStatus(targetUser.userId, newStatus);
-      setUsers(prev => prev.map(u => (u.userId === updated.userId ? updated : u)));
+      setAllUsers(prev => prev.map(u => (u.userId === updated.userId ? updated : u)));
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2500);
     } catch (err) {
@@ -72,6 +85,11 @@ function Admin() {
       setCurrentPage(newPage);
     }
   };
+
+  // Réinitialiser la page quand les filtres changent (comme dans Forum)
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter]);
 
   return (
     <div id="topPage" className={styles.Admin}>
@@ -130,7 +148,7 @@ function Admin() {
         </div>
 
         <section className={styles.tableContainer}>
-          {users.length === 0 ? (
+          {currentUsers.length === 0 ? (
             <p>{t('Admin.NoResults')}</p>
           ) : (
             <table className={styles.userTable}>
@@ -145,7 +163,7 @@ function Admin() {
                 </tr>
               </thead>
               <tbody>
-                {users.map(u => (
+                {currentUsers.map(u => (
                   <tr
                     key={u.userId}
                     onClick={() => isAdmin && handleEditUser(u)}
@@ -208,7 +226,7 @@ function Admin() {
           user={selectedUser}
           onClose={() => setShowModal(false)}
           onSave={updatedUser => {
-            setUsers(prev =>
+            setAllUsers(prev =>
               prev.map(u => (u.userId === updatedUser.userId ? { ...u, ...updatedUser } : u))
             );
             setShowModal(false);
