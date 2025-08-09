@@ -2,13 +2,10 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 
-// -- Mocks MUST be declared BEFORE importing LogsPage --
-// Mock CSS module
 vi.mock('./LogsPage.module.css', () => ({ default: {} }));
 // Mock toutes les images
 vi.mock('../../images/library.webp', () => ({ default: 'library.webp' }));
 
-// Mock useAuth
 vi.mock('../../hooks/useAuth', () => ({
   useAuth: () => ({
     user: {
@@ -17,19 +14,16 @@ vi.mock('../../hooks/useAuth', () => ({
   }),
 }));
 
-// Mock i18n
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: key => key,
   }),
 }));
 
-// Mock des services
 vi.mock('../../services/logsService', () => ({
   getAllLogs: vi.fn(),
 }));
 
-// Mock des composants
 vi.mock('../../components/Pagination/Pagination', () => ({
   default: ({ currentPage, totalPages }) => (
     <div data-testid="pagination">
@@ -42,12 +36,9 @@ vi.mock('../../components/ToastSuccess/ToastSuccess', () => ({
   default: ({ message }) => <div data-testid="toast">{message}</div>,
 }));
 
-// maintenant on peut importer le composant et récupérer le service mocké
 import LogsPage from './LogsPage';
 import { getAllLogs } from '../../services/logsService';
 
-// ... le reste de ton fichier de tests (inchangé) ...
-// Données de test
 const mockLogs = [
   {
     logId: 1,
@@ -81,7 +72,7 @@ const mockLogs = [
 describe('LogsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers(); // ✅ Ajout pour supprimer les warnings act()
+    vi.useFakeTimers(); 
     getAllLogs.mockResolvedValue({ logs: mockLogs });
   });
 
@@ -104,6 +95,4 @@ describe('LogsPage', () => {
       expect(screen.getByPlaceholderText(/Rechercher une action/)).toBeInTheDocument();
     });
   });
-
-  // ... tous les autres tests que tu as déjà ...
 });
