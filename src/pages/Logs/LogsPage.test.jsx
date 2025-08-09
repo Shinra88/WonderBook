@@ -1,7 +1,6 @@
 // src/pages/Logs/LogsPage.test.jsx
-import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { act } from 'react';
 
 // Mock toutes les images
 vi.mock('../../images/library.webp', () => ({ default: 'library.webp' }));
@@ -77,7 +76,14 @@ const mockLogs = [
 describe('LogsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers(); // ✅ Ajout pour supprimer les warnings act()
     getAllLogs.mockResolvedValue({ logs: mockLogs });
+  });
+
+  afterEach(() => {
+    // ✅ Nettoyer les timers après chaque test
+    vi.runAllTimers();
+    vi.useRealTimers();
   });
 
   test('should render without crashing', () => {
@@ -140,10 +146,7 @@ describe('LogsPage', () => {
     });
 
     const searchInput = screen.getByPlaceholderText(/Rechercher une action/);
-
-    await act(async () => {
-      fireEvent.change(searchInput, { target: { value: 'livre' } });
-    });
+    fireEvent.change(searchInput, { target: { value: 'livre' } });
 
     await waitFor(() => {
       expect(screen.getByText('Livre ajouté : "Test Book" par Test Author')).toBeInTheDocument();
@@ -159,10 +162,7 @@ describe('LogsPage', () => {
     });
 
     const bookFilter = screen.getByLabelText('Livres');
-
-    await act(async () => {
-      fireEvent.click(bookFilter);
-    });
+    fireEvent.click(bookFilter);
 
     await waitFor(() => {
       expect(screen.getByText('Livre ajouté : "Test Book" par Test Author')).toBeInTheDocument();
@@ -179,15 +179,11 @@ describe('LogsPage', () => {
 
     // Apply filter
     const searchInput = screen.getByPlaceholderText(/Rechercher une action/);
-    await act(async () => {
-      fireEvent.change(searchInput, { target: { value: 'livre' } });
-    });
+    fireEvent.change(searchInput, { target: { value: 'livre' } });
 
     // Reset filters
     const resetButton = screen.getByText('Réinitialiser');
-    await act(async () => {
-      fireEvent.click(resetButton);
-    });
+    fireEvent.click(resetButton);
 
     await waitFor(() => {
       expect(searchInput.value).toBe('');
