@@ -516,3 +516,202 @@
     font-size: 0.7rem;
   }
 }
+/* ✅ NOUVEAU : Styles pour le système d'onglets - À ajouter dans LogsPage.module.css */
+
+/* Menu d'onglets */
+.menu {
+  display: flex;
+  gap: 0.5rem;
+  margin-inline: 1rem 0;
+  align-items: center;
+}
+
+.menu button {
+  padding-inline: 0.75rem 1.5rem;
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.6);
+  text-shadow: 4px 4px 8px black;
+  margin-bottom: -2px;
+}
+
+.menu button.active {
+  background: #e8d8a0;
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  font-weight: 600;
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.menu button.inactive {
+  background: rgba(203, 203, 203, 0.8);
+  color: #666;
+}
+
+.menu button.inactive:hover {
+  background: radial-gradient(circle, #c4ab5b 0%, #d0bf67 34%, #d2c675 79%, #e8d8a0 100%);
+  color: black;
+  transform: translateY(-2px);
+}
+
+/* ✅ Mise à jour des statistiques pour s'harmoniser avec le design existant */
+.statsContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(203, 203, 203, 0.9);
+  border: 2px solid #e8d8a0;
+  border-radius: 12px;
+  padding: 0.8rem;
+  min-width: 100px; /* ✅ Légèrement plus large pour "Total site" */
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+}
+
+.statNumber {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  font-family: 'Itim', cursive;
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+  font-family: 'Itim', cursive;
+  text-align: center;
+}
+
+/* ✅ Amélioration des filtres pour les nouveaux types de forum */
+.radioGroup {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: 'Itim', cursive;
+  font-size: 1rem;
+}
+
+.radioGroup label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #e8d8a0;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.radioGroup label:hover {
+  background-color: rgba(232, 216, 160, 0.2);
+}
+
+/* ✅ Amélioration des indicateurs de type pour les nouveaux types */
+.typeIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: capitalize;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.typeIndicator span {
+  font-weight: 500;
+}
+
+/* ✅ Styles spécifiques pour les icônes des nouveaux types */
+.typeIndicator svg {
+  font-size: 0.9rem;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+/* ✅ Responsive pour les onglets */
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+  }
+
+  .menu button {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0;
+  }
+
+  .menu button.active {
+    border: 2px solid #e8d8a0;
+  }
+
+  .statsContainer {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .statCard {
+    min-width: 80px;
+    padding: 0.6rem;
+  }
+
+  .statNumber {
+    font-size: 1.3rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .statsContainer {
+    gap: 0.5rem;
+  }
+
+  .statCard {
+    min-width: 70px;
+    padding: 0.5rem;
+  }
+
+  .statNumber {
+    font-size: 1.2rem;
+  }
+
+  .statLabel {
+    font-size: 0.7rem;
+  }
+}

@@ -29,11 +29,13 @@ export const API_ROUTES = {
     BASE: `/api/topics`,
     GET_ALL_TOPICS: `/api/topics`,
     ADD_TOPIC: `/api/topics`,
+    DELETE_TOPIC: id => `/api/topics/${id}`, // ✅ NOUVEAU : Suppression de topic
     UPDATE_NOTICE: id => `/api/topics/${id}/pin`,
     LOCK_TOPIC: id => `/api/topics/${id}/lock`,
   },
   POSTS: {
     BASE: `/api/posts`,
+    ADD_POST: `/api/posts/add`, // ✅ AJOUTÉ : Route explicite pour l'ajout
     GET_BY_TOPIC: id => `/api/posts/${id}`,
     DELETE_POST: id => `/api/posts/${id}`,
   },
@@ -55,7 +57,7 @@ export const API_ROUTES = {
     DELETE_USER: id => `/api/admin/users/${id}`,
     UPDATE_USER_STATUS: id => `/api/admin/users/${id}/status`,
   },
-  // ✅ NOUVEAU : Routes pour les logs
+  // ✅ Routes pour les logs
   LOGS: {
     GET_ALL: `/api/logs`,
     GET_USER_LOGS: userId => `/api/logs/user/${userId}`,
@@ -77,6 +79,43 @@ export const APP_ROUTES = {
   UPDATE_BOOK: '/Book/edit/:id',
   RESET_PASSWORD: '/reset-password/:token',
   ADMIN: '/Admin',
-  // ✅ NOUVEAU : Route pour la page des logs
+  // ✅ Route pour la page des logs
   LOGS: '/admin/logs',
+};
+
+// ✅ NOUVEAU : Constantes pour les filtres de logs (optionnel, mais utile)
+export const LOG_FILTERS = {
+  TARGET_TYPES: {
+    ALL: '',
+    BOOK: 'book',
+    USER: 'user',
+    COMMENT: 'comment',
+    FORUM_TOPIC: 'forum_topic',
+    FORUM_POST: 'forum_post',
+  },
+  ACTIONS: {
+    // Livres
+    BOOK_ADDED: 'Livre ajouté',
+    BOOK_VALIDATED: 'Livre validé',
+    BOOK_DENIED: 'Livre refusé',
+    BOOK_UPDATED: 'Livre modifié',
+    BOOK_DELETED: 'Livre supprimé',
+
+    // Utilisateurs
+    USER_SUSPENDED: 'Utilisateur suspendu',
+    USER_ACTIVATED: 'Utilisateur activé',
+    USER_BANNED: 'Utilisateur banni',
+    USER_ROLE_CHANGED: 'Rôle utilisateur modifié',
+    USER_PROFILE_UPDATED: 'Profil utilisateur modifié',
+
+    // Commentaires
+    COMMENT_ADDED: 'Commentaire ajouté',
+    COMMENT_UPDATED: 'Commentaire modifié',
+    COMMENT_DELETED: 'Commentaire supprimé',
+
+    // Forum - Posts
+    POST_ADDED: 'Post ajouté',
+    POST_UPDATED: 'Post modifié',
+    POST_DELETED: 'Post supprimé',
+  },
 };

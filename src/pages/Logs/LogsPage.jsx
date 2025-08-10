@@ -10,7 +10,8 @@ import {
   faUser,
   faBook,
   faComment,
-  faComments,
+  faMessage,
+  faClipboardList,
 } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '../../components/Pagination/Pagination';
 
@@ -20,6 +21,7 @@ function LogsPage() {
 
   const [allLogs, setAllLogs] = useState([]);
   const [showToast] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('site');
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [userIdFilter, setUserIdFilter] = useState('');
@@ -58,8 +60,21 @@ function LogsPage() {
 
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
 
+  const getLogsForTab = (logs, tab) => {
+    if (tab === 'site') {
+      return logs.filter(
+        log => !log.targetType || !['forum_topic', 'forum_post'].includes(log.targetType)
+      );
+    } else if (tab === 'forum') {
+      return logs.filter(log => ['forum_topic', 'forum_post'].includes(log.targetType));
+    }
+    return logs;
+  };
+
   // Filtrage côté client
-  const filteredLogs = allLogs.filter(log => {
+  const tabFilteredLogs = getLogsForTab(allLogs, selectedTab);
+
+  const filteredLogs = tabFilteredLogs.filter(log => {
     const matchesSearch =
       log.action?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       log.user?.name?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -92,7 +107,12 @@ function LogsPage() {
     }
   };
 
-  // Réinitialiser la page quand les filtres changent
+  const handleTabClick = tab => {
+    setSelectedTab(tab);
+    setCurrentPage(1);
+    setTypeFilter('all');
+  };
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, typeFilter, userIdFilter, dateFilter]);
@@ -105,8 +125,10 @@ function LogsPage() {
         return faBook;
       case 'comment':
         return faComment;
-      case 'subject':
-        return faComments;
+      case 'forum_topic':
+        return faClipboardList;
+      case 'forum_post':
+        return faMessage;
       default:
         return faMagnifyingGlass;
     }
@@ -120,8 +142,10 @@ function LogsPage() {
         return '#10b981';
       case 'comment':
         return '#f59e0b';
-      case 'subject':
+      case 'forum_topic':
         return '#8b5cf6';
+      case 'forum_post':
+        return '#ec4899';
       default:
         return '#6b7280';
     }
@@ -145,6 +169,24 @@ function LogsPage() {
     setCurrentPage(1);
   };
 
+  const getFilterOptions = () => {
+    if (selectedTab === 'site') {
+      return [
+        { value: 'all', label: 'Tous les types' },
+        { value: 'user', label: 'Utilisateurs' },
+        { value: 'book', label: 'Livres' },
+        { value: 'comment', label: 'Commentaires' },
+      ];
+    } else if (selectedTab === 'forum') {
+      return [
+        { value: 'all', label: 'Tous les types' },
+        { value: 'forum_topic', label: 'Sujets' },
+        { value: 'forum_post', label: 'Posts' },
+      ];
+    }
+    return [];
+  };
+
   if (!isAdmin) {
     return (
       <div className={styles.LogsPage}>
@@ -166,11 +208,25 @@ function LogsPage() {
         <div className={styles.headContainer}>
           <h2>Journaux d&apos;activité</h2>
 
-          {/* Statistiques rapides */}
+          <div className={styles.menu}>
+            <button
+              type="button"
+              className={selectedTab === 'site' ? styles.active : styles.inactive}
+              onClick={() => handleTabClick('site')}>
+              Site ({getLogsForTab(allLogs, 'site').length})
+            </button>
+            <button
+              type="button"
+              className={selectedTab === 'forum' ? styles.active : styles.inactive}
+              onClick={() => handleTabClick('forum')}>
+              Forum ({getLogsForTab(allLogs, 'forum').length})
+            </button>
+          </div>
+
           <div className={styles.statsContainer}>
             <div className={styles.statCard}>
-              <span className={styles.statNumber}>{allLogs.length}</span>
-              <span className={styles.statLabel}>Total</span>
+              <span className={styles.statNumber}>{tabFilteredLogs.length}</span>
+              <span className={styles.statLabel}>Total {selectedTab}</span>
             </div>
             <div className={styles.statCard}>
               <span className={styles.statNumber}>{filteredLogs.length}</span>
@@ -195,49 +251,20 @@ function LogsPage() {
           {showToast && <ToastSuccess message="Filtres appliqués" />}
         </div>
 
-        {/* Filtres avancés */}
         <div className={styles.filtersContainer}>
           <div className={styles.radioGroup}>
-            <label>
-              <input
-                type="radio"
-                name="type"
-                value="all"
-                checked={typeFilter === 'all'}
-                onChange={() => setTypeFilter('all')}
-              />
-              Tous les types
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="type"
-                value="user"
-                checked={typeFilter === 'user'}
-                onChange={() => setTypeFilter('user')}
-              />
-              Utilisateurs
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="type"
-                value="book"
-                checked={typeFilter === 'book'}
-                onChange={() => setTypeFilter('book')}
-              />
-              Livres
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="type"
-                value="comment"
-                checked={typeFilter === 'comment'}
-                onChange={() => setTypeFilter('comment')}
-              />
-              Commentaires
-            </label>
+            {getFilterOptions().map(option => (
+              <label key={option.value}>
+                <input
+                  type="radio"
+                  name="type"
+                  value={option.value}
+                  checked={typeFilter === option.value}
+                  onChange={() => setTypeFilter(option.value)}
+                />
+                {option.label}
+              </label>
+            ))}
           </div>
 
           <div className={styles.additionalFilters}>
@@ -282,7 +309,7 @@ function LogsPage() {
           {loading ? (
             <div className={styles.loading}>Chargement des logs...</div>
           ) : currentLogs.length === 0 ? (
-            <p className={styles.noResults}>Aucun log trouvé</p>
+            <p className={styles.noResults}>Aucun log trouvé dans la section {selectedTab}</p>
           ) : (
             <table className={styles.logsTable}>
               <thead>
@@ -291,7 +318,7 @@ function LogsPage() {
                   <th>Utilisateur</th>
                   <th>Action</th>
                   <th>Type</th>
-                  <th>Cible</th>
+                  <th>ID Cible</th>
                 </tr>
               </thead>
               <tbody>
